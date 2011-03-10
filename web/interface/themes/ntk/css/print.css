@@ -1,3 +1,6 @@
+<?php
+Header ("Content-type: text/css");
+?>
 /* Print CSS Definitions for VuFind.
    Chris Barr, August 2008
 */
