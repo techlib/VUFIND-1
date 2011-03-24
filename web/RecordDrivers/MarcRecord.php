@@ -117,7 +117,7 @@ class MarcRecord extends IndexRecord
         // Check which formats are currently active:
         $formats = array();
         foreach($possible as $current) {
-            if ($active[$current]) {
+            if (array_key_exists($current, $active) && $active[$current]) {
                 $formats[] = $current;
             }
         }
