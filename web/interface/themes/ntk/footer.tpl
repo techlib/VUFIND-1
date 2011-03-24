@@ -8,7 +8,10 @@
         <div><p><strong>{translate text='Find More'}</strong></p>
           <ul>
             <li><a href="{$path}/Browse/Home">{translate text='Browse the Catalog'}</a></li>
-            <li><a href="{$path}/Search/Reserves">{translate text='Course Reserves'}</a></li>
+            {*
+            <li><a href="{$path}/Search/Reserves">{translate 
+text='Course Reserves'}</a></li>
+            *}
             <li><a href="{$path}/Search/NewItem">{translate text='New Items'}</a></li>
           </ul>
         </div>
