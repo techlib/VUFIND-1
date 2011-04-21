@@ -117,7 +117,7 @@ function processImageURL($url, $cache = true)
         // or give us invalid image data.  Let's analyze what came back before
         // proceeding.
         if (!@file_put_contents($tempFile, $image)) {
-            die("Unable to write to image directory.");
+            die("Unable to write to image directory. " . $tempFile);
         }
         list($width, $height, $type) = @getimagesize($tempFile);
         
