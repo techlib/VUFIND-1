@@ -926,7 +926,6 @@ class SearchObject_Solr extends SearchObject_Base
             $this->method,     // HTTP Request method
             $returnIndexErrors // Include errors in response?
         );
-
         // Get time after the query
         $this->stopQueryTimer();
 
