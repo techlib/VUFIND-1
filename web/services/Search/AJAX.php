@@ -138,24 +138,29 @@ class AJAX extends Action {
                     isset($configArray['Item_Status']['multiple_locations']) ?
                         $configArray['Item_Status']['multiple_locations'] : 'msg',
                     'Multiple Locations');
-
-                echo ' <item id="' . htmlspecialchars($record[0]['id']) . '">';
-                echo '  <availability>' . ($available ? 'true' : 'false') . '</availability>';
-                echo '  <location>' . htmlspecialchars($location) . '</location>';
-                echo '  <reserve>' . htmlspecialchars($record[0]['reserve']) . '</reserve>';
-                echo '  <callnumber>' . htmlspecialchars($callNumber) . '</callnumber>';
-                echo ' </item>';
+                echo join(PHP_EOL, array(
+                  ' <item id="' . htmlspecialchars($record[0]['id']) . '">',
+                  '  <availability>' . ($available ? 'true' : 'false') . '</availability>',
+                  '  <location>' . htmlspecialchars($location) . '</location>',
+                  '  <reserve>' . htmlspecialchars($record[0]['reserve']) . '</reserve>',
+                  '  <callnumber>' . htmlspecialchars($callNumber) . '</callnumber>',
+                  ' </item>'
+                  )
+                );
             }
         }
 
         // If any IDs were missing, send back appropriate dummy data
         foreach($missingIds as $missingId => $junk) {
-            echo ' <item id="' . htmlspecialchars($missingId) . '">';
-            echo '   <availability>false</availability>';
-            echo '   <location>Unknown</location>';
-            echo '   <reserve>N</reserve>';
-            echo '   <callnumber></callnumber>';
-            echo ' </item>';
+            echo join(PHP_EOL, array(
+              ' <item id="' . htmlspecialchars($missingId) . '">',
+              '   <availability>false</availability>',
+              '   <location>Unknown</location>',
+              '   <reserve>N</reserve>',
+              '   <callnumber></callnumber>',
+              ' </item>'
+              )
+            );
         }
     }
     

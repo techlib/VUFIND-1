@@ -82,7 +82,14 @@ class Aleph implements DriverInterface
     * Fast check of status of an item
     */
    public function getStatus($id) {
-        $xml = $this->doXRequest("publish_avail", array('library' => $this->bib, 'doc_num' => $id), false);
+        $xml = $this->doXRequest(
+          "publish_avail",
+          array(
+            'library' => $this->bib,
+            'doc_num' => $id
+          ),
+          false
+        );
         $records = $xml->xpath('/publish-avail/OAI-PMH/ListRecords/record/metadata/record') or print "xpath eval failed";
         $holding = array();
         foreach ($records as $record) {
