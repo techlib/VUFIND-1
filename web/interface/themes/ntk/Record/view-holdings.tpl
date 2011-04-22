@@ -2,6 +2,11 @@
 {foreach from=$holdings item=holding key=location}
 <h3>{translate text=$location}</h3>
 <table cellpadding="2" cellspacing="0" border="0" class="citation" summary="{translate text='Holdings details from'} {translate text=$location}">
+  {foreach from=$holding item=item}
+    {foreach from=$item item=subitem key=key}
+      <pre>{$key} : {$subitem}</pre>
+    {/foreach}
+  {/foreach}
   {if $holding.0.callnumber}
   <tr>
     <th>{translate text="Call Number"}: </th>

@@ -34,7 +34,6 @@ class Holdings extends Record
 
         $interface->setPageTitle(translate('Holdings') . ': ' . $this->recordDriver->getBreadcrumb());
         $interface->assign('holdingsMetadata', $this->recordDriver->getHoldings());
-
         try {
             $catalog = new CatalogConnection($configArray['Catalog']['driver']);
         } catch (PDOException $e) {
