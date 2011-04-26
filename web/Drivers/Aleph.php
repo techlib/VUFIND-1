@@ -98,10 +98,12 @@ class Aleph implements DriverInterface
                $location = $datafield->xpath('subfield[@code="a"]/text()');
                $signature = $datafield->xpath('subfield[@code="d"]/text()');
                $availability = ($status[0] == 'available' || $status[0] == 'check_holdings');
-               $reserve = true; $callnumber = $signature; $duedate = ''; $collection = ''; $barcode = ''; $number = '';
-               $field990 = $record->xpath("//datafield[@tag='990']");
-               $field990 = $field990[0];
-               $barcode = $field990->xpath("subfield[@code='b']/text()");
+               $reserve = true;
+               $callnumber = $signature;
+               $duedate = '';
+               $collection = '';
+               $number = '';
+               $barcode = '';
                $holding[] = array('id' => $id,
                                'availability' => $availability,
                                'status' => (string) $status[0],
@@ -112,7 +114,7 @@ class Aleph implements DriverInterface
                                'duedate' => (string) $duedate,
                                'number' => (string) $number,
                                'collection' => (string) $collection,
-                               'barcode' => (string) $barcode[0]);
+                               'barcode' => (string) $barcode);
            }
         }
         return $holding;
