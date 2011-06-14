@@ -96,7 +96,7 @@ class AJAX extends Action {
         $catalog = new CatalogConnection($configArray['Catalog']['driver']);
 
         $result = $catalog->getStatuses($_GET['id']);
-
+        
         // In order to detect IDs missing from the status response, create an 
         // array with a key for every requested ID.  We will clear keys as we
         // encounter IDs in the response -- anything left will be problems that

@@ -41,7 +41,20 @@ class Aleph implements DriverInterface
         $this->wwwpasswd = $configArray['Catalog']['wwwpasswd'];
         $this->sublibadm = $configArray['sublibadm'];
     }
-
+    
+    public function formatCollection($collection) {
+      if (
+        preg_match(
+          "/^.+(?P<floor>\d)(?P<sector>[A-Z])/(?P<shelf>\d+)$/",
+          $collection,
+          $matches
+        )
+      ) {
+        
+      }
+      return $location;
+    }
+    
     public function doXRequest($op, $params, $auth) {
         $url = "http://$this->host/X?op=$op";
         foreach ($params as $key => $value) {
@@ -50,28 +63,14 @@ class Aleph implements DriverInterface
         if ($auth) {
            $url.="&user_name=$this->wwwuser&user_password=$this->wwwpasswd";
         }
-        $answer = file($url);
-        $xmlfile = '';
-        foreach ($answer as $line) {
-           $xmlfile = $xmlfile . $line;
-        }
-        $xmlfile = str_replace('xmlns=', 'ns=', $xmlfile);
-        $result = simplexml_load_string($xmlfile);
-        if (!$result) { 
-           throw new Exception("XML is not valid, URL is '$url'.");
-        }
-        $xml['xmlns'] = '';
-        if ($result->error) {
-           throw new Exception("XServer error: $result->error.");
-        }
-        return $result;
+        return $this->doRequest($url);
     }
 
     public function doRequest($request) {
         $answer = file($request);
         $xmlfile = '';
         foreach($answer as $line) {
-           $xmlfile = $xmlfile . $line;
+           $xmlfile .= $line;
         }
         $xmlfile = str_replace('xmlns=', 'ns=', $xmlfile);
         $result = simplexml_load_string($xmlfile) or print "error creating xml";
@@ -128,13 +127,41 @@ class Aleph implements DriverInterface
     }
     public function getHolding($id)
     {
-        return $this->getStatus($id);
+        $xml = $this->doXRequest(
+          "circ-status",
+          array(
+            "library" => $this->bib,
+            "sys_no" => $id
+          )
+        );
+        foreach ($xml->xpath("//item-data") as $itemdata) {
+          $loanStatus = $itemdata->xpath("loan-status");
+          $dueDate = $itemdata->xpath("due-date");
+          $collection = $itemdata->xpath("collection");
+          $location = $itemdata->xpath("location");
+          $lcc = $itemdata->xpath("location-2");
+          
+          $loanStatus = $loanStatus[0];
+          $dueDate = $dueDate[0];
+          $collection = $collection[0];
+          $location = $location[0];
+          $lcc = $lcc[0] ? $lcc[0] : false;
+          
+          $holding[] = array(
+            'availability' => 1,
+            'id' => $id,
+            'status' => 'Available',
+            'location' => '3rd Floor Main Library',
+            'reserve' => 'No',
+            'callnumber' => 'A1234.567',
+            'duedate' => '',
+            'number' => 1
+          );
+        }
     }
     /*
     public function getHolding($id) {
-        $holding = array();
-        list($bib, $sys_no) = split("-", $id, 2);
-        $resource = $bib . $sys_no;
+        $resource = $this->bib . $id[0];
         $url = "http://$this->dlfurl/rest-dlf/record/" . $resource . "/items?view=full";
         $xml = $this->doRequest($url);
         foreach ($xml->xpath('//items/item') as $item) {
