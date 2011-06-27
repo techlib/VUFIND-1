@@ -1,5 +1,8 @@
 <?php
 /**
+ * AddTag action for Record module
+ *
+ * PHP version 5
  *
  * Copyright (C) Villanova University 2007.
  *
@@ -16,32 +19,58 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
+ * @category VuFind
+ * @package  Controller_Record
+ * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
+ * @author   Demian Katz <demian.katz@villanova.edu>
+ * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
+ * @link     http://vufind.org/wiki/building_a_module Wiki
  */
- 
 require_once 'Action.php';
 
 require_once 'services/MyResearch/lib/User.php';
 require_once 'services/MyResearch/lib/Tags.php';
 require_once 'services/MyResearch/lib/Resource.php';
 
-class AddTag extends Action {
+/**
+ * AddTag action for Record module
+ *
+ * @category VuFind
+ * @package  Controller_Record
+ * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
+ * @author   Demian Katz <demian.katz@villanova.edu>
+ * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
+ * @link     http://vufind.org/wiki/building_a_module Wiki
+ */
+class AddTag extends Action
+{
+    private $_user;
 
-    private $user;
-
-    function __construct()
+    /**
+     * Constructor
+     *
+     * @access public
+     */
+    public function __construct()
     {
-        $this->user = UserAccount::isLoggedIn();
+        $this->_user = UserAccount::isLoggedIn();
     }
-    
-    function launch()
+
+    /**
+     * Process incoming parameters and display the page.
+     *
+     * @return void
+     * @access public
+     */
+    public function launch()
     {
         global $interface;
         global $configArray;
 
         $interface->assign('id', $_GET['id']);
-        
+
         // Check if user is logged in
-        if (!$this->user) {
+        if (!$this->_user) {
             $interface->assign('recordId', $_GET['id']);
             $interface->assign('followupModule', 'Record');
             $interface->assign('followupAction', 'AddTag');
@@ -60,15 +89,23 @@ class AddTag extends Action {
         }
 
         if (isset($_POST['submit'])) {
-            $result = $this->save();
-            header("Location: " . $configArray['Site']['url'] . '/Record/' . 
-                urlencode($_GET['id']) . '/Home');
+            $result = $this->save($this->_user);
+            header(
+                "Location: " . $configArray['Site']['url'] . '/Record/' .
+                urlencode($_GET['id']) . '/Home'
+            );
         } else {
-            return $this->display();
+            return $this->_displayForm();
         }
     }
-    
-    function display()
+
+    /**
+     * Support method to display the tag entry form.
+     *
+     * @return void
+     * @access private
+     */
+    private function _displayForm()
     {
         global $interface;
 
@@ -83,22 +120,30 @@ class AddTag extends Action {
             $interface->display('layout.tpl', 'AddTag' . $_GET['id']);
         }
     }
-    
-    function save()
+
+    /**
+     * Save the tag information based on GET parameters.
+     *
+     * @param object $user User that is adding the tag.
+     *
+     * @return bool        True on success, false on failure.
+     * @access public
+     */
+    public static function save($user)
     {
         // Fail if we don't know what record we're working with:
         if (!isset($_GET['id'])) {
             return false;
         }
-        
-        // Create a resource entry for the current ID if necessary (or find the 
+
+        // Create a resource entry for the current ID if necessary (or find the
         // existing one):
         $resource = new Resource();
         $resource->record_id = $_GET['id'];
         if (!$resource->find(true)) {
             $resource->insert();
         }
-        
+
         // Parse apart the tags and save them in association with the resource:
         preg_match_all('/"[^"]*"|[^ ]+/', $_REQUEST['tag'], $words);
         foreach ($words[0] as $tag) {
@@ -106,7 +151,7 @@ class AddTag extends Action {
             $resource->addTag($tag, $user);
         }
 
-        // Done -- report success:        
+        // Done -- report success:
         return true;
     }
 }

@@ -1,5 +1,4 @@
-<script language="JavaScript" type="text/javascript" src="{$path}/js/ajax_common.js"></script>
-<script language="JavaScript" type="text/javascript" src="{$path}/services/WorldCat/ajax.js"></script>
+{js filename="ajax_common.js"}
 
 <div id="bd">
   <div id="yui-main" class="content">
@@ -32,19 +31,17 @@
           
           <div style="clear: both;"></div>
 
-        {* Display Book Cover *}
-          
+        {* Display Cover Image *}
             {if $isbn}
             <div class="alignright">
                 <a href="{$path}/bookcover.php?isn={$isbn|@formatISBN}&amp;size=large">
-                    <img alt="{translate text='Book Cover'}" class="recordcover" src="{$path}/bookcover.php?isn={$isbn|@formatISBN}&amp;size=medium">
+                    <img alt="{translate text='Cover Image'}" class="recordcover" src="{$path}/bookcover.php?isn={$isbn|@formatISBN}&amp;size=medium">
                 </a>
             </div>
             {else}
             {* <img src="{$path}/bookcover.php" alt="{translate text='No Cover Image'}"> *}
             {/if}
-          
-          {* End Book Cover *}
+          {* End Cover Image *}
 
 
           {* Display Title *}

@@ -1,3 +1,15 @@
+vufind 1.2 distribution; urgency=low
+
+  * VuFind 1.2 release (see http://vufind.org/wiki/changelog for details) 
+
+ -- maintainer VuFind Project Administration Team <vufind-admins@lists.sourceforge.net>  Mo 1 Aug 2011 09:11:27 UTC
+ 
+vufind 1.1 distribution; urgency=low
+
+  * VuFind 1.1 release (see http://vufind.org/wiki/changelog for details) 
+
+ -- maintainer VuFind Project Administration Team <vufind-admins@lists.sourceforge.net>  Mo 21 Mar 2011 09:23:34 UTC
+ 
 vufind 1.0.1 distribution; urgency=low
 
   * VuFind 1.0.1 (minor bugfix) release (see http://vufind.org/wiki/changelog for details) 

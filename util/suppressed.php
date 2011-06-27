@@ -1,5 +1,8 @@
 <?php
 /**
+ * Command-line tool to delete suppressed records from the index.
+ *
+ * PHP version 5
  *
  * Copyright (C) Villanova University 2007.
  *
@@ -16,39 +19,36 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
+ * @category VuFind
+ * @package  Utilities
+ * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
+ * @author   Demian Katz <demian.katz@villanova.edu>
+ * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
+ * @link     http://vufind.org/wiki/automation Wiki
  */
- 
 ini_set('memory_limit', '50M');
 ini_set('max_execution_time', '3600');
 
-require_once 'util.inc.php';        // set up util environment
-require_once 'sys/Solr.php';
-require_once 'CatalogConnection.php';
+/**
+ * Set up util environment
+ */
+require_once 'util.inc.php';
+require_once 'sys/ConnectionManager.php';
 
 // Read Config file
 $configArray = parse_ini_file('../web/conf/config.ini', true);
 
 // Setup Solr Connection
-$url = $configArray['Index']['url'];
-$solr = new Solr($url);
-if ($configArray['System']['debug']) {
-    $solr->debug = true;
-}
+$solr = ConnectionManager::connectToIndex('Solr');
 
 // Make ILS Connection
-try {
-    $catalog = new CatalogConnection($configArray['Catalog']['driver']);
-} catch (PDOException $e) {
-    // What should we do with this error?
-    if ($configArray['System']['debug']) {
-        echo '<pre>';
-        echo 'DEBUG: ' . $e->getMessage();
-        echo '</pre>';
-    }
-}
+$catalog = ConnectionManager::connectToCatalog();
+
+// Setup Local Database Connection
+ConnectionManager::connectToDatabase();
 
 // Get Suppressed Records and Delete from index
-if ($catalog->status) {
+if ($catalog && $catalog->status) {
     $result = $catalog->getSuppressedRecords();
     if (!PEAR::isError($result)) {
         $status = $solr->deleteRecords($result);
@@ -58,5 +58,7 @@ if ($catalog->status) {
             $solr->optimize();
         }
     }
+} else {
+    echo "Cannot connect to ILS.\n";
 }
 ?>

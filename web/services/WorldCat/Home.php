@@ -1,5 +1,8 @@
 <?php
 /**
+ * Home action for WorldCat module
+ *
+ * PHP version 5
  *
  * Copyright (C) Andrew Nagy 2009.
  *
@@ -16,20 +19,45 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
+ * @category VuFind
+ * @package  Controller_WorldCat
+ * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
+ * @author   Demian Katz <demian.katz@villanova.edu>
+ * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
+ * @link     http://vufind.org/wiki/building_a_module Wiki
  */
- 
 require_once 'Search.php';
 
+/**
+ * Home action for WorldCat module
+ *
+ * @category VuFind
+ * @package  Controller_WorldCat
+ * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
+ * @author   Demian Katz <demian.katz@villanova.edu>
+ * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
+ * @link     http://vufind.org/wiki/building_a_module Wiki
+ */
 class Home extends Base
 {
-    function launch() 
+    /**
+     * Process incoming parameters and display the page.
+     *
+     * @return void
+     * @access public
+     */
+    public function launch()
     {
         global $interface;
         global $configArray;
 
         // Cache homepage
-        $interface->caching = 1; 
-        $cacheId = 'worldcat-homepage|' . $interface->lang;
+        $interface->caching = 1;
+        $cacheId = 'worldcat-homepage|' . $interface->lang . '|' .
+            (UserAccount::isLoggedIn() ? '1' : '0') . '|' .
+            (isset($_SESSION['lastUserLimit']) ? $_SESSION['lastUserLimit'] : '') .
+            '|' .
+            (isset($_SESSION['lastUserSort']) ? $_SESSION['lastUserSort'] : '');
         if (!$interface->is_cached('layout.tpl', $cacheId)) {
             $interface->setPageTitle('Search Home');
             $interface->setTemplate('home.tpl');

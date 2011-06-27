@@ -10,11 +10,6 @@ rem     Path to the java
 rem INDEX_OPTIONS
 rem     Options to pass to the JVM
 
-if not "!%1!"=="!!" goto argfound
-echo     Usage: %0 c:\path\to\marc.mrc
-goto end
-:argfound
-
 rem Make sure that environment edits are local and that we have access to the 
 rem Windows command extensions.
 setlocal enableextensions
@@ -22,6 +17,26 @@ if not errorlevel 1 goto extensionsokay
 echo Unable to enable Windows command extensions.
 goto end
 :extensionsokay
+
+rem Save %0 for later in case the batch file's name gets shifted away
+set THISFILE=%0
+
+rem #####################################################
+rem # handle the -p option to override properties file
+rem #####################################################
+if "%1"=="-p" (
+  set PROPERTIES_FILE=%2
+  shift
+  shift
+)
+
+rem #####################################################
+rem # Make sure we have the expected number of arguments
+rem #####################################################
+if not "!%1!"=="!!" goto argfound
+echo     Usage: %THISFILE% [-p c:\path\to\import.properties] c:\path\to\marc.mrc
+goto end
+:argfound
 
 rem ##################################################
 rem # Set INDEX_OPTIONS

@@ -6,7 +6,8 @@
     <meta content="minimum-scale=1.0, width=device-width, maximum-scale=0.6667, user-scalable=no" name="viewport" />
     <link href="{$path}/interface/themes/mobile/iWebKit/css/style.css" rel="stylesheet" type="text/css" />
     {css filename="extra_styles.css"}
-    <script src="{$path}/interface/themes/mobile/iWebKit/javascript/functions.js" type="text/javascript"></script>
+    {js filename="../iWebKit/javascript/functions.js"}
+    {js filename="scripts.js"}
     <title>{$site.title}</title>
   </head>
 
@@ -15,7 +16,7 @@
       {if !($module == "Search" && $pageTemplate == "home.tpl")}
       <div id="leftnav"><a href="{$path}/Search/Home"><img alt="home" src="{$path}/interface/themes/mobile/iWebKit/images/home.png" /></a></div>
       {/if}
-      <div id="title">{$pageTitle}</div>
+      <div id="title" {if $module == "Record"}style="padding-left:15%;"{/if}>{$pageTitle}</div>
     </div>
     <div id="content">
       {include file="$module/$pageTemplate"}

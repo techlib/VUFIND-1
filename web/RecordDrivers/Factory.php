@@ -1,5 +1,8 @@
 <?php
 /**
+ * RecordDriverFactory Class
+ *
+ * PHP version 5
  *
  * Copyright (C) Villanova University 2010.
  *
@@ -16,6 +19,11 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
+ * @category VuFind
+ * @package  RecordDrivers
+ * @author   Demian Katz <demian.katz@villanova.edu>
+ * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
+ * @link     http://vufind.org/wiki/other_than_marc Wiki
  */
 
 /**
@@ -23,18 +31,23 @@
  *
  * This is a factory class to build record drivers for accessing metadata.
  *
- * @author      Demian Katz <demian.katz@villanova.edu>
- * @access      public
+ * @category VuFind
+ * @package  RecordDrivers
+ * @author   Demian Katz <demian.katz@villanova.edu>
+ * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
+ * @link     http://vufind.org/wiki/other_than_marc Wiki
  */
-class RecordDriverFactory {
+class RecordDriverFactory
+{
     /**
      * initSearchObject
      *
      * This constructs a search object for the specified engine.
      *
-     * @access  public
-     * @param   array   $record     The fields retrieved from the Solr index.
-     * @return  object              The record driver for handling the record.
+     * @param array $record The fields retrieved from the Solr index.
+     *
+     * @return object       The record driver for handling the record.
+     * @access public
      */
     static function initRecordDriver($record)
     {
@@ -51,14 +64,16 @@ class RecordDriverFactory {
         }
         
         // Build the object:
-        require_once $path;
+        include_once $path;
         if (class_exists($driver)) {
             $obj = new $driver($record);
             return $obj;
         }
         
         // If we got here, something went very wrong:
-        PEAR::raiseError(new PEAR_Error("Problem loading record driver: {$driver}"));
+        PEAR::raiseError(
+            new PEAR_Error("Problem loading record driver: {$driver}")
+        );
     }
 }
 ?>

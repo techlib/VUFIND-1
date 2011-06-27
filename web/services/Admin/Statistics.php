@@ -1,5 +1,8 @@
 <?php
 /**
+ * Statistics action for Admin module
+ *
+ * PHP version 5
  *
  * Copyright (C) Villanova University 2007.
  *
@@ -16,67 +19,99 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
+ * @category VuFind
+ * @package  Controller_Admin
+ * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
+ * @author   Demian Katz <demian.katz@villanova.edu>
+ * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
+ * @link     http://vufind.org/wiki/building_a_module Wiki
  */
+require_once 'Admin.php';
 
-require_once 'Action.php';
-require_once 'sys/SolrStats.php';
-
-class Statistics extends Action
+/**
+ * Statistics action for Admin module
+ *
+ * @category VuFind
+ * @package  Controller_Admin
+ * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
+ * @author   Demian Katz <demian.katz@villanova.edu>
+ * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
+ * @link     http://vufind.org/wiki/building_a_module Wiki
+ */
+class Statistics extends Admin
 {
-    function launch()
+    /**
+     * Process parameters and display the page.
+     *
+     * @return void
+     * @access public
+     */
+    public function launch()
     {
         global $configArray;
         global $interface;
 
         // Load SOLR Statistics
-        $solr = new SolrStats($configArray['Statistics']['solr']);
-        if ($configArray['System']['debug']) {
-            $solr->debug = true;
-        }
+        $solr = ConnectionManager::connectToIndex('SolrStats');
 
         // All Statistics
-        $result = $solr->search('*:*', null, null, 0, null,
-                                array('field' => array('ipaddress', 'browser')),
-                                '', null, null, null, HTTP_REQUEST_METHOD_GET);
+        $result = $solr->search(
+            '*:*', null, null, 0, null,
+            array('field' => array('ipaddress', 'browser')), '', null, null, null,
+            HTTP_REQUEST_METHOD_GET
+        );
         if (!PEAR::isError($result)) {
             if (isset($result['facet_counts']['facet_fields']['ipaddress'])) {
-                $interface->assign('ipList', $result['facet_counts']['facet_fields']['ipaddress']);
-            } 
+                $interface->assign(
+                    'ipList', $result['facet_counts']['facet_fields']['ipaddress']
+                );
+            }
             if (isset($result['facet_counts']['facet_fields']['browser'])) {
-                $interface->assign('browserList', $result['facet_counts']['facet_fields']['browser']);
+                $interface->assign(
+                    'browserList',
+                    $result['facet_counts']['facet_fields']['browser']
+                );
             }
         }
 
         // Search Statistics
-        $result = $solr->search('phrase:[* TO *]', null, null, 0, null,
-                                array('field' => array('noresults', 'phrase')),
-                                '', null, null, null, HTTP_REQUEST_METHOD_GET);
+        $result = $solr->search(
+            'phrase:[* TO *]', null, null, 0, null,
+            array('field' => array('noresults', 'phrase')),
+            '', null, null, null, HTTP_REQUEST_METHOD_GET
+        );
         if (!PEAR::isError($result)) {
             $interface->assign('searchCount', $result['response']['numFound']);
-            
-            // Extract the count of no hit results by finding the "no hit" facet entry
-            // set to boolean true.
+
+            // Extract the count of no hit results by finding the "no hit" facet
+            // entry set to boolean true.
             $nohitCount = 0;
             $nhFacet = & $result['facet_counts']['facet_fields']['noresults'];
             if (isset($nhFacet) && is_array($nhFacet)) {
-                foreach($nhFacet as $nhRow) {
+                foreach ($nhFacet as $nhRow) {
                     if ($nhRow[0] == 'true') {
                         $nohitCount = $nhRow[1];
                     }
                 }
             }
             $interface->assign('nohitCount', $nohitCount);
-            
-            $interface->assign('termList', $result['facet_counts']['facet_fields']['phrase']);
+
+            $interface->assign(
+                'termList', $result['facet_counts']['facet_fields']['phrase']
+            );
         }
 
         // Record View Statistics
-        $result = $solr->search('recordId:[* TO *]', null, null, 0, null,
-                                array('field' => array('recordId')),
-                                '', null, null, null, HTTP_REQUEST_METHOD_GET);
+        $result = $solr->search(
+            'recordId:[* TO *]', null, null, 0, null,
+            array('field' => array('recordId')),
+            '', null, null, null, HTTP_REQUEST_METHOD_GET
+        );
         if (!PEAR::isError($result)) {
             $interface->assign('recordViews', $result['response']['numFound']);
-            $interface->assign('recordList', $result['facet_counts']['facet_fields']['recordId']);
+            $interface->assign(
+                'recordList', $result['facet_counts']['facet_fields']['recordId']
+            );
         }
 
         $interface->setTemplate('statistics.tpl');

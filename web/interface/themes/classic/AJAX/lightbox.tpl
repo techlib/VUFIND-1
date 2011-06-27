@@ -1,4 +1,3 @@
-<![CDATA[
 <div class="header" id="popupboxHeader"
      onMouseDown="this.style.cursor='move';"
      onMouseUp="this.style.cursor='default';">
@@ -8,4 +7,3 @@
 <div class="content" id="popupboxContent">
   {$page}
 </div>
-]]>

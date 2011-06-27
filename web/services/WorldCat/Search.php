@@ -1,5 +1,8 @@
 <?php
 /**
+ * Search action for WorldCat module
+ *
+ * PHP version 5
  *
  * Copyright (C) Andrew Nagy 2008.
  *
@@ -16,16 +19,37 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
+ * @category VuFind
+ * @package  Controller_WorldCat
+ * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
+ * @author   Demian Katz <demian.katz@villanova.edu>
+ * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
+ * @link     http://vufind.org/wiki/building_a_module Wiki
  */
-
 require_once 'Base.php';
 
 require_once 'sys/Pager.php';
 require_once 'sys/Worldcat.php';
 
-class Search extends Base {
-    
-    function launch()
+/**
+ * Search action for WorldCat module
+ *
+ * @category VuFind
+ * @package  Controller_WorldCat
+ * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
+ * @author   Demian Katz <demian.katz@villanova.edu>
+ * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
+ * @link     http://vufind.org/wiki/building_a_module Wiki
+ */
+class Search extends Base
+{
+    /**
+     * Process incoming parameters and display the page.
+     *
+     * @return void
+     * @access public
+     */
+    public function launch()
     {
         global $interface;
         global $configArray;
@@ -33,25 +57,35 @@ class Search extends Base {
         // Initialise SearchObject.
         $this->searchObject->init();
 
-        $interface->setPageTitle('Search Results');
-        
-        $interface->assign('lookfor', $this->searchObject->displayQuery());
+        $displayQuery = $this->searchObject->displayQuery();
+        $interface->setPageTitle(
+            translate('Search Results') .
+            (empty($displayQuery) ? '' : ' - ' . htmlspecialchars($displayQuery))
+        );
+
+        $interface->assign('lookfor', $displayQuery);
         $interface->assign('searchIndex', $this->searchObject->getSearchIndex());
         $interface->assign('searchType', $this->searchObject->getSearchType());
-        
+
         // Search Worldcat
         $result = $this->searchObject->processSearch(true, true);
         // We'll need recommendations no matter how many results we found:
         $interface->assign('qtime', round($this->searchObject->getQuerySpeed(), 2));
-        $interface->assign('spellingSuggestions', $this->searchObject->getSpellingSuggestions());
-        $interface->assign('topRecommendations',
-            $this->searchObject->getRecommendationsTemplates('top'));
-        $interface->assign('sideRecommendations',
-            $this->searchObject->getRecommendationsTemplates('side'));
+        $interface->assign(
+            'spellingSuggestions', $this->searchObject->getSpellingSuggestions()
+        );
+        $interface->assign(
+            'topRecommendations',
+            $this->searchObject->getRecommendationsTemplates('top')
+        );
+        $interface->assign(
+            'sideRecommendations',
+            $this->searchObject->getRecommendationsTemplates('side')
+        );
 
         if ($result['RecordCount'] > 0) {
             // If the "jumpto" parameter is set, jump to the specified result index:
-            $this->processJumpto($result);
+            $this->_processJumpto($result);
 
             $summary = $this->searchObject->getResultSummary();
             $page = $summary['page'];
@@ -63,7 +97,7 @@ class Search extends Base {
 
             // Define CoINs Identifier
             $coinsID = isset($configArray['OpenURL']['rfr_id']) ?
-                $configArray['OpenURL']['rfr_id'] : 
+                $configArray['OpenURL']['rfr_id'] :
                 $configArray['COinS']['identifier'];
             if (empty($coinsID)) {
                 $coinsID = 'vufind.svn.sourceforge.net';
@@ -86,14 +120,18 @@ class Search extends Base {
             // Was the empty result set due to an error?
             $error = $this->searchObject->getIndexError();
             if ($error !== false) {
-                // If it's a parse error or the user specified an invalid field, we 
+                // If it's a parse error or the user specified an invalid field, we
                 // should display an appropriate message:
                 if (false /* TODO: detect parse error */) {
                     $interface->assign('parseError', true);
-                // Unexpected error -- let's treat this as a fatal condition.
                 } else {
-                    PEAR::raiseError(new PEAR_Error('Unable to process query<br />' .
-                        'WorldCat Returned: ' . $error));
+                    // Unexpected error -- let's treat this as a fatal condition.
+                    PEAR::raiseError(
+                        new PEAR_Error(
+                            'Unable to process query<br />WorldCat Returned: ' .
+                            $error
+                        )
+                    );
                 }
             }
             $interface->setTemplate('list-none.tpl');
@@ -103,25 +141,27 @@ class Search extends Base {
         $this->searchObject->close();
         $interface->assign('time', round($this->searchObject->getTotalSpeed(), 2));
         // Show the save/unsave code on screen
-        // The ID won't exist until after the search has been put in the search history
-        //    so this needs to occur after the close() on the searchObject
+        // The ID won't exist until after the search has been put in the search
+        //    history so this needs to occur after the close() on the searchObject
         $interface->assign('showSaved',   true);
         $interface->assign('savedSearch', $this->searchObject->isSavedSearch());
         $interface->assign('searchId',    $this->searchObject->getSearchId());
-        
+
         // Save the URL of this search to the session so we can return to it easily:
         $_SESSION['lastSearchURL'] = $this->searchObject->renderSearchUrl();
-        
+
         $interface->display('layout.tpl');
     }
 
     /**
      * Process the "jumpto" parameter.
      *
-     * @access  private
-     * @param   array       $result         Summon result
+     * @param array $result WorldCat result list
+     *
+     * @return void
+     * @access private
      */
-    private function processJumpto($result)
+    private function _processJumpto($result)
     {
         if (isset($_REQUEST['jumpto']) && is_numeric($_REQUEST['jumpto'])) {
             $i = intval($_REQUEST['jumpto'] - 1);

@@ -1,5 +1,8 @@
 <?php
 /**
+ * TopFacets Recommendations Module
+ *
+ * PHP version 5
  *
  * Copyright (C) Villanova University 2009.
  *
@@ -16,6 +19,11 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
+ * @category VuFind
+ * @package  Recommendations
+ * @author   Demian Katz <demian.katz@villanova.edu>
+ * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
+ * @link     http://vufind.org/wiki/building_a_recommendations_module Wiki
  */
 
 require_once 'sys/Recommend/Interface.php';
@@ -24,26 +32,34 @@ require_once 'sys/Recommend/Interface.php';
  * TopFacets Recommendations Module
  *
  * This class provides recommendations displaying facets above search results
+ *
+ * @category VuFind
+ * @package  Recommendations
+ * @author   Demian Katz <demian.katz@villanova.edu>
+ * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
+ * @link     http://vufind.org/wiki/building_a_recommendations_module Wiki
  */
 class TopFacets implements RecommendationInterface
 {
-    private $searchObject;
-    private $facets;
-    private $baseSettings;
+    private $_searchObject;
+    private $_facets;
+    private $_baseSettings;
 
-    /* Constructor
+    /**
+     * Constructor
      *
      * Establishes base settings for making recommendations.
      *
-     * @access  public
-     * @param   object  $searchObject   The SearchObject requesting recommendations.
-     * @param   string  $params         Additional settings from the searches.ini.
+     * @param object $searchObject The SearchObject requesting recommendations.
+     * @param string $params       Additional settings from searches.ini.
+     *
+     * @access public
      */
     public function __construct($searchObject, $params)
     {
         // Save the basic parameters:
-        $this->searchObject = $searchObject;
-        
+        $this->_searchObject = $searchObject;
+
         // Parse the additional parameters:
         $params = explode(':', $params);
         $section = empty($params[0]) ? 'ResultsTop' : $params[0];
@@ -51,59 +67,65 @@ class TopFacets implements RecommendationInterface
 
         // Load the desired facet information:
         $config = getExtraConfigArray($iniFile);
-        $this->facets = isset($config[$section]) ? $config[$section] : array();
-        
+        $this->_facets = isset($config[$section]) ? $config[$section] : array();
+
         // Load other relevant settings:
-        $this->baseSettings = array(
+        $this->_baseSettings = array(
             'rows' => $config['Results_Settings']['top_rows'],
             'cols' => $config['Results_Settings']['top_cols']
         );
     }
 
-    /* init
+    /**
+     * init
      *
      * Called before the SearchObject performs its main search.  This may be used
      * to set SearchObject parameters in order to generate recommendations as part
      * of the search.
      *
-     * @access  public
+     * @return void
+     * @access public
      */
     public function init()
     {
         // Turn on top facets in the search results:
-        foreach($this->facets as $name => $desc) {
-            $this->searchObject->addFacet($name, $desc);
+        foreach ($this->_facets as $name => $desc) {
+            $this->_searchObject->addFacet($name, $desc);
         }
     }
 
-    /* process
+    /**
+     * process
      *
-     * Called after the SearchObject has performed its main search.  This may be 
+     * Called after the SearchObject has performed its main search.  This may be
      * used to extract necessary information from the SearchObject or to perform
      * completely unrelated processing.
      *
-     * @access  public
+     * @return void
+     * @access public
      */
     public function process()
     {
         global $interface;
-        
+
         // Grab the facet set -- note that we need to take advantage of the third
-        // parameter to getFacetList in order to pass down row and column 
+        // parameter to getFacetList in order to pass down row and column
         // information for inclusion in the final list.
-        $interface->assign('topFacetSet',
-            $this->searchObject->getFacetList($this->facets, false));
-        $interface->assign('topFacetSettings', $this->baseSettings);
+        $interface->assign(
+            'topFacetSet', $this->_searchObject->getFacetList($this->_facets, false)
+        );
+        $interface->assign('topFacetSettings', $this->_baseSettings);
     }
 
-    /* getTemplate
+    /**
+     * getTemplate
      *
      * This method provides a template name so that recommendations can be displayed
      * to the end user.  It is the responsibility of the process() method to
      * populate all necessary template variables.
      *
-     * @access  public
-     * @return  string      The template to use to display the recommendations.
+     * @return string The template to use to display the recommendations.
+     * @access public
      */
     public function getTemplate()
     {

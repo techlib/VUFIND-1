@@ -1,5 +1,8 @@
 <?php
 /**
+ * Reviews action for Record module
+ *
+ * PHP version 5
  *
  * Copyright (C) Villanova University 2007.
  *
@@ -16,19 +19,42 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
+ * @category VuFind
+ * @package  Controller_Record
+ * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
+ * @author   Demian Katz <demian.katz@villanova.edu>
+ * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
+ * @link     http://vufind.org/wiki/building_a_module Wiki
  */
-
 require_once 'Record.php';
 
+/**
+ * Reviews action for Record module
+ *
+ * @category VuFind
+ * @package  Controller_Record
+ * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
+ * @author   Demian Katz <demian.katz@villanova.edu>
+ * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
+ * @link     http://vufind.org/wiki/building_a_module Wiki
+ */
 class Reviews extends Record
 {
-    function launch()
+    /**
+     * Process incoming parameters and display the page.
+     *
+     * @return void
+     * @access public
+     */
+    public function launch()
     {
         global $interface;
         global $configArray;
 
         if (!$interface->is_cached($this->cacheId)) {
-            $interface->setPageTitle(translate('Reviews') . ': ' . $this->recordDriver->getBreadcrumb());
+            $interface->setPageTitle(
+                translate('Reviews') . ': ' . $this->recordDriver->getBreadcrumb()
+            );
             $reviews = $this->recordDriver->getReviews();
             if ($reviews) {
                 if (!PEAR::isError($reviews)) {
@@ -39,6 +65,10 @@ class Reviews extends Record
             $interface->assign('subTemplate', 'view-reviews.tpl');
             $interface->setTemplate('view.tpl');
         }
+
+        // Set Messages
+        $interface->assign('infoMsg', $this->infoMsg);
+        $interface->assign('errorMsg', $this->errorMsg);
 
         // Display Page
         $interface->display('layout.tpl', $this->cacheId);

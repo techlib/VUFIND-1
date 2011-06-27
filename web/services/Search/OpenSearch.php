@@ -1,5 +1,8 @@
 <?php
 /**
+ * OpenSearch action for Search module
+ *
+ * PHP version 5
  *
  * Copyright (C) Villanova University 2007.
  *
@@ -16,49 +19,72 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
+ * @category VuFind
+ * @package  Controller_Search
+ * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
+ * @author   Demian Katz <demian.katz@villanova.edu>
+ * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
+ * @link     http://vufind.org/wiki/building_a_module Wiki
  */
-
 require_once 'Action.php';
 
-class OpenSearch extends Action {
-
-    function launch()
+/**
+ * OpenSearch action for Search module
+ *
+ * @category VuFind
+ * @package  Controller_Search
+ * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
+ * @author   Demian Katz <demian.katz@villanova.edu>
+ * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
+ * @link     http://vufind.org/wiki/building_a_module Wiki
+ */
+class OpenSearch extends Action
+{
+    /**
+     * Process incoming parameters and display the XML response.
+     *
+     * @return void
+     * @access public
+     */
+    public function launch()
     {
         header('Content-type: text/xml');
-        
+
         if (isset($_GET['method'])) {
-            if (is_callable(array($this, $_GET['method']))) {
-                $this->$_GET['method']();
+            $method = '_' . $_GET['method'];
+            if (is_callable(array($this, $method))) {
+                $this->$method();
             } else {
-                //echo '<Error>Invalid Method. Use either "describe" or "search"</Error>';
+                //echo '<Error>Invalid Method. Use either ' .
+                //    '"describe" or "search"</Error>';
                 echo '<Error>Invalid Method. Only "describe" is supported</Error>';
             }
         } else {
-            $this->describe();
+            $this->_describe();
         }
     }
-    
-    function describe()
+
+    /**
+     * Provide a response to the OpenSearch describe request.
+     *
+     * @return void
+     * @access private
+     */
+    private function _describe()
     {
         global $interface;
         global $configArray;
-        
+
         $interface->assign('site', $configArray['Site']);
 
         $interface->display('Search/opensearch-describe.tpl');
     }
-    
-    /* Unused, incomplete method -- commented out 10/9/09 to prevent confusion:
-    function search()
-    {
-        global $configArray;
 
+    /* Unused, incomplete method -- commented out 10/9/09 to prevent confusion:
+    private function _search()
+    {
         // Setup Search Engine Connection
-        $class = $configArray['Index']['engine'];
-        $db = new $class($configArray['Index']['url']);
-        if ($configArray['System']['debug']) {
-            $db->debug = true;
-        }
+        $db = ConnectionManager::connectToIndex();
 
         $search = array();
         $search[] = array('lookfor' => $_GET['lookfor'],
@@ -66,7 +92,7 @@ class OpenSearch extends Action {
         $query = $db->buildQuery($search);
         $results = $db->search($query['query']);
         $interface->assign('results', $results);
-        
+
         $interface->display('Search/opensearch-search.tpl');
     }
      */

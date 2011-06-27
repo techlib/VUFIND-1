@@ -1,5 +1,5 @@
-<script language="JavaScript" type="text/javascript" src="{$path}/js/ajax_common.js"></script>
-<script language="JavaScript" type="text/javascript" src="{$path}/services/Search/ajax.js"></script>
+{js filename="ajax_common.js"}
+{js filename="search.js"}
 
 {* Main Listing *}
 <div id="bd">
@@ -34,9 +34,28 @@
         </div>
 
         <div class="yui-u toggle">
+          {if $viewList|@count gt 1}
+            {foreach from=$viewList item=viewData key=viewLabel}
+              {if !$viewData.selected}<a href="{$viewData.viewUrl|escape}" title="{translate text='Switch view to'} {translate text=$viewData.desc}" >{/if}
+              <img src="{$path}/images/view_{$viewData.viewType}.png" {if $viewData.selected}title="{translate text=$viewData.desc} {translate text='view already selected'}"{/if}/>
+              {if !$viewData.selected}</a>{/if}
+            {/foreach}
+            <br />
+          {/if}
+          {if $limitList|@count gt 1}
+           <form action="{$path}/Search/LimitResults" method="post">
+            <label for="limit">{translate text='Results per page'}</label>
+            <select id="limit" name="limit" onChange="document.location.href = this.options[this.selectedIndex].value;">
+              {foreach from=$limitList item=limitData key=limitLabel}
+                <option value="{$limitData.limitUrl|escape}"{if $limitData.selected} selected="selected"{/if}>{$limitData.desc|escape}</option>
+              {/foreach}
+            </select>
+            <noscript><input type="submit" value="{translate text="Set"}" /></noscript>
+          </form>
+          {/if}
           <form action="{$path}/Search/SortResults" method="post">
-            {translate text='Sort'}
-            <select name="sort" onChange="document.location.href = this.options[this.selectedIndex].value;">
+            <label for="sort">{translate text='Sort'}</label>
+            <select id="sort" name="sort" onChange="document.location.href = this.options[this.selectedIndex].value;">
               {foreach from=$sortList item=sortData key=sortLabel}
                 <option value="{$sortData.sortUrl|escape}"{if $sortData.selected} selected{/if}>{translate text=$sortData.desc}</option>
               {/foreach}
@@ -79,3 +98,16 @@
   {* End Narrow Search Options *}
 
 </div>
+{if $showPreviews}
+<script type="text/javascript">
+{if $showGBSPreviews}
+document.write(unescape("%3Cscript src=http://books.google.com/books?jscmd=viewapi&bibkeys=" + doGetExtIds() + "&callback=ProcessGBSBookInfo" + " type='text/javascript'%3E%3C/script%3E"));
+{/if}
+{if $showOLPreviews}
+document.write(unescape("%3Cscript src=http://openlibrary.org/api/books?bibkeys=" + doGetExtIds() + "&callback=ProcessOLBookInfo" + " type='text/javascript'%3E%3C/script%3E"));
+{/if}
+{if $showHTPreviews}
+document.write(unescape("%3Cscript src=http://catalog.hathitrust.org/api/volumes/brief/json/" + doGetHTIds() + "&callback=ProcessHTBookInfo" + " type='text/javascript'%3E%3C/script%3E"));
+{/if}
+</script>
+{/if}

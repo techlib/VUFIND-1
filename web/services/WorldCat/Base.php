@@ -1,5 +1,8 @@
 <?php
 /**
+ * Base class for most WorldCat module actions
+ *
+ * PHP version 5
  *
  * Copyright (C) Andrew Nagy 2009.
  *
@@ -16,15 +19,35 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
+ * @category VuFind
+ * @package  Controller_WorldCat
+ * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
+ * @author   Demian Katz <demian.katz@villanova.edu>
+ * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
+ * @link     http://vufind.org/wiki/building_a_module Wiki
  */
- 
 require_once 'Action.php';
 
+/**
+ * Base class for most WorldCat module actions
+ *
+ * @category VuFind
+ * @package  Controller_WorldCat
+ * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
+ * @author   Demian Katz <demian.katz@villanova.edu>
+ * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
+ * @link     http://vufind.org/wiki/building_a_module Wiki
+ */
 class Base extends Action
 {
     protected $searchObject;
 
-    function __construct()
+    /**
+     * Constructor
+     *
+     * @access public
+     */
+    public function __construct()
     {
         global $interface;
         $interface->assign('currentTab', 'WorldCat');
@@ -32,7 +55,9 @@ class Base extends Action
         // Send WorldCat search types to the template so the basic search box can
         // function on all pages of the WorldCat UI.
         $this->searchObject = SearchObjectFactory::initSearchObject('WorldCat');
-        $interface->assign('worldCatSearchTypes', $this->searchObject->getBasicTypes());
+        $interface->assign(
+            'worldCatSearchTypes', $this->searchObject->getBasicTypes()
+        );
     }
 }
 ?>

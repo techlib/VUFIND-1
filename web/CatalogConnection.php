@@ -1,5 +1,11 @@
 <?php
 /**
+ * Catalog Connection Class
+ *
+ * This wrapper works with a driver class to pass information from the ILS to
+ * VuFind.
+ *
+ * PHP version 5
  *
  * Copyright (C) Villanova University 2007.
  *
@@ -16,52 +22,62 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
+ * @category VuFind
+ * @package  ILS_Drivers
+ * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
+ * @author   Demian Katz <demian.katz@villanova.edu>
+ * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
+ * @link     http://vufind.org/wiki/building_an_ils_driver Wiki
  */
 
 /**
  * Catalog Connection Class
  *
- * This abstract class defines the signature for the available methods for
- * interacting with the local catalog.
+ * This wrapper works with a driver class to pass information from the ILS to
+ * VuFind.
  *
- * The parameters names are of no major concern as you can redefine the purpose
- * of the parameters for each method for whatever purpose your driver needs.
- * The most important element here is what the method will return.  In all cases
- * the method can return a PEAR_Error object if an error occurs.
+ * @category VuFind
+ * @package  ILS_Drivers
+ * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
+ * @author   Demian Katz <demian.katz@villanova.edu>
+ * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
+ * @link     http://vufind.org/wiki/building_an_ils_driver Wiki
  */
-class CatalogConnection 
+class CatalogConnection
 {
     /**
      * A boolean value that defines whether a connection has been successfully
      * made.
-     * @access  public
-     * @var     bool
+     *
+     * @access public
+     * @var    bool
      */
     public $status = false;
 
     /**
      * The object of the appropriate driver.
-     * @access  private
-     * @var     object
+     *
+     * @access private
+     * @var    object
      */
     public $driver;
-    
+
     /**
      * Constructor
      *
      * This is responsible for instantiating the driver that has been specified.
      *
-     * @param   string  $driver     The name of the driver to load.
-     * @return  null
-     * @access  public
+     * @param string $driver The name of the driver to load.
+     *
+     * @access public
      */
-    function __construct($driver)
+    public function __construct($driver)
     {
         global $configArray;
         $path = "{$configArray['Site']['local']}/Drivers/{$driver}.php";
         if (is_readable($path)) {
-            require_once $path;
-            
+            include_once $path;
+
             try {
                 $this->driver = new $driver;
             } catch (PDOException $e) {
@@ -71,21 +87,159 @@ class CatalogConnection
             $this->status = true;
         }
     }
-    
+
+    /**
+     * Check Function
+     *
+     * This is responsible for checking the driver configuration to determine
+     * if the system supports a particular function.
+     *
+     * @param string $function The name of the function to check.
+     *
+     * @return mixed On success, an associative array with specific function keys
+     * and values; on failure, false.
+     * @access public
+     */
+    public function checkFunction($function)
+    {
+        // Extract the configuration from the driver if available:
+        $functionConfig = method_exists($this->driver, 'getConfig')
+            ? $this->driver->getConfig($function) : false;
+
+        // See if we have a corresponding check method to analyze the response:
+        $checkMethod = "_checkMethod".$function;
+        if (!method_exists($this, $checkMethod)) {
+            return false;
+        }
+
+        // Send back the settings:
+        return $this->$checkMethod($functionConfig);
+    }
+
+    /**
+     * Check Holds
+     *
+     * A support method for checkFunction(). This is responsible for checking
+     * the driver configuration to determine if the system supports Holds.
+     *
+     * @param string $functionConfig The Hold configuration values
+     *
+     * @return mixed On success, an associative array with specific function keys
+     * and values either for placing holds via a form or a URL; on failure, false.
+     * @access private
+     */
+    private function _checkMethodHolds($functionConfig)
+    {
+        global $configArray;
+        $response = false;
+
+        if ($this->getHoldsMode() != "none"
+            && method_exists($this->driver, 'placeHold')
+            && isset($functionConfig['HMACKeys'])
+        ) {
+            $response = array('function' => "placeHold");
+            $response['HMACKeys'] = explode(":", $functionConfig['HMACKeys']);
+            if (isset($functionConfig['defaultRequiredDate'])) {
+                $response['defaultRequiredDate']
+                    = $functionConfig['defaultRequiredDate'];
+            }
+            if (isset($functionConfig['extraHoldFields'])) {
+                $response['extraHoldFields'] = $functionConfig['extraHoldFields'];
+            }
+        } else if (method_exists($this->driver, 'getHoldLink')) {
+            $response = array('function' => "getHoldLink");
+        }
+        return $response;
+    }
+
+    /**
+     * Check Cancel Holds
+     *
+     * A support method for checkFunction(). This is responsible for checking
+     * the driver configuration to determine if the system supports Cancelling Holds.
+     *
+     * @param string $functionConfig The Cancel Hold configuration values
+     *
+     * @return mixed On success, an associative array with specific function keys
+     * and values either for cancelling holds via a form or a URL;
+     * on failure, false.
+     * @access private
+     */
+    private function _checkMethodcancelHolds($functionConfig)
+    {
+        global $configArray;
+        $response = false;
+
+        if ($configArray['Catalog']['cancel_holds_enabled'] == true
+            && method_exists($this->driver, 'cancelHolds')
+        ) {
+            $response = array('function' => "cancelHolds");
+        } else if ($configArray['Catalog']['cancel_holds_enabled'] == true
+            && method_exists($this->driver, 'getCancelHoldLink')
+        ) {
+            $response = array('function' => "getCancelHoldLink");
+        }
+        return $response;
+    }
+
+    /**
+     * Check Renewals
+     *
+     * A support method for checkFunction(). This is responsible for checking
+     * the driver configuration to determine if the system supports Renewing Items.
+     *
+     * @param string $functionConfig The Renewal configuration values
+     *
+     * @return mixed On success, an associative array with specific function keys
+     * and values either for renewing items via a form or a URL; on failure, false.
+     * @access private
+     */
+    private function _checkMethodRenewals($functionConfig)
+    {
+        global $configArray;
+        $response = false;
+
+        if ($configArray['Catalog']['renewals_enabled'] == true
+            && method_exists($this->driver, 'renewMyItems')
+        ) {
+            $response = array('function' => "renewMyItems");
+        } else if ($configArray['Catalog']['renewals_enabled'] == true
+            && method_exists($this->driver, 'renewMyItemsLink')
+        ) {
+            $response = array('function' => "renewMyItemsLink");
+        }
+        return $response;
+    }
+
+    /**
+     * Get Holds Mode
+     *
+     * This is responsible for returning the holds mode
+     *
+     * @return string The Holds mode
+     * @access public
+     */
+    public static function getHoldsMode()
+    {
+        global $configArray;
+        return isset($configArray['Catalog']['holds_mode'])
+            ? $configArray['Catalog']['holds_mode'] : 'all';
+    }
+
     /**
      * Get Status
      *
      * This is responsible for retrieving the status information of a certain
      * record.
      *
-     * @param   string  $recordId   The record id to retrieve the holdings for
-     * @return  mixed               An associative array with the following keys:
-     *                              availability (boolean), status, location,
-     *                              reserve, callnumber
-     *                              If an error occures, return a PEAR_Error
-     * @access  public
+     * @param string $recordId The record id to retrieve the holdings for
+     *
+     * @return mixed     On success, an associative array with the following keys:
+     * id, availability (boolean), status, location, reserve, callnumber; on
+     * failure, a PEAR_Error.
+     * @access public
      */
-    function getStatus($recordId)
+    public function getStatus($recordId)
     {
         return $this->driver->getStatus($recordId);
     }
@@ -96,16 +250,14 @@ class CatalogConnection
      * This is responsible for retrieving the status information for a
      * collection of records.
      *
-     * @param   array  $recordIds   The array of record ids to retrieve the
-     *                              status for
-     * @return  mixed               An associative array with the following keys:
-     *                              availability (boolean), status, location,
-     *                              reserve, callnumber
-     *                              If an error occures, return a PEAR_Error
-     * @access  public
-     * @author  Chris Delis <cedelis@uillinois.edu>
+     * @param array $recordIds The array of record ids to retrieve the status for
+     *
+     * @return mixed           An array of getStatus() return values on success,
+     * a PEAR_Error object otherwise.
+     * @access public
+     * @author Chris Delis <cedelis@uillinois.edu>
      */
-    function getStatuses($recordIds)
+    public function getStatuses($recordIds)
     {
         return $this->driver->getStatuses($recordIds);
     }
@@ -116,24 +268,25 @@ class CatalogConnection
      * This is responsible for retrieving the holding information of a certain
      * record.
      *
-     * @param   string  $recordId   The record id to retrieve the holdings for
-     * @return  mixed               An associative array with the following keys:
-     *                              availability (boolean), status, location,
-     *                              reserve, callnumber, duedate, number,
-     *                              holding summary, holding notes
-     *                              If an error occurs, return a PEAR_Error
-     * @access  public
+     * @param string $recordId The record id to retrieve the holdings for
+     * @param array  $patron   Optional Patron details to determine if a user can
+     * place a hold or recall on an item
+     *
+     * @return mixed     On success, an associative array with the following keys:
+     * id, availability (boolean), status, location, reserve, callnumber, duedate,
+     * number, barcode; on failure, a PEAR_Error.
+     * @access public
      */
-    function getHolding($recordId)
+    public function getHolding($recordId, $patron = false)
     {
-        $holding = $this->driver->getHolding($recordId);
-        
+        $holding = $this->driver->getHolding($recordId, $patron);
+
         // Validate return from driver's getHolding method -- should be an array or
         // an error.  Anything else is unexpected and should become an error.
         if (!is_array($holding) && !PEAR::isError($holding)) {
             return new PEAR_Error('Unexpected return from getHolding: ' . $holding);
         }
-        
+
         return $holding;
     }
 
@@ -141,14 +294,15 @@ class CatalogConnection
      * Get Purchase History
      *
      * This is responsible for retrieving the acquisitions history data for the
-     * specific record.
+     * specific record (usually recently received issues of a serial).
      *
-     * @param   string  $recordId   The record id to retrieve the info for
-     * @return  mixed               An array with the acquisitions data
-     *                              If an error occures, return a PEAR_Error
-     * @access  public
+     * @param string $recordId The record id to retrieve the info for
+     *
+     * @return mixed           An array with the acquisitions data on success,
+     * PEAR_Error on failure
+     * @access public
      */
-    function getPurchaseHistory($recordId)
+    public function getPurchaseHistory($recordId)
     {
         return $this->driver->getPurchaseHistory($recordId);
     }
@@ -158,13 +312,14 @@ class CatalogConnection
      *
      * This is responsible for authenticating a patron against the catalog.
      *
-     * @param   string  $username   The patron username
-     * @param   string  $password   The patron password
-     * @return  mixed               A string of the user's ID number
-     *                              If an error occures, return a PEAR_Error
-     * @access  public
+     * @param string $username The patron username
+     * @param string $password The patron password
+     *
+     * @return mixed           Associative array of patron info on successful
+     * login, null on unsuccessful login, PEAR_Error on error.
+     * @access public
      */
-    function patronLogin($username, $password)
+    public function patronLogin($username, $password)
     {
         return $this->driver->patronLogin($username, $password);
     }
@@ -172,14 +327,16 @@ class CatalogConnection
     /**
      * Get Patron Transactions
      *
-     * This is responsible for retrieving all transactions by a specific patron.
+     * This is responsible for retrieving all transactions (i.e. checked out items)
+     * by a specific patron.
      *
-     * @param   array   $patron     The patron array
-     * @return  array               Array of the patron's transactions
-     *                              If an error occures, return a PEAR_Error
-     * @access  public
+     * @param array $patron The patron array from patronLogin
+     *
+     * @return mixed        Array of the patron's transactions on success,
+     * PEAR_Error otherwise.
+     * @access public
      */
-    function getMyTransactions($patron)
+    public function getMyTransactions($patron)
     {
         return $this->driver->getMyTransactions($patron);
     }
@@ -189,12 +346,13 @@ class CatalogConnection
      *
      * This is responsible for retrieving all fines by a specific patron.
      *
-     * @param   array   $patron     The patron array
-     * @return  array               Array of the patron's fines
-     *                              If an error occures, return a PEAR_Error
-     * @access  public
+     * @param array $patron The patron array from patronLogin
+     *
+     * @return mixed        Array of the patron's fines on success, PEAR_Error
+     * otherwise.
+     * @access public
      */
-    function getMyFines($patron)
+    public function getMyFines($patron)
     {
         return $this->driver->getMyFines($patron);
     }
@@ -204,12 +362,13 @@ class CatalogConnection
      *
      * This is responsible for retrieving all holds by a specific patron.
      *
-     * @param   array   $patron     The patron array
-     * @return  array               Array of the patron's holds
-     *                              If an error occures, return a PEAR_Error
-     * @access  public
+     * @param array $patron The patron array from patronLogin
+     *
+     * @return mixed        Array of the patron's holds on success, PEAR_Error
+     * otherwise.
+     * @access public
      */
-    function getMyHolds($patron)
+    public function getMyHolds($patron)
     {
         return $this->driver->getMyHolds($patron);
     }
@@ -219,101 +378,140 @@ class CatalogConnection
      *
      * This is responsible for retrieving the profile for a specific patron.
      *
-     * @param   array   $patron     The patron array
-     * @return  array               Array of the patron's profile data
-     *                              If an error occures, return a PEAR_Error
-     * @access  public
+     * @param array $patron The patron array
+     *
+     * @return mixed        Array of the patron's profile data on success,
+     * PEAR_Error otherwise.
+     * @access public
      */
-    function getMyProfile($patron)
+    public function getMyProfile($patron)
     {
         return $this->driver->getMyProfile($patron);
     }
 
     /**
-     * Place Hold
+     * Get New Items
      *
-     * This is responsible for both placing holds as well as placing recalls.
+     * Retrieve the IDs of items recently added to the catalog.
      *
-     * @param   string  $recordId   The id of the bib record
-     * @param   string  $patronId   The id of the patron
-     * @param   string  $comment    Any comment regarding the hold or recall
-     * @param   string  $type       Whether to place a hold or recall
-     * @return  mixed               True if successful, false if unsuccessful
-     *                              If an error occures, return a PEAR_Error
-     * @access  public
+     * @param int $page    Page number of results to retrieve (counting starts at 1)
+     * @param int $limit   The size of each page of results to retrieve
+     * @param int $daysOld The maximum age of records to retrieve in days (max. 30)
+     * @param int $fundId  optional fund ID to use for limiting results (use a value
+     * returned by getFunds, or exclude for no limit); note that "fund" may be a
+     * misnomer - if funds are not an appropriate way to limit your new item
+     * results, you can return a different set of values from getFunds. The
+     * important thing is that this parameter supports an ID returned by getFunds,
+     * whatever that may mean.
+     *
+     * @return array       Associative array with 'count' and 'results' keys
+     * @access public
      */
-    function placeHold($recordId, $patronId, $comment, $type)
-    {
-        return $this->driver->placeHold($recordId, $patronId, $comment, $type);
-    }
-
-    /**
-     * Get Hold Link
-     *
-     * The goal for this method is to return a URL to a "place hold" web page on
-     * the ILS OPAC. This is used for ILSs that do not support an API or method
-     * to place Holds.
-     *
-     * @param   string  $recordId   The id of the bib record
-     * @return  mixed               True if successful, otherwise return a PEAR_Error
-     * @access  public
-     */
-    function getHoldLink($recordId)
-    {
-        return $this->driver->getHoldLink($recordId);
-    }
-
-    function getNewItems($page = 1, $limit = 20, $daysOld, $fundId = null)
-    {
+    public function getNewItems($page = 1, $limit = 20, $daysOld = 30,
+        $fundId = null
+    ) {
         return $this->driver->getNewItems($page, $limit, $daysOld, $fundId);
     }
 
-    function getFunds()
+    /**
+     * Get Funds
+     *
+     * Return a list of funds which may be used to limit the getNewItems list.
+     *
+     * @return array An associative array with key = fund ID, value = fund name.
+     * @access public
+     */
+    public function getFunds()
     {
         // Graceful degradation -- return empty fund list if no method supported.
         return method_exists($this->driver, 'getFunds') ?
             $this->driver->getFunds() : array();
     }
 
-    function getDepartments()
+    /**
+     * Get Departments
+     *
+     * Obtain a list of departments for use in limiting the reserves list.
+     *
+     * @return array An associative array with key = dept. ID, value = dept. name.
+     * @access public
+     */
+    public function getDepartments()
     {
         // Graceful degradation -- return empty list if no method supported.
         return method_exists($this->driver, 'getDepartments') ?
             $this->driver->getDepartments() : array();
     }
 
-    function getInstructors()
+    /**
+     * Get Instructors
+     *
+     * Obtain a list of instructors for use in limiting the reserves list.
+     *
+     * @return array An associative array with key = ID, value = name.
+     * @access public
+     */
+    public function getInstructors()
     {
         // Graceful degradation -- return empty list if no method supported.
         return method_exists($this->driver, 'getInstructors') ?
             $this->driver->getInstructors() : array();
     }
 
-    function getCourses()
+    /**
+     * Get Courses
+     *
+     * Obtain a list of courses for use in limiting the reserves list.
+     *
+     * @return array An associative array with key = ID, value = name.
+     * @access public
+     */
+    public function getCourses()
     {
         // Graceful degradation -- return empty list if no method supported.
         return method_exists($this->driver, 'getCourses') ?
             $this->driver->getCourses() : array();
     }
 
-    function findReserves($course, $inst, $dept)
+    /**
+     * Find Reserves
+     *
+     * Obtain information on course reserves.
+     *
+     * @param string $course ID from getCourses (empty string to match all)
+     * @param string $inst   ID from getInstructors (empty string to match all)
+     * @param string $dept   ID from getDepartments (empty string to match all)
+     *
+     * @return mixed An array of associative arrays representing reserve items (or a
+     * PEAR_Error object if there is a problem)
+     * @access public
+     */
+    public function findReserves($course, $inst, $dept)
     {
         return $this->driver->findReserves($course, $inst, $dept);
     }
-    
-    function getSuppressedRecords()
+
+    /**
+     * Get suppressed records.
+     *
+     * @return array ID numbers of suppressed records in the system.
+     * @access public
+     */
+    public function getSuppressedRecords()
     {
         return $this->driver->getSuppressedRecords();
     }
 
-    /* Default method -- pass along calls to the driver if available; return
+    /**
+     * Default method -- pass along calls to the driver if available; return
      * false otherwise.  This allows custom functions to be implemented in
      * the driver without constant modification to the connection class.
      *
-     * @param   string  $methodName     The name of the called method.
-     * @param   array   $params         Array of passed parameters.
-     * @return  mixed                   Varies by method (false if undefined method)
-     * @access  public
+     * @param string $methodName The name of the called method.
+     * @param array  $params     Array of passed parameters.
+     *
+     * @return mixed             Varies by method (false if undefined method)
+     * @access public
      */
     public function __call($methodName, $params)
     {

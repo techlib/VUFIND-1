@@ -1,5 +1,8 @@
 <?php
 /**
+ * Email action for Search module
+ *
+ * PHP version 5
  *
  * Copyright (C) Villanova University 2007.
  *
@@ -16,25 +19,48 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
+ * @category VuFind
+ * @package  Controller_Search
+ * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
+ * @author   Demian Katz <demian.katz@villanova.edu>
+ * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
+ * @link     http://vufind.org/wiki/building_a_module Wiki
  */
-
 require_once 'Action.php';
 require_once 'sys/Mailer.php';
 
+/**
+ * Email action for Search module
+ *
+ * @category VuFind
+ * @package  Controller_Search
+ * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
+ * @author   Demian Katz <demian.katz@villanova.edu>
+ * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
+ * @link     http://vufind.org/wiki/building_a_module Wiki
+ */
 class Email extends Action
 {
-    function launch()
+    /**
+     * Process incoming parameters and display the page.
+     *
+     * @return void
+     * @access public
+     */
+    public function launch()
     {
         global $interface;
         global $configArray;
 
         if (isset($_POST['submit'])) {
-            $result = $this->sendEmail($_POST['url'], $_POST['to'], $_POST['from'], $_POST['message']);
+            $result = $this->sendEmail(
+                $_POST['url'], $_POST['to'], $_POST['from'], $_POST['message']
+            );
             if (!PEAR::isError($result)) {
                 header('Location: ' . $_POST['url']);
                 exit();
             } else {
-                $interface->assign('message', $result->getMessage());
+                $interface->assign('errorMsg', $result->getMessage());
             }
         }
         
@@ -65,7 +91,18 @@ class Email extends Action
         }
     }
     
-    function sendEmail($url, $to, $from, $message)
+    /**
+     * Send a record email.
+     *
+     * @param string $url     URL to include in message
+     * @param string $to      Message recipient address
+     * @param string $from    Message sender address
+     * @param string $message User-provided message to send
+     *
+     * @return mixed          Boolean true on success, PEAR_Error on failure.
+     * @access public
+     */
+    public function sendEmail($url, $to, $from, $message)
     {
         global $interface;
 

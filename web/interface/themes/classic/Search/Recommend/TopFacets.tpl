@@ -16,7 +16,7 @@
     <tr>
     {/if}
         {if $thisFacet.isApplied}
-        <td>{$thisFacet.value|escape}</a> <img src="{$path}/images/silk/tick.png" alt="Selected"></td>
+        <td>{$thisFacet.value|escape} <img src="{$path}/images/silk/tick.png" alt="Selected"></td>
         {else}
         <td><a href="{$thisFacet.url|escape}">{$thisFacet.value|escape}</a> ({$thisFacet.count})</td>
         {/if}

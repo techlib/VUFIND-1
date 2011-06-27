@@ -1,5 +1,8 @@
 <?php
 /**
+ * Search action for Author module
+ *
+ * PHP version 5
  *
  * Copyright (C) Villanova University 2007.
  *
@@ -16,14 +19,35 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
+ * @category VuFind
+ * @package  Controller_Author
+ * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
+ * @author   Demian Katz <demian.katz@villanova.edu>
+ * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
+ * @link     http://vufind.org/wiki/building_a_module Wiki
  */
-
 require_once 'Action.php';
 
 require_once 'sys/Pager.php';
 
+/**
+ * Search action for Author module
+ *
+ * @category VuFind
+ * @package  Controller_Author
+ * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
+ * @author   Demian Katz <demian.katz@villanova.edu>
+ * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
+ * @link     http://vufind.org/wiki/building_a_module Wiki
+ */
 class Search extends Action
 {
+    /**
+     * Process parameters and display the page.
+     *
+     * @return void
+     * @access public
+     */
     function launch()
     {
         global $interface;
@@ -31,13 +55,15 @@ class Search extends Action
         $interface->caching = false;
 
         // Retrieve User Search History
-        $interface->assign('lastsearch', isset($_SESSION['lastSearchURL']) ? 
-            $_SESSION['lastSearchURL'] : false);
+        $interface->assign(
+            'lastsearch',
+            isset($_SESSION['lastSearchURL']) ? $_SESSION['lastSearchURL'] : false
+        );
 
         // Initialise from the current search globals
         $searchObject = SearchObjectFactory::initSearchObject();
         $searchObject->init();
-// TODO : Stats
+        // TODO : Stats
 
         $result = $searchObject->processSearch();
         if (PEAR::isError($result)) {

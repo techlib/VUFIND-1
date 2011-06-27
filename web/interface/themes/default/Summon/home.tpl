@@ -12,8 +12,8 @@
 </div>
 
 <div class="searchHomeBrowseHeader">
-  <div><h2>Browse by Format</h2></div>
-  <div><h2>Browse by Language</h2></div>
+  <div><h2>{translate text="home_browse"} {translate text="Format"}</h2></div>
+  <div><h2>{translate text="home_browse"} {translate text="Language"}</h2></div>
   <br clear="all">
 </div>
 

@@ -1,5 +1,8 @@
 <?php
 /**
+ * VuFind Pager Class
+ *
+ * PHP version 5
  *
  * Copyright (C) Villanova University 2009.
  *
@@ -16,29 +19,38 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
+ * @category VuFind
+ * @package  Support_Classes
+ * @author   Demian Katz <demian.katz@villanova.edu>
+ * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
+ * @link     http://vufind.org/wiki/system_classes Wiki
  */
 require_once 'Pager/Pager.php';
- 
+
 /**
  * VuFind Pager Class
  *
  * This is a wrapper class around the PEAR Pager mechanism to make it easier
  * to modify default settings shared by a variety of VuFind modules.
  *
- * @author      Demian Katz <demian.katz@villanova.edu>
- * @access      public
+ * @category VuFind
+ * @package  Support_Classes
+ * @author   Demian Katz <demian.katz@villanova.edu>
+ * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
+ * @link     http://vufind.org/wiki/system_classes Wiki
  */
 class VuFindPager
 {
-    var $pager;
-    
+    private $_pager;
+
     /**
      * Constructor
      *
      * Initialize the PEAR pager object.
      *
-     * @param   array   $options        The Pager options to override.
-     * @access  public
+     * @param array $options The Pager options to override.
+     *
+     * @access public
      */
     public function __construct($options = array())
     {
@@ -58,25 +70,25 @@ class VuFindPager
             'urlVar'          => 'page',
             'curPageSpanPre'  => '<span>',
             'curPageSpanPost' => '</span>');
-            
+
         // Override defaults with user-provided values:
-        foreach($options as $optionName => $optionValue) {
+        foreach ($options as $optionName => $optionValue) {
             $finalOptions[$optionName] = $optionValue;
         }
-        
+
         // Create the pager object:
-        $this->pager =& Pager::factory($finalOptions);
+        $this->_pager =& Pager::factory($finalOptions);
     }
 
     /**
      * Generate the pager HTML using the options passed to the constructor.
      *
-     * @access  public
-     * @return  array
+     * @return array
+     * @access public
      */
     public function getLinks()
     {
-        return $this->pager->getLinks();
+        return $this->_pager->getLinks();
     }
 }
 ?>

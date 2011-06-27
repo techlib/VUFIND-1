@@ -1,4 +1,4 @@
-<!-- $Id: config-config.tpl 1722 2009-10-28 19:28:57Z demiankatz $ -->
+<!-- $Id: config-config.tpl 3680 2011-02-24 15:05:09Z demiankatz $ -->
 <div id="bd">
   <div id="yui-main" class="content">
     <div class="yui-b first contentbox">
@@ -15,7 +15,7 @@
                 <th colspan="2" style="font-weight: bold; border-bottom: solid 1px #000000;">Web Site Settings</th>
               </tr>
               <tr>
-                <td colspan="2" class="notes">This section will need to be customized for your installation</th>
+                <td colspan="2" class="notes">This section will need to be customized for your installation</td>
               </tr>
               <tr>
                 <th>Web Path: </th>
@@ -71,7 +71,7 @@
                 <th colspan="2" style="font-weight: bold; border-bottom: solid 1px #000000;">ILS Connection Settings</th>
               </tr>
               <tr>
-                <td colspan="2" class="notes">Please set the ILS that VuFind will interact with. Or leave "Sample" for testing purposes.</th>
+                <td colspan="2" class="notes">Please set the ILS that VuFind will interact with. Or leave "Sample" for testing purposes.</td>
               </tr>
               <tr>
                 <th>ILS: </th>
@@ -91,7 +91,7 @@
                 <th colspan="2" style="font-weight: bold; border-bottom: solid 1px #000000;">Local Database Settings</th>
               </tr>
               <tr>
-                <td colspan="2" class="notes">This section needs to be changed to match your installation path and database connection information</th>
+                <td colspan="2" class="notes">This section needs to be changed to match your installation path and database connection information</td>
               </tr>
               <tr>
                 <th>Username: </th>
@@ -113,7 +113,7 @@
                 <th colspan="2" style="font-weight: bold; border-bottom: solid 1px #000000;">Mail Server Settings</th>
               </tr>
               <tr>
-                <td colspan="2" class="notes">This section should not need to be changed</th>
+                <td colspan="2" class="notes">This section should not need to be changed</td>
               </tr>
               <tr>
                 <th>Mail Server: </th>
@@ -127,7 +127,7 @@
                 <th colspan="2" style="font-weight: bold; border-bottom: solid 1px #000000;">Book Cover Settings</th>
               </tr>
               <tr>
-                <td colspan="2" class="notes">Book Covers are Optional. You can select from Syndetics, Amazon or Google Books</th>
+                <td colspan="2" class="notes">Book Covers are Optional. You can select from Syndetics, Amazon or Google Books</td>
               </tr>
               <tr>
                 <th>Provider: </th>
@@ -141,7 +141,7 @@
                 <th colspan="2" style="font-weight: bold; border-bottom: solid 1px #000000;">Book Reviews Settings</th>
               </tr>
               <tr>
-                <td colspan="2" class="notes">Book Reviews are Optional. You can select from Syndetics or Amazon</th>
+                <td colspan="2" class="notes">Book Reviews are Optional. You can select from Syndetics or Amazon</td>
               </tr>
               <tr>
                 <th>Provider: </th>
@@ -155,7 +155,7 @@
                 <th colspan="2" style="font-weight: bold; border-bottom: solid 1px #000000;">LDAP Server Settings</th>
               </tr>
               <tr>
-                <td colspan="2" class="notes">LDAP is optional.  With this disabled authentication will take place in the local database</th>
+                <td colspan="2" class="notes">LDAP is optional.  With this disabled authentication will take place in the local database</td>
               </tr>
               <tr>
                 <th>LDAP Server: </th>
@@ -177,7 +177,7 @@
                 <th colspan="2" style="font-weight: bold; border-bottom: solid 1px #000000;">COinS Settings</th>
               </tr>
               <tr>
-                <td colspan="2" class="notes">This section can be changed to create a COinS identifier</th>
+                <td colspan="2" class="notes">This section can be changed to create a COinS identifier</td>
               </tr>
               <tr>
                 <th>Identifier: </th>
@@ -187,7 +187,7 @@
                 <th colspan="2" style="font-weight: bold; border-bottom: solid 1px #000000;">OAI Server Settings</th>
               </tr>
               <tr>
-                <td colspan="2" class="notes">This section can be changed to create an OAI identifier</th>
+                <td colspan="2" class="notes">This section can be changed to create an OAI identifier</td>
               </tr>
               <tr>
                 <th>Identifier: </th>
@@ -197,7 +197,7 @@
                 <th colspan="2" style="font-weight: bold; border-bottom: solid 1px #000000;">OpenURL Link Resolver Settings</th>
               </tr>
               <tr>
-                <td colspan="2" class="notes">OpenURL Link Resolver is Optional.</th>
+                <td colspan="2" class="notes">OpenURL Link Resolver is Optional.</td>
               </tr>
               <tr>
                 <th>Link Resolver URL: </th>
@@ -207,7 +207,7 @@
                 <th colspan="2" style="font-weight: bold; border-bottom: solid 1px #000000;">EZProxy Settings</th>
               </tr>
               <tr>
-                <td colspan="2" class="notes">EZProxy is Optional.</th>
+                <td colspan="2" class="notes">EZProxy is Optional.</td>
               </tr>
         <tr>
                 <th>EZProxy Host: </th>

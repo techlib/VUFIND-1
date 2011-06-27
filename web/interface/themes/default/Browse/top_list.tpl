@@ -1,3 +1,5 @@
+{js filename="browse.js"}
+
 {* This list is shown on every browse page, so this is the best place to stuff
    a text string for extraction by the Javascript: *}
 <input type="hidden" id="browseLoadMessage" value="{translate text='Loading'}" />

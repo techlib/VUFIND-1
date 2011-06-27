@@ -1,5 +1,5 @@
-<script language="JavaScript" type="text/javascript" src="{$path}/js/ajax_common.js"></script>
-<script language="JavaScript" type="text/javascript" src="{$path}/services/Search/ajax.js"></script>
+{js filename="ajax_common.js"}
+{js filename="search.js"}
 
 {* Main Listing *}
 <div id="bd">
@@ -21,12 +21,23 @@
             {translate text="Showing"}
             <b>{$recordStart}</b> - <b>{$recordEnd}</b>
             {translate text='of'} <b>{$recordCount}</b>
-            {translate text='Reserves'}</b>
+            {translate text='Reserves'}
           </div>
   
           <div class="yui-u toggle">
-            {translate text='Sort'}
-            <select name="sort" onChange="document.location.href = this.options[this.selectedIndex].value;">
+            {if $limitList|@count gt 1}
+             <form action="{$path}/Search/LimitResults" method="post">
+              <label for="limit">{translate text='Results per page'}</label>
+              <select id="limit" name="limit" onChange="document.location.href = this.options[this.selectedIndex].value;">
+                {foreach from=$limitList item=limitData key=limitLabel}
+                  <option value="{$limitData.limitUrl|escape}"{if $limitData.selected} selected="selected"{/if}>{$limitData.desc|escape}</option>
+                {/foreach}
+              </select>
+              <noscript><input type="submit" value="{translate text="Set"}" /></noscript>
+             </form>
+            {/if}
+            <label for="sort_options_1">{translate text='Sort'}</label>
+            <select id="sort_options_1" name="sort" onChange="document.location.href = this.options[this.selectedIndex].value;">
             {foreach from=$sortList item=sortData key=sortLabel}
               <option value="{$sortData.sortUrl|escape}"{if $sortData.selected} selected{/if}>{translate text=$sortData.desc}</option>
             {/foreach}

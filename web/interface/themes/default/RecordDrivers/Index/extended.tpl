@@ -1,4 +1,14 @@
 <table cellpadding="2" cellspacing="0" border="0" class="citation" summary="{translate text='Description'}">
+  {if !empty($extendedDescription)}
+  {assign var=extendedContentDisplayed value=1}
+  <tr valign="top">
+    <th>{translate text='Description'}: </th>
+    <td>
+      {$extendedDescription|escape}
+    </td>
+  </tr>
+  {/if}
+
   {if !empty($extendedSummary)}
   {assign var=extendedContentDisplayed value=1}
   <tr valign="top">

@@ -1,5 +1,8 @@
 <?php
 /**
+ * Fines action for MyResearch module
+ *
+ * PHP version 5
  *
  * Copyright (C) Villanova University 2007.
  *
@@ -16,25 +19,59 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
+ * @category VuFind
+ * @package  Controller_MyResearch
+ * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
+ * @author   Demian Katz <demian.katz@villanova.edu>
+ * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
+ * @link     http://vufind.org/wiki/building_a_module Wiki
  */
-
 require_once 'services/MyResearch/MyResearch.php';
 
 require_once 'Structures/DataGrid.php';
 
+/**
+ * Fines action for MyResearch module
+ *
+ * @category VuFind
+ * @package  Controller_MyResearch
+ * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
+ * @author   Demian Katz <demian.katz@villanova.edu>
+ * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
+ * @link     http://vufind.org/wiki/building_a_module Wiki
+ */
 class Fines extends MyResearch
 {
-    function launch()
+    /**
+     * Process parameters and display the page.
+     *
+     * @return void
+     * @access public
+     */
+    public function launch()
     {
         global $interface;
         global $finesIndexEngine;
 
         // Get My Fines
-        if ($patron = $this->catalogLogin()) {
-            if (PEAR::isError($patron))
+        if ($patron = UserAccount::catalogLogin()) {
+            if (PEAR::isError($patron)) {
                 PEAR::raiseError($patron);
+            }
             $result = $this->catalog->getMyFines($patron);
             if (!PEAR::isError($result)) {
+                // assign the "raw" fines data to the template so it can be formatted
+                // by the smarty template instead of using DataGrid
+                // NOTE: could use foreach($result as &$row) here but it only works
+                // with PHP5
+                for ($i = 0; $i < count($result); $i++) {
+                    $row = &$result[$i];
+                    $record = $this->db->getRecord($row['id']);
+                    $row['title'] = $record ? $record['title_short'] : null;
+                }
+                $interface->assign('rawFinesData', $result);
+                // format the fines data as HTML using the DataGrid (old way)
+                // FIXME: we should gradually get rid of DataGrid
                 if (count($result)) {
                     // Drop the index object into a global
                     //  so it's accessible inside the callback.
@@ -46,12 +83,38 @@ class Fines extends MyResearch
                     $dg->renderer->setTableAttribute('cellpadding', '4');
                     $dg->renderer->setTableAttribute('class', 'datagrid');
 
-                    $dg->addColumn(new Structures_DataGrid_Column(translate('Title'), 'id', 'id', null, null, 'printLink'));
-                    $dg->addColumn(new Structures_DataGrid_Column(translate('Checked Out'), 'checkout', 'checkout'));
-                    $dg->addColumn(new Structures_DataGrid_Column(translate('Due Date'), 'duedate', 'duedate'));
-                    $dg->addColumn(new Structures_DataGrid_Column(translate('Fine'), 'fine', 'fine'));
-                    $dg->addColumn(new Structures_DataGrid_Column(translate('Fee'), 'amount', 'amount', null, null, 'formatNumber'));
-                    $dg->addColumn(new Structures_DataGrid_Column(translate('Balance'), 'balance', 'balance', null, null, 'formatNumber'));
+                    $dg->addColumn(
+                        new Structures_DataGrid_Column(
+                            translate('Title'), 'id', 'id', null, null, 'printLink'
+                        )
+                    );
+                    $dg->addColumn(
+                        new Structures_DataGrid_Column(
+                            translate('Checked Out'), 'checkout', 'checkout'
+                        )
+                    );
+                    $dg->addColumn(
+                        new Structures_DataGrid_Column(
+                            translate('Due Date'), 'duedate', 'duedate'
+                        )
+                    );
+                    $dg->addColumn(
+                        new Structures_DataGrid_Column(
+                            translate('Fine'), 'fine', 'fine'
+                        )
+                    );
+                    $dg->addColumn(
+                        new Structures_DataGrid_Column(
+                            translate('Fee'), 'amount', 'amount', null, null,
+                            'formatNumber'
+                        )
+                    );
+                    $dg->addColumn(
+                        new Structures_DataGrid_Column(
+                            translate('Balance'), 'balance', 'balance', null, null,
+                            'formatNumber'
+                        )
+                    );
 
                     $dg->bind($result);
                     if (method_exists($dg, 'getOutput')) {
@@ -60,7 +123,9 @@ class Fines extends MyResearch
                         $interface->assign('finesData', $dg->renderer->toHTML());
                     }
                 } else {
-                    $interface->assign('finesData', translate('You do not have any fines'));
+                    $interface->assign(
+                        'finesData', translate('You do not have any fines')
+                    );
                 }
             }
         }
@@ -72,6 +137,13 @@ class Fines extends MyResearch
     
 }
 
+/**
+ * Callback function for formatting links in the DataGrid.
+ *
+ * @param array $params Incoming parameters
+ *
+ * @return string
+ */
 function printLink($params)
 {
     global $configArray;
@@ -81,12 +153,21 @@ function printLink($params)
     
     if ($record['id']) {
         $record = $finesIndexEngine->getRecord($record['id']);
-        return '<a href="' . $configArray['Site']['url'] . '/Record/' . urlencode($record['id']) . '">' . htmlspecialchars($record['title_short']) . '</a>';
+        return '<a href="' . $configArray['Site']['url'] . '/Record/' .
+            urlencode($record['id']) . '">' .
+            htmlspecialchars($record['title_short']) . '</a>';
     } else {
-        return "n/a";
+        return translate('not_applicable');
     }
 }
 
+/**
+ * Callback function for formatting numbers in the DataGrid.
+ *
+ * @param array $params Incoming parameters
+ *
+ * @return string
+ */
 function formatNumber($params)
 {
     extract($params);
@@ -109,14 +190,20 @@ function formatNumber($params)
     }
 }
 
-// Windows alternatives
+/**
+ * Windows-compatible equivalent to built-in money_format function.
+ *
+ * @param string $number Number to format.
+ *
+ * @return string
+ */
 function safeMoneyFormat($number)
 {
     // '' or NULL gets the locale values from environment variables
     setlocale(LC_ALL, '');
     $locale = localeconv();
-    forEach($locale as $key => $val) {
-      $$key = $val;
+    foreach ($locale as $key => $val) {
+        $$key = $val;
     }
 
     // Windows doesn't support UTF-8 encoding in setlocale, so we'll have to
@@ -130,8 +217,8 @@ function safeMoneyFormat($number)
         $sign_posn    = $p_sign_posn;
         $sep_by_space = $p_sep_by_space;
         $cs_precedes  = $p_cs_precedes;
-    // Negative
     } else {
+        // Negative
         $sign         = $negative_sign;
         $sign_posn    = $n_sign_posn;
         $sep_by_space = $n_sep_by_space;
@@ -139,7 +226,10 @@ function safeMoneyFormat($number)
     }
 
     // Format the absolute value of the number
-    $m = number_format(abs($number), $frac_digits, $mon_decimal_point, $mon_thousands_sep);
+    $m = number_format(
+        abs($number), $frac_digits, $mon_decimal_point, $mon_thousands_sep
+    );
+
     // Spaces between the number and symbol?
     if ($sep_by_space) {
         $space = ' ';
@@ -147,46 +237,53 @@ function safeMoneyFormat($number)
         $space = '';
     }
     if ($cs_precedes) {
-      $m = $currency_symbol.$space.$m;
+        $m = $currency_symbol.$space.$m;
     } else {
-      $m = $m.$space.$currency_symbol;
+        $m = $m.$space.$currency_symbol;
     }
     // HTML spaces
     $m = str_replace(' ', '&nbsp;', $m);
 
     // Add symbol
     switch ($sign_posn) {
-        case 0:
-            $m = "($m)";
-            break;
-        case 1:
-            $m = $sign.$m;
-            break;
-        case 2:
-            $m = $m.$sign;
-            break;
-        case 3:
-            $m = $sign.$m;
-            break;
-        case 4:
-            $m = $m.$sign;
-            break;
-        default:
-            $m = "$m [error sign_posn = $sign_posn&nbsp;!]";
+    case 0:
+        $m = "($m)";
+        break;
+    case 1:
+        $m = $sign.$m;
+        break;
+    case 2:
+        $m = $m.$sign;
+        break;
+    case 3:
+        $m = $sign.$m;
+        break;
+    case 4:
+        $m = $m.$sign;
+        break;
+    default:
+        $m = "$m [error sign_posn = $sign_posn&nbsp;!]";
     }
     return $m;
 }
 
-// Adapted from code at http://us.php.net/manual/en/function.utf8-encode.php
-// This is needed for Windows only as a support function for safeMoneyFormat;
-// utf8_encode by itself doesn't do the job, but this is capable of properly
-// turning currency symbols into valid UTF-8.
-function safeMoneyFormatMakeUTF8($instr){
+/**
+ * Adapted from code at http://us.php.net/manual/en/function.utf8-encode.php
+ * This is needed for Windows only as a support function for safeMoneyFormat;
+ * utf8_encode by itself doesn't do the job, but this is capable of properly
+ * turning currency symbols into valid UTF-8.
+ *
+ * @param string $instr String to convert to UTF-8
+ *
+ * @return string
+ */
+function safeMoneyFormatMakeUTF8($instr)
+{
     static $nibble_good_chars = false;
     static $byte_map = array();
     
     if (empty($byte_map)) {
-        for($x=128;$x<256;++$x){
+        for ($x=128;$x<256;++$x) {
             $byte_map[chr($x)]=utf8_encode(chr($x));
         }
         $cp1252_map=array(
@@ -218,7 +315,7 @@ function safeMoneyFormatMakeUTF8($instr){
             "\x9E" => "\xC5\xBE",      // LATIN SMALL LETTER Z WITH CARON
             "\x9F" => "\xC5\xB8"       // LATIN CAPITAL LETTER Y WITH DIAERESIS
         );
-        foreach($cp1252_map as $k=>$v){
+        foreach ($cp1252_map as $k=>$v) {
             $byte_map[$k]=$v;
         }
     }
@@ -229,18 +326,19 @@ function safeMoneyFormatMakeUTF8($instr){
         $utf8_3='[\xE0-\xEF]'.$cont_byte.'{2}';
         $utf8_4='[\xF0-\xF7]'.$cont_byte.'{3}';
         $utf8_5='[\xF8-\xFB]'.$cont_byte.'{4}';
-        $nibble_good_chars = "@^($ascii_char+|$utf8_2|$utf8_3|$utf8_4|$utf8_5)(.*)$@s";
+        $nibble_good_chars
+            = "@^($ascii_char+|$utf8_2|$utf8_3|$utf8_4|$utf8_5)(.*)$@s";
     }
 
     $outstr='';
     $char='';
     $rest='';
-    while((strlen($instr))>0){
-        if(1==preg_match($nibble_good_chars,$instr,$match)){
+    while ((strlen($instr))>0) {
+        if (1==preg_match($nibble_good_chars, $instr, $match)) {
             $char=$match[1];
             $rest=$match[2];
             $outstr.=$char;
-        }elseif(1==preg_match('@^(.)(.*)$@s',$instr,$match)){
+        } elseif (1==preg_match('@^(.)(.*)$@s', $instr, $match)) {
             $char=$match[1];
             $rest=$match[2];
             $outstr.=$byte_map[$char];

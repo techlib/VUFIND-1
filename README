@@ -4,7 +4,7 @@
 I. Introduction
 
     VuFind is an electronic resource portal designed and developed for
-    libraries by libraries. The goal of VuFind is to enable your users to 
+    libraries by libraries. The goal of VuFind is to enable your users to
     search and browse through all of your library's electronic resources.
 
 II. Requirements
@@ -12,9 +12,9 @@ II. Requirements
     VuFind uses common open source web application components, including the
     Apache web server, PHP scripting language and MySQL database.
 
-    The latest requirement list, including download links for various software 
+    The latest requirement list, including download links for various software
     packages, can be found here:
-    
+
         http://vufind.org/wiki/requirements
 
 III. Installation Procedure
@@ -22,16 +22,16 @@ III. Installation Procedure
     Installation details vary depending on your platform.  VuFind can run on
     Windows or various flavors of Linux.  For detailed instructions, please
     visit this link:
-    
+
         http://vufind.org/wiki/installation
 
 IV. Security
 
     The latest notes on ensuring that your VuFind installation is secure can
     be found here:
-    
+
         http://vufind.org/wiki/security
-        
+
     Please review carefully!
 
 V. Copyright and Licensing
@@ -53,7 +53,9 @@ V. Copyright and Licensing
 
 VI. Additional Credits
 
-    The themes provided with VuFind make use of the free Silk and Tango icon 
+    The themes provided with VuFind make use of the free Fugue, Silk and Tango icon
     sets.  For more information on these icons, see:
-        http://www.famfamfam.com/lab/icons/silk/
-        http://tango.freedesktop.org/
+        Fugue (copyright (c) Yusuke Kamiyamane): http://p.yusukekamiyamane.com/
+        Silk: http://www.famfamfam.com/lab/icons/silk/
+        Silk Companion: http://damieng.com/creative/icons/silk-companion-1-icons
+        Tango: http://tango.freedesktop.org/

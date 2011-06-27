@@ -1,5 +1,8 @@
 <?php
 /**
+ * SMS (text message) action for WorldCat module
+ *
+ * PHP version 5
  *
  * Copyright (C) Villanova University 2007.
  *
@@ -16,22 +19,48 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
+ * @category VuFind
+ * @package  Controller_WorldCat
+ * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
+ * @author   Demian Katz <demian.katz@villanova.edu>
+ * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
+ * @link     http://vufind.org/wiki/building_a_module Wiki
  */
- 
 require_once 'Record.php';
 require_once 'sys/Mailer.php';
 
+/**
+ * SMS (text message) action for WorldCat module
+ *
+ * @category VuFind
+ * @package  Controller_WorldCat
+ * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
+ * @author   Demian Katz <demian.katz@villanova.edu>
+ * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
+ * @link     http://vufind.org/wiki/building_a_module Wiki
+ */
 class SMS extends Record
 {
-    private $sms;
-    
+    private $_sms;
+
+    /**
+     * Constructor
+     *
+     * @access public
+     */
     function __construct()
     {
         parent::__construct();
-        $this->sms = new SMSMailer();
+        $this->_sms = new SMSMailer();
     }
-    
-    function launch()
+
+    /**
+     * Process incoming parameters and display the page.
+     *
+     * @return void
+     * @access public
+     */
+    public function launch()
     {
         global $interface;
 
@@ -44,18 +73,25 @@ class SMS extends Record
             $interface->setTemplate('view-alt.tpl');
             $interface->display('layout.tpl');
         } else {
-            return $this->display();
+            return $this->_displayForm();
         }
     }
-    
-    function display()
+
+    /**
+     * Display the blank SMS form.
+     *
+     * @return void
+     * @access private
+     */
+    private function _displayForm()
     {
         global $interface;
 
-        $interface->assign('carriers', $this->sms->getCarriers());
-        $interface->assign('formTargetPath',
-            '/WorldCat/SMS?id=' . urlencode($_GET['id']));
-        
+        $interface->assign('carriers', $this->_sms->getCarriers());
+        $interface->assign(
+            'formTargetPath', '/WorldCat/SMS?id=' . urlencode($_GET['id'])
+        );
+
         if (isset($_GET['lightbox'])) {
             // Use for lightbox
             $interface->assign('title', $_GET['message']);
@@ -68,9 +104,14 @@ class SMS extends Record
             $interface->display('layout.tpl', 'RecordSMS' . $_GET['id']);
         }
     }
-    
-    // Email SMS
-    function sendSMS()
+
+    /**
+     * Send the SMS message by email.
+     *
+     * @return mixed Boolean true on success, PEAR_Error on failure.
+     * @access public
+     */
+    public function sendSMS()
     {
         global $configArray;
         global $interface;
@@ -89,8 +130,10 @@ class SMS extends Record
         $interface->assign('recordID', $_GET['id']);
         $message = $interface->fetch('Emails/worldcat-sms.tpl');
 
-        return $this->sms->text($_REQUEST['provider'], $_REQUEST['to'],
-            $configArray['Site']['email'], $message);
+        return $this->_sms->text(
+            $_REQUEST['provider'], $_REQUEST['to'],
+            $configArray['Site']['email'], $message
+        );
     }
 }
 ?>

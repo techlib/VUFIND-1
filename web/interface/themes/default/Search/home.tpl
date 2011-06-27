@@ -30,8 +30,8 @@
           <ul>
             {* Special case: two columns for LC call numbers... *}
             {if $field == "callnumber-first"}
-              {foreach from=$list item=url key=value name="callLoop"}
-                <li><a href="{$url|escape}">{$value|escape}</a></li>
+              {foreach from=$list item=currentUrl key=value name="callLoop"}
+                <li><a href="{$currentUrl|escape}">{$value|escape}</a></li>
                 {if $smarty.foreach.callLoop.iteration == 10}
                   </ul>
                   </div>
@@ -41,14 +41,14 @@
               {/foreach}
             {else}
               {assign var=break value=false}
-              {foreach from=$list item=url key=value name="listLoop"}
+              {foreach from=$list item=currentUrl key=value name="listLoop"}
                 {if $smarty.foreach.listLoop.iteration > 12}
                   {if !$break}
                     <li><a href="{$path}/Search/Advanced"><strong>{translate text="More options"}...</strong></a></li>
                     {assign var=break value=true}
                   {/if}
                 {else}
-                  <li><a href="{$url|escape}">{$value|escape}</a></li>
+                  <li><a href="{$currentUrl|escape}">{$value|escape}</a></li>
                 {/if}
               {/foreach}
             {/if}

@@ -21,18 +21,18 @@
               {foreach from=$savedData item="current"}
                 <tr>
                   <td>{translate text='List'}: </td>
-                  <td>{$current.listTitle|escape:"html"}<input type="hidden" name="lists[]" value="{$current.listId}"</td>
+                  <td>{$current.listTitle|escape:"html"}<input type="hidden" name="lists[]" value="{$current.listId}"></td>
                 </tr>
                 <tr>
-                  <td>{translate text='Tags'}: </td>
+                  <td><label for="tags{$current.listId}">{translate text='Tags'}:</label></td>
                   <td>
-                    <input type="text" name="tags{$current.listId}" value="{$current.tags|escape:"html"}" size="50">
+                    <input type="text" name="tags{$current.listId}" id="tags{$current.listId}" value="{$current.tags|escape:"html"}" size="50">
                   </td>
                 </tr>
                 <tr>
-                  <td>{translate text='Notes'}: </td>
+                  <td><label for="notes{$current.listId}">{translate text='Notes'}:</label></td>
                   <td>
-                    <textarea name="notes{$current.listId}" rows="3" cols="50">{$current.notes|escape:"html"}</textarea>
+                    <textarea name="notes{$current.listId}" id="notes{$current.listId}" rows="3" cols="50">{$current.notes|escape:"html"}</textarea>
                   </td>
                 </tr>
                 <tr><td></td><td><br></td></tr>

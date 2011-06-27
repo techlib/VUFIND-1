@@ -1,5 +1,8 @@
 <?php
 /**
+ * Command-line tool to clear unwanted entries from search history database table.
+ *
+ * PHP version 5
  *
  * Copyright (C) Villanova University 2010.
  *
@@ -16,10 +19,19 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
+ * @category VuFind
+ * @package  Utilities
+ * @author   Demian Katz <demian.katz@villanova.edu>
+ * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
+ * @link     http://vufind.org/jira/browse/VUFIND-235 JIRA Ticket
  */
-require_once 'util.inc.php';        // set up util environment
+
+/**
+ * Set up util environment
+ */
+require_once 'util.inc.php';
 require_once 'services/MyResearch/lib/Search.php';
-require_once 'sys/ConfigArray.php';
+require_once 'sys/ConnectionManager.php';
 
 // Use command line value as expiration age, or default to 2.
 $daysOld = isset($argv[1]) ? intval($argv[1]) : 2;
@@ -33,9 +45,7 @@ if ($daysOld < 2) {
 $configArray = readConfig();
 
 // Setup Local Database Connection
-define('DB_DATAOBJECT_NO_OVERLOAD', 0);
-$options =& PEAR::getStaticProperty('DB_DataObject', 'options');
-$options = $configArray['Database'];
+ConnectionManager::connectToDatabase();
 
 // Delete the expired searches -- this cleans up any junk left in the database
 // from old search histories that were not caught by the session garbage collector.

@@ -13,7 +13,6 @@
            <input type="hidden" name="util" value="">
            Record Id<br>
            <input type="text" name="id" size="50"><br>
-           {* TODO: Make this work -- <input type="submit" name="submit" value="Edit" onClick="document.forms['recordEdit'].elements['util'].value='editRecord';"> *}
            <input type="submit" name="submit" value="View" onClick="document.forms['recordEdit'].elements['util'].value='viewRecord';">
            <input type="submit" name="submit" value="Delete" onClick="if (!confirm('Are you sure?')) return false; else document.forms['recordEdit'].elements['util'].value='deleteRecord';">
           </form>

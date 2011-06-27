@@ -1,5 +1,5 @@
-<script language="JavaScript" type="text/javascript" src="{$path}/js/ajax_common.js"></script>
-<script language="JavaScript" type="text/javascript" src="{$path}/services/Record/ajax.js"></script>
+{js filename="ajax_common.js"}
+{js filename="record.js"}
 {if !empty($addThis)}
 <script type="text/javascript" src="https://s7.addthis.com/js/250/addthis_widget.js?pub={$addThis|escape:"url"}"></script>
 {/if}
@@ -38,7 +38,12 @@
 
         <div class="record">
 
-          {if $error}<p class="error">{$error}</p>{/if}
+          {if $errorMsg || $infoMsg}
+          <div class="messages">
+          {if $errorMsg}<div class="error">{$errorMsg|translate}</div>{/if}
+          {if $infoMsg}<div class="userMsg">{$infoMsg|translate}</div>{/if}
+          </div>
+          {/if}
 
           {if $previousRecord || $nextRecord}
           <div class="resultscroller">
@@ -50,11 +55,11 @@
 
           {include file=$coreMetadata}
         
-        </div>{* End Record *} 
-        
-      <div id="tabnav">
+        </div>{* End Record *}
+
+        <div id="tabnav">
             <ul>
-              <li{if $tab == 'Holdings'} class="active"{/if}>
+              <li{if $tab == 'Holdings' || $tab == 'Hold'} class="active"{/if}>
                 <a href="{$url}/Record/{$id|escape:"url"}/Holdings#tabnav" class="first"><span></span>{translate text='Holdings'}</a>
               </li>
               <li{if $tab == 'Description'} class="active"{/if}>
@@ -150,3 +155,14 @@
 
   </div>
 </div>
+{if $showPreviews}
+{if $showGBSPreviews} 
+<script src="http://books.google.com/books?jscmd=viewapi&amp;bibkeys={if $isbn}ISBN{$isbn}{/if}{if $holdingLCCN}{if $isbn},{/if}LCCN{$holdingLCCN}{/if}{if $holdingArrOCLC}{if $isbn|$holdingLCCN},{/if}{foreach from=$holdingArrOCLC item=holdingOCLC name=oclcLoop}OCLC{$holdingOCLC}{if !$smarty.foreach.oclcLoop.last},{/if}{/foreach}{/if}&amp;callback=ProcessGBSBookInfo" type="text/javascript"></script>
+{/if}
+{if $showOLPreviews}
+<script src="http://openlibrary.org/api/books?bibkeys={if $isbn}ISBN{$isbn}{/if}{if $holdingLCCN}{if $isbn},{/if}LCCN{$holdingLCCN}{/if}{if $holdingArrOCLC}{if $isbn|$holdingLCCN},{/if}{foreach from=$holdingArrOCLC item=holdingOCLC name=oclcLoop}OCLC{$holdingOCLC}{if !$smarty.foreach.oclcLoop.last},{/if}{/foreach}{/if}&amp;callback=ProcessOLBookInfo" type="text/javascript"></script>
+{/if}
+{if $showHTPreviews}
+<script src="http://catalog.hathitrust.org/api/volumes/brief/json/id:HT{$id|escape};{if $isbn}isbn:{$isbn}{/if}{if $holdingLCCN}{if $isbn};{/if}lccn:{$holdingLCCN}{/if}{if $holdingArrOCLC}{if $isbn || $holdingLCCN};{/if}{foreach from=$holdingArrOCLC item=holdingOCLC name=oclcLoop}oclc:{$holdingOCLC}{if !$smarty.foreach.oclcLoop.last};{/if}{/foreach}{/if}&amp;callback=ProcessHTBookInfo" type="text/javascript"></script>
+{/if}
+{/if}

@@ -10,11 +10,11 @@
       {else}
         <span class="{$record.format|lower|regex_replace:"/[^a-z0-9]/":""}">
       {/if}
-      <a href="{$url}/Record/{$record.id|escape:"url"}">{$record.title|escape}</a>
+      <a href="{$url}/Record/{$record.id|escape:"url"}">{if $record._highlighting.title.0}{$record._highlighting.title.0|addEllipsis:$record.title|highlight}{else}{$record.title|escape}{/if}</a>
       </span>
       <span style="font-size: .8em">
       {if $record.author}
-      <br>{translate text='By'}: {$record.author|escape}
+      <br>{translate text='By'}: {if $record._highlighting.author.0}{$record._highlighting.author.0|highlight}{else}{$record.author|escape}{/if}
       {/if}
       {if $record.publishDate}
       <br>{translate text='Published'}: ({$record.publishDate.0|escape})

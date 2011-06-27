@@ -1,5 +1,8 @@
 <?php
 /**
+ * ListEdit action for MyResearch module
+ *
+ * PHP version 5
  *
  * Copyright (C) Villanova University 2007.
  *
@@ -16,23 +19,49 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
+ * @category VuFind
+ * @package  Controller_MyResearch
+ * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
+ * @author   Demian Katz <demian.katz@villanova.edu>
+ * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
+ * @link     http://vufind.org/wiki/building_a_module Wiki
  */
-
 require_once 'Action.php';
 
 require_once 'services/MyResearch/lib/User_list.php';
 require_once 'services/MyResearch/lib/User.php';
 
+/**
+ * ListEdit action for MyResearch module
+ *
+ * @category VuFind
+ * @package  Controller_MyResearch
+ * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
+ * @author   Demian Katz <demian.katz@villanova.edu>
+ * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
+ * @link     http://vufind.org/wiki/building_a_module Wiki
+ */
 class ListEdit extends Action
 {
-    private $user;
+    private $_user;
 
-    function __construct()
+    /**
+     * Constructor
+     *
+     * @access public
+     */
+    public function __construct()
     {
-        $this->user = UserAccount::isLoggedIn();
+        $this->_user = UserAccount::isLoggedIn();
     }
 
-    function launch()
+    /**
+     * Process parameters and display the page.
+     *
+     * @return void
+     * @access public
+     */
+    public function launch()
     {
         global $interface;
         global $configArray;
@@ -46,13 +75,13 @@ class ListEdit extends Action
         $interface->assign('recordId', isset($_GET['id']) ? $_GET['id'] : false);
 
         // Check if user is logged in
-        if (!$this->user) {
+        if (!$this->_user) {
             if (isset($_GET['lightbox'])) {
                 $interface->assign('title', $_GET['message']);
                 $interface->assign('message', 'You must be logged in first');
                 return $interface->fetch('AJAX/login.tpl');
             } else {
-                require_once 'Login.php';
+                include_once 'Login.php';
                 Login::launch();
             }
             exit();
@@ -69,7 +98,8 @@ class ListEdit extends Action
                     $interface->assign('listError', $result->getMessage());
                 } else {
                     if (!empty($_REQUEST['recordId'])) {
-                        $url = '../Record/' . urlencode($_REQUEST['recordId']) . '/Save';
+                        $url = '../Record/' . urlencode($_REQUEST['recordId']) .
+                            '/Save';
                     } else {
                         $url = 'Home';
                     }
@@ -84,9 +114,15 @@ class ListEdit extends Action
         }
     }
 
-    function addList()
+    /**
+     * Create a new list based on the current user and $_REQUEST parameters.
+     *
+     * @return mixed New list ID on success, PEAR_Error on failure.
+     * @access public
+     */
+    public function addList()
     {
-        if ($this->user) {
+        if ($this->_user) {
             if (strlen(trim($_REQUEST['title'])) == 0) {
                 return new PEAR_Error('list_edit_name_required');
             }
@@ -94,9 +130,13 @@ class ListEdit extends Action
             $list->title = $_REQUEST['title'];
             $list->description = $_REQUEST['desc'];
             $list->public = $_REQUEST['public'];
-            $list->user_id = $this->user->id;
+            $list->user_id = $this->_user->id;
             $list->insert();
             $list->find();
+
+            // Remember that the list was used so it can be the default in future
+            // dialog boxes:
+            $list->rememberLastUsed();
             return $list->id;
         }
     }

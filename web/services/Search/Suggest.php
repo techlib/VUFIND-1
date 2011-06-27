@@ -1,5 +1,8 @@
 <?php
 /**
+ * Suggest action for Search module
+ *
+ * PHP version 5
  *
  * Copyright (C) Villanova University 2007.
  *
@@ -16,27 +19,44 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
+ * @category VuFind
+ * @package  Controller_Search
+ * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
+ * @author   Demian Katz <demian.katz@villanova.edu>
+ * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
+ * @link     http://vufind.org/wiki/building_a_module Wiki
  */
-
 require_once 'Action.php';
 
-class Suggest extends Action {
-
-    function launch()
+/**
+ * Suggest action for Search module
+ *
+ * @category VuFind
+ * @package  Controller_Search
+ * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
+ * @author   Demian Katz <demian.katz@villanova.edu>
+ * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
+ * @link     http://vufind.org/wiki/building_a_module Wiki
+ */
+class Suggest extends Action
+{
+    /**
+     * Process incoming parameters and generate an appropriate JSON response.
+     *
+     * @return void
+     * @access public
+     */
+    public function launch()
     {
-        global $configArray;
-
         //header('Content-type: application/x-suggestions+json');
         header('Content-type: application/json');
 
         // Setup Search Engine Connection
-        $class = $configArray['Index']['engine'];
-        $db = new $class($configArray['Index']['url']);
-        if ($configArray['System']['debug']) {
-            $db->debug = true;
-        }
-        
-        $results = $db->getSuggestion(strtolower($_GET['lookfor']), 'title_sort', 10);
+        $db = ConnectionManager::connectToIndex();
+
+        $results = $db->getSuggestion(
+            strtolower($_GET['lookfor']), 'title_sort', 10
+        );
         echo json_encode($results);
     }
 }

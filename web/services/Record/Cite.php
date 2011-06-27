@@ -1,5 +1,8 @@
 <?php
 /**
+ * Cite action for Record module
+ *
+ * PHP version 5
  *
  * Copyright (C) Villanova University 2007.
  *
@@ -16,31 +19,52 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
+ * @category VuFind
+ * @package  Controller_Record
+ * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
+ * @author   Demian Katz <demian.katz@villanova.edu>
+ * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
+ * @link     http://vufind.org/wiki/building_a_module Wiki
  */
- 
 require_once 'Record.php';
 
+/**
+ * Cite action for Record module
+ *
+ * @category VuFind
+ * @package  Controller_Record
+ * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
+ * @author   Demian Katz <demian.katz@villanova.edu>
+ * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
+ * @link     http://vufind.org/wiki/building_a_module Wiki
+ */
 class Cite extends Record
 {
-    function launch()
+    /**
+     * Process incoming parameters and display the page.
+     *
+     * @return void
+     * @access public
+     */
+    public function launch()
     {
         global $interface;
-        
+
         $citationCount = 0;
         $formats = $this->recordDriver->getCitationFormats();
-        foreach($formats as $current) {
-            $interface->assign(strtolower($current), 
-                $this->recordDriver->getCitation($current));
+        foreach ($formats as $current) {
+            $interface->assign(
+                strtolower($current),
+                $this->recordDriver->getCitation($current)
+            );
             $citationCount++;
         }
         $interface->assign('citationCount', $citationCount);
-        
+
         if (isset($_GET['lightbox'])) {
             // Use for lightbox
             $interface->assign('title', $_GET['message']);
             return $interface->fetch('Record/cite.tpl');
-            //$html = file_get_contents('http://www.worldcat.org/oclc/4670293?page=citation');
-            //return transform($html, 'services/Record/xsl/worldcat-cite.xsl');
         } else {
             // Display Page
             $interface->setPageTitle('Record Citations');
@@ -50,19 +74,5 @@ class Cite extends Record
         }
     }
 }
-
-/* not currently used
-function transform($xml, $xslFile)
-{
-    $style = new DOMDocument;
-    $style->load($xslFile);
-    $xsl = new XSLTProcessor();
-    $xsl->importStyleSheet($style);
-    $doc = new DOMDocument;
-    if ($doc->loadXML($xml)) {
-        return $xsl->transformToXML($xml);
-    }
-}
- */
 
 ?>

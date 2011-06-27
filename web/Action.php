@@ -1,5 +1,8 @@
 <?php
 /**
+ * Abstract Base Class for Actions
+ *
+ * PHP version 5
  *
  * Copyright (C) Villanova University 2007.
  *
@@ -16,17 +19,36 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
+ * @category VuFind
+ * @package  Controller
+ * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
+ * @author   Demian Katz <demian.katz@villanova.edu>
+ * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
+ * @link     http://vufind.org/wiki/building_a_module Wiki
  */
 require_once 'PEAR.php';
 
-// Abstract Base Class for Actions
+/**
+ * Abstract Base Class for Actions
+ *
+ * @category VuFind
+ * @package  Controller
+ * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
+ * @author   Demian Katz <demian.katz@villanova.edu>
+ * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
+ * @link     http://vufind.org/wiki/building_a_module Wiki
+ */
 class Action extends PEAR
 {
-
-    function launch()
+    /**
+     * Process parameters and display the page.
+     *
+     * @return void
+     * @access public
+     */
+    public function launch()
     {
     }
-        
 }
 
 ?>

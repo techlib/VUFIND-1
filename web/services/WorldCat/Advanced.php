@@ -1,5 +1,8 @@
 <?php
 /**
+ * Advanced search action for WorldCat module
+ *
+ * PHP version 5
  *
  * Copyright (C) Villanova University 2010.
  *
@@ -16,23 +19,47 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
+ * @category VuFind
+ * @package  Controller_WorldCat
+ * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
+ * @author   Demian Katz <demian.katz@villanova.edu>
+ * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
+ * @link     http://vufind.org/wiki/building_a_module Wiki
  */
 
 require_once 'Base.php';
 
-class Advanced extends Base {
-    
-    function launch()
+/**
+ * Advanced search action for WorldCat module
+ *
+ * @category VuFind
+ * @package  Controller_WorldCat
+ * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
+ * @author   Demian Katz <demian.katz@villanova.edu>
+ * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
+ * @link     http://vufind.org/wiki/building_a_module Wiki
+ */
+class Advanced extends Base
+{
+    /**
+     * Process incoming parameters and display the page.
+     *
+     * @return void
+     * @access public
+     */
+    public function launch()
     {
         global $interface;
         global $configArray;
         global $user;
 
         // Load a saved search, if any:
-        $savedSearch = $this->loadSavedSearch();
+        $savedSearch = $this->_loadSavedSearch();
 
         // Send search type settings to the template
-        $interface->assign('advSearchTypes', $this->searchObject->getAdvancedTypes());
+        $interface->assign(
+            'advSearchTypes', $this->searchObject->getAdvancedTypes()
+        );
 
         // If we found a saved search, let's assign some details to the interface:
         if ($savedSearch) {
@@ -44,18 +71,18 @@ class Advanced extends Base {
         $interface->setTemplate('advanced.tpl');
         $interface->display('layout.tpl');
     }
-    
+
     /**
      * Load a saved search, if appropriate and legal; assign an error to the
      * interface if necessary.
      *
-     * @access  private
-     * @return  mixed           Search Object on successful load, false otherwise
+     * @return mixed Search Object on successful load, false otherwise
+     * @access private
      */
-    private function loadSavedSearch()
+    private function _loadSavedSearch()
     {
         global $interface;
-        
+
         // Are we editing an existing search?
         if (isset($_REQUEST['edit'])) {
             // Go find it
@@ -63,7 +90,9 @@ class Advanced extends Base {
             $search->id = $_REQUEST['edit'];
             if ($search->find(true)) {
                 // Check permissions
-                if ($search->session_id == session_id() || $search->user_id == $user->id) {
+                if ($search->session_id == session_id()
+                    || $search->user_id == $user->id
+                ) {
                     // Retrieve the search details
                     $minSO = unserialize($search->search_object);
                     $savedSearch = SearchObjectFactory::deminify($minSO);
@@ -76,16 +105,16 @@ class Advanced extends Base {
                     } else {
                         $interface->assign('editErr', 'notAdvanced');
                     }
-                // No permissions
                 } else {
+                    // No permissions
                     $interface->assign('editErr', 'noRights');
                 }
-            // Not found
             } else {
+                // Not found
                 $interface->assign('editErr', 'notFound');
             }
         }
-        
+
         return false;
     }
 }

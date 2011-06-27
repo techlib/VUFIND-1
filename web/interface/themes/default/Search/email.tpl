@@ -1,6 +1,9 @@
 <div align="left">
-  {if $message}<div class="error">{$message|translate}</div>{/if}
+  {if $errorMsg}<div class="error">{$errorMsg|translate}</div>{/if}
+  {if $infoMsg}<div class="userMsg">{$infoMsg|translate}</div>{/if}
 
+  <div id="popupMessages"></div>
+  <div id="popupDetails"> 
   <form action="{$url}/Search/Email" method="post" onSubmit='SendURLEmail(this.elements[&quot;to&quot;].value, 
     this.elements[&quot;from&quot;].value, this.elements[&quot;message&quot;].value,
     {* Pass translated strings to Javascript -- ugly but necessary: *}
@@ -9,12 +12,13 @@
      failure: &quot;{translate text='email_failure'}&quot;{literal}}{/literal}
     ); return false;'>
     <input type="hidden" name="url" value="{$searchURL|escape:"html"}">
-    <b>{translate text='To'}:</b><br>
-    <input type="text" name="to" size="40"><br>
-    <b>{translate text='From'}:</b><br>
-    <input type="text" name="from" size="40"><br>
-    <b>{translate text='Message'}:</b><br>
-    <textarea name="message" rows="3" cols="40"></textarea><br>
+    <strong><label for="to">{translate text='To'}:</label></strong><br>
+    <input type="text" name="to" size="40" id="to"><br>
+    <strong><label for="from">{translate text='From'}:</label></strong><br>
+    <input type="text" name="from" size="40" id="from"><br>
+    <strong><label for="message">{translate text='Message'}:</label></strong><br>
+    <textarea name="message" rows="3" cols="40" id="message"></textarea><br>
     <input type="submit" name="submit" value="{translate text='Send'}">
   </form>
+  </div>
 </div>

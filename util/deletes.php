@@ -1,5 +1,8 @@
 <?php
 /**
+ * Command-line tool to batch-delete records from the Solr index.
+ *
+ * PHP version 5
  *
  * Copyright (C) Villanova University 2007.
  *
@@ -16,12 +19,19 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
+ * @category VuFind
+ * @package  Utilities
+ * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
+ * @author   Demian Katz <demian.katz@villanova.edu>
+ * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
+ * @link     http://vufind.org/wiki/automation Wiki
  */
 
-// Parse the command line parameters -- see if we are in "flat file" mode and
-// find out what file we are reading in!
-$filename = $argv[1];
+// Parse the command line parameters -- see if we are in "flat file" mode,
+// find out what file we are reading in, and determine the index we are affecting!
+$filename = isset($argv[1]) ? $argv[1] : null;
 $mode = isset($argv[2]) ? $argv[2] : 'marc';
+$index = isset($argv[3]) ? $argv[3] : 'Solr';
 
 // No filename specified?  Give usage guidelines:
 if (empty($filename)) {
@@ -41,18 +51,20 @@ if (!file_exists($filename)) {
     die("Cannot find file: {$filename}\n");
 }
 
+/**
+ * Set up util environment
+ */
 require_once 'util.inc.php';        // set up util environment
-require_once 'sys/Solr.php';
+require_once 'sys/ConnectionManager.php';
 
 // Read Config file
-$configArray = parse_ini_file('../web/conf/config.ini', true);
+$configArray = parse_ini_file(dirname(__FILE__) . '/../web/conf/config.ini', true);
 
 // Setup Solr Connection
-$url = $configArray['Index']['url'];
-$solr = new Solr($url);
-if ($configArray['System']['debug']) {
-    $solr->debug = true;
-}
+$solr = ConnectionManager::connectToIndex($index);
+
+// Setup Local Database Connection
+ConnectionManager::connectToDatabase();
 
 // Count deleted records:
 $i = 0;
@@ -60,21 +72,22 @@ $i = 0;
 // Flat file mode:
 if ($mode == 'flat') {
     $ids = explode("\n", file_get_contents($filename));
-    foreach($ids as $id) {
+    foreach ($ids as $id) {
         $id = trim($id);
         if (!empty($id)) {
             $solr->deleteRecord($id);
             $i++;
         }
     }
-// MARC file mode:
 } else {
+    // MARC file mode...
+
     // We need to load the MARC record differently if it's XML or binary:
     if ($mode == 'marcxml') {
-        require_once 'File/MARCXML.php';
+        include_once 'File/MARCXML.php';
         $collection = new File_MARCXML($filename);
     } else {
-        require_once 'File/MARC.php';
+        include_once 'File/MARC.php';
         $collection = new File_MARC($filename);
     }
 

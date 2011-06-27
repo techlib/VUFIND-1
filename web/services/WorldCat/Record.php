@@ -1,5 +1,8 @@
 <?php
 /**
+ * Base class for record-related WorldCat module actions
+ *
+ * PHP version 5
  *
  * Copyright (C) Andrew Nagy 2008.
  *
@@ -16,8 +19,13 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
+ * @category VuFind
+ * @package  Controller_WorldCat
+ * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
+ * @author   Demian Katz <demian.katz@villanova.edu>
+ * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
+ * @link     http://vufind.org/wiki/building_a_module Wiki
  */
- 
 require_once 'Base.php';
 
 require_once 'sys/Worldcat.php';
@@ -30,6 +38,16 @@ require_once 'services/MyResearch/lib/Resource.php';
 require_once 'services/MyResearch/lib/Resource_tags.php';
 require_once 'services/MyResearch/lib/Tags.php';
 
+/**
+ * Base class for record-related WorldCat module actions
+ *
+ * @category VuFind
+ * @package  Controller_WorldCat
+ * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
+ * @author   Demian Katz <demian.katz@villanova.edu>
+ * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
+ * @link     http://vufind.org/wiki/building_a_module Wiki
+ */
 class Record extends Base
 {
     protected $id;
@@ -38,7 +56,12 @@ class Record extends Base
     protected $cacheId;
     protected $worldcat;
 
-    function __construct()
+    /**
+     * Constructor
+     *
+     * @access public
+     */
+    public function __construct()
     {
         global $configArray;
         global $interface;
@@ -46,22 +69,24 @@ class Record extends Base
         parent::__construct();
 
         // Assign the ID of the last search so the user can return to it.
-        $interface->assign('lastsearch', isset($_SESSION['lastSearchURL']) ? 
-            $_SESSION['lastSearchURL'] : false);
+        $interface->assign(
+            'lastsearch',
+            isset($_SESSION['lastSearchURL']) ? $_SESSION['lastSearchURL'] : false
+        );
 
-        $this->id = $_GET['id'];
+        $this->id = $_REQUEST['id'];
         $interface->assign('id', $this->id);
 
         $this->cacheId = 'WCRecord|' . $this->id . '|' . get_class($this);
 
         // Define Default Tab
-        $tab = (isset($_GET['action']) && $_GET['action'] != 'Record') ? 
+        $tab = (isset($_GET['action']) && $_GET['action'] != 'Record') ?
             $_GET['action'] : 'Holdings';
         $interface->assign('tab', $tab);
 
         // Fetch Record
         $this->worldcat = new Worldcat();
-        $record = $this->worldcat->getRecord($_GET['id']);
+        $record = $this->worldcat->getRecord($this->id);
         if (PEAR::isError($record)) {
             PEAR::raiseError($record);
         }
@@ -75,7 +100,7 @@ class Record extends Base
         }
 
         // Save best available ISBN value:
-        $this->isbn = $this->getBestISBN();
+        $this->isbn = $this->_getBestISBN();
 
         // Define External Content Provider
         if ($this->isbn) {
@@ -91,7 +116,7 @@ class Record extends Base
 
         // Retrieve tags associated with the record
         $resource = new Resource();
-        $resource->record_id = $_GET['id'];
+        $resource->record_id = $this->id;
         $resource->source = 'WorldCat';
         $tags = $resource->getTags();
         $interface->assign('tagList', is_array($tags) ? $tags : array());
@@ -101,45 +126,76 @@ class Record extends Base
         $interface->assign('similarRecords', $similar['record']);
 
         // Find Other Editions
-        $editions = $this->getEditions();
+        $editions = $this->_getEditions();
         if (!PEAR::isError($editions)) {
             $interface->assign('editions', $editions);
         }
 
         // Define CoINs Identifier
         $coinsID = isset($configArray['OpenURL']['rfr_id']) ?
-            $configArray['OpenURL']['rfr_id'] : 
+            $configArray['OpenURL']['rfr_id'] :
             $configArray['COinS']['identifier'];
         if (empty($coinsID)) {
             $coinsID = 'vufind.svn.sourceforge.net';
         }
         $interface->assign('coinsID', $coinsID);
-      
+
         // Set Proxy URL
-        $interface->assign('proxy', isset($configArray['EZproxy']['host']) ?
-            $configArray['EZproxy']['host'] : false);
+        $interface->assign(
+            'proxy',
+            isset($configArray['EZproxy']['host'])
+            ? $configArray['EZproxy']['host'] : false
+        );
+
+        $interface->setPageTitle($this->_getBestTitle());
     }
-    
-    function launch()
+
+    /**
+     * Process incoming parameters and display the page.
+     *
+     * @return void
+     * @access public
+     */
+    public function launch()
     {
-        require_once 'Holdings.php';
+        include_once 'Holdings.php';
         Holdings::launch();
     }
-    
-    private function getBestISBN()
+
+    /**
+     * Select the best title for the record to use as the page title.
+     *
+     * @return string
+     * @access private
+     */
+    private function _getBestTitle()
+    {
+        $field = $this->record->getField('245');
+        $subfield = $field ? $field->getSubfield('a') : null;
+        return $subfield ? $subfield->getData() : '';
+    }
+
+    /**
+     * Select the best available ISBN from those contained in the current record.
+     *
+     * @return string
+     * @access private
+     */
+    private function _getBestISBN()
     {
         // Get ISBN for cover and review use
         $isbn13 = false;
         if ($isbnFields = $this->record->getFields('020')) {
             if (is_array($isbnFields)) {
-                foreach($isbnFields as $isbnField) {
+                foreach ($isbnFields as $isbnField) {
                     if ($isbnSubField = $isbnField->getSubfield('a')) {
                         $isbn = trim($isbnSubField->getData());
                         if ($pos = strpos($this->isbn, ' ')) {
                             $isbn = substr($this->isbn, 0, $pos);
                         }
-                        // If we find an ISBN-10, return it immediately; otherwise, if we find
-                        // an ISBN-13, save it if it is the first one encountered.
+                        // If we find an ISBN-10, return it immediately; otherwise,
+                        // if we find an ISBN-13, save it if it is the first one
+                        // encountered.
                         $isbnObj = new ISBN($isbn);
                         if ($isbn10 = $isbnObj->get10()) {
                             return $isbn10;
@@ -154,7 +210,13 @@ class Record extends Base
         return $isbn13;
     }
 
-    function getEditions()
+    /**
+     * Find alternate editions of the item represented by the current record.
+     *
+     * @return mixed Array of information or null if no other editions found.
+     * @access private
+     */
+    private function _getEditions()
     {
         $wc = new WorldCatUtils();
 

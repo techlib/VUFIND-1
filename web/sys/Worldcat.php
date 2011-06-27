@@ -1,5 +1,8 @@
 <?php
 /**
+ * Class for accessing OCLC WorldCat search API
+ *
+ * PHP version 5
  *
  * Copyright (C) Andrew Nagy 2008.
  *
@@ -16,34 +19,62 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
+ * @category VuFind
+ * @package  Support_Classes
+ * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
+ * @author   Demian Katz <demian.katz@villanova.edu>
+ * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
+ * @link     http://vufind.org/wiki/system_classes Wiki
  */
-
 require_once 'sys/SRU.php';
 
-class Worldcat extends SRU {
-    
-    private $wskey;
+/**
+ * WorldCat SRU Search Interface
+ *
+ * @category VuFind
+ * @package  Support_Classes
+ * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
+ * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
+ * @link     http://vufind.org/wiki/system_classes Wiki
+ */
+class Worldcat extends SRU
+{
+    private $_wskey;
 
-    function __construct()
+    /**
+     * Constructor
+     *
+     * @access public
+     */
+    public function __construct()
     {
         global $configArray;
-        
+
         parent::__construct('http://www.worldcat.org/webservices/catalog/search/sru');
-        $this->wskey = $configArray['WorldCat']['apiKey'];
+        $this->_wskey = isset($configArray['WorldCat']['apiKey']) ?
+            $configArray['WorldCat']['apiKey'] : null;
     }
-    
-    function getHoldings($id)
+
+    /**
+     * Get holdings information for the specified record.
+     *
+     * @param string $id Record to obtain holdings for.
+     *
+     * @return array
+     * @access public
+     */
+    public function getHoldings($id)
     {
         $this->client->setMethod(HTTP_REQUEST_METHOD_POST);
         $this->client->setURL('http://www.worldcat.org/webservices/catalog/content/libraries/' . $id);
-        $this->client->addRawQueryString("wskey=$this->wskey&servicelevel=full");
+        $this->client->addRawQueryString("wskey={$this->_wskey}&servicelevel=full");
 
         if ($this->debug) {
             echo '<pre>Connect: ';
             print_r($this->client->getUrl(true));
             echo "</pre>\n";
         }
-        
+
         $result = $this->client->sendRequest();
         if (!PEAR::isError($result)) {
             $xml = $this->client->getResponseBody();
@@ -57,13 +88,21 @@ class Worldcat extends SRU {
         } else {
             return $result;
         }
-    }    
-    
-    function getRecord($id)
+    }
+
+    /**
+     * Retrieve a specific record.
+     *
+     * @param string $id Record ID to retrieve
+     *
+     * @return mixed     PEAR_Error on error, MARC XML on success.
+     * @access public
+     */
+    public function getRecord($id)
     {
         $this->client->setMethod(HTTP_REQUEST_METHOD_POST);
         $this->client->setURL('http://www.worldcat.org/webservices/catalog/content/' . $id);
-        $this->client->addRawQueryString("wskey=$this->wskey&servicelevel=full");
+        $this->client->addRawQueryString("wskey={$this->_wskey}&servicelevel=full");
         $result = $this->client->sendRequest();
 
         if ($this->debug) {
@@ -71,28 +110,29 @@ class Worldcat extends SRU {
             print_r($this->client->getUrl(true));
             echo "</pre>\n";
         }
-        
+
         if (!PEAR::isError($result)) {
             return $this->client->getResponseBody();
         } else {
             return $result;
         }
     }
-    
+
     /**
      * Get records similiar to one record
      *
-     * @access  public
-     * @param   object      The file_marc object for the current record
-     * @param   max         The maximum records to return; Default is 5
-     * @throws  object      PEAR Error
-     * @return  array       An array of query results
+     * @param object $record The file_marc object for the current record
+     * @param int    $max    The maximum records to return; Default is 5
+     *
+     * @throws object        PEAR Error
+     * @return array         An array of query results
+     * @access public
      */
-    function getMoreLikeThis($record, $max = 5)
+    public function getMoreLikeThis($record, $max = 5)
     {
         // Create array of query parts:
         $parts = array();
-        
+
         // Add Dewey class to query
         if ($deweyField = $record->getField('082')) {
             if ($deweyFieldData = $deweyField->getSubfield('a')) {
@@ -104,17 +144,17 @@ class Worldcat extends SRU {
                 }
             }
         }
-        
+
         // Add author to query
         if ($deweyField = $record->getField('100')) {
             if ($deweyFieldData = $deweyField->getSubfield('a')) {
                 $parts[] = 'srw.au all "' . $deweyFieldData->getData() . '"';
             }
         }
-        
+
         // Add subjects to query
         $subjTags = array('650', '651', '655');
-        foreach($subjTags as $currentTag) {
+        foreach ($subjTags as $currentTag) {
             if ($subjFieldList = $record->getFields($currentTag)) {
                 foreach ($subjFieldList as $subjField) {
                     if ($subjField = $subjField->getSubfield('a')) {
@@ -134,7 +174,7 @@ class Worldcat extends SRU {
                 $parts[] = 'srw.ti any "' . str_replace('"', '', $title) . '"';
             }
         }
-        
+
         // Not current record ID
         $idField = $record->getField('001');
         $id = trim($idField->getData());
@@ -145,7 +185,7 @@ class Worldcat extends SRU {
                          'query' => $query,
                          'maximumRecords' => $max,
                          'startRecord' => 1,
-                         'wskey' => $this->wskey,
+                         'wskey' => $this->_wskey,
                          'recordSchema' => 'marcxml');
 
         if ($this->debug) {
@@ -154,7 +194,7 @@ class Worldcat extends SRU {
             echo "</pre>\n";
         }
 
-        $result = $this->_call('GET', $options);
+        $result = $this->call('GET', $options);
         if (PEAR::isError($result)) {
             PEAR::raiseError($result);
         }
@@ -162,8 +202,22 @@ class Worldcat extends SRU {
         return $result;
     }
 
-    function search($query, $oclcCode = null, $page = 1, $limit = 10, $sort = null)
-    {
+    /**
+     * Search
+     *
+     * @param string $query    The search query
+     * @param string $oclcCode An OCLC code to exclude from results
+     * @param int    $page     The page of records to start with
+     * @param int    $limit    The number of records to return per page
+     * @param string $sort     The value to be used by for sorting
+     *
+     * @throws object         PEAR Error
+     * @return array          An array of query results
+     * @access public
+     */
+    public function search($query, $oclcCode = null, $page = 1, $limit = 10,
+        $sort = null
+    ) {
         // Exclude current library from results
         if ($oclcCode) {
             $query .= ' not srw.li all "' . $oclcCode . '"';
@@ -171,20 +225,20 @@ class Worldcat extends SRU {
 
         // Submit query
         $start = ($page-1) * $limit;
-        $params = array('query' => $query, 
+        $params = array('query' => $query,
                         'startRecord' => $start,
                         'maximumRecords' => $limit,
                         'sortKeys' => empty($sort) ? 'relevance' : $sort,
                         'servicelevel' => 'full',
-                        'wskey' => $this->wskey);
+                        'wskey' => $this->_wskey);
 
         // Establish a limitation on searching by OCLC Codes
         if (isset($configArray['WorldCat']['LimitCodes'])) {
             $params['oclcsymbol'] = $configArray['WorldCat']['LimitCodes'];
         }
 
-        $result = $this->_call(HTTP_REQUEST_METHOD_POST, $params);
-        
+        $result = $this->call(HTTP_REQUEST_METHOD_POST, $params);
+
         if (PEAR::isError($result)) {
             PEAR::raiseError($result);
         }
@@ -195,13 +249,13 @@ class Worldcat extends SRU {
     /**
      * Build Query string from search parameters
      *
-     * @access  public
-     * @param   array               An array of search parameters
-     * @throws  object              PEAR Error
-     * @static
-     * @return  string              The query
+     * @param array $search An array of search parameters
+     *
+     * @throws object       PEAR Error
+     * @return string       The query
+     * @access public
      */
-    function buildQuery($search)
+    public function buildQuery($search)
     {
         $groups   = array();
         $excludes = array();
@@ -242,7 +296,7 @@ class Worldcat extends SRU {
                     // listed index fields:
                     $index = explode(':', $index);
                     $clauses = array();
-                    foreach($index as $currentIndex) {
+                    foreach ($index as $currentIndex) {
                         $clauses[] = "{$currentIndex} all \"{$lookfor}\"";
                     }
                     $query .= '(' . implode(' OR ', $clauses) . ')';

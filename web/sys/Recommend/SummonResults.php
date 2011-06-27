@@ -1,5 +1,8 @@
 <?php
 /**
+ * SummonResults Recommendations Module
+ *
+ * PHP version 5
  *
  * Copyright (C) Villanova University 2010.
  *
@@ -16,6 +19,11 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
+ * @category VuFind
+ * @package  Recommendations
+ * @author   Demian Katz <demian.katz@villanova.edu>
+ * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
+ * @link     http://vufind.org/wiki/building_a_recommendations_module Wiki
  */
 
 require_once 'sys/Recommend/Interface.php';
@@ -24,18 +32,26 @@ require_once 'sys/Recommend/Interface.php';
  * SummonResults Recommendations Module
  *
  * This class provides recommendations by doing a search of Summon.
+ *
+ * @category VuFind
+ * @package  Recommendations
+ * @author   Demian Katz <demian.katz@villanova.edu>
+ * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
+ * @link     http://vufind.org/wiki/building_a_recommendations_module Wiki
  */
 class SummonResults implements RecommendationInterface
 {
-    private $searchObject;
-    
-    /* Constructor
+    private $_searchObject;
+
+    /**
+     * Constructor
      *
      * Establishes base settings for making recommendations.
      *
-     * @access  public
-     * @param   object  $searchObject   The SearchObject requesting recommendations.
-     * @param   string  $params         Colon-separated parameters from config file.
+     * @param object $searchObject The SearchObject requesting recommendations.
+     * @param string $params       Colon-separated settings from config file.
+     *
+     * @access public
      */
     public function __construct($searchObject, $params)
     {
@@ -47,56 +63,62 @@ class SummonResults implements RecommendationInterface
 
         // We don't actually care about the passed-in search object; let's just
         // create our own!
-        $this->searchObject = SearchObjectFactory::initSearchObject('Summon');
-        $this->searchObject->disableLogging();
-        $this->searchObject->setBasicQuery($_REQUEST[$requestParam]);
-        $this->searchObject->setLimit($limit);
+        $this->_searchObject = SearchObjectFactory::initSearchObject('Summon');
+        $this->_searchObject->disableLogging();
+        $this->_searchObject->setBasicQuery($_REQUEST[$requestParam]);
+        $this->_searchObject->setLimit($limit);
     }
-    
-    /* init
+
+    /**
+     * init
      *
      * Called before the SearchObject performs its main search.  This may be used
      * to set SearchObject parameters in order to generate recommendations as part
      * of the search.
      *
-     * @access  public
+     * @return void
+     * @access public
      */
     public function init()
     {
         // No action needed here.
     }
-    
-    /* process
+
+    /**
+     * process
      *
-     * Called after the SearchObject has performed its main search.  This may be 
+     * Called after the SearchObject has performed its main search.  This may be
      * used to extract necessary information from the SearchObject or to perform
      * completely unrelated processing.
      *
-     * @access  public
+     * @return void
+     * @access public
      */
     public function process()
     {
         global $interface;
-        
+
         // Perform the search without throwing fatal errors -- if we get an error,
         // we'll treat it as an empty result and simply skip recommendations.  This
         // should only happen in the case of complex queries.
-        $result = $this->searchObject->processSearch(true);
+        $result = $this->_searchObject->processSearch(true);
         $resultDocs = $result['recordCount'] > 0 ? $result['documents'] : array();
-        $this->searchObject->close();
+        $this->_searchObject->close();
         $interface->assign('summonResults', $resultDocs);
-        $interface->assign('summonSearchUrl', 
-            $this->searchObject->renderSearchUrl());
+        $interface->assign(
+            'summonSearchUrl', $this->_searchObject->renderSearchUrl()
+        );
     }
-    
-    /* getTemplate
+
+    /**
+     * getTemplate
      *
      * This method provides a template name so that recommendations can be displayed
      * to the end user.  It is the responsibility of the process() method to
      * populate all necessary template variables.
      *
-     * @access  public
-     * @return  string      The template to use to display the recommendations.
+     * @return string The template to use to display the recommendations.
+     * @access public
      */
     public function getTemplate()
     {

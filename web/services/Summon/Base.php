@@ -1,7 +1,10 @@
 <?php
 /**
+ * Base class for most Summon module actions.
  *
- * Copyright (C) Andrew Nagy 2009.
+ * PHP version 5
+ *
+ * Copyright (C) Andrew Nagy 2008.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2,
@@ -16,24 +19,44 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
+ * @category VuFind
+ * @package  Controller_Summon
+ * @author   Andrew Nagy <vufind-tech@lists.sourceforge.net>
+ * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
+ * @link     http://vufind.org/wiki/building_a_module Wiki
  */
- 
 require_once 'Action.php';
 require_once 'sys/Summon.php';
 
+/**
+ * Base class for most Summon module actions.
+ *
+ * @category VuFind
+ * @package  Controller_Summon
+ * @author   Andrew Nagy <vufind-tech@lists.sourceforge.net>
+ * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
+ * @link     http://vufind.org/wiki/building_a_module Wiki
+ */
 class Base extends Action
 {
     protected $searchObject;
-    
-    function __construct()
+
+    /**
+     * Constructor
+     *
+     * @access public
+     */
+    public function __construct()
     {
         global $interface;
         $interface->assign('currentTab', 'Summon');
-        
+
         // Send Summon search types to the template so the basic search box can
         // function on all pages of the Summon UI.
         $this->searchObject = SearchObjectFactory::initSearchObject('Summon');
-        $interface->assign('summonSearchTypes', $this->searchObject->getBasicTypes());
+        $interface->assign(
+            'summonSearchTypes', $this->searchObject->getBasicTypes()
+        );
     }
 }
 ?>

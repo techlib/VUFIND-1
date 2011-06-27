@@ -8,39 +8,45 @@
   <div class="page">
   <table class="citation">
     <tr>
-      <th align="right"><form method="GET" action="{$url}/Search/Reserves" name="searchForm" class="search">{translate text='By Course'}: </th>
+      <th align="right">{translate text='By Course'}: </th>
       <td>
-        <select name="course">
-          <option></option>
-          {foreach from=$courseList item=courseName key=courseId}
-            <option value="{$courseId|escape}">{$courseName|escape}</option>
-          {/foreach}
-        </select>
-         &nbsp;&nbsp;<input type="submit" name="submit" value="{translate text='Find'}"></form>
+        <form method="GET" action="{$url}/Search/Reserves" class="search">
+          <select name="course">
+            <option></option>
+            {foreach from=$courseList item=courseName key=courseId}
+              <option value="{$courseId|escape}">{$courseName|escape}</option>
+            {/foreach}
+          </select>
+          &nbsp;&nbsp;<input type="submit" name="submit" value="{translate text='Find'}">
+          </form>
       </td>
     </tr>
     <tr>
-      <th align="right"><form method="GET" action="{$url}/Search/Reserves" name="searchForm" class="search">{translate text='By Instructor'}: </th>
+      <th align="right">{translate text='By Instructor'}: </th>
       <td>
-        <select name="inst">
-          <option></option>
-          {foreach from=$instList item=instName key=instId}
-            <option value="{$instId|escape}">{$instName|escape}</option>
-          {/foreach}
-        </select>
-          &nbsp;&nbsp;<input type="submit" name="submit" value="{translate text='Find}"></form>
+        <form method="GET" action="{$url}/Search/Reserves" class="search">
+          <select name="inst">
+            <option></option>
+            {foreach from=$instList item=instName key=instId}
+              <option value="{$instId|escape}">{$instName|escape}</option>
+            {/foreach}
+          </select>
+          &nbsp;&nbsp;<input type="submit" name="submit" value="{translate text='Find}">
+        </form>
       </td>
     </tr>
     <tr>
-      <th align="right"><form method="GET" action="{$url}/Search/Reserves" name="searchForm" class="search">{translate text='By Department'}: </th>
+      <th align="right">{translate text='By Department'}: </th>
       <td>
-        <select name="dept">
-          <option></option>
-          {foreach from=$deptList item=deptName key=deptId}
-            <option value="{$deptId|escape}">{$deptName|escape}</option>
-          {/foreach}
-        </select>
-          &nbsp;&nbsp;<input type="submit" name="submit" value="{translate text='Find'}"></form>
+        <form method="GET" action="{$url}/Search/Reserves" class="search">
+          <select name="dept">
+            <option></option>
+            {foreach from=$deptList item=deptName key=deptId}
+              <option value="{$deptId|escape}">{$deptName|escape}</option>
+            {/foreach}
+          </select>
+          &nbsp;&nbsp;<input type="submit" name="submit" value="{translate text='Find'}">
+        </form>
       </td>
     </tr>
   </table>

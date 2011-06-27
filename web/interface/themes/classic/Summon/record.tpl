@@ -1,5 +1,4 @@
-<script language="JavaScript" type="text/javascript" src="{$path}/js/ajax_common.js"></script>
-<script language="JavaScript" type="text/javascript" src="{$path}/services/Summon/ajax.js"></script>
+{js filename="ajax_common.js"}
 
 <div id="bd">
   <div id="yui-main" class="content">
@@ -35,9 +34,9 @@
              these URI values aren't always very useful, so they should be linked
              as a last resort only. *}
           <div class="button alignright">
-          {if $record.URI && (!$openUrlBase || !$record.hasFullText)}
-            {foreach from=$record.URI.0 item="value"}
-          <a href="{$value|escape}">{translate text='Get full text'}</a><br>
+          {if $record.url && (!$openUrlBase || !$record.hasFullText)}
+            {foreach from=$record.url.0 item="value"}
+          <a href="{$value|escape}">{translate text='Get full text'}</a><br/>
             {/foreach}
           {elseif $openUrlBase}
             {include file="Search/openurl.tpl" openUrl=$record.openUrl}
@@ -50,14 +49,11 @@
           <h1>{$record.Title.0|escape}</h1>
           {* End Title *}
 
-          {assign var=thumb value="Thumbnail-m"}
-          {if $record.$thumb}
-          {* Display Book Cover *}
+          {* Display Cover Image *}
           <div class="alignleft">
-            <img alt="{translate text='Book Cover'}" src="{$record.$thumb|escape}">
+            <img alt="{translate text='Cover Image'}" src="{$path}/bookcover.php?size=small{if $record.ISBN.0}&amp;isn={$record.ISBN.0|@formatISBN}{/if}{if $record.ContentType.0}&amp;contenttype={$record.ContentType.0|escape:"url"}{/if}">
           </div>
-          {* End Book Cover *}
-          {/if}
+          {* End Cover Image *}
           
           {* Display Abstract/Snippet *}
           {if $record.Abstract}
@@ -108,7 +104,7 @@
               <th>{translate text='ISSN'}: </th>
               <td>
               {foreach from=$record.ISSN item="value"}
-                {$value|escape}<br>
+                {$value|escape}<br/>
               {/foreach}
               </td>
             </tr>
@@ -165,7 +161,7 @@
               <th>{translate text='Subjects'}: </th>
               <td>
                 {foreach from=$record.SubjectTerms item=field name=loop}
-                  <a href="{$path}/Summon/Search?type=SubjectTerms&amp;lookfor=%22{$field|escape:"url"}%22">{$field|escape}<br>
+                  <a href="{$path}/Summon/Search?type=SubjectTerms&amp;lookfor=%22{$field|escape:"url"}%22">{$field|escape}</a><br/>
                 {/foreach}
               </td>
             </tr>

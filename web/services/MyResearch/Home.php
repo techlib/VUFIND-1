@@ -1,5 +1,8 @@
 <?php
 /**
+ * Home action for MyResearch module
+ *
+ * PHP version 5
  *
  * Copyright (C) Villanova University 2007.
  *
@@ -16,65 +19,60 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
+ * @category VuFind
+ * @package  Controller_MyResearch
+ * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
+ * @author   Demian Katz <demian.katz@villanova.edu>
+ * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
+ * @link     http://vufind.org/wiki/building_a_module Wiki
  */
 
 require_once 'services/MyResearch/MyResearch.php';
-require_once 'services/MyResearch/lib/FavoriteHandler.php';
 
 /**
- * MyResearch Home Page
+ * MyResearch Home Page Controller
  *
- * This controller needs some cleanup and organization.
- *
- * @version  $Revision: 1.27 $
+ * @category VuFind
+ * @package  Controller_MyResearch
+ * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
+ * @author   Demian Katz <demian.katz@villanova.edu>
+ * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
+ * @link     http://vufind.org/wiki/building_a_module Wiki
  */
 class Home extends MyResearch
 {
-
-    function launch()
+    /**
+     * Process incoming parameters and display the page.
+     *
+     * @return void
+     * @access public
+     */
+    public function launch()
     {
         global $configArray;
         global $interface;
         global $user;
 
+        // Do we need to send the user to a specific follow-up URL?
         if (isset($_REQUEST['followup'])) {
-          $followupUrl =  $configArray['Site']['url'] . "/". $_REQUEST['followupModule'];
-          if (!empty($_REQUEST['recordId'])) {
-              $followupUrl .= "/" . $_REQUEST['recordId'];
-          }
-          $followupUrl .= "/" . $_REQUEST['followupAction'];
-          if(isset($_REQUEST['comment'])) $followupUrl .= "?comment=" . urlencode($_REQUEST['comment']);
-          header("Location: " . $followupUrl);
+            $followupUrl
+                =  $configArray['Site']['url'] . "/". $_REQUEST['followupModule'];
+            if (!empty($_REQUEST['recordId'])) {
+                $followupUrl .= "/" . $_REQUEST['recordId'];
+            }
+            $followupUrl .= "/" . $_REQUEST['followupAction'];
+            if (isset($_REQUEST['comment'])) {
+                $followupUrl .= "?comment=" . urlencode($_REQUEST['comment']);
+            }
+            header("Location: " . $followupUrl);
+        } else {
+            // No follow-up URL; choose the default:
+            $page = isset($configArray['Site']['defaultAccountPage']) ?
+                $configArray['Site']['defaultAccountPage'] : 'Favorites';
+            $accountStart = $configArray['Site']['url'] . "/MyResearch/". $page;
+            header("Location: " . $accountStart);
         }
-
-        // Delete Resource
-        if (isset($_GET['delete'])) {
-            $resource = Resource::staticGet('record_id', $_GET['delete']);
-            $user->removeResource($resource);
-        }
-        
-        // Narrow by Tag
-        if (isset($_GET['tag'])) {
-            $interface->assign('tags', $_GET['tag']);
-        }
-
-        // Build Favorites List
-        $favorites = $user->getResources(isset($_GET['tag']) ? $_GET['tag'] : null);
-        $favList = new FavoriteHandler($favorites, $user);
-        $favList->assign();
-
-        // Get My Lists
-        $listList = $user->getLists();
-        $interface->assign('listList', $listList);
-
-        // Get My Tags
-        $tagList = $user->getTags();
-        $interface->assign('tagList', $tagList);
-        $interface->setPageTitle('Favorites');
-        $interface->setTemplate('favorites.tpl');
-        $interface->display('layout.tpl');
     }
-    
 }
 
 ?>

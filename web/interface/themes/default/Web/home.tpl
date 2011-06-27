@@ -73,5 +73,3 @@
     {/foreach}
   </div>
 </div>
-
-</div>

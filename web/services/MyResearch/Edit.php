@@ -1,5 +1,8 @@
 <?php
 /**
+ * Edit action for MyResearch module
+ *
+ * PHP version 5
  *
  * Copyright (C) Villanova University 2007.
  *
@@ -16,24 +19,53 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
+ * @category VuFind
+ * @package  Controller_MyResearch
+ * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
+ * @author   Demian Katz <demian.katz@villanova.edu>
+ * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
+ * @link     http://vufind.org/wiki/building_a_module Wiki
  */
-
 require_once "Action.php";
 
 require_once 'Home.php';
 
+/**
+ * Edit action for MyResearch module
+ *
+ * @category VuFind
+ * @package  Controller_MyResearch
+ * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
+ * @author   Demian Katz <demian.katz@villanova.edu>
+ * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
+ * @link     http://vufind.org/wiki/building_a_module Wiki
+ */
 class Edit extends Action
 {
-    function __construct()
+    /**
+     * Constructor
+     *
+     * @access public
+     */
+    public function __construct()
     {
     }
 
-    private function getTags($user, $listId)
+    /**
+     * Get tags for the selected user / list combination.
+     *
+     * @param object $user   Logged in user object
+     * @param int    $listId ID of list to search for tags
+     *
+     * @return string        List of tags
+     * @access private
+     */
+    private function _getTags($user, $listId)
     {
         $tagStr = '';
         $myTagList = $user->getTags($_GET['id'], $listId);
         if (is_array($myTagList) && count($myTagList) > 0) {
-            foreach($myTagList as $myTag) {
+            foreach ($myTagList as $myTag) {
                 if (strstr($myTag->tag, ' ')) {
                     $tagStr .= "\"$myTag->tag\" ";
                 } else {
@@ -44,12 +76,20 @@ class Edit extends Action
         return $tagStr;
     }
     
-    private function saveChanges($user)
+    /**
+     * Save a user's changes.
+     *
+     * @param object $user Logged in user object
+     *
+     * @return void
+     * @access private
+     */
+    private function _saveChanges($user)
     {
         $resource = Resource::staticGet('record_id', $_GET['id']);
         
         // Loop through the list of lists on the edit screen:
-        foreach($_POST['lists'] as $listId) {
+        foreach ($_POST['lists'] as $listId) {
             // Create a list object for the current list:
             $list = new User_list();
             if ($listId != '') {
@@ -62,24 +102,32 @@ class Edit extends Action
             preg_match_all('/"[^"]*"|[^ ]+/', $_POST['tags' . $listId], $tagArray);
             
             // Save extracted tags and notes:
-            $user->addResource($resource, $list, $tagArray[0], $_POST['notes' . $listId]);
+            $user->addResource(
+                $resource, $list, $tagArray[0], $_POST['notes' . $listId]
+            );
         }
     }
     
-    function launch($msg = null)
+    /**
+     * Process parameters and display the page.
+     *
+     * @return void
+     * @access public
+     */
+    public function launch()
     {
         global $interface;
         global $configArray;
 
         if (!($user = UserAccount::isLoggedIn())) {
-            require_once 'Login.php';
+            include_once 'Login.php';
             Login::launch();
             exit();
         }
         
         // Save Data
         if (isset($_POST['submit'])) {
-            $this->saveChanges($user);
+            $this->_saveChanges($user);
             
             // After changes are saved, send the user back to an appropriate page;
             // either the list they were viewing when they started editing, or the
@@ -87,18 +135,17 @@ class Edit extends Action
             if (isset($_GET['list_id'])) {
                 $nextAction = 'MyList/' . $_GET['list_id'];
             } else {
-                $nextAction = 'Home';
+                $nextAction = 'Favorites';
             }
-            header('Location: ' . $configArray['Site']['url'] . '/MyResearch/' . $nextAction);
+            header(
+                'Location: ' . $configArray['Site']['url'] . '/MyResearch/' .
+                $nextAction
+            );
             exit();
         }
 
         // Setup Search Engine Connection
-        $class = $configArray['Index']['engine'];
-        $db = new $class($configArray['Index']['url']);
-        if ($configArray['System']['debug']) {
-            $db->debug = true;
-        }
+        $db = ConnectionManager::connectToIndex();
 
         // Get Record Information
         $details = $db->getRecord($_GET['id']);
@@ -112,7 +159,7 @@ class Edit extends Action
         
         // Add tag information
         $savedData = array();
-        foreach($saved as $current) {
+        foreach ($saved as $current) {
             // If we're filtering to a specific list, skip any other lists:
             if (isset($_GET['list_id']) && $current->list_id != $_GET['list_id']) {
                 continue;
@@ -121,11 +168,13 @@ class Edit extends Action
                 'listId' => $current->list_id,
                 'listTitle' => $current->list_title,
                 'notes' => $current->notes,
-                'tags' => $this->getTags($user, $current->list_id));
+                'tags' => $this->_getTags($user, $current->list_id));
         }
 
         $interface->assign('savedData', $savedData);
-        $interface->assign('listFilter', isset($_GET['list_id']) ? $_GET['list_id'] : null);
+        $interface->assign(
+            'listFilter', isset($_GET['list_id']) ? $_GET['list_id'] : null
+        );
 
         $interface->setTemplate('edit.tpl');
         $interface->display('layout.tpl');

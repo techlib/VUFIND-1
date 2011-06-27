@@ -42,13 +42,20 @@
               <xsl:value-of select="$baseUrl"/><xsl:value-of select="php:function('urlencode', string(./id))"/>
             </guid>
             <title><xsl:value-of select="./title"/></title>
-            <xsl:if test="./publishDate">
-              <pubDate>
-                <xsl:text>01 Jan </xsl:text>
-                <xsl:value-of select="./publishDate"/>
-                <xsl:text> 00:00:00 GMT</xsl:text>
-              </pubDate>
-            </xsl:if>
+            <xsl:choose>
+              <xsl:when test="./last_indexed">
+                <pubDate>
+                  <xsl:value-of select="php:function('xslRssDate', string(./last_indexed))"/>
+                </pubDate>
+              </xsl:when>
+              <xsl:when test="./publishDate">
+                <pubDate>
+                  <xsl:text>01 Jan </xsl:text>
+                  <xsl:value-of select="./publishDate"/>
+                  <xsl:text> 00:00:00 GMT</xsl:text>
+                </pubDate>
+              </xsl:when>
+            </xsl:choose>
           </item>
         </xsl:for-each>
       </channel>

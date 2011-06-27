@@ -1,5 +1,5 @@
 <h2>{translate text='add_favorite_prefix'} {$record.title|escape:"html"} {translate text='add_favorite_suffix'}</h2>
-<form onSubmit="saveRecord('{$id|escape}', this, {literal}{{/literal}add: '{translate text='Add to favorites'}', error: '{translate text='add_favorite_fail'}'{literal}}{/literal}); return false;">
+<form onSubmit="saveRecord('{$id|escape}', this, {literal}{{/literal}add: '{translate text='Add to favorites'}', error: '{translate text='add_favorite_fail'}', load_error: '{translate text='load_tag_error'}'{literal}}{/literal}); return false;">
 <input type="hidden" name="submit" value="1" />
 {if !empty($containingLists)}
   <p>
@@ -20,16 +20,16 @@
   {if $showLists}
   <tr>
     <td>
-      {translate text='Choose a List'}
+      <label for="list">{translate text='Choose a List'}</label>
     </td>
   </tr>
   {/if}
   <tr>
     <td>
       {if $showLists}
-      <select name="list">
+      <select name="list" id="list">
         {foreach from=$nonContainingLists item="list"}
-        <option value="{$list.id}">{$list.title|escape:"html"}</option>
+        <option value="{$list.id}"{if $list.id==$lastListUsed} selected="selected"{/if}>{$list.title|escape:"html"}</option>
         {foreachelse}
         <option value="">{translate text='My Favorites'}</option>
         {/foreach}
@@ -40,11 +40,11 @@
     </td>
   </tr>
   {if $showLists}
-  <tr><td>{translate text='Add Tags'}</td></tr>
-  <tr><td><input type="text" name="mytags" value="" size="50"></td></tr>
+  <tr><td><label for="mytags">{translate text='Add Tags'}</label></td></tr>
+  <tr><td><input type="text" name="mytags" id="mytags" value="" size="50"></td></tr>
   <tr><td colspan="2">{translate text='add_tag_note'}</td></tr>
-  <tr><td>{translate text='Add a Note'}</td></tr>
-  <tr><td><textarea name="notes" rows="3" cols="50"></textarea></td></tr>
+  <tr><td><label for="notes">{translate text='Add a Note'}</label></td></tr>
+  <tr><td><textarea name="notes" id="notes" rows="3" cols="50"></textarea></td></tr>
   <tr><td><input type="submit" value="{translate text='Save'}"></td></tr>
   {/if}
 </table>

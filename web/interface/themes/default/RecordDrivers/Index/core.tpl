@@ -1,16 +1,50 @@
-{* Display Book Cover *}
+{* Display Title *}
+{literal}
+  <script language="JavaScript" type="text/javascript">
+    // <!-- avoid HTML validation errors by including everything in a comment.
+    function subjectHighlightOn(subjNum, partNum)
+    {
+        // Create shortcut to YUI library for readability:
+        var yui = YAHOO.util.Dom;
 
-  {if $isbn}
-  <div class="alignright">
-  <a href="{$path}/bookcover.php?isn={$isbn|escape:"url"}&amp;size=large">
-      <img alt="{translate text='Book Cover'}" class="recordcover" src="{$path}/bookcover.php?isn={$isbn|escape:"url"}&amp;size=medium">
-    </a>
-  </div>
+        for (var i = 0; i < partNum; i++) {
+            var targetId = "subjectLink_" + subjNum + "_" + i;
+            var o = document.getElementById(targetId);
+            if (o) {
+                yui.addClass(o, "hoverLink");
+            }
+        }
+    }
+
+    function subjectHighlightOff(subjNum, partNum)
+    {
+        // Create shortcut to YUI library for readability:
+        var yui = YAHOO.util.Dom;
+
+        for (var i = 0; i < partNum; i++) {
+            var targetId = "subjectLink_" + subjNum + "_" + i;
+            var o = document.getElementById(targetId);
+            if (o) {
+                yui.removeClass(o, "hoverLink");
+            }
+        }
+    }
+    // -->
+  </script>
+{/literal}
+{* Display Cover Image *}
+
+  {if $coreThumbMedium}
+    <div class="alignright">
+      {if $coreThumbLarge}<a href="{$coreThumbLarge|escape}">{/if}
+        <img alt="{translate text='Cover Image'}" class="recordcover" src="{$coreThumbMedium|escape}">
+      {if $coreThumbLarge}</a>{/if}
+    </div>
   {else}
 {* <img src="{$path}/bookcover.php" alt="{translate text='No Cover Image'}"> *}
   {/if}
 
-{* End Book Cover *}
+{* End Cover Image *}
 
 {* Display Title *}
 <h1>{$coreShortTitle|escape}
@@ -20,7 +54,7 @@
 </h1>
 {* End Title *}
 
-{if $coreSummary}<p>{$coreSummary|truncate:300:"..."|escape} <a href='{$url}/Record/{$id|escape:"url"}/Description#tabs'>Full description</a></p>{/if}
+{if $coreSummary}<p>{$coreSummary|truncate:300:"..."|escape} <a href='{$url}/Record/{$id|escape:"url"}/Description#tabnav'>{translate text='Full description'}</a></p>{/if}
 
 {* Display Main Details *}
 <table cellpadding="2" cellspacing="0" border="0" class="citation" summary="{translate text='Bibliographic Details'}">
@@ -143,7 +177,10 @@
         {foreach from=$field item=subfield name=subloop}
           {if !$smarty.foreach.subloop.first} &gt; {/if}
           {assign var=subject value="$subject $subfield"}
-          <a href="{$url}/Search/Results?lookfor=%22{$subject|escape:"url"}%22&amp;type=Subject">{$subfield|escape}</a>
+          <a id="subjectLink_{$smarty.foreach.loop.index}_{$smarty.foreach.subloop.index}"
+            href="{$url}/Search/Results?lookfor=%22{$subject|escape:"url"}%22&amp;type=Subject"
+          onmouseover="subjectHighlightOn({$smarty.foreach.loop.index}, {$smarty.foreach.subloop.index});"
+          onmouseout="subjectHighlightOff({$smarty.foreach.loop.index}, {$smarty.foreach.subloop.index});">{$subfield|escape}</a>
         {/foreach}
         <br>
       {/foreach}
@@ -155,14 +192,23 @@
   <tr valign="top">
     <th>{translate text='Online Access'}: </th>
     <td>
-      {foreach from=$coreURLs item=desc key=url name=loop}
-        <a href="{if $proxy}{$proxy}/login?url={$url|escape:"url"}{else}{$url|escape}{/if}">{$desc|escape}</a><br/>
+      {foreach from=$coreURLs item=desc key=currentUrl name=loop}
+        <a href="{if $proxy}{$proxy}/login?qurl={$currentUrl|escape:"url"}{else}{$currentUrl|escape}{/if}">{$desc|escape}</a><br/>
       {/foreach}
       {if $coreOpenURL}
         {include file="Search/openurl.tpl" openUrl=$coreOpenURL}<br/>
       {/if}
     </td>
   </tr>
+  {/if}
+
+  {if !empty($coreRecordLinks)}
+  {foreach from=$coreRecordLinks item=coreRecordLink}
+  <tr valign="top">
+    <th>{translate text=$coreRecordLink.title}: </th>
+    <td><a href="{$coreRecordLink.link|escape}">{$coreRecordLink.value|escape}</a></td>
+  </tr>
+  {/foreach}
   {/if}
 
   <tr valign="top">

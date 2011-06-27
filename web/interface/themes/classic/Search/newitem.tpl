@@ -3,7 +3,7 @@
     <div class="yui-b first contentbox">
       <div class="record">
     	
-        <form method="GET" action="{$url}/Search/NewItem" name="searchForm" class="search">
+        <form method="GET" action="{$url}/Search/NewItem" class="search">
           <h2>{translate text='Find New Items'}</h2>
           <br>
           <table>

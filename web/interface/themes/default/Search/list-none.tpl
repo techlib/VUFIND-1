@@ -1,5 +1,5 @@
-<script language="JavaScript" type="text/javascript" src="{$path}/js/ajax_common.js"></script>
-<script language="JavaScript" type="text/javascript" src="{$path}/services/Search/ajax.js"></script>
+{js filename="ajax_common.js"}
+{js filename="search.js"}
 
 <div id="bd">
   <div id="yui-main" class="content">

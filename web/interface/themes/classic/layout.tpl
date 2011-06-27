@@ -15,14 +15,14 @@
       path = '{$url}';
     </script>
 
-    <script language="JavaScript" type="text/javascript" src="{$path}/js/yui/yahoo-dom-event.js"></script>
-    <script language="JavaScript" type="text/javascript" src="{$path}/js/yui/yahoo-min.js"></script>
-    <script language="JavaScript" type="text/javascript" src="{$path}/js/yui/event-min.js"></script>
-    <script language="JavaScript" type="text/javascript" src="{$path}/js/yui/connection-min.js"></script>
-    <script language="JavaScript" type="text/javascript" src="{$path}/js/yui/dragdrop-min.js"></script>
-    <script language="JavaScript" type="text/javascript" src="{$path}/js/scripts.js"></script>
-    <script language="JavaScript" type="text/javascript" src="{$path}/js/rc4.js"></script>
-    <script language="JavaScript" type="text/javascript" src="{$path}/js/ajax.yui.js"></script>
+    {js filename="yui/yahoo-dom-event.js"}
+    {js filename="yui/connection-min.js"}
+    {js filename="yui/datasource-min.js"}
+    {js filename="yui/autocomplete-min.js"}
+    {js filename="yui/dragdrop-min.js"}
+    {js filename="scripts.js"}
+    {js filename="rc4.js"}
+    {js filename="ajax.yui.js"}
   </head>
 
   <body>
@@ -49,10 +49,8 @@
         <div id="yui-main">
         {if $showTopSearchBox}
           {if $pageTemplate != 'advanced.tpl'}
-            {if $module=="Summon"}
-              {include file="Summon/searchbox.tpl"}
-            {elseif $module=="WorldCat"}
-              {include file="WorldCat/searchbox.tpl"}
+            {if $module=="Summon" || $module=="WorldCat" || $module=="Authority"}
+              {include file="`$module`/searchbox.tpl"}
             {else}
               {include file="Search/searchbox.tpl"}
             {/if}
@@ -73,7 +71,8 @@
             </div>
             {if is_array($allLangs) && count($allLangs) > 1}
             <form method="post" name="langForm" action="">
-            <select name="mylang" onChange="document.langForm.submit();">
+            <div class="hiddenLabel"><label for="mylang">{translate text="Language"}:</label></div>
+            <select id="mylang" name="mylang" onChange="document.langForm.submit();">
               {foreach from=$allLangs key=langCode item=langName}
               <option value="{$langCode}"{if $userLang == $langCode} selected{/if}>{translate text=$langName}</option>
               {/foreach}
