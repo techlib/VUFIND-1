@@ -1,8 +1,5 @@
 <?php
 /**
- * SMS (text messaging) action for Record module
- *
- * PHP version 5
  *
  * Copyright (C) Villanova University 2007.
  *
@@ -19,49 +16,25 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- * @category VuFind
- * @package  Controller_Record
- * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
- * @author   Demian Katz <demian.katz@villanova.edu>
- * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     http://vufind.org/wiki/building_a_module Wiki
  */
+ 
+require_once 'CatalogConnection.php';
+
 require_once 'Record.php';
 
 require_once 'sys/Mailer.php';
 
-/**
- * SMS (text messaging) action for Record module
- *
- * @category VuFind
- * @package  Controller_Record
- * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
- * @author   Demian Katz <demian.katz@villanova.edu>
- * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     http://vufind.org/wiki/building_a_module Wiki
- */
 class SMS extends Record
 {
-    private $_sms;
-
-    /**
-     * Constructor
-     *
-     * @access public
-     */
-    public function __construct()
+    private $sms;
+    
+    function __construct()
     {
         parent::__construct();
-        $this->_sms = new SMSMailer();
+        $this->sms = new SMSMailer();
     }
-
-    /**
-     * Process incoming parameters and display the page.
-     *
-     * @return void
-     * @access public
-     */
-    public function launch()
+    
+    function launch()
     {
         global $interface;
 
@@ -74,25 +47,18 @@ class SMS extends Record
             $interface->setTemplate('view-alt.tpl');
             $interface->display('layout.tpl');
         } else {
-            return $this->_displayForm();
+            return $this->display();
         }
     }
-
-    /**
-     * Display the blank SMS form.
-     *
-     * @return void
-     * @access private
-     */
-    private function _displayForm()
+    
+    function display()
     {
         global $interface;
 
-        $interface->assign('carriers', $this->_sms->getCarriers());
-        $interface->assign(
-            'formTargetPath', '/Record/' . urlencode($_GET['id']) . '/SMS'
-        );
-
+        $interface->assign('carriers', $this->sms->getCarriers());
+        $interface->assign('formTargetPath',
+            '/Record/' . urlencode($_GET['id']) . '/SMS');
+        
         if (isset($_GET['lightbox'])) {
             // Use for lightbox
             $interface->assign('title', $_GET['message']);
@@ -105,21 +71,17 @@ class SMS extends Record
             $interface->display('layout.tpl', 'RecordSMS' . $_GET['id']);
         }
     }
-
-    /**
-     * Send the SMS message by email.
-     *
-     * @return mixed Boolean true on success, PEAR_Error on failure.
-     * @access public
-     */
-    public function sendSMS()
+    
+    // Email SMS
+    function sendSMS()
     {
         global $configArray;
         global $interface;
 
         // Get Holdings
-        $catalog = ConnectionManager::connectToCatalog();
-        if (!$catalog || !$catalog->status) {
+        try {
+            $catalog = new CatalogConnection($configArray['Catalog']['driver']);
+        } catch (PDOException $e) {
             return new PEAR_Error('Cannot connect to ILS');
         }
         $holdings = $catalog->getStatus($_GET['id']);
@@ -133,10 +95,8 @@ class SMS extends Record
         $interface->assign('recordID', $_GET['id']);
         $message = $interface->fetch('Emails/catalog-sms.tpl');
 
-        return $this->_sms->text(
-            $_REQUEST['provider'], $_REQUEST['to'], $configArray['Site']['email'],
-            $message
-        );
+        return $this->sms->text($_REQUEST['provider'], $_REQUEST['to'],
+            $configArray['Site']['email'], $message);
     }
 }
 ?>

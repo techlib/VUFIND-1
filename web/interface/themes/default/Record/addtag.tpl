@@ -3,7 +3,7 @@
     ); return false;' method="POST">
 <input type="hidden" name="submit" value="1" />
 <table>
-  <tr><td><label for="tag">{translate text="Tags"}:</label></td><td><input type="text" name="tag" id="tag" value="" size="50"></td></tr>
+  <tr><td>{translate text="Tags"}: </td><td><input type="text" name="tag" value="" size="50"></td></tr>
   <tr><td colspan="2">{translate text="add_tag_note"}</td></tr>
   <tr><td></td><td><input type="submit" value="{translate text='Save'}"></td></tr>
 </table>

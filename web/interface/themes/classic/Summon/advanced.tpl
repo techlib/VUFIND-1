@@ -38,31 +38,6 @@
               {translate text=$current.desc}<br>
               {/foreach}
               <br>
-            {/if}
-            {if $dateRangeLimit}
-              {* Load the publication date slider UI widget *}
-              {js filename="yui/slider-min.js"}
-              {js filename="pubdate_slider.js"}
-              <table summary="{translate text='adv_search_year'}">
-                <tr>
-                  <th valign="top" align="right">{translate text="adv_search_year"}:&nbsp;</th>
-                  <td>
-                    <input type="hidden" name="daterange[]" value="PublicationDate"/>
-                    <label for="PublicationDatefrom" class='yearboxlabel'>{translate text='date_from'}:</label>
-                    <input type="text" size="4" maxlength="4" class="yearbox" name="PublicationDatefrom" id="PublicationDatefrom" value="{$dateRangeLimit.0|escape}" />
-                    <label for="PublicationDateto" class='yearboxlabel'>{translate text='date_to'}:</label>
-                    <input type="text" size="4" maxlength="4" class="yearbox" name="PublicationDateto" id="PublicationDateto" value="{$dateRangeLimit.1|escape}" />
-                    <div id="PublicationDateSlider" class="yui-h-slider dateSlider" title="{translate text='Range slider'}" style="display:none;">
-                      <div id="PublicationDateslider_min_thumb" class="yui-slider-thumb"><img src="{$path}/images/yui/left-thumb.png"></div>
-                      <div id="PublicationDateslider_max_thumb" class="yui-slider-thumb"><img src="{$path}/images/yui/right-thumb.png"></div>
-                    </div>
-                  </td>
-                </tr>
-              </table>
-              <br/>
-            {/if}
-            {* Display extra submit button if we have extra controls showing: *}
-            {if !empty($checkboxFilters) || $dateRangeLimit}
               <input type="submit" name="submit" value="{translate text="Find"}"><br>
             {/if}
           </div>
@@ -98,7 +73,6 @@
     </div>
   </div>
 
-{if $lastSort}<input type="hidden" name="sort" value="{$lastSort|escape}" />{/if}
         </form>
 </div>
 
@@ -120,7 +94,7 @@
     var searchFormId    = 'advSearchForm';
 </script>
 {* Step 2: Call the javascript to make use of the above *}
-{js filename="advanced.js"}
+<script language="JavaScript" type="text/javascript" src="{$path}/services/Search/advanced.js"></script>
 {* Step 3: Build the page *}
 <script language="JavaScript" type="text/javascript">
   {if $searchDetails}

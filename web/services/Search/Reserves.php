@@ -1,8 +1,5 @@
 <?php
 /**
- * Reserves action for Search module
- *
- * PHP version 5
  *
  * Copyright (C) Villanova University 2007.
  *
@@ -19,42 +16,23 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- * @category VuFind
- * @package  Controller_Search
- * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
- * @author   Demian Katz <demian.katz@villanova.edu>
- * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     http://vufind.org/wiki/building_a_module Wiki
  */
+
 require_once 'Action.php';
+
+require_once 'CatalogConnection.php';
 
 require_once 'sys/Pager.php';
 
-/**
- * Reserves action for Search module
- *
- * @category VuFind
- * @package  Controller_Search
- * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
- * @author   Demian Katz <demian.katz@villanova.edu>
- * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     http://vufind.org/wiki/building_a_module Wiki
- */
-class Reserves extends Action
-{
-    /**
-     * Process incoming parameters and display the page.
-     *
-     * @return void
-     * @access public
-     */
-    public function launch()
+class Reserves extends Action {
+    
+    function launch()
     {
         global $interface;
         global $configArray;
 
-        $catalog = ConnectionManager::connectToCatalog();
-        if (!$catalog || !$catalog->status) {
+        $catalog = new CatalogConnection($configArray['Catalog']['driver']);
+        if (!$catalog->status) {
             PEAR::raiseError(new PEAR_Error('Cannot Load Catalog Driver'));
         }
 
@@ -65,19 +43,13 @@ class Reserves extends Action
 
             // Must have atleast Action and Module set to continue
             $interface->setPageTitle('Reserves Search Results');
+            $interface->assign('subpage', 'Search/list-list.tpl');
             $interface->setTemplate('reserves-list.tpl');
-            //Get view & load template
-            $currentView  = $searchObject->getView();
-            $interface->assign('subpage', 'Search/list-' . $currentView .'.tpl');
-            $interface->assign('viewList',   $searchObject->getViewList());
             $interface->assign('sortList', $searchObject->getSortList());
-            $interface->assign('limitList', $searchObject->getLimitList());
             $interface->assign('rssLink', $searchObject->getRSSUrl());
 
             // Get reserve info from the catalog and catch any fatal errors:
-            $result = $catalog->findReserves(
-                $_GET['course'], $_GET['inst'], $_GET['dept']
-            );
+            $result = $catalog->findReserves($_GET['course'], $_GET['inst'], $_GET['dept']);
             if (PEAR::isError($result)) {
                 PEAR::raiseError($result);
             }
@@ -109,24 +81,17 @@ class Reserves extends Action
                 }
                 
                 // Store recommendations (facets, etc.)
-                $interface->assign(
-                    'topRecommendations',
-                    $searchObject->getRecommendationsTemplates('top')
-                );
-                $interface->assign(
-                    'sideRecommendations',
-                    $searchObject->getRecommendationsTemplates('side')
-                );
+                $interface->assign('topRecommendations',
+                    $searchObject->getRecommendationsTemplates('top'));
+                $interface->assign('sideRecommendations',
+                    $searchObject->getRecommendationsTemplates('side'));
+            // Special case -- empty RSS feed:
             } else if ($searchObject->getView() == 'rss') {
-                // Special case -- empty RSS feed...
-
                 // Throw the XML to screen
-                echo $searchObject->buildRSS(
-                    array(
-                        'response' => array('numFound' => 0),
-                        'responseHeader' => array('params' => array('rows' => 0)),
-                    )
-                );
+                echo $searchObject->buildRSS(array(
+                    'response' => array('numFound' => 0),
+                    'responseHeader' => array('params' => array('rows' => 0)),
+                    ));
                 // And we're done
                 exit();
             }
@@ -146,8 +111,7 @@ class Reserves extends Action
             $pager = new VuFindPager($options);
             $interface->assign('pageLinks', $pager->getLinks());
 
-            // Save the URL of this search to the session so we can return to it
-            // easily:
+            // Save the URL of this search to the session so we can return to it easily:
             $_SESSION['lastSearchURL'] = $searchObject->renderSearchUrl();
         } else {
             $interface->setPageTitle('Reserves Search');

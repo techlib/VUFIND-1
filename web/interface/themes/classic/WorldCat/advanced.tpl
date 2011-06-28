@@ -61,7 +61,6 @@
     </div>
   </div>
 
-{if $lastSort}<input type="hidden" name="sort" value="{$lastSort|escape}" />{/if}
         </form>
 </div>
 
@@ -83,7 +82,7 @@
     var searchFormId    = 'advSearchForm';
 </script>
 {* Step 2: Call the javascript to make use of the above *}
-{js filename="advanced.js"}
+<script language="JavaScript" type="text/javascript" src="{$path}/services/Search/advanced.js"></script>
 {* Step 3: Build the page *}
 <script language="JavaScript" type="text/javascript">
   {if $searchDetails}

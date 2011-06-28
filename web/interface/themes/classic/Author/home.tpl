@@ -1,11 +1,11 @@
-{js filename="ajax_common.js"}
-{js filename="search.js"}
+<script language="JavaScript" type="text/javascript" src="{$path}/js/ajax_common.js"></script>
+<script language="JavaScript" type="text/javascript" src="{$path}/services/Search/ajax.js"></script>
 
 <div id="bd">
   <div id="yui-main" class="content">
     <div class="yui-b first contentbox">
     
-      <div>
+      <div class="record">
         {if $lastsearch}
           <p>  <a href="{$lastsearch|escape}" class="backtosearch">&laquo; {translate text="Back to Search Results"}</a></p>
         {/if}
@@ -21,64 +21,16 @@
           <br clear="All"><a href="http://{$wiki_lang}.wikipedia.org/wiki/{$info.name|escape:"url"}" target="new"><span class="note">{translate text='wiki_link'}</span></a>
         </p>
         {/if}
-
-        {if $topRecommendations}
-          {foreach from=$topRecommendations item="recommendations"}
-            {include file=$recommendations}
-          {/foreach}
-        {/if}
-
-        {* Listing Options *}
-        <div class="yui-gc resulthead">
-          <div class="yui-u first">
-            {if $recordCount}
-              {translate text="Showing"}
-              <b>{$recordStart}</b> - <b>{$recordEnd}</b>
-              {translate text='of'} <b>{$recordCount}</b>
-              {translate text='for search'}: <b>'{$authorName|escape:"html"}'</b>,
-            {/if}
-            {translate text='query time'}: {$qtime}s
-          </div>
-
-          <div class="yui-u toggle">
-            {if $viewList|@count gt 1}
-              {foreach from=$viewList item=viewData key=viewLabel}
-                {if !$viewData.selected}<a href="{$viewData.viewUrl|escape}" title="{translate text='Switch view to'} {translate text=$viewData.desc}" >{/if}
-                <img src="{$path}/images/view_{$viewData.viewType}.png" {if $viewData.selected}title="{translate text=$viewData.desc} {translate text='view already selected'}"{/if}/>
-                {if !$viewData.selected}</a>{/if}
-              {/foreach}
-              <br/>
-            {/if}
-            {if $limitList|@count gt 1}
-             <form action="{$path}/Search/LimitResults" method="post">
-              <label for="limit">{translate text='Results per page'}</label>
-              <select id="limit" name="limit" onChange="document.location.href = this.options[this.selectedIndex].value;">
-                {foreach from=$limitList item=limitData key=limitLabel}
-                  <option value="{$limitData.limitUrl|escape}"{if $limitData.selected} selected="selected"{/if}>{$limitData.desc|escape}</option>
-                {/foreach}
-              </select>
-              <noscript><input type="submit" value="{translate text="Set"}" /></noscript>
-             </form>
-            {/if}
-            <form action="{$path}/Search/SortResults" method="post">
-              <label for="sort">{translate text='Sort'}</label>
-              <select id="sort" name="sort" onChange="document.location.href = this.options[this.selectedIndex].value;">
-                {foreach from=$sortList item=sortData key=sortLabel}
-                  <option value="{$sortData.sortUrl|escape}"{if $sortData.selected} selected{/if}>{translate text=$sortData.desc}</option>
-                {/foreach}
-              </select>
-              <noscript><input type="submit" value="{translate text="Set"}" /></noscript>
-            </form>
-          </div>
-
+  
+        <div class="resulthead">
+          {translate text="Showing"}
+          <b>{$recordStart}</b> - <b>{$recordEnd}</b>
+          {translate text='of'} <b>{$recordCount}</b>
+          {translate text='for search'}: <b>'{$authorName|escape:"html"}'</b>,
+          {translate text='query time'}: {$qtime}s
         </div>
-        {* End Listing Options *}
 
-        {if $subpage}
-          {include file=$subpage}
-        {else}
-          {$pageContent}
-        {/if}
+        {include file="Search/list-list.tpl"}
 
         {if $pageLinks.all}<div class="pagination">{$pageLinks.all}</div>{/if}
   
@@ -102,16 +54,3 @@
   {* End Recommendations *}
 
 </div>
-{if $showPreviews}
-<script type="text/javascript">
-{if $showGBSPreviews}
-document.write(unescape("%3Cscript src=http://books.google.com/books?jscmd=viewapi&bibkeys=" + doGetExtIds() + "&callback=ProcessGBSBookInfo" + " type='text/javascript'%3E%3C/script%3E"));
-{/if}
-{if $showOLPreviews}
-document.write(unescape("%3Cscript src=http://openlibrary.org/api/books?bibkeys=" + doGetExtIds() + "&callback=ProcessOLBookInfo" + " type='text/javascript'%3E%3C/script%3E"));
-{/if}
-{if $showHTPreviews}
-document.write(unescape("%3Cscript src=http://catalog.hathitrust.org/api/volumes/brief/json/" + doGetHTIds() + "&callback=ProcessHTBookInfo" + " type='text/javascript'%3E%3C/script%3E"));
-{/if}
-</script>
-{/if}

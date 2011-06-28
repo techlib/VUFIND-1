@@ -1,8 +1,5 @@
 <?php
 /**
- * Class for managing "next" and "previous" navigation within result sets.
- *
- * PHP version 5
  *
  * Copyright (C) Villanova University 2010
  *
@@ -19,52 +16,35 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- * @category VuFind
- * @package  Support_Classes
- * @author   Demian Katz <demian.katz@villanova.edu>
- * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     http://vufind.org/wiki/system_classes Wiki
  */
+
 require_once 'services/MyResearch/lib/Search.php';
 
-/**
- * Class for managing "next" and "previous" navigation within result sets.
- *
- * @category VuFind
- * @package  Support_Classes
- * @author   Demian Katz <demian.katz@villanova.edu>
- * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     http://vufind.org/wiki/system_classes Wiki
- */
-class ResultScroller
-{
+class ResultScroller {
     protected $enabled;
 
     /**
-     * Constructor. Create a new search result scroller.
-     *
-     * @access public
+     * Constructor. Create a new search result scroller. 
      */
     public function __construct()
     {
         global $configArray;
 
         // Is this functionality enabled in config.ini?
-        $this->enabled = (isset($configArray['Record']) &&
+        $this->enabled = (isset($configArray['Record']) && 
             isset($configArray['Record']['next_prev_navigation']) &&
             $configArray['Record']['next_prev_navigation']);
     }
 
     /**
-     * Initialize this result set scroller. This should only be called
+     * Initialize this result set scroller. This should only be called 
      * prior to displaying the results of a new search.
-     *
-     * @param object $searchObject The search object that was used to execute the
-     * last search.
-     * @param array  $result       The result of the last search.
-     *
-     * @return boolean
+     * 
+     * @param $searchObject The search object that was used to execute the last search.
+     * @param $result       The result of the last search.
+     * 
      * @access public
+     * @return boolean
      */
     public function init($searchObject, $result)
     {
@@ -76,12 +56,12 @@ class ResultScroller
         // Save the saved search ID of this search in the session
         $_SESSION['lastSearchId'] = $searchObject->getSearchId();
 
-        // Save the current page number to the session
+        // Save the current page number to the session 
         $_SESSION['currentPageNumber'] = $searchObject->getPage();
-
+        
         // Save the last search limit to the session
         $_SESSION['lastSearchLimit'] = $searchObject->getLimit();
-
+        
         // Save the total number of results to the session
         $_SESSION['lastSearchResultTotal'] = $searchObject->getResultTotal();
 
@@ -105,19 +85,17 @@ class ResultScroller
      * Get the previous/next record in the last search
      * result set relative to the current one, also return
      * the position of the current record in the result set.
-     * Return array('previousRecord'=>previd, 'nextRecord'=>nextid,
+     * Return array('previousRecord'=>previd, 'nextRecord'=>nextid, 
      * 'currentPosition'=>number, 'resultTotal'=>number).
      *
-     * @param string $id The ID currently being displayed
-     *
+     * @param $id
      * @return array
-     * @access public
      */
     public function getScrollData($id)
     {
         $retVal = array(
             'previousRecord'=>null,
-            'nextRecord'=>null,
+            'nextRecord'=>null, 
             'currentPosition'=>null,
             'resultTotal'=>null);
 
@@ -126,12 +104,10 @@ class ResultScroller
             return $retVal;
         }
 
-        if (isset($_SESSION['recordsOnCurrentPage'])
-            && isset($_SESSION['lastSearchId'])
-        ) {
+        if (isset($_SESSION['recordsOnCurrentPage']) && isset($_SESSION['lastSearchId'])) {
             // we need to restore the last search object
             // to fetch either the previous/next page of results
-            $lastSearch = $this->_restoreLastSearch();
+            $lastSearch = $this->restoreLastSearch();
 
             // give up if we can not restore the last search
             if (!$lastSearch) {
@@ -140,15 +116,9 @@ class ResultScroller
 
             $currentPageNumber = $_SESSION['currentPageNumber'];
             $recordsOnCurrentPage = $_SESSION['recordsOnCurrentPage'];
-            $recordsOnPreviousPage
-                = isset($_SESSION['recordsOnPreviousPage'])
-                ? $_SESSION['recordsOnPreviousPage'] : null;
-            $recordsOnNextPage
-                = isset($_SESSION['recordsOnNextPage'])
-                ? $_SESSION['recordsOnNextPage'] : null;
-            $resultTotal
-                = isset($_SESSION['lastSearchResultTotal'])
-                ? $_SESSION['lastSearchResultTotal'] : 0;
+            $recordsOnPreviousPage = isset($_SESSION['recordsOnPreviousPage']) ? $_SESSION['recordsOnPreviousPage'] : null;
+            $recordsOnNextPage = isset($_SESSION['recordsOnNextPage']) ? $_SESSION['recordsOnNextPage'] : null;
+            $resultTotal = isset($_SESSION['lastSearchResultTotal']) ? $_SESSION['lastSearchResultTotal'] : 0;
             $retVal['resultTotal'] = $resultTotal;
 
             // find where this record is in the current result page
@@ -156,9 +126,7 @@ class ResultScroller
             if ($pos !== false) {
                 // OK, found this record in the current result page
                 // calculate it's position relative to the result set
-                $retVal['currentPosition']
-                    = ($currentPageNumber - 1) * $_SESSION['lastSearchLimit']
-                    + $pos + 1;
+                $retVal['currentPosition'] = ($currentPageNumber - 1) * $_SESSION['lastSearchLimit'] + $pos + 1;
 
                 // count how many records in the current result page
                 $count = count($recordsOnCurrentPage);
@@ -179,18 +147,14 @@ class ResultScroller
                     // the previous page has not been fetched before, then
                     // fetch the previous page
                     if ($currentPageNumber > 1 && $recordsOnPreviousPage == null) {
-                        $recordsOnPreviousPage = $this->_fetchPage(
-                            $lastSearch, $currentPageNumber - 1
-                        );
+                        $recordsOnPreviousPage = $this->fetchPage($lastSearch, $currentPageNumber - 1);
                         $_SESSION['recordsOnPreviousPage'] = $recordsOnPreviousPage;
                     }
 
                     // if there is something on the previous page, then the previous
                     // record is the last record on the previous page
                     if (!empty($recordsOnPreviousPage)) {
-                        $prevPageSize = count($recordsOnPreviousPage);
-                        $retVal['previousRecord']
-                            = $recordsOnPreviousPage[$prevPageSize - 1];
+                        $retVal['previousRecord'] = $recordsOnPreviousPage[count($recordsOnPreviousPage) - 1];
                     }
 
                     // if it is not the last record on the current page, then
@@ -208,9 +172,7 @@ class ResultScroller
                     // if the next page has not been fetched, then
                     // fetch the next page
                     if ($recordsOnNextPage == null) {
-                        $recordsOnNextPage = $this->_fetchPage(
-                            $lastSearch, $currentPageNumber + 1
-                        );
+                        $recordsOnNextPage = $this->fetchPage($lastSearch, $currentPageNumber + 1);
                         $_SESSION['recordsOnNextPage'] = $recordsOnNextPage;
                     }
 
@@ -237,8 +199,8 @@ class ResultScroller
                     // check if current record is on the previous page
                     $pos = array_search($id, $recordsOnPreviousPage);
                     if ($pos !== false) {
-                        // decrease the currentPageNumber in the session because
-                        // we're now sliding into the previous page
+                        // decrease the currentPageNumber in the session because we're now
+                        // sliding into the previous page
                         $currentPageNumber--;
                         $_SESSION['currentPageNumber'] = $currentPageNumber;
 
@@ -259,15 +221,12 @@ class ResultScroller
 
                         // now we can set the previous/next record
                         if ($pos > 0) {
-                            $retVal['previousRecord']
-                                = $recordsOnCurrentPage[$pos - 1];
+                            $retVal['previousRecord'] = $recordsOnCurrentPage[$pos - 1];
                         }
                         $retVal['nextRecord'] = $recordsOnNextPage[0];
 
                         // recalculate the current position
-                        $retVal['currentPosition']
-                            = ($currentPageNumber - 1) * $_SESSION['lastSearchLimit']
-                            + $pos + 1;
+                        $retVal['currentPosition'] = ($currentPageNumber - 1) * $_SESSION['lastSearchLimit'] + $pos + 1;
 
                         // update the search URL in the session
                         $lastSearch->setPage($currentPageNumber);
@@ -283,14 +242,14 @@ class ResultScroller
                     // check if current record is on the next page
                     $pos = array_search($id, $recordsOnNextPage);
                     if ($pos !== false) {
-                        // increase the currentPageNumber in the session because
-                        // we're now sliding into the next page
+                        // increase the currentPageNumber in the session because we're now
+                        // sliding into the next page
                         $currentPageNumber++;
                         $_SESSION['currentPageNumber'] = $currentPageNumber;
 
                         // save the current page
                         $tmp = $recordsOnCurrentPage;
-
+                        
                         // the next page becomes the current page
                         $recordsOnCurrentPage = $recordsOnNextPage;
                         $_SESSION['recordsOnCurrentPage'] = $recordsOnCurrentPage;
@@ -304,17 +263,13 @@ class ResultScroller
                         $_SESSION['recordsOnNextPage'] = $recordsOnNextPage;
 
                         // now we can set the previous/next record
-                        $prevPageSize = count($recordsOnPreviousPage);
-                        $retVal['previousRecord']
-                            = $recordsOnPreviousPage[$prevPageSize - 1];
+                        $retVal['previousRecord'] = $recordsOnPreviousPage[count($recordsOnPreviousPage) - 1];
                         if ($pos < count($recordsOnCurrentPage) - 1) {
                             $retVal['nextRecord'] = $recordsOnCurrentPage[$pos + 1];
                         }
 
                         // recalculate the current position
-                        $retVal['currentPosition']
-                            = ($currentPageNumber - 1) * $_SESSION['lastSearchLimit']
-                            + $pos + 1;
+                        $retVal['currentPosition'] = ($currentPageNumber - 1) * $_SESSION['lastSearchLimit'] + $pos + 1;
 
                         // update the search URL in the session
                         $lastSearch->setPage($currentPageNumber);
@@ -334,14 +289,11 @@ class ResultScroller
      * Fetch the given page of results from the given search object and
      * return the IDs of the records in an array.
      *
-     * @param object $searchObject The search object to use to execute the search
-     * @param int    $page         The page number to fetch
-     *
+     * @param $searchObject The search object to be used to execute the search
+     * @param $page         The page number to fetch
      * @return array
-     * @access private
      */
-    private function _fetchPage($searchObject, $page)
-    {
+    private function fetchPage($searchObject, $page) {
         $searchObject->setPage($page);
         $result = $searchObject->processSearch(true, false);
         if (PEAR::isError($result)) {
@@ -356,11 +308,9 @@ class ResultScroller
 
     /**
      * Restore the last saved search.
-     *
      * @return SearchObject
-     * @access private
      */
-    private function _restoreLastSearch()
+    private function restoreLastSearch()
     {
         if (isset($_SESSION['lastSearchId'])) {
             $search = new SearchEntry();

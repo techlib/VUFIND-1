@@ -1,8 +1,5 @@
 <?php
 /**
- * Tag action for Browse module
- *
- * PHP version 5
  *
  * Copyright (C) Villanova University 2007.
  *
@@ -19,36 +16,15 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- * @category VuFind
- * @package  Controller_Browse
- * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
- * @author   Demian Katz <demian.katz@villanova.edu>
- * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     http://vufind.org/wiki/building_a_module Wiki
  */
+
 require_once 'services/Browse/Browse.php';
 
 require_once 'services/MyResearch/lib/Tags.php';
 
-/**
- * Tag action for Browse module
- *
- * @category VuFind
- * @package  Controller_Browse
- * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
- * @author   Demian Katz <demian.katz@villanova.edu>
- * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     http://vufind.org/wiki/building_a_module Wiki
- */
-class Tag extends Browse
-{
-    /**
-     * Process parameters and display the page.
-     *
-     * @return void
-     * @access public
-     */
-    public function launch()
+class Tag extends Browse {
+    
+    function launch()
     {
         global $interface;
         global $configArray;
@@ -57,23 +33,21 @@ class Tag extends Browse
             $interface->assign('findby', $_GET['findby']);
             // Special case -- display alphabet selection if necessary:
             if ($_GET['findby'] == 'alphabetical') {
-                $legalLetters = $this->_getAlphabetList();
+                $legalLetters = $this->getAlphabetList();
                 $interface->assign('alphabetList', $legalLetters);
                 // Only display tag list when a valid letter is selected:
-                if (isset($_GET['letter'])
-                    && in_array($_GET['letter'], $legalLetters)
-                ) {
+                if (isset($_GET['letter']) && 
+                    in_array($_GET['letter'], $legalLetters)) {
                     $interface->assign('startLetter', $_GET['letter']);
                     // Note -- this does not need to be escaped because 
                     // $_GET['letter'] has already been validated against
-                    // the _getAlphabetList() method below!
-                    $clause = ' AND lower("tags"."tag") LIKE ' .
-                        "lower('{$_GET['letter']}%')";
-                    $interface->assign('tagList', $this->_getTagList($clause));
+                    // the getAlphabetList() method below!
+                    $clause = " AND tags.tag LIKE '{$_GET['letter']}%'";
+                    $interface->assign('tagList', $this->getTagList($clause));
                 }
+            // Default case -- always display tag list for non-alphabetical modes:
             } else {
-                // Default case: always display tag list for non-alphabetical modes:
-                $interface->assign('tagList', $this->_getTagList());
+                $interface->assign('tagList', $this->getTagList());
             }
         }
 
@@ -85,10 +59,10 @@ class Tag extends Browse
     /**
      * Get a list of initial letters to display in alphabetical mode.
      *
-     * @return array
-     * @access private
+     * @access  private
+     * @return  array
      */
-    private function _getAlphabetList()
+    private function getAlphabetList()
     {
         return array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
             'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
@@ -98,31 +72,29 @@ class Tag extends Browse
     /**
      * Get a list of tags based on current GET parameters.
      *
-     * @param string $extra_where Where clause to add to lookup query; it is the
-     * caller's responsibility to make sure this is safe!!
-     *
-     * @return array              Tag details.
-     * @access private
+     * @access  private
+     * @param   string      $extra_where        Where clause to add to lookup query;
+     *                                          it is caller's responsibility to
+     *                                          make sure this is safe!!
+     * @return  array                           Tag details.
      */
-    private function _getTagList($extra_where = '')
+    private function getTagList($extra_where = '')
     {
         $tagList = array();
         $tag = new Tags();
-        $sql = 'SELECT "tags"."tag", COUNT("resource_tags"."id") AS cnt ' .
-            'FROM "tags", "resource_tags" ' .
-            'WHERE "tags"."id" = "resource_tags"."tag_id"' . $extra_where .
-            ' GROUP BY "tags"."tag"';
+        $sql = "SELECT tags.tag, COUNT(resource_tags.id) as cnt " .
+            "FROM tags, resource_tags " .
+            "WHERE tags.id = resource_tags.tag_id{$extra_where} GROUP BY tags.tag";
         switch ($_GET['findby']) {
-        case 'alphabetical':
-            $sql .= ' ORDER BY "tags"."tag", cnt DESC';
-            break;
-        case 'popularity':
-            $sql .= ' ORDER BY cnt DESC, "tags"."tag"';
-            break;
-        case 'recent':
-            $sql .= ' ORDER BY max("resource_tags"."posted") DESC, cnt DESC, ' .
-                '"tags"."tag"';
-            break;
+            case 'alphabetical':
+                $sql .= " ORDER BY tags.tag, cnt DESC";
+                break;
+            case 'popularity':
+                $sql .= " ORDER BY cnt DESC, tags.tag";
+                break;
+            case 'recent':
+                $sql .= " ORDER BY resource_tags.posted DESC, cnt DESC, tags.tag";
+                break;
         }
         // Limit the size of our results based on the ini browse limit setting
         $browseLimit = isset($configArray['Browse']['result_limit']) ?

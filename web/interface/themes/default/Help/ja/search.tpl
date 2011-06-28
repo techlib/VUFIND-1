@@ -8,9 +8,9 @@
   <li><a href="#Boosting a Term">検索語の重み付け</a></li>
   <li><a href="#Boolean operators">ブール演算子</a>
     <ul>
+      <li><a href="#OR">OR</a></li>
       <li><a href="#AND">AND</a></li>
       <li><a href="#+">+</a></li>
-      <li><a href="#OR">OR</a></li>
       <li><a href="#NOT">NOT</a></li>
       <li><a href="#-">-</a></li>
     </ul>
@@ -87,15 +87,24 @@
     </p>
     <p>注: ブール演算子は「すべて大文字」でなければなりません。</p>
     <dl>
+      <dt><a name="OR"></a>OR</dt>
+      <dd>
+        <p><strong>OR</strong> 演算子はデフォルトの結合演算子です。つまり、2つの検索語の間に
+        ブール演算子がない場合、OR演算子が使用されます。OR演算子は2つの検索語を結びつけ、
+        いずれかの検索語が存在するレコードを検索します。</p>
+        <p>"economics Keynes" あるいは単に "Keynes" のいずれかを含む資料を検索するには、次の
+        ように指定します。</p>
+        <pre class="code">"economics Keynes" Keynes</pre>
+        <p>あるいは</p>
+        <pre class="code">"economics Keynes" OR Keynes</pre>
+      </dd>
+      
       <dt><a name="AND"></a>AND</dt>
       <dd>
-        <p><strong>AND</strong> 演算子はデフォルトの結合演算子です。つまり、2つの検索語の間に
-        ブール演算子がない場合、AND演算子が使用されます。AND 演算子はレコードのいずれかのフィールドに2つの検索語の双方が存在するレコードに
+        <p>AND 演算子はレコードのいずれかのフィールドに2つの検索語の双方が存在するレコードに
         ヒットします。</p>
         <p>"economics" と "Keynes" の双方が含まれるレコードを検索するには、次のように指定します。 </p>
-        <pre class="code">economics Keynes</pre>
-        <p>あるいは</p>
-        <pre class="code">economics AND Keynes</pre>
+        <pre class="code">"economics" AND "Keynes"</pre>
       </dd>
       <dt><a name="+"></a>+</dt>
       <dd>
@@ -105,28 +114,20 @@
         指定します。</p>
         <pre class="code">+economics Keynes</pre>
       </dd>
-      <dt><a name="OR"></a>OR</dt>
-      <dd>
-        <p>OR演算子は2つの検索語を結びつけ、
-        いずれかの検索語が存在するレコードを検索します。</p>
-        <p>"economics Keynes" あるいは単に "Keynes" のいずれかを含む資料を検索するには、次の
-        ように指定します。</p>
-        <pre class="code">"economics Keynes" OR Keynes</pre>
-      </dd>
       <dt><a name="NOT"></a>NOT</dt>
       <dd>
         <p>NOT 演算子は、NOT の後ろにある検索語を含むレコードを除外します。</p>
         <p>"economics" を含むが、"Keynes" は含まない資料を検索するには、次のように指定します。</p>
-        <pre class="code">economics NOT Keynes</pre>
+        <pre class="code">"economics" NOT "Keynes"</pre>
         <p>注: NOT 演算子は単一の検索語には使用できません。たとえば、次の検索はノーヒットに
         なります。</p>
-        <pre class="code">NOT economics</pre>
+        <pre class="code">NOT "economics"</pre>
       </dd>
       <dt><a name="-"></a>-</dt>
       <dd>
         <p><Strong>-</strong> すなわち抑制演算子は、"-" 記号の後ろにある検索語を含む資料を除外します。</p>
         <p>economics" を含むが、"Keynes" は含まない資料を検索するには、次のように指定します。</p>
-        <pre class="code">economics -Keynes</pre>
+        <pre class="code">"economics" -"Keynes"</pre>
       </dd>
     </dl>
   </dd>

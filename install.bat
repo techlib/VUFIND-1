@@ -102,8 +102,7 @@ rem Install PEAR Packages (assumes PEAR is available on search path)
 @call pear install --onlyreqdeps Console_ProgressBar-beta
 @call pear install --onlyreqdeps File_Marc-alpha
 @call pear channel-discover pear.horde.org
-@call pear channel-update pear.horde.org
-@call pear install Horde/Horde_Yaml-beta
+@call pear install horde/yaml
 
 @echo off
 rem We had to turn echo off above because the PEAR batch file turns it back on.

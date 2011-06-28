@@ -10,22 +10,20 @@ import org.marc4j.marc.DataField;
  */
 public Set getFormat(Record record){
     Set result = new LinkedHashSet();
-    String leader = record.getLeader().toString();
-    char leaderBit;
-    ControlField fixedField = (ControlField) record.getVariableField("008");
-    DataField title = (DataField) record.getVariableField("245");
-    String formatString;
-    char formatCode = ' ';
-    char formatCode2 = ' ';
+	String leader = record.getLeader().toString();
+	char leaderBit;
+	ControlField fixedField = (ControlField) record.getVariableField("008");
+	DataField title = (DataField) record.getVariableField("245");
+	char formatCode = ' ';
 
-    // check if there's an h in the 245
-    if (title != null) {
-        if (title.getSubfield('h') != null){
-            if (title.getSubfield('h').getData().toLowerCase().contains("[electronic resource]")) {
-                result.add("Electronic");
-                return result;
-            }
-        }
+	// check if there's an h in the 245
+	if (title != null) {
+	    if (title.getSubfield('h') != null){
+	        if (title.getSubfield('h').getData().toLowerCase().contains("[electronic resource]")) {
+	    		result.add("Electronic");
+	    		return result;
+	        }
+    	}
     }
 
     // check the 007 - this is a repeating field
@@ -35,12 +33,10 @@ public Set getFormat(Record record){
         ControlField formatField;
         while(fieldsIter.hasNext()) {
             formatField = (ControlField) fieldsIter.next();
-            formatString = formatField.getData().toUpperCase();
-            formatCode = formatString.length() > 0 ? formatString.charAt(0) : ' ';
-            formatCode2 = formatString.length() > 1 ? formatString.charAt(1) : ' ';
-            switch (formatCode) {
+            formatCode = formatField.getData().toUpperCase().charAt(0);
+    	    switch (formatCode) {
                 case 'A':
-                    switch(formatCode2) {
+                    switch(formatField.getData().toUpperCase().charAt(1)) {
                         case 'D':
                             result.add("Atlas");
                             break;
@@ -50,7 +46,7 @@ public Set getFormat(Record record){
                     }
                     break;
                 case 'C':
-                    switch(formatCode2) {
+                    switch(formatField.getData().toUpperCase().charAt(1)) {
                         case 'A':
                             result.add("TapeCartridge");
                             break;
@@ -89,7 +85,7 @@ public Set getFormat(Record record){
                     result.add("Braille");
                     break;
                 case 'G':
-                    switch(formatCode2) {
+                    switch(formatField.getData().toUpperCase().charAt(1)) {
                         case 'C':
                         case 'D':
                             result.add("Filmstrip");
@@ -106,7 +102,7 @@ public Set getFormat(Record record){
                     result.add("Microfilm");
                     break;
                 case 'K':
-                    switch(formatCode2) {
+                    switch(formatField.getData().toUpperCase().charAt(1)) {
                         case 'C':
                             result.add("Collage");
                             break;
@@ -140,7 +136,7 @@ public Set getFormat(Record record){
                     }
                     break;
                 case 'M':
-                    switch(formatCode2) {
+                    switch(formatField.getData().toUpperCase().charAt(1)) {
                         case 'F':
                             result.add("VideoCassette");
                             break;
@@ -162,7 +158,7 @@ public Set getFormat(Record record){
                     result.add("SensorImage");
                     break;
                 case 'S':
-                    switch(formatCode2) {
+                    switch(formatField.getData().toUpperCase().charAt(1)) {
                         case 'D':
                             result.add("SoundDisc");
                             break;
@@ -175,7 +171,7 @@ public Set getFormat(Record record){
                     }
                     break;
                 case 'V':
-                    switch(formatCode2) {
+                    switch(formatField.getData().toUpperCase().charAt(1)) {
                         case 'C':
                             result.add("VideoCartridge");
                             break;
@@ -193,9 +189,9 @@ public Set getFormat(Record record){
                             break;
                     }
                     break;
-            }
+        	}
         }
-        if (!result.isEmpty()) {
+    	if (!result.isEmpty()) {
             return result;
         }
     }
@@ -237,7 +233,7 @@ public Set getFormat(Record record){
             result.add("Manuscript");
             break;
     }
-    if (!result.isEmpty()) {
+	if (!result.isEmpty()) {
         return result;
     }
 
@@ -270,7 +266,7 @@ public Set getFormat(Record record){
     }
 
     // Nothing worked!
-    if (result.isEmpty()) {
+	if (result.isEmpty()) {
         result.add("Unknown");
     }
     

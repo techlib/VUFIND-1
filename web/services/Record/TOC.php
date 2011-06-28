@@ -1,8 +1,5 @@
 <?php
 /**
- * Table of Contents action for Record module
- *
- * PHP version 5
  *
  * Copyright (C) Villanova University 2007.
  *
@@ -19,50 +16,22 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- * @category VuFind
- * @package  Controller_Record
- * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
- * @author   Demian Katz <demian.katz@villanova.edu>
- * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     http://vufind.org/wiki/building_a_module Wiki
  */
+ 
 require_once 'Record.php';
 
-/**
- * Table of Contents action for Record module
- *
- * @category VuFind
- * @package  Controller_Record
- * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
- * @author   Demian Katz <demian.katz@villanova.edu>
- * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     http://vufind.org/wiki/building_a_module Wiki
- */
 class TOC extends Record
 {
-    /**
-     * Process incoming parameters and display the page.
-     *
-     * @return void
-     * @access public
-     */
-    public function launch()
+    function launch()
     {
         global $interface;
 
         if (!$interface->is_cached($this->cacheId)) {
-            $interface->setPageTitle(
-                translate('Table of Contents') . ': ' .
-                $this->recordDriver->getBreadcrumb()
-            );
+            $interface->setPageTitle(translate('Table of Contents') . ': ' . $this->recordDriver->getBreadcrumb());
             $interface->assign('tocTemplate', $this->recordDriver->getTOC());
             $interface->assign('subTemplate', 'view-toc.tpl');
             $interface->setTemplate('view.tpl');
         }
-
-        // Set Messages
-        $interface->assign('infoMsg', $this->infoMsg);
-        $interface->assign('errorMsg', $this->errorMsg);
 
         // Display Page
         $interface->display('layout.tpl', $this->cacheId);

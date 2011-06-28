@@ -22,8 +22,8 @@
         </div>
 
         <div class="yui-u toggle">
-          <label for="sort">{translate text='Sort'}</label>
-          <select id="sort" name="sort" onChange="document.location.href = this.options[this.selectedIndex].value;">
+          {translate text='Sort'}
+          <select name="sort" onChange="document.location.href = this.options[this.selectedIndex].value;">
           {foreach from=$sortList item=sortData key=sortLabel}
             <option value="{$sortData.sortUrl|escape}"{if $sortData.selected} selected{/if}>{translate text=$sortData.desc}</option>
           {/foreach}
@@ -54,5 +54,5 @@
 
       </div>
     </div>
-    </div>
+  </div>
 </div>

@@ -39,10 +39,7 @@ fi
 # Process all the files in the target directory:
 for file in $BASEPATH/*.xml
 do
-  if [ -f $file ]
-  then
-    echo "Processing $file ..."
-    $VUFIND_HOME/import-marc.sh $file > $BASEPATH/log/`basename $file`.log
-    mv $file $BASEPATH/processed/`basename $file`
-  fi
+  echo "Processing $file ..."
+  $VUFIND_HOME/import-marc.sh $file > $BASEPATH/log/`basename $file`.log
+  mv $file $BASEPATH/processed/`basename $file`
 done

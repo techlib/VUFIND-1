@@ -1,8 +1,5 @@
 <?php
 /**
- * Solr HTTP Interface
- *
- * PHP version 5
  *
  * Copyright (C) Villanova University 2007.
  *
@@ -19,19 +16,11 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- * @category VuFind
- * @package  Support_Classes
- * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
- * @author   Demian Katz <demian.katz@villanova.edu>
- * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     http://vufind.org/wiki/system_classes#index_interface Wiki
  */
-require_once 'sys/Proxy_Request.php';
 require_once 'sys/IndexEngine.php';
+require_once 'sys/Proxy_Request.php';
 require_once 'sys/ConfigArray.php';
 require_once 'sys/SolrUtils.php';
-
-require_once 'services/MyResearch/lib/Change_tracker.php';
 
 require_once 'XML/Unserializer.php';
 require_once 'XML/Serializer.php';
@@ -39,14 +28,11 @@ require_once 'XML/Serializer.php';
 /**
  * Solr HTTP Interface
  *
- * @category VuFind
- * @package  Support_Classes
- * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
- * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     http://vufind.org/wiki/system_classes#index_interface Wiki
+ * @version     $Revision: 1.13 $
+ * @author      Andrew S. Nagy <andrew.nagy@villanova.edu>
+ * @access      public
  */
-class Solr implements IndexEngine
-{
+class Solr implements IndexEngine {
     /**
      * A boolean value determining whether to print debug information
      * @var bool
@@ -64,7 +50,7 @@ class Solr implements IndexEngine
      * @var object HTTP_Request
      */
     public $client;
-
+    
     /**
      * The host to connect to
      * @var string
@@ -72,21 +58,15 @@ class Solr implements IndexEngine
     public $host;
 
     /**
-     * The core being used on the host
-     * @var string
-     */
-    public $core;
-
-    /**
      * The status of the connection to Solr
      * @var string
      */
     public $status = false;
-
+    
     /**
      * An array of characters that are illegal in search strings
      */
-    private $_illegal = array('!', ':', ';', '[', ']', '{', '}');
+    private $illegal = array('!', ':', ';', '[', ']', '{', '}');
 
     /**
      * The path to the YAML file specifying available search types:
@@ -96,55 +76,33 @@ class Solr implements IndexEngine
     /**
      * An array of search specs pulled from $searchSpecsFile (above)
      */
-    private $_searchSpecs = false;
+    private $searchSpecs = false;
 
     /**
      * Should boolean operators in the search string be treated as
      * case-insensitive (false), or must they be ALL UPPERCASE (true)?
      */
-    private $_caseSensitiveBooleans = true;
-
-    /**
-     * Should range operators (i.e. [a TO b]) in the search string be treated as
-     * case-insensitive (false), or must they be ALL UPPERCASE (true)?  Note that
-     * making this setting case insensitive not only changes the word "TO" to
-     * uppercase but also inserts OR clauses to check for case insensitive matches
-     * against the edges of the range...  i.e. ([a TO b] OR [A TO B]).
-     */
-    private $_caseSensitiveRanges = true;
-
-    /**
-     * Selected shard settings.
-     */
-    private $_solrShards = array();
-    private $_solrShardsFieldsToStrip = array();
-
-    /**
-     * Should we collect highlighting data?
-     */
-    private $_highlight = false;
-
+    private $caseSensitiveBooleans = true;
+    
     /**
      * Constructor
      *
-     * @param string $host  The URL for the local Solr Server
-     * @param string $index The core to use on the specified server
+     * Sets up the SOAP Client
      *
-     * @access public
-     */
-    public function __construct($host, $index = '')
+     * @param   string  $host       The URL for the local Solr Server
+     * @access  public
+     */     
+    function __construct($host, $index = '')
     {
         global $configArray;
 
         // Set a default Solr index if none is provided to the constructor:
         if (empty($index)) {
-            $this->core = isset($configArray['Index']['default_core']) ?
+            $index = isset($configArray['Index']['default_core']) ? 
                 $configArray['Index']['default_core'] : "biblio";
-        } else {
-            $this->core = $index;
         }
-
-        $this->host = $host . '/' . $this->core;
+     
+        $this->host = $host . '/' . $index;
 
         // Test to see solr is online
         $test_url = $this->host . "/admin/ping";
@@ -164,119 +122,74 @@ class Solr implements IndexEngine
         // If we're still processing then solr is online
         $this->client = new Proxy_Request(null, array('useBrackets' => false));
 
-        // Read in preferred boolean/range behavior:
+        // Read in preferred boolean behavior:
         $searchSettings = getExtraConfigArray('searches');
         if (isset($searchSettings['General']['case_sensitive_bools'])) {
-            $this->_caseSensitiveBooleans
-                = $searchSettings['General']['case_sensitive_bools'];
-        }
-        if (isset($searchSettings['General']['case_sensitive_ranges'])) {
-            $this->_caseSensitiveRanges
-                = $searchSettings['General']['case_sensitive_ranges'];
-        }
-
-        // Turn on highlighting if the user has requested highlighting or snippet
-        // functionality:
-        $highlight = !isset($searchSettings['General']['highlighting'])
-            ? false : $searchSettings['General']['highlighting'];
-        $snippet = !isset($searchSettings['General']['snippets'])
-            ? false : $searchSettings['General']['snippets'];
-        if ($highlight || $snippet) {
-            $this->_highlight = true;
-        }
-
-        // Deal with field-stripping shard settings:
-        if (isset($searchSettings['StripFields'])
-            && is_array($searchSettings['StripFields'])
-        ) {
-            $this->_solrShardsFieldsToStrip = $searchSettings['StripFields'];
-        }
-
-        // Deal with session-based shard settings:
-        if (isset($_SESSION['shards'])) {
-            $shards = array();
-            foreach ($_SESSION['shards'] as $current) {
-                if (isset($configArray['IndexShards'][$current])) {
-                    $shards[$current] = $configArray['IndexShards'][$current];
-                }
-            }
-            $this->setShards($shards);
+            $this->caseSensitiveBooleans = 
+                $searchSettings['General']['case_sensitive_bools'];
         }
     }
 
     /**
      * Is this object configured with case-sensitive boolean operators?
      *
-     * @return boolean
-     * @access public
+     * @access  public
+     * @return  boolean
      */
     public function hasCaseSensitiveBooleans()
     {
-        return $this->_caseSensitiveBooleans;
-    }
-
-    /**
-     * Is this object configured with case-sensitive range operators?
-     *
-     * @return boolean
-     * @access public
-     */
-    public function hasCaseSensitiveRanges()
-    {
-        return $this->_caseSensitiveRanges;
+        return $this->caseSensitiveBooleans;
     }
 
     /**
      * Get the search specifications loaded from the specified YAML file.
      *
-     * @param string $handler The named search to provide information about (set
-     * to null to get all search specifications)
-     *
-     * @return mixed Search specifications array if available, false if an invalid
-     * search is specified.
      * @access  private
+     * @param   string  $handler    The named search to provide information about
+     *                              (set to null to get all search specifications)
+     * @return  mixed               Search specifications array if available, false
+     *                              if an invalid search is specified.
      */
-    private function _getSearchSpecs($handler = null)
+    private function getSearchSpecs($handler = null)
     {
         // Only load specs once:
-        if ($this->_searchSpecs === false) {
-            $this->_searchSpecs
-                = Horde_Yaml::load(file_get_contents($this->searchSpecsFile));
+        if ($this->searchSpecs === false) {
+            $this->searchSpecs = 
+                Horde_Yaml::load(file_get_contents($this->searchSpecsFile));
         }
-
+        
         // Special case -- null $handler means we want all search specs.
         if (is_null($handler)) {
-            return $this->_searchSpecs;
+            return $this->searchSpecs;
         }
-
+        
         // Return specs on the named search if found (easiest, most common case).
-        if (isset($this->_searchSpecs[$handler])) {
-            return $this->_searchSpecs[$handler];
+        if (isset($this->searchSpecs[$handler])) {
+            return $this->searchSpecs[$handler];
         }
-
-        // Check for a case-insensitive match -- this provides backward
+        
+        // Check for a case-insensitive match -- this provides backward 
         // compatibility with different cases used in early VuFind versions
         // and allows greater tolerance of minor typos in config files.
-        foreach ($this->_searchSpecs as $name => $specs) {
+        foreach($this->searchSpecs as $name => $specs) {
             if (strcasecmp($name, $handler) == 0) {
                 return $specs;
             }
         }
-
+        
         // If we made it this far, no search specs exist -- return false.
         return false;
     }
-
+    
     /**
      * Retrieves a document specified by the ID.
      *
-     * @param string $id The document to retrieve from Solr
-     *
-     * @throws object    PEAR Error
-     * @return string    The requested resource (or null if bad ID)
-     * @access public
+     * @param   string  $id         The document to retrieve from Solr
+     * @access  public
+     * @throws  object              PEAR Error
+     * @return  string              The requested resource (or null if bad ID)
      */
-    public function getRecord($id)
+    function getRecord($id)
     {
         if ($this->debug) {
             echo "<pre>Get Record: $id</pre>\n";
@@ -299,13 +212,12 @@ class Solr implements IndexEngine
      *
      * Uses SOLR MLT Query Handler
      *
-     * @param string $id A Solr document ID.
+     * @access  public
+     * @throws  object              PEAR Error
+     * @return  array               An array of query results
      *
-     * @throws object    PEAR Error
-     * @return array     An array of query results similar to the specified record
-     * @access public
      */
-    public function getMoreLikeThis($id)
+    function getMoreLikeThis($id)
     {
         // Query String Parameters
         $options = array('q' => "id:$id", 'qt' => 'morelikethis');
@@ -316,45 +228,40 @@ class Solr implements IndexEngine
 
         return $result;
     }
-
+    
     /**
      * Get record data based on the provided field and phrase.
      * Used for AJAX suggestions.
      *
-     * @param string $phrase The input phrase
-     * @param string $field  The field to search on
-     * @param int    $limit  The number of results to return
-     *
-     * @return array         An array of query results
-     * @access public
+     * @access  public
+     * @param   string  $phrase     The input phrase
+     * @param   string  $field      The field to search on
+     * @param   int     $limit      The number of results to return
+     * @return  array   An array of query results
      */
-    public function getSuggestion($phrase, $field, $limit)
+    function getSuggestion($phrase, $field, $limit)
     {
         if (!strlen($phrase)) {
             return null;
         }
 
         // Ignore illegal characters
-        $phrase = str_replace($this->_illegal, '', $phrase);
+        $phrase = str_replace($this->illegal, '', $phrase);
 
         // Process Search
         $query = "$field:($phrase*)";
-        $result = $this->search(
-            $query, null, null, 0, $limit,
-            array('field' => $field, 'limit' => $limit)
-        );
+        $result = $this->search($query, null, null, 0, $limit, array('field' => $field, 'limit' => $limit));
         return $result['facet_counts']['facet_fields'][$field];
     }
-
+    
     /**
      * Get spelling suggestions based on input phrase.
      *
-     * @param string $phrase The input phrase
-     *
-     * @return array         An array of spelling suggestions
-     * @access public
+     * @access  public
+     * @param   string  $phrase     The input phrase
+     * @return  array   An array of spelling suggestions
      */
-    public function checkSpelling($phrase)
+    function checkSpelling($phrase)
     {
         if ($this->debug) {
             echo "<pre>Spell Check: $phrase</pre>\n";
@@ -378,19 +285,16 @@ class Solr implements IndexEngine
     }
 
      /**
-      * Internal method to build query string from search parameters
+      * applySearchSpecs -- internal method to build query string from search parameters
       *
-      * @param array  $structure The SearchSpecs-derived structure or substructure
-      * defining the search, derived from the yaml file
-      * @param array  $values    The various values in an array with keys
-      * 'onephrase', 'and', 'or' (and perhaps others)
-      * @param string $joiner    The operator used to combine generated clauses
-      *
-      * @throws object           PEAR Error
-      * @return string           A search string suitable for adding to a query URL
-      * @access private
+      * @access  private
+      * @param   structure           the SearchSpecs-derived structure or substructure defining the search, derived from the yaml file
+      * @param   values              the various values in an array with keys 'onephrase', 'and', 'or' (and perhaps others)
+      * @throws  object              PEAR Error
+      * @static
+      * @return  string              A search string suitable for adding to a query URL
       */
-    private function _applySearchSpecs($structure, $values, $joiner = "OR")
+    private function applySearchSpecs($structure, $values, $joiner = "OR") 
     {
         $clauses = array();
         foreach ($structure as $field => $clausearray) {
@@ -398,27 +302,23 @@ class Solr implements IndexEngine
                 // shift off the join string and weight
                 $sw = array_shift($clausearray);
                 $internalJoin = ' ' . $sw[0] . ' ';
-                // Build it up recursively
-                $sstring = '(' .
-                    $this->_applySearchSpecs($clausearray, $values, $internalJoin) .
-                    ')';
+                // Build it up recursively 
+                $sstring = '(' .  $this->applySearchSpecs($clausearray, $values, $internalJoin) . ')';
                 // ...and add a weight if we have one
                 $weight = $sw[1];
-                if (!is_null($weight) && $weight && $weight > 0) {
-                    $sstring .= '^' . $weight;
+                if(!is_null($weight) && $weight && $weight > 0) {
+                   $sstring .= '^' . $weight;
                 }
                 // push it onto the stack of clauses
                 $clauses[] = $sstring;
-            } else if (!$this->_isStripped($field)) {
-                // Otherwise, we've got a (list of) [munge, weight] pairs to deal
-                // with
+            } else {
+                // Otherwise, we've got a (list of) [munge, weight] pairs to deal with
                 foreach ($clausearray as $spec) {
                     // build a string like title:("one two")
                     $sstring = $field . ':(' . $values[$spec[0]] . ')';
-                    // Add the weight if we have one. Yes, I know, it's redundant
-                    // code.
+                    // Add the weight it we have one. Yes, I know, it's redundant code.
                     $weight = $spec[1];
-                    if (!is_null($weight) && $weight && $weight > 0) {
+                    if(!is_null($weight) && $weight && $weight > 0) {
                         $sstring .= '^' . $weight;
                     }
                     // ..and push it on the stack of clauses
@@ -426,89 +326,35 @@ class Solr implements IndexEngine
                 }
             }
         }
-
+       
         // Join it all together
         return implode(' ' . $joiner . ' ', $clauses);
     }
 
     /**
-     * _getStrippedFields -- internal method to read the fields that should get
-     * stripped for the used shards from config file
-     *
-     * @return array An array containing any field that should be stripped from query
-     * @access private
-     */
-    private function _getStrippedFields()
-    {
-        // Store stripped fields as a static variable so that we only need to
-        // process the configuration settings once:
-        static $strippedFields = false;
-        if ($strippedFields === false) {
-            $strippedFields = array();
-            foreach ($this->_solrShards as $index => $address) {
-                if (array_key_exists($index, $this->_solrShardsFieldsToStrip)) {
-                    $parts = explode(',', $this->_solrShardsFieldsToStrip[$index]);
-                    foreach ($parts as $part) {
-                        $strippedFields[] = trim($part);
-                    }
-                }
-            }
-            $strippedFields = array_unique($strippedFields);
-        }
-
-        return $strippedFields;
-    }
-
-    /**
-     * _isStripped -- internal method to check if a field is stripped from query
-     *
-     * @param string $field The name of the field that should be checked for
-     * stripping
-     *
-     * @return bool         A boolean value indicating whether the field should be
-     * stripped (true) or not (false)
-     * @access private
-     */
-    private function _isStripped($field)
-    {
-        // Never strip fields if shards are disabled.
-        // Return true if the current field needs to be stripped.
-        if (isset($this->_solrShards)
-            && in_array($field, $this->_getStrippedFields())
-        ) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
      * Given a field name and search string, return an array containing munged
-     * versions of the search string for use in _applySearchSpecs().
+     * versions of the search string for use in applySearchSpecs().
      *
-     * @param string $field   The YAML search spec field name to search
-     * @param string $lookfor The string to search for in the field
-     * @param array  $custom  Custom munge settings from YAML search specs
-     * @param bool   $basic   Is $lookfor a basic (true) or advanced (false) query?
-     *
-     * @return  array         Array for use as _applySearchSpecs() values param
      * @access  private
+     * @param   string  $field      The YAML search spec field name to search
+     * @param   string  $lookfor    The string to search for in the field
+     * @param   array   $custom     Custom munge settings from YAML search specs
+     * @param   bool    $tokenize   Should we tokenize $lookfor or pass it through?
+     * @return  array               Array for use as applySearchSpecs() values param
      */
-    private function _buildMungeValues($field, $lookfor, $custom = null,
-        $basic = true
-    ) {
-        // Only tokenize basic queries:
-        if ($basic) {
+    private function buildMungeValues($field, $lookfor, $custom = null, $tokenize = true)
+    {
+        if ($tokenize) {
             // Tokenize Input
             $tokenized = $this->tokenizeInput($lookfor);
-
+            
             // Create AND'd and OR'd queries
             $andQuery = implode(' AND ', $tokenized);
             $orQuery = implode(' OR ', $tokenized);
-
+            
             // Build possible inputs for searching:
             $values = array();
-            $values['onephrase']
-                = '"' . str_replace('"', '', implode(' ', $tokenized)) . '"';
+            $values['onephrase'] = '"' . str_replace('"', '', implode(' ', $tokenized)) . '"';
             $values['and'] = $andQuery;
             $values['or'] = $orQuery;
         } else {
@@ -516,91 +362,69 @@ class Solr implements IndexEngine
             // unmodified (it's probably an advanced search that won't benefit from
             // tokenization).  We'll just set all possible values to the same thing,
             // except that we'll try to do the "one phrase" in quotes if possible.
-            // IMPORTANT: If we detect a boolean NOT, we MUST omit the quotes.
-            $onephrase = (strstr($lookfor, '"') || strstr($lookfor, ' NOT '))
-                ? $lookfor : '"' . $lookfor . '"';
-            $values = array(
-                'onephrase' => $onephrase, 'and' => $lookfor, 'or' => $lookfor
-            );
+            $onephrase = strstr($lookfor, '"') ? $lookfor : '"' . $lookfor . '"';
+            $values = array('onephrase' => $onephrase, 'and' => $lookfor, 'or' => $lookfor);
         }
-
+        
         // Apply custom munge operations if necessary:
         if (is_array($custom)) {
-            foreach ($custom as $mungeName => $mungeOps) {
+            foreach($custom as $mungeName => $mungeOps) {
                 $values[$mungeName] = $lookfor;
-
-                // Skip munging of advanced queries:
-                if ($basic) {
-                    foreach ($mungeOps as $operation) {
+                
+                // Skip munging if tokenization is disabled.
+                if ($tokenize) {
+                    foreach($mungeOps as $operation) {
                         switch($operation[0]) {
-                        case 'append':
-                            $values[$mungeName] .= $operation[1];
-                            break;
-                        case 'lowercase':
-                            $values[$mungeName] = strtolower($values[$mungeName]);
-                            break;
-                        case 'preg_replace':
-                            $values[$mungeName] = preg_replace(
-                                $operation[1], $operation[2], $values[$mungeName]
-                            );
-                            break;
-                        case 'uppercase':
-                            $values[$mungeName] = strtoupper($values[$mungeName]);
-                            break;
+                            case 'append':
+                                $values[$mungeName] .= $operation[1];
+                                break;
+                            case 'lowercase':
+                                $values[$mungeName] = strtolower($values[$mungeName]);
+                                break;
+                            case 'preg_replace':
+                                $values[$mungeName] = preg_replace($operation[1], 
+                                    $operation[2], $values[$mungeName]);
+                                break;
+                            case 'uppercase':
+                                $values[$mungeName] = strtoupper($values[$mungeName]);
+                                break;
                         }
                     }
                 }
             }
         }
-
+        
         return $values;
     }
-
+    
     /**
      * Given a field name and search string, expand this into the necessary Lucene
      * query to perform the specified search on the specified field(s).
      *
-     * @param string $field   The YAML search spec field name to search
-     * @param string $lookfor The string to search for in the field
-     * @param bool   $basic   Is $lookfor a basic (true) or advanced (false) query?
-     *
-     * @return string         The query
-     * @access private
+     * @access  private
+     * @param   string  $field      The YAML search spec field name to search
+     * @param   string  $lookfor    The string to search for in the field
+     * @param   bool    $tokenize   Should we tokenize $lookfor or pass it through?
+     * @return  string              The query
      */
-    private function _buildQueryComponent($field, $lookfor, $basic = true)
+    private function buildQueryComponent($field, $lookfor, $tokenize = true)
     {
         // Load the YAML search specifications:
-        $ss = $this->_getSearchSpecs($field);
-
+        $ss = $this->getSearchSpecs($field);
+        
         // If we received a field spec that wasn't defined in the YAML file,
         // let's try simply passing it along to Solr.
         if ($ss === false) {
             return $field . ':(' . $lookfor . ')';
         }
 
-        // If this is a basic query and we have Dismax settings, let's build
-        // a Dismax subquery to avoid some of the ugly side effects of our Lucene
-        // query generation logic.
-        if ($basic && isset($ss['DismaxFields'])) {
-            $qf = implode(' ', $ss['DismaxFields']);
-            $dmParams = '';
-            if (isset($ss['DismaxParams']) && is_array($ss['DismaxParams'])) {
-                foreach ($ss['DismaxParams'] as $current) {
-                    $dmParams .= ' ' . $current[0] . '="' . $current[1] . '"';
-                }
-            }
-            $dismaxQuery = '{!dismax qf="' . $qf . '"' . $dmParams . '}' . $lookfor;
-            $baseQuery = '_query_:"' . addslashes($dismaxQuery) . '"';
-        } else {
-            // Munge the user query in a few different ways:
-            $customMunge = isset($ss['CustomMunge']) ? $ss['CustomMunge'] : null;
-            $values
-                = $this->_buildMungeValues($field, $lookfor, $customMunge, $basic);
-
-            // Apply the $searchSpecs property to the data:
-            $baseQuery = $this->_applySearchSpecs($ss['QueryFields'], $values);
-        }
-
+        // Munge the user query in a few different ways:
+        $customMunge = isset($ss['CustomMunge']) ? $ss['CustomMunge'] : null;
+        $values = $this->buildMungeValues($field, $lookfor, $customMunge, $tokenize);
+                
+        // Apply the $searchSpecs property to the data:
+        $baseQuery = $this->applySearchSpecs($ss['QueryFields'], $values);
+        
         // Apply filter query if applicable:
         if (isset($ss['FilterQuery'])) {
             return "({$baseQuery}) AND ({$ss['FilterQuery']})";
@@ -608,24 +432,23 @@ class Solr implements IndexEngine
 
         return "($baseQuery)";
     }
-
+    
     /**
      * Given a field name and search string known to contain advanced features
-     * (as identified by isAdvanced()), expand this into the necessary Lucene
+     * (as identified by isAdvanced()), expand this into the necessary Lucene 
      * query to perform the specified search on the specified field(s).
      *
-     * @param string $handler The YAML search spec field name to search
-     * @param string $query   The string to search for in the field
-     *
-     * @return  string        The query
      * @access  private
+     * @param   string  $field      The YAML search spec field name to search
+     * @param   string  $lookfor    The string to search for in the field
+     * @return  string              The query
      */
-    private function _buildAdvancedQuery($handler, $query)
+    private function buildAdvancedQuery($handler, $query)
     {
         // Special case -- if the user wants all records but the current handler
         // has a filter query, apply the filter query:
         if (trim($query) == '*:*') {
-            $ss = $this->_getSearchSpecs($handler);
+            $ss = $this->getSearchSpecs($handler);
             if (isset($ss['FilterQuery'])) {
                 return $ss['FilterQuery'];
             }
@@ -652,22 +475,22 @@ class Solr implements IndexEngine
             $query = "({$query}) OR (" . substr($query, 0, strlen($query) - 1) . ")";
         }
 
-        // We're now ready to use the regular YAML query handler but with the
-        // $basic parameter set to false so that we leave the advanced query
+        // We're now ready to use the regular YAML query handler but with the 
+        // $tokenize parameter set to false so that we leave the advanced query
         // features unmolested.
-        return $this->_buildQueryComponent($handler, $query, false);
+        return $this->buildQueryComponent($handler, $query, false);
     }
-
+    
     /**
      * Build Query string from search parameters
      *
-     * @param array $search An array of search parameters
-     *
-     * @throws object       PEAR Error
-     * @return string       The query
-     * @access public
+     * @access  public
+     * @param   array   $search     An array of search parameters
+     * @throws  object              PEAR Error
+     * @static
+     * @return  string              The query
      */
-    public function buildQuery($search)
+    function buildQuery($search)
     {
         $groups   = array();
         $excludes = array();
@@ -688,9 +511,7 @@ class Solr implements IndexEngine
                     if ($params['group'][0]['bool'] == 'NOT') {
                         $excludes[] = join(" OR ", $thisGroup);
                     } else {
-                        $groups[] = join(
-                            " " . $params['group'][0]['bool'] . " ", $thisGroup
-                        );
+                        $groups[] = join(" ".$params['group'][0]['bool']." ", $thisGroup);
                     }
                 }
 
@@ -699,25 +520,17 @@ class Solr implements IndexEngine
                     // Clean and validate input
                     $lookfor = $this->validateInput($params['lookfor']);
 
-                    // Force boolean operators to uppercase if we are in a
-                    // case-insensitive mode:
-                    if (!$this->_caseSensitiveBooleans) {
-                        $lookfor = VuFindSolrUtils::capitalizeBooleans($lookfor);
-                    }
-                    // Adjust range operators if we are in a case-insensitive mode:
-                    if (!$this->_caseSensitiveRanges) {
-                        $lookfor = VuFindSolrUtils::capitalizeRanges($lookfor);
+                    // Force boolean operators to uppercase if we are in a case-insensitive
+                    // mode:
+                    if (!$this->caseSensitiveBooleans) {
+                        $lookfor = SolrUtils::capitalizeBooleans($lookfor);
                     }
 
                     if (isset($params['field']) && ($params['field'] != '')) {
                         if ($this->isAdvanced($lookfor)) {
-                            $query .= $this->_buildAdvancedQuery(
-                                $params['field'], $lookfor
-                            );
+                            $query .= $this->buildAdvancedQuery($params['field'], $lookfor);
                         } else {
-                            $query .= $this->_buildQueryComponent(
-                                $params['field'], $lookfor
-                            );
+                            $query .= $this->buildQueryComponent($params['field'], $lookfor);
                         }
                     } else {
                         $query .= $lookfor;
@@ -746,12 +559,11 @@ class Solr implements IndexEngine
     /**
      * Normalize a sort option.
      *
-     * @param string $sort The sort option.
-     *
-     * @return string      The normalized sort value.
-     * @access private
+     * @param   string  $sort       The sort option.
+     * @access  protected
+     * @return  string              The normalized sort value.
      */
-    private function _normalizeSort($sort)
+    private function normalizeSort($sort)
     {
         // Break apart sort into field name and sort direction (note error
         // suppression to prevent notice when direction is left blank):
@@ -762,17 +574,17 @@ class Solr implements IndexEngine
 
         // Translate special sort values into appropriate Solr fields:
         switch ($sortField) {
-        case 'year':
-        case 'publishDate':
-            $sortField = 'publishDate';
-            $defaultSortDirection = 'desc';
-            break;
-        case 'author':
-            $sortField = 'authorStr';
-            break;
-        case 'title':
-            $sortField = 'title_sort';
-            break;
+            case 'year':
+            case 'publishDate':
+                $sortField = 'publishDate';
+                $defaultSortDirection = 'desc';
+                break;
+            case 'author':
+                $sortField = 'authorStr';
+                break;
+            case 'title':
+                $sortField = 'title_sort';
+                break;
         }
 
         // Normalize sort direction to either "asc" or "desc":
@@ -787,60 +599,62 @@ class Solr implements IndexEngine
     /**
      * Execute a search.
      *
-     * @param string $query           The search query
-     * @param string $handler         The Query Handler to use (null for default)
-     * @param array  $filter          The fields and values to filter results on
-     * @param string $start           The record to start with
-     * @param string $limit           The amount of records to return
-     * @param array  $facet           An array of faceting options
-     * @param string $spell           Phrase to spell check
-     * @param string $dictionary      Spell check dictionary to use
-     * @param string $sort            Field name to use for sorting
-     * @param string $fields          A list of fields to be returned
-     * @param string $method          Method to use for sending request (GET/POST)
-     * @param bool   $returnSolrError Fail outright on syntax error (false) or
-     * treat it as an empty result set with an error key set (true)?
-     *
-     * @throws object                 PEAR Error
-     * @return array                  An array of query results
-     * @access public
+     * @param   string  $query      The XQuery script in binary encoding.
+     * @param   string  $handler    The Query Handler to use (null for default)
+     * @param   array   $filter     The fields and values to filter results on
+     * @param   string  $start      The record to start with
+     * @param   string  $limit      The amount of records to return
+     * @param   array   $facet      An array of faceting options
+     * @param   string  $spell      Phrase to spell check
+     * @param   string  $dictionary Spell check dictionary to use
+     * @param   string  $sort       Field name to use for sorting
+     * @param   string  $fields     A list of fields to be returned
+     * @param   string  $method     Method to use for sending request (GET/POST)
+     * @param   bool    $returnSolrError    If Solr reports a syntax error, 
+     *                                      should we fail outright (false) or
+     *                                      treat it as an empty result set with
+     *                                      an error key set (true)?
+     * @access  public
+     * @throws  object              PEAR Error
+     * @return  array               An array of query results
+     * @todo    Change solr to lookup an explicit list of fields to optimize
+     *          memory load
      */
-    public function search($query, $handler = null, $filter = null, $start = 0,
-        $limit = 20, $facet = null, $spell = '', $dictionary = null,
-        $sort = null, $fields = null,
-        $method = HTTP_REQUEST_METHOD_POST, $returnSolrError = false
-    ) {
+    function search($query, $handler = null, $filter = null, $start = 0,
+                    $limit = 20, $facet = null, $spell = '', $dictionary = null,
+                    $sort = null, $fields = null, 
+                    $method = HTTP_REQUEST_METHOD_POST, $returnSolrError = false)
+    {
         // Query String Parameters
-        $options = array(
-            'q' => $query, 'rows' => $limit, 'start' => $start, 'indent' => 'yes'
-        );
+        $options = array('q' => $query, 'rows' => $limit, 'start' => $start, 'indent' => 'yes');
 
         // Add Sorting
         if ($sort && !empty($sort)) {
-            // There may be multiple sort options (ranked, with tie-breakers);
-            // process each individually, then assemble them back together again:
+            // There may be multiple sort options (ranked, with tie-breakers); process
+            // each individually, then assemble them back together again:
             $sortParts = explode(',', $sort);
-            for ($x = 0; $x < count($sortParts); $x++) {
-                $sortParts[$x] = $this->_normalizeSort($sortParts[$x]);
+            for($x = 0; $x < count($sortParts); $x++) {
+                $sortParts[$x] = $this->normalizeSort($sortParts[$x]);
             }
             $options['sort'] = implode(',', $sortParts);
         }
 
         // Determine which handler to use
         if (!$this->isAdvanced($query)) {
-            $ss = is_null($handler) ? null : $this->_getSearchSpecs($handler);
+            $ss = is_null($handler) ? null : $this->getSearchSpecs($handler);
             // Is this a Dismax search?
             if (isset($ss['DismaxFields'])) {
                 // Specify the fields to do a Dismax search on:
                 $options['qf'] = implode(' ', $ss['DismaxFields']);
 
-                // Specify the default dismax search handler so we can use any
+                // Specify the default dismax search handler so we can use any 
                 // global settings defined by the user:
                 $options['qt'] = 'dismax';
 
                 // Load any custom Dismax parameters from the YAML search spec file:
-                if (isset($ss['DismaxParams']) && is_array($ss['DismaxParams'])) {
-                    foreach ($ss['DismaxParams'] as $current) {
+                if (isset($ss['DismaxParams']) && 
+                    is_array($ss['DismaxParams'])) {
+                    foreach($ss['DismaxParams'] as $current) {
                         $options[$current[0]] = $current[1];
                     }
                 }
@@ -854,31 +668,29 @@ class Solr implements IndexEngine
                     }
                 }
             } else {
-                // Not DisMax... but if we have a handler set, we may still need
-                // to build a query using a setting in the YAML search specs or a
-                // simple field name:
-                if (!empty($handler)) {
-                    $options['q'] = $this->_buildQueryComponent($handler, $query);
+                // Not DisMax... but do we need to format the query based on
+                // a setting in the YAML search specs?  If $ss is an array
+                // at this point, it indicates that we found YAML details.
+                if (is_array($ss)) {
+                    $options['q'] = $this->buildQueryComponent($handler, $query);
+                } else if (!empty($handler)) {
+                    $options['q'] = "({$handler}:{$query})";
                 }
             }
         } else {
             // Force boolean operators to uppercase if we are in a case-insensitive
             // mode:
-            if (!$this->_caseSensitiveBooleans) {
-                $query = VuFindSolrUtils::capitalizeBooleans($query);
+            if (!$this->caseSensitiveBooleans) {
+                $query = SolrUtils::capitalizeBooleans($query);
             }
-            // Adjust range operators if we are in a case-insensitive mode:
-            if (!$this->_caseSensitiveRanges) {
-                $query = VuFindSolrUtils::capitalizeRanges($query);
-            }
-
+        
             // Process advanced search -- if a handler was specified, let's see
             // if we can adapt the search to work with the appropriate fields.
             if (!empty($handler)) {
-                $options['q'] = $this->_buildAdvancedQuery($handler, $query);
+                $options['q'] = $this->buildAdvancedQuery($handler, $query);
             }
         }
-
+        
         // Limit Fields
         if ($fields) {
             $options['fl'] = $fields;
@@ -891,27 +703,23 @@ class Solr implements IndexEngine
         if ($facet && !empty($facet['field'])) {
             $options['facet'] = 'true';
             $options['facet.mincount'] = 1;
-            $options['facet.limit']
-                = (isset($facet['limit'])) ? $facet['limit'] : null;
+            $options['facet.limit'] = (isset($facet['limit'])) ? $facet['limit'] : null;
             unset($facet['limit']);
-            $options['facet.field']
-                = (isset($facet['field'])) ? $facet['field'] : null;
+            $options['facet.field'] = (isset($facet['field'])) ? $facet['field'] : null;
             unset($facet['field']);
-            $options['facet.prefix']
-                = (isset($facet['prefix'])) ? $facet['prefix'] : null;
+            $options['facet.prefix'] = (isset($facet['prefix'])) ? $facet['prefix'] : null;
             unset($facet['prefix']);
-            $options['facet.sort']
-                = (isset($facet['sort'])) ? $facet['sort'] : null;
+            $options['facet.sort'] = (isset($facet['sort'])) ? $facet['sort'] : null;
             unset($facet['sort']);
             if (isset($facet['offset'])) {
                 $options['facet.offset'] = $facet['offset'];
                 unset($facet['offset']);
             }
-            foreach ($facet as $param => $value) {
+            foreach($facet as $param => $value) {
                 $options[$param] = $value;
             }
         }
-
+        
         // Build Filter Query
         if (is_array($filter) && count($filter)) {
             $options['fq'] = $filter;
@@ -926,28 +734,20 @@ class Solr implements IndexEngine
             }
         }
 
-        // Enable highlighting
-        if ($this->_highlight) {
-            $options['hl'] = 'true';
-            $options['hl.fl'] = '*';
-            $options['hl.simple.pre'] = '{{{{START_HILITE}}}}';
-            $options['hl.simple.post'] = '{{{{END_HILITE}}}}';
-        }
-
         if ($this->debug) {
             echo '<pre>Search options: ' . print_r($options, true) . "\n";
-
+            
             if ($filter) {
                 echo "\nFilterQuery: ";
                 foreach ($filter as $filterItem) {
                     echo " $filterItem";
                 }
             }
-
+            
             if ($sort) {
                 echo "\nSort: " . $options['sort'];
             }
-
+            
             echo "</pre>\n";
         }
 
@@ -955,17 +755,16 @@ class Solr implements IndexEngine
         if (PEAR::isError($result)) {
             PEAR::raiseError($result);
         }
-
+    
         return $result;
     }
 
     /**
      * Convert an array of fields into XML for saving to Solr.
      *
-     * @param array $fields Array of fields to save
-     *
-     * @return string       XML document ready for posting to Solr.
-     * @access public
+     * @param   array   $fields     Array of fields to save
+     * @return  string              XML document ready for posting to Solr.
+     * @access  public
      */
     public function getSaveXML($fields)
     {
@@ -987,29 +786,26 @@ class Solr implements IndexEngine
                 $value = array($value);
             }
             // Add all non-empty values of the current field to the XML:
-            foreach ($value as $current) {
+            foreach($value as $current) {
                 if ($current != '') {
-                    $node = $doc->createElement(
-                        'field', htmlspecialchars($current, ENT_COMPAT, 'UTF-8')
-                    );
+                    $node = $doc->createElement('field', htmlspecialchars($current, ENT_COMPAT, 'UTF-8'));
                     $node->setAttribute('name', $field);
                     $docNode->appendChild($node);
                 }
             }
         }
-
+        
         return $doc->saveXML();
     }
-
+    
     /**
      * Save Record to Database
      *
-     * @param string $xml XML document to post to Solr
-     *
-     * @return mixed      Boolean true on success or PEAR_Error
-     * @access public
+     * @param   string  $xml        XML document to post to Solr
+     * @return  mixed               Boolean true on success or PEAR_Error
+     * @access  public
      */
-    public function saveRecord($xml)
+    function saveRecord($xml)
     {
         if ($this->debug) {
             echo "<pre>Add Record</pre>\n";
@@ -1022,52 +818,53 @@ class Solr implements IndexEngine
 
         return $result;
     }
-
+    
     /**
      * Delete Record from Database
      *
-     * @param string $id ID for record to delete
-     *
-     * @return boolean
-     * @access public
+     * @param   string  $id         ID for record to delete
+     * @return  boolean             
+     * @access  public
      */
-    public function deleteRecord($id)
+    function deleteRecord($id)
     {
-        // Treat single-record deletion as a special case of multi-record deletion:
-        return $this->deleteRecords(array($id));
+        if ($this->debug) {
+            echo "<pre>Delete Record: $id</pre>\n";
+        }
+
+        $body = "<delete><id>$id</id></delete>";
+
+        $result = $this->_update($body);
+        if (PEAR::isError($result)) {
+            PEAR::raiseError($result);
+        }
+        
+        return $result;
     }
 
     /**
      * Delete Record from Database
      *
-     * @param string $idList Array of IDs for record to delete
-     *
-     * @return boolean
-     * @access public
+     * @param   string  $idList     Array of IDs for record to delete
+     * @return  boolean
+     * @access  public
      */
-    public function deleteRecords($idList)
+    function deleteRecords($idList)
     {
         if ($this->debug) {
             echo "<pre>Delete Record List</pre>\n";
         }
 
-        // Build the delete XML
+        // Delete XML
         $body = '<delete>';
         foreach ($idList as $id) {
-            $body .= '<id>' . htmlspecialchars($id) . '</id>';
+            $body .= "<id>$id</id>";
         }
         $body .= '</delete>';
 
-        // Attempt to post the XML:
         $result = $this->_update($body);
         if (PEAR::isError($result)) {
             PEAR::raiseError($result);
-        }
-
-        // Record the deletions in our change tracker database:
-        foreach ($idList as $id) {
-            $tracker = new Change_tracker();
-            $tracker->markDeleted($this->core, $id);
         }
 
         return $result;
@@ -1076,10 +873,10 @@ class Solr implements IndexEngine
     /**
      * Commit
      *
-     * @return string
-     * @access public
+     * @return  string
+     * @access  public
      */
-    public function commit()
+    function commit()
     {
         if ($this->debug) {
             echo "<pre>Commit</pre>\n";
@@ -1098,10 +895,10 @@ class Solr implements IndexEngine
     /**
      * Optimize
      *
-     * @return string
-     * @access public
+     * @return  string
+     * @access  public
      */
-    public function optimize()
+    function optimize()
     {
         if ($this->debug) {
             echo "<pre>Optimize</pre>\n";
@@ -1118,82 +915,22 @@ class Solr implements IndexEngine
     }
 
     /**
-     * Set the shards for distributed search
-     *
-     * @param array $shards Name => URL array of shards
-     *
-     * @return void
-     * @access public
-     */
-    public function setShards($shards)
-    {
-        $this->_solrShards = $shards;
-    }
-
-    /**
-     * Strip facet settings that are illegal due to shard settings.
-     *
-     * @param array $value Current facet.field setting
-     *
-     * @return array       Filtered facet.field setting
-     * @access private
-     */
-    private function _stripUnwantedFacets($value)
-    {
-        // Load the configuration of facets to strip and build a list of the ones
-        // that currently apply:
-        $facetConfig = getExtraConfigArray('facets');
-        $badFacets = array();
-        if (!empty($this->_solrShards) && is_array($this->_solrShards)
-            && isset($facetConfig['StripFacets'])
-            && is_array($facetConfig['StripFacets'])
-        ) {
-            $shardNames = array_keys($this->_solrShards);
-            foreach ($facetConfig['StripFacets'] as $indexName => $facets) {
-                if (in_array($indexName, $shardNames) === true) {
-                    $badFacets = array_merge($badFacets, explode(",", $facets));
-                }
-            }
-        }
-
-        // No bad facets means no filtering necessary:
-        if (empty($badFacets)) {
-            return $value;
-        }
-
-        // Ensure that $value is an array:
-        if (!is_array($value)) {
-            $value = array($value);
-        }
-
-        // Rebuild the $value array, excluding all unwanted facets:
-        $newValue = array();
-        foreach ($value as $current) {
-            if (!in_array($current, $badFacets)) {
-                $newValue[] = $current;
-            }
-        }
-
-        return $newValue;
-    }
-
-    /**
      * Submit REST Request to read data
      *
-     * @param string $method          HTTP Method to use: GET, POST,
-     * @param array  $params          Array of parameters for the request
-     * @param bool   $returnSolrError Should we fail outright on syntax error
-     * (false) or treat it as an empty result set with an error key set (true)?
-     *
-     * @return array                  The Solr response (or a PEAR error)
-     * @access private
+     * @param   string      $method             HTTP Method to use: GET, POST, 
+     * @param   array       $params             Array of parameters for the request
+     * @param   bool        $returnSolrError    If Solr reports a syntax error, 
+     *                                          should we fail outright (false) or
+     *                                          treat it as an empty result set with
+     *                                          an error key set (true)?
+     * @return  array                           The Solr response (or a PEAR error)
+     * @access  private
      */
-    private function _select($method = HTTP_REQUEST_METHOD_GET, $params = array(),
-        $returnSolrError = false
-    ) {
+    private function _select($method = HTTP_REQUEST_METHOD_GET, $params = array(), $returnSolrError = false)
+    {
         $this->client->setMethod($method);
         $this->client->setURL($this->host . "/select/");
-
+    
         $params['wt'] = 'json';
         $params['json.nl'] = 'arrarr';
 
@@ -1202,16 +939,7 @@ class Solr implements IndexEngine
         if ($params) {
             foreach ($params as $function => $value) {
                 if ($function != '') {
-                    // Strip custom FacetFields when sharding makes it necessary:
-                    if ($function === 'facet.field') {
-                        $value = $this->_stripUnwantedFacets($value);
-
-                        // If we stripped all values, skip the parameter:
-                        if (empty($value)) {
-                            continue;
-                        }
-                    }
-                    if (is_array($value)) {
+                    if(is_array($value)) {
                         foreach ($value as $additional) {
                             $additional = urlencode($additional);
                             $query[] = "$function=$additional";
@@ -1223,11 +951,6 @@ class Solr implements IndexEngine
                 }
             }
         }
-
-        // pass the shard parameter along to Solr if necessary:
-        if (!empty($this->_solrShards) && is_array($this->_solrShards)) {
-            $query[] = 'shards=' . urlencode(implode(',', $this->_solrShards));
-        }
         $queryString = implode('&', $query);
 
         if ($this->debug) {
@@ -1235,7 +958,7 @@ class Solr implements IndexEngine
             print_r($this->host . "/select/?" . $queryString);
             echo "</pre>\n";
         }
-
+        
         if ($method == 'GET') {
             $this->client->addRawQueryString($queryString);
         } elseif ($method == 'POST') {
@@ -1247,9 +970,8 @@ class Solr implements IndexEngine
         $this->client->clearPostData();
 
         if (!PEAR::isError($result)) {
-            return $this->_process(
-                $this->client->getResponseBody(), $returnSolrError
-            );
+            return $this->_process($this->client->getResponseBody(), 
+                $returnSolrError);
         } else {
             return $result;
         }
@@ -1258,16 +980,15 @@ class Solr implements IndexEngine
     /**
      * Submit REST Request to write data
      *
-     * @param string $xml The command to execute
-     *
-     * @return mixed      Boolean true on success or PEAR_Error
-     * @access private
+     * @param   string      $xml        The command to execute
+     * @return  mixed                   Boolean true on success or PEAR_Error
+     * @access  private
      */
     private function _update($xml)
     {
         $this->client->setMethod('POST');
         $this->client->setURL($this->host . "/update/");
-
+    
         if ($this->debug) {
             echo "<pre>POST: ";
             print_r($this->host . "/update/");
@@ -1276,7 +997,7 @@ class Solr implements IndexEngine
             echo "</pre>\n";
         }
 
-        // Set up XML
+        // Set up XML        
         $this->client->addHeader('Content-Type', 'text/xml; charset=utf-8');
         $this->client->addHeader('Content-Length', strlen($xml));
         $this->client->setBody($xml);
@@ -1296,56 +1017,40 @@ class Solr implements IndexEngine
             }
             return new PEAR_Error("Unexpected response -- " . $errorMsg);
         }
-
+        
         if (!PEAR::isError($result)) {
             return true;
         } else {
             return $result;
         }
     }
-
+    
     /**
      * Perform normalization and analysis of Solr return value.
      *
-     * @param array $result          The raw response from Solr
-     * @param bool  $returnSolrError Should we fail outright on syntax error
-     * (false) or treat it as an empty result set with an error key set (true)?
-     *
-     * @return array                 The processed response from Solr
-     * @access private
+     * @param   array       $result             The raw response from Solr
+     * @param   bool        $returnSolrError    If Solr reports a syntax error, 
+     *                                          should we fail outright (false) or
+     *                                          treat it as an empty result set with
+     *                                          an error key set (true)?
+     * @return  array                           The processed response from Solr
+     * @access  private
      */
     private function _process($result, $returnSolrError = false)
     {
         // Catch errors from SOLR
         if (substr(trim($result), 0, 2) == '<h') {
             $errorMsg = substr($result, strpos($result, '<pre>'));
-            $errorMsg = substr(
-                $errorMsg, strlen('<pre>'), strpos($result, "</pre>")
-            );
+            $errorMsg = substr($errorMsg, strlen('<pre>'), strpos($result, "</pre>"));
             if ($returnSolrError) {
-                return array(
-                    'response' => array('numfound' => 0, 'docs' => array()),
-                    'error' => $errorMsg
-                );
+                return array('response' => array('numfound' => 0, 'docs' => array()),
+                    'error' => $errorMsg);
             } else {
-                $msg = 'Unable to process query<br />Solr Returned: ' . $errorMsg;
-                PEAR::raiseError(new PEAR_Error($msg));
+                PEAR::raiseError(new PEAR_Error('Unable to process query<br />' .
+                    'Solr Returned: ' . $errorMsg));
             }
         }
         $result = json_decode($result, true);
-
-        // Inject highlighting details into results if necessary:
-        if (isset($result['highlighting'])) {
-            foreach ($result['response']['docs'] as $key => $current) {
-                if (isset($result['highlighting'][$current['id']])) {
-                    $result['response']['docs'][$key]['_highlighting']
-                        = $result['highlighting'][$current['id']];
-                }
-            }
-            // Remove highlighting section now that we have copied its contents:
-            unset($result['highlighting']);
-        }
-
         return $result;
     }
 
@@ -1355,10 +1060,9 @@ class Solr implements IndexEngine
      * Tokenizes the user input based on spaces and quotes.  Then joins phrases
      * together that have an AND, OR, NOT present.
      *
-     * @param string $input User's input string
-     *
-     * @return array        Tokenized array
-     * @access public
+     * @param   string  $input      User's input string
+     * @return  array               Tokenized array
+     * @access  public
      */
     public function tokenizeInput($input)
     {
@@ -1370,19 +1074,16 @@ class Solr implements IndexEngine
         // Join words with AND, OR, NOT
         $newWords = array();
         for ($i=0; $i<count($words); $i++) {
-            if (($words[$i] == 'OR') || ($words[$i] == 'AND')
-                || ($words[$i] == 'NOT')
-            ) {
+            if (($words[$i] == 'OR') || ($words[$i] == 'AND') || ($words[$i] == 'NOT')) {
                 if (count($newWords)) {
-                    $newWords[count($newWords)-1] .= ' ' . $words[$i] . ' ' .
-                        $words[$i+1];
+                    $newWords[count($newWords)-1] .= ' ' . $words[$i] . ' ' . $words[$i+1];
                     $i = $i+1;
                 }
             } else {
                 $newWords[] = $words[$i];
             }
         }
-
+        
         return $newWords;
     }
 
@@ -1391,10 +1092,9 @@ class Solr implements IndexEngine
      *
      * Cleans the input based on the Lucene Syntax rules.
      *
-     * @param string $input User's input string
-     *
-     * @return bool         Fixed input
-     * @access public
+     * @param   string  $input      User's input string
+     * @return  bool                Fixed input
+     * @access  public
      */
     public function validateInput($input)
     {
@@ -1405,11 +1105,11 @@ class Solr implements IndexEngine
             "\xE2\x80\x98" => "'", // ‘ (U+2018) in UTF-8
             "\xE2\x80\x99" => "'", // ’ (U+2019) in UTF-8
             "\xE2\x80\x9A" => "'", // ‚ (U+201A) in UTF-8
-            "\xE2\x80\x9B" => "'", // ? (U+201B) in UTF-8
+            "\xE2\x80\x9B" => "'", // ‛ (U+201B) in UTF-8
             "\xE2\x80\x9C" => '"', // “ (U+201C) in UTF-8
             "\xE2\x80\x9D" => '"', // ” (U+201D) in UTF-8
             "\xE2\x80\x9E" => '"', // „ (U+201E) in UTF-8
-            "\xE2\x80\x9F" => '"', // ? (U+201F) in UTF-8
+            "\xE2\x80\x9F" => '"', // ‟ (U+201F) in UTF-8
             "\xE2\x80\xB9" => "'", // ‹ (U+2039) in UTF-8
             "\xE2\x80\xBA" => "'", // › (U+203A) in UTF-8
         );
@@ -1418,15 +1118,15 @@ class Solr implements IndexEngine
         // If the user has entered a lone BOOLEAN operator, convert it to lowercase
         // so it is treated as a word (otherwise it will trigger a fatal error):
         switch(trim($input)) {
-        case 'OR':
-            return 'or';
-        case 'AND':
-            return 'and';
-        case 'NOT':
-            return 'not';
+            case 'OR':
+                return 'or';
+            case 'AND':
+                return 'and';
+            case 'NOT':
+                return 'not';
         }
 
-        // If the string consists only of control characters and/or BOOLEANs with no
+        // If the string consists only of control characters and/or BOOLEANs with no 
         // other input, wipe it out entirely to prevent weird errors:
         $operators = array('AND', 'OR', 'NOT', '+', '-', '"', '&', '|');
         if (trim(str_replace($operators, '', $input)) == '') {
@@ -1439,7 +1139,8 @@ class Solr implements IndexEngine
         }
 
         // Ensure wildcards are not at beginning of input
-        if ((substr($input, 0, 1) == '*') || (substr($input, 0, 1) == '?')) {
+        if ((substr($input, 0, 1) == '*') ||
+            (substr($input, 0, 1) == '?')) {
             $input = substr($input, 1);
         }
 
@@ -1462,18 +1163,16 @@ class Solr implements IndexEngine
         // braces with tokens that cannot possibly already be in the query (due
         // to ^ normalization in the step above).  Next, we remove all remaining
         // invalid brackets/braces, and transform our tokens back into valid ones.
-        // Obviously, the order of the patterns/merges array is critically
+        // Obviously, the order of the patterns/merges array is critically 
         // important to get this right!!
         $patterns = array(
             // STEP 1 -- escape valid brackets/braces
-            '/\[([^\[\]\s]+\s+TO\s+[^\[\]\s]+)\]/' .
-            ($this->_caseSensitiveRanges ? '' : 'i'),
-            '/\{([^\{\}\s]+\s+TO\s+[^\{\}\s]+)\}/' .
-            ($this->_caseSensitiveRanges ? '' : 'i'),
+            '/\[([^\[\]\s]+\s+TO\s+[^\[\]\s]+)\]/',
+            '/\{([^\{\}\s]+\s+TO\s+[^\{\}\s]+)\}/',
             // STEP 2 -- destroy remaining brackets/braces
-            '/[\[\]\{\}]/',
+            '/[\[\]\{\}]/', 
             // STEP 3 -- unescape valid brackets/braces
-            '/\^\^lbrack\^\^/', '/\^\^rbrack\^\^/',
+            '/\^\^lbrack\^\^/', '/\^\^rbrack\^\^/', 
             '/\^\^lbrace\^\^/', '/\^\^rbrace\^\^/');
         $matches = array(
             // STEP 1 -- escape valid brackets/braces
@@ -1486,21 +1185,13 @@ class Solr implements IndexEngine
         return $input;
     }
 
-    /**
-     * Does the provided query use advanced Lucene syntax features?
-     *
-     * @param string $query Query to test.
-     *
-     * @return bool
-     * @access public
-     */
     public function isAdvanced($query)
     {
         // Check for various conditions that flag an advanced Lucene query:
         if ($query == '*:*') {
             return true;
         }
-
+        
         // The following conditions do not apply to text inside quoted strings,
         // so let's just strip all quoted strings out of the query to simplify
         // detection.  We'll replace quoted phrases with a dummy keyword so quote
@@ -1517,9 +1208,6 @@ class Solr implements IndexEngine
             return true;
         }
         $rangeReg = '/(\[.+\s+TO\s+.+\])|(\{.+\s+TO\s+.+\})/';
-        if (!$this->_caseSensitiveRanges) {
-            $rangeReg .= "i";
-        }
         if (preg_match($rangeReg, $query)) {
             return true;
         }
@@ -1527,7 +1215,7 @@ class Solr implements IndexEngine
         // Build a regular expression to detect booleans -- AND/OR/NOT surrounded
         // by whitespace, or NOT leading the query and followed by whitespace.
         $boolReg = '/((\s+(AND|OR|NOT)\s+)|^NOT\s+)/';
-        if (!$this->_caseSensitiveBooleans) {
+        if (!$this->caseSensitiveBooleans) {
             $boolReg .= "i";
         }
         if (preg_match($boolReg, $query)) {
@@ -1547,131 +1235,14 @@ class Solr implements IndexEngine
         return false;
     }
 
-    /**
-     * Remove illegal characters from the provided query.
-     *
-     * @param string $query Query to clean.
-     *
-     * @return string       Clean query.
-     * @access public
-     */
     public function cleanInput($query)
     {
-        $query = trim(str_replace($this->_illegal, '', $query));
+        $query = trim(str_replace($this->illegal, '', $query));
         $query = strtolower($query);
-
+        
         return $query;
     }
 
-    /**
-     * Obtain information from an alphabetic browse index.
-     *
-     * @param string $source          Name of index to search
-     * @param string $from            Starting point for browse results
-     * @param int    $page            Result page to return (starts at 0)
-     * @param int    $page_size       Number of results to return on each page
-     * @param bool   $returnSolrError Should we fail outright on syntax error
-     * (false) or treat it as an empty result set with an error key set (true)?
-     *
-     * @return array
-     * @access public
-     */
-    public function alphabeticBrowse($source, $from, $page, $page_size = 20,
-        $returnSolrError = false
-    ) {
-        $this->client->setMethod('GET');
-        $this->client->setURL($this->host . "/browse");
-
-        $offset = $page * $page_size;
-
-        $this->client->addQueryString('from', $from);
-        $this->client->addQueryString('json.nl', 'arrarr');
-        $this->client->addQueryString('offset', $offset);
-        $this->client->addQueryString('rows', $page_size);
-        $this->client->addQueryString('source', $source);
-        $this->client->addQueryString('wt', 'json');
-
-        $result = $this->client->sendRequest();
-
-        if (!PEAR::isError($result)) {
-            return $this->_process(
-                $this->client->getResponseBody(), $returnSolrError
-            );
-        } else {
-            return $result;
-        }
-    }
-
-    /**
-     * Convert a terms array (where every even entry is a term and every odd entry
-     * is a count) into an associate array of terms => counts.
-     *
-     * @param array $in Input array
-     *
-     * @return array    Processed array
-     * @access private
-     */
-    private function _processTerms($in)
-    {
-        $out = array();
-
-        for ($i = 0; $i < count($in); $i += 2) {
-            $out[$in[$i]] = $in[$i + 1];
-        }
-
-        return $out;
-    }
-
-    /**
-     * Extract terms from the Solr index.
-     *
-     * @param string $field           Field to extract terms from
-     * @param string $start           Starting term to extract (blank for beginning
-     * of list)
-     * @param int    $limit           Maximum number of terms to return (-1 for no
-     * limit)
-     * @param bool   $returnSolrError Should we fail outright on syntax error
-     * (false) or treat it as an empty result set with an error key set (true)?
-     *
-     * @return array                  Associative array parsed from Solr JSON
-     * response; meat of the response is in the ['terms'] element, which contains
-     * an index named for the requested term, which in turn contains an associative
-     * array of term => count in index.
-     * @access public
-     */
-    public function getTerms($field, $start, $limit, $returnSolrError = false)
-    {
-        $this->client->setMethod('GET');
-        $this->client->setURL($this->host . '/term');
-
-        $this->client->addQueryString('terms', 'true');
-        $this->client->addQueryString('terms.fl', $field);
-        $this->client->addQueryString('terms.lower.incl', 'false');
-        $this->client->addQueryString('terms.lower', $start);
-        $this->client->addQueryString('terms.limit', $limit);
-        $this->client->addQueryString('terms.sort', 'index');
-        $this->client->addQueryString('wt', 'json');
-
-        $result = $this->client->sendRequest();
-
-        if (!PEAR::isError($result)) {
-            // Process the JSON response:
-            $data = $this->_process(
-                $this->client->getResponseBody(), $returnSolrError
-            );
-
-            // Tidy the data into a more usable format:
-            $fixedArray = array();
-            if (isset($data['terms'])) {
-                $data['terms'] = array(
-                    $data['terms'][0] => $this->_processTerms($data['terms'][1])
-                );
-            }
-            return $data;
-        } else {
-            return $result;
-        }
-    }
 }
 
 ?>

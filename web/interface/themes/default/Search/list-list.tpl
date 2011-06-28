@@ -9,7 +9,10 @@
 
 <script type="text/javascript">
   doGetStatuses({literal}{{/literal}
-    unknown: '<span class="unknown">{translate text='Unknown'}<\/span>'
+    available: '<span class="available">{translate text='Available'}<\/span>',
+    unavailable: '<span class="checkedout">{translate text='Checked Out'}<\/span>',
+    unknown: '<span class="unknown">{translate text='Unknown'}<\/span>',
+    reserve: '{translate text='on_reserve'}'
   {literal}}{/literal});
   {if $user}
   doGetSaveStatuses();

@@ -8,9 +8,9 @@
   <li><a href="#Boosting a Term">Wort gewichten</a></li>
   <li><a href="#Boolean operators">Boolsche Operatoren</a>
     <ul>
+      <li><a href="#OR">OR</a></li>
       <li><a href="#AND">AND</a></li>
       <li><a href="#+">+</a></li>
-      <li><a href="#OR">OR</a></li>
       <li><a href="#NOT">NOT</a></li>
       <li><a href="#-">-</a></li>
     </ul>
@@ -98,53 +98,57 @@
     </p>
     <p>Hinweis: Boolsche Operatoren werden groß geschrieben</p>
     <dl>
-      <dt><a name="AND"></a>AND</dt>
+      <dt><a name="OR"></a>OR</dt>
       <dd>
-        <p>Die Und-Verknüpfung (<strong>AND</strong>) ist der Standardoperator. Das
-            bedeutet, dass wenn zwischen zwei Wörtern kein Operator gesetzt wird,
-            die Und-Verknüpfung verwendet wird. Wenn sie zwei Wörter mit AND verbinden,
-            erhalten sie Treffer, in denen beide Wörter vorhanden sind.
+        <p>Die Oder-Verknüpfung (<strong>OR</strong>) ist der Standardoperator. Das
+            bedeutet, dass wenn zwischen zwei Wörten kein Operator gesetzt wird,
+            die Oder-Verknüpfung verwendet wird. Steht eine Oder-Verknüpfung zwischen
+            zwei Wörtern, so erhalten sie Treffer in welchem eines oder beide
+            Wörter gefunden wurde.
         </p>
         <p>Beispiel: Sie suchen nach Titel, in welchen die Wörter
-            "economics" und "Keynes" enthalten sind:</p>
-        <pre class="code">economics Keynes</pre>
+            "economics Keynes" oder "Keynes" enthalten sind:</p>
+        <pre class="code">"economics Keynes" Keynes</pre>
         <p>oder</p>
-        <pre class="code">economics AND Keynes</pre>
-      </dd>      
+        <pre class="code">"economics Keynes" OR Keynes</pre>
+        <p>ein</p>
+      </dd>
+      
+      <dt><a name="AND"></a>AND</dt>
+      <dd>
+        <p>Wenn sie zwei Wörter mit <strong>AND</strong> verbinden, erhalten
+           sie Treffer, in denen beide Wörter vorhanden sind.</p>
+        <p>Beispiel: Sie suchen nach Titel, in welchen die Wörter "economics" und
+           "Keynes" enthalten sind:</p>
+        <pre class="code">"economics" AND "Keynes"</pre>
+      </dd>
       <dt><a name="+"></a>+</dt>
       <dd>
-        <p>Indem sie den "+"-Operator vor ein Wort setzen, erhalten sie
+        <p>Indem sie den "+"-Operator hinter einem Wort setzen, erhalten sie
            Treffer in welchem dieses Wort vorhanden ist.
         </p>
-        <p>Beispiel:</p>
-        <pre class="code">+economics +Keynes</pre>
-      </dd>
-      <dt><a name="OR"></a>ODER</dt>
-      <dd>
-        <p>Steht eine Oder-Verknüpfung (<strong>OR</strong>) zwischen zwei Wörtern, so 
-        	erhalten sie Treffer, in welchem eines oder beide Wörter gefunden wurden.
-        </p>
-        <p>Beispiel: Sie suchen nach Titel, in welchen die Wörter "economics Keynes" oder
-           "Keynes" enthalten sind:</p>
-        <pre class="code">"economics Keynes" OR Keynes</pre>
+        <p>Beispiel: Sie suchen nach Titel, die das Wort "economics" enthalten
+           müssen und das Wort "Keynes" erhalten können.</p>
+        <pre class="code">+economics Keynes</pre>
       </dd>
       <dt><a name="NOT"></a>NOT</dt>
       <dd>
         <p>Indem sie NOT hinter ein Wort setzen, schliessen sie Treffer aus,
            welche dieses Wort enthalten</p>
-        <p>Beispiel: Sie wollen nach Titel suchen, welche das Wort "economics"
+        <p>Beispiel: Sie wollen nach Titel suchen, welche das Wort "econmics"
            enthalten aber nicht das Wort "Keynes":</p>
-        <pre class="code">economics NOT Keynes</pre>
-        <p>Hinweis: NOT muss mit mindestens zwei Wörtern verwendet werden.
+        <pre class="code">"economics" NOT "Keynes"</pre>
+        <p>Hinweis: NOT muss mit mindestens zwei Wörtern verwenndet werden.
            Beispielsweise liefert folgende Suche keine Treffer:</p>
-        <pre class="code">NOT economics</pre>
+        <pre class="code">NOT "economics"</pre>
       </dd>
       <dt><a name="-"></a>-</dt>
       <dd>
-        <p>Wird der Operator <strong>-</strong> vor ein Wort gesetzt, so
+        <p>Wird der Operator <strong>-</strong> hinter ein Wort gesetzt, so
            werden alle Treffer ausgefiltert, die dieses Wort enthalten.</p>
-        <p>Beispiel:</p>
-        <pre class="code">economics -Keynes</pre>
+        <p>Beispiel: Sie wollen nach Titel suchen, welche das Wort "economics"
+           aber nicht das Wort "Keynes" enthalten:</p>
+        <pre class="code">"economics" -"Keynes"</pre>
       </dd>
     </dl>
   </dd>

@@ -21,7 +21,7 @@ CREATE TABLE `comments` (
 
 CREATE TABLE `resource` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `record_id` varchar(60) NOT NULL DEFAULT '',
+  `record_id` varchar(30) NOT NULL DEFAULT '',
   `title` varchar(200) NOT NULL DEFAULT '',
   `source` varchar(50) NOT NULL DEFAULT 'VuFind',
   PRIMARY KEY (`id`),
@@ -98,7 +98,6 @@ CREATE TABLE `user` (
   `cat_password` varchar(50) DEFAULT NULL,
   `college` varchar(100) NOT NULL DEFAULT '',
   `major` varchar(100) NOT NULL DEFAULT '',
-  `home_library` varchar(100) NOT NULL DEFAULT '',
   `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`)
@@ -156,36 +155,6 @@ CREATE TABLE `session` (
   PRIMARY KEY  (`id`),
   UNIQUE KEY `session_id` (`session_id`),
   INDEX (`last_used`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
-
-
---
--- Table structure for table `change_tracker`
---
-
-DROP TABLE IF EXISTS `change_tracker`;
-CREATE TABLE `change_tracker` (
-  `core` varchar(30) NOT NULL,              -- solr core containing record
-  `id` varchar(64) NOT NULL,                -- ID of record within core
-  `first_indexed` datetime,                 -- first time added to index
-  `last_indexed` datetime,                  -- last time changed in index
-  `last_record_change` datetime,            -- last time original record was edited
-  `deleted` datetime,                       -- time record was removed from index
-  PRIMARY KEY (`core`, `id`),
-  KEY `deleted_index` (`deleted`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
-
---
--- Table structure for table `oai_resumption`
---
-
-DROP TABLE IF EXISTS `oai_resumption`;
-CREATE TABLE `oai_resumption` (
-  `id` int(11) NOT NULL auto_increment,
-  `params` text,
-  `expires` datetime NOT NULL default '0000-00-00 00:00:00',
-  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
 

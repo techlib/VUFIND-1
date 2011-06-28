@@ -6,8 +6,8 @@
 
       {if $message}<div class="error">{$message|translate}</div>{/if}
       <div class="result">
-      <form method="post" action="{$url}/MyResearch/Account" name="loginForm">
-        <table class="citation">
+      <table class="citation">
+        <form method="post" action="{$url}/MyResearch/Account" name="loginForm">
         <tr>
           <td>{translate text="First Name"}: </td>
           <td><input id="mainFocus" type="text" name="firstname" value="{$formVars.firstname|escape}" size="30"></td>
@@ -38,8 +38,8 @@
           <td></td>
           <td><input type="submit" name="submit" value="{translate text="Submit"}"></td>
         </tr>
-        </table>
-      </form>
+        </form>
+      </table>
       <script type="text/javascript">var o = document.getElementById('mainFocus'); if (o) o.focus();</script>
       </div>
 

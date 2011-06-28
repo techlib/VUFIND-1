@@ -1,8 +1,5 @@
 <?php
 /**
- * Internationalization Support for VuFind
- *
- * PHP version 5
  *
  * Copyright (C) Villanova University 2007.
  *
@@ -19,12 +16,6 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- * @category VuFind
- * @package  Support_Classes
- * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
- * @author   Demian Katz <demian.katz@villanova.edu>
- * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     http://vufind.org/wiki/language_localization_support Wiki
  */
 
 /**
@@ -37,65 +28,51 @@
  * files and adding/deleting of existing translations. Upon destruction, the
  * file is saved.
  *
- * @category VuFind
- * @package  Support_Classes
- * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
- * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     http://vufind.org/wiki/language_localization_support Wiki
+ * @author      Andrew S. Nagy <andrew.nagy@villanova.edu>
+ * @package     I18N_Translator
+ * @category    I18N
  */
 class I18N_Translator
 {
     /**
      * Language translation files path
      *
-     * @var    string
-     * @access public
+     * @var     string
+     * @access  public
      */
-    public $path;
+    var $path;
 
     /**
      * The specified language.
      *
-     * @var    string
-     * @access public
+     * @var     string
+     * @access  public
      */
-    public $langCode;
+    var $langCode;
 
     /**
      * An array of the translated text
      *
-     * @var    array
-     * @access public
+     * @var     array
+     * @access  public
      */
-    public $words = array();
+    var $words = array();
 
     /**
      * Debugging flag
      *
-     * @var    bool
-     * @access public
+     * @var     boolean
+     * @access  public
      */
-    public $debug = false;
-
-    /**
-     * Error message reflecting a problem with class initialization
-     * (or false if no problem).
-     *
-     * @var    string|bool
-     * @access public
-     */
-    public $error = false;
+    var $debug = false;
 
     /**
      * Constructor
      *
-     * @param string $path     The path to the language files
-     * @param string $langCode The ISO 639-1 Language Code
-     * @param bool   $debug    Are we in debug mode?
-     *
-     * @access public
+     * @param   string $langCode    The ISO 639-1 Language Code
+     * @access  public
      */
-    public function __construct($path, $langCode, $debug = false)
+    function __construct($path, $langCode, $debug = false)
     {
         $this->path = $path;
         $this->langCode = preg_replace('/[^\w\-]/', '', $langCode);
@@ -105,27 +82,26 @@ class I18N_Translator
         }
 
         // Load file in specified path
-        if (is_dir($path)) {
+        if ($dh = opendir($path)) {
             $file = $path . '/' . $this->langCode . '.ini';
             if ($this->langCode != '' && is_file($file)) {
-                $this->words = $this->_parseLanguageFile($file);
+                $this->words = $this->parseLanguageFile($file);
             } else {
-                $this->error = "Unknown language file";
+                return new PEAR_Error("Unknown language file");
             }
         } else {
-            $this->error = "Cannot open $path for reading";
+            return new PEAR_Error("Cannot open $path for reading");
         }
     }
 
     /**
      * Parse a language file.
      *
-     * @param string $file Filename to load
-     *
-     * @return array
-     * @access private
+     * @param   string $file        Filename to load
+     * @access  private
+     * @return  array
      */
-    private function _parseLanguageFile($file)
+    function parseLanguageFile($file)
     {
         /* Old method -- use parse_ini_file; problematic due to reserved words and
          * increased strictness in PHP 5.3.
@@ -137,16 +113,14 @@ class I18N_Translator
         $words = array();
         $contents = file($file);
         if (is_array($contents)) {
-            foreach ($contents as $current) {
+            foreach($contents as $current) {
                 // Split the string on the equals sign, keeping a max of two chunks:
                 $parts = explode('=', $current, 2);
                 $key = trim($parts[0]);
                 if (!empty($key) && substr($key, 0, 1) != ';') {
                     // Trim outermost double quotes off the value if present:
                     if (isset($parts[1])) {
-                        $value = preg_replace(
-                            '/^\"?(.*?)\"?$/', '$1', trim($parts[1])
-                        );
+                        $value = preg_replace('/^\"?(.*?)\"?$/', '$1', trim($parts[1]));
 
                         // Store the key/value pair (allow empty values -- sometimes
                         // we want to replace a language token with a blank string):
@@ -162,12 +136,12 @@ class I18N_Translator
     /**
      * Translate the phrase
      *
-     * @param string $phrase The phrase to translate
-     *
-     * @return string        Translated phrase
-     * @access public
+     * @param   string $phrase      The phrase to translate
+     * @access  public
+     * @note    Can be called statically if 2nd parameter is defined and load
+     *          method is called before
      */
-    public function translate($phrase)
+    function translate($phrase)
     {
         if (isset($this->words[$phrase])) {
             return $this->words[$phrase];

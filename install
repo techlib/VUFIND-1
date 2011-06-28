@@ -89,35 +89,20 @@ pear install --onlyreqdeps XML_Serializer-beta
 pear install --onlyreqdeps Console_ProgressBar-beta
 pear install --onlyreqdeps File_Marc-alpha
 pear channel-discover pear.horde.org
-pear channel-update pear.horde.org
-pear install Horde/Horde_Yaml-beta
+pear install horde/yaml
 
 
 # Install Smarty into PHP Include Directory
 PHPDIR=`pear config-get php_dir`
 SMARTYDIR="$PHPDIR/Smarty"
-SMARTYVER="2.6.26"
-SMARTYFILE="Smarty-$SMARTYVER"
-
 if [ ! -d $SMARTYDIR ]
 then
-    wget http://www.smarty.net/files/$SMARTYFILE.tar.gz -O $SMARTYFILE.tar.gz
-    if [ ! -f $SMARTYFILE.tar.gz ]
-    then
-        echo "Unable to download Smarty templates (file=$SMARTYFILE.tar.gz)."
-        exit 1
-    fi
-    tar -zxf $SMARTYFILE.tar.gz
-    if [ "$?" -ne "0" ]
-    then
-        echo "Unable to extract archive $SMARTYFILE.tar.gz."
-        rm $SMARTYFILE.tar.gz
-        exit 1
-    fi
+    wget http://www.smarty.net/do_download.php?download_file=Smarty-2.6.19.tar.gz
+    tar -zxf Smarty-2.6.19.tar.gz
     mkdir $SMARTYDIR
-    mv $SMARTYFILE/libs/* $SMARTYDIR
-    rm $SMARTYFILE.tar.gz
-    rm -rf $SMARTYFILE
+    mv Smarty-2.6.19/libs/* $SMARTYDIR
+    rm Smarty-2.6.19.tar.gz
+    rm -rf Smarty-2.6.19
 fi
 
 

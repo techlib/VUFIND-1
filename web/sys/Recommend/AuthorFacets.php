@@ -1,8 +1,5 @@
 <?php
 /**
- * AuthorFacets Recommendations Module
- *
- * PHP version 5
  *
  * Copyright (C) Villanova University 2009.
  *
@@ -19,75 +16,61 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- * @category VuFind
- * @package  Recommendations
- * @author   Demian Katz <demian.katz@villanova.edu>
- * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     http://vufind.org/wiki/building_a_recommendations_module Wiki
  */
+
 require_once 'sys/Recommend/Interface.php';
 
 /**
  * AuthorFacets Recommendations Module
  *
  * This class provides recommendations by taking advantage of author faceting.
- *
- * @category VuFind
- * @package  Recommendations
- * @author   Demian Katz <demian.katz@villanova.edu>
- * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     http://vufind.org/wiki/building_a_recommendations_module Wiki
  */
 class AuthorFacets implements RecommendationInterface
 {
-    private $_searchObject;
-    private $_params;
-
-    /**
-     * Constructor
+    private $searchObject;
+    private $params;
+    
+    /* Constructor
      *
      * Establishes base settings for making recommendations.
      *
-     * @param object $searchObject The SearchObject requesting recommendations.
-     * @param string $params       Additional settings from searches.ini.
-     *
-     * @access public
+     * @access  public
+     * @param   object  $searchObject   The SearchObject requesting recommendations.
+     * @param   string  $params         Additional settings from the searches.ini.
      */
     public function __construct($searchObject, $params)
     {
         // Save the basic parameters:
-        $this->_searchObject = $searchObject;
-        $this->_params = $params;
+        $this->searchObject = $searchObject;
+        $this->params = $params;
     }
-
-    /**
-     * init
+    
+    /* init
      *
      * Called before the SearchObject performs its main search.  This may be used
      * to set SearchObject parameters in order to generate recommendations as part
      * of the search.
      *
-     * @return void
-     * @access public
+     * @access  public
      */
     public function init()
     {
         // No action needed here.
     }
-
+    
     /**
      * Process similar authors from an author search
      *
-     * @return array Facets data arrays
-     * @access private
+     * @access  private
+     * @return  array     Facets data arrays
      */
-    private function _processAuthors()
+    private function processAuthors()
     {
         // Grab some necessary values from the SearchObject and config array:
         global $configArray;
-        $indexEngine = $this->_searchObject->getIndexEngine();
+        $indexEngine = $this->searchObject->getIndexEngine();
         $serverUrl = $configArray['Site']['url'];
-        $search = $this->_searchObject->getSearchTerms();
+        $search = $this->searchObject->getSearchTerms();
         $lookfor = isset($search[0]['lookfor']) ? $search[0]['lookfor'] : '';
 
         // Clean up the input -- if it's an invalid or empty search,
@@ -96,11 +79,9 @@ class AuthorFacets implements RecommendationInterface
         if (empty($query)) {
             return array();
         }
-
+        
         // Run a query for the author. We only want the facets of the result set.
-        $facetSettings = array(
-            'field' => 'authorStr', 'limit' => 10, 'sort' => 'count'
-        );
+        $facetSettings = array('field' => 'authorStr', 'limit' => 10, 'sort' => 'count');
         $result = $indexEngine->search(
             $lookfor,             // Query string
             'Author',             // DisMax Handler : null = standard
@@ -126,9 +107,7 @@ class AuthorFacets implements RecommendationInterface
         // Make sure there's some data
         if (isset($data) && count($data) > 0) {
             // A link to start their own author search like this
-            $list['lookfor']
-                = $serverUrl."/Author/Search?lookfor=".urlencode($lookfor);
-
+            $list['lookfor'] = $serverUrl."/Author/Search?lookfor=".urlencode($lookfor);
             // Total authors (currently there is no way to calculate this without
             // risking out-of-memory errors or slow results, so we set this to
             // false; if we are able to find this information out in the future,
@@ -142,8 +121,7 @@ class AuthorFacets implements RecommendationInterface
                     $list['list'][] = array(
                         'value' => $facet[0],
                         'count' => $facet[1],
-                        'url' =>
-                            $serverUrl."/Author/Home?author=" . urlencode($facet[0])
+                        'url'   => $serverUrl."/Author/Home?author=".urlencode($facet[0])
                     );
                 }
             }
@@ -151,31 +129,28 @@ class AuthorFacets implements RecommendationInterface
         return $list;
     }
 
-    /**
-     * process
+    /* process
      *
-     * Called after the SearchObject has performed its main search.  This may be
+     * Called after the SearchObject has performed its main search.  This may be 
      * used to extract necessary information from the SearchObject or to perform
      * completely unrelated processing.
      *
-     * @return void
-     * @access public
+     * @access  public
      */
     public function process()
     {
         global $interface;
-        $interface->assign('similarAuthors', $this->_processAuthors());
+        $interface->assign('similarAuthors', $this->processAuthors());
     }
-
-    /**
-     * getTemplate
+    
+    /* getTemplate
      *
      * This method provides a template name so that recommendations can be displayed
      * to the end user.  It is the responsibility of the process() method to
      * populate all necessary template variables.
      *
-     * @return string The template to use to display the recommendations.
-     * @access public
+     * @access  public
+     * @return  string      The template to use to display the recommendations.
      */
     public function getTemplate()
     {

@@ -1,8 +1,5 @@
 <?php
 /**
- * World Cat Utilities
- *
- * PHP version 5
  *
  * Copyright (C) Villanova University 2010.
  *
@@ -19,40 +16,27 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- * @category VuFind
- * @package  Support_Classes
- * @author   Demian Katz <demian.katz@villanova.edu>
- * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     http://vufind.org/wiki/system_classes Wiki
  */
 
 /**
  * World Cat Utilities
  *
  * Class for accessing helpful WorldCat APIs.
- *
- * @category VuFind
- * @package  Support_Classes
- * @author   Demian Katz <demian.katz@villanova.edu>
- * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     http://vufind.org/wiki/system_classes Wiki
  */
 class WorldCatUtils
 {
     /**
      * Retrieve results from the index using the XISBN service.
      *
-     * @param string $isbn ISBN of main record
-     *
-     * @return array       ISBNs for related items (may be empty).
-     * @access public
+     * @param   string      $isbn       ISBN of main record
+     * @return  array                   ISBNs for related items (may be empty).
      */
     public function getXISBN($isbn)
     {
         global $configArray;
 
         // Build URL
-        $url = 'http://xisbn.worldcat.org/webservices/xid/isbn/' .
+        $url = 'http://xisbn.worldcat.org/webservices/xid/isbn/' . 
                 urlencode(is_array($isbn) ? $isbn[0] : $isbn) .
                '?method=getEditions&format=csv';
         if (isset($configArray['WorldCat']['id'])) {
@@ -67,9 +51,9 @@ class WorldCatUtils
         // Fetch results
         $isbns = array();
         if ($fp = @fopen($url, "r")) {
-            while (($data = fgetcsv($fp, 1000, ",")) !== false) {
+            while (($data = fgetcsv($fp, 1000, ",")) !== FALSE) {
                 // Filter out non-ISBN characters and validate the length of
-                // whatever is left behind; this will prevent us from treating
+                // whatever is left behind; this will prevent us from treating 
                 // error messages like "invalidId" or "overlimit" as ISBNs.
                 $isbn = preg_replace('/[^0-9xX]/', '', $data[0]);
                 if (strlen($isbn) < 10) {
@@ -83,62 +67,17 @@ class WorldCatUtils
     }
 
     /**
-     * Retrieve results from the index using the XOCLCNUM service.
-     *
-     * @param string $oclc OCLC number of main record
-     *
-     * @return array       ISBNs for related items (may be empty).
-     * @access public
-     */
-    public function getXOCLCNUM($oclc)
-    {
-        global $configArray;
-
-        // Build URL
-        $url = 'http://xisbn.worldcat.org/webservices/xid/oclcnum/' .
-                urlencode(is_array($oclc) ? $oclc[0] : $oclc) .
-               '?method=getEditions&format=csv';
-        if (isset($configArray['WorldCat']['id'])) {
-            $url .= '&ai=' . $configArray['WorldCat']['id'];
-        }
-
-        // Print Debug code
-        if ($configArray['System']['debug']) {
-            echo "<pre>XOCLCNUM: $url</pre>";
-        }
-
-        // Fetch results
-        $results = array();
-        if ($fp = @fopen($url, "r")) {
-            while (($data = fgetcsv($fp, 1000, ",")) !== false) {
-                // Filter out non-numeric characters and validate the length of
-                // whatever is left behind; this will prevent us from treating
-                // error messages like "invalidId" or "overlimit" as ISBNs.
-                $current = preg_replace('/[^0-9]/', '', $data[0]);
-                if (empty($current)) {
-                    continue;
-                }
-                $results[] = $current;
-            }
-        }
-
-        return $results;
-    }
-
-    /**
      * Retrieve results from the index using the XISSN service.
      *
-     * @param string $issn ISSN of main record
-     *
-     * @return array       ISSNs for related items (may be empty).
-     * @access public
+     * @param   string      $issn       ISSN of main record
+     * @return  array                   ISSNs for related items (may be empty).
      */
     public function getXISSN($issn)
     {
         global $configArray;
-
+    
         // Build URL
-        $url = 'http://xissn.worldcat.org/webservices/xid/issn/' .
+        $url = 'http://xissn.worldcat.org/webservices/xid/issn/' . 
                 urlencode(is_array($issn) ? $issn[0] : $issn) .
                //'?method=getEditions&format=csv';
                '?method=getEditions&format=xml';
@@ -168,69 +107,67 @@ class WorldCatUtils
                 }
             }
         }
-
+        
         return $issns;
     }
-
+    
     /**
-     * Support function for _getIdentitiesQuery(); is the provided name component
+     * Support function for getIdentitiesQuery(); is the provided name component
      * worth considering as a first or last name?
      *
-     * @param string $current Name chunk to examine.
-     *
-     * @return boolean        Should we use this as a name?
-     * @access private
+     * @access  private
+     * @param   string      $current        Name chunk to examine.
+     * @return  boolean                     Should we use this as a name?
      */
-    private function _isUsefulNameChunk($current)
+    public function isUsefulNameChunk($current)
     {
         // Some common prefixes and suffixes that we do not want to treat as first
         // or last names:
         static $badChunks = array('jr', 'sr', 'ii', 'iii', 'iv', 'v', 'vi', 'vii',
             'viii', 'ix', 'x', 'junior', 'senior', 'esq', 'mr', 'mrs', 'miss', 'dr');
-
+        
         // Clean up the input string:
         $current = str_replace('.', '', strtolower($current));
-
+        
         // We don't want to use empty, numeric or known bad strings!
-        if (empty($current) || is_numeric($current)
-            || in_array($current, $badChunks)
-        ) {
+        if (empty($current) || is_numeric($current) ||
+            in_array($current, $badChunks)) {
             return false;
         }
         return true;
     }
-
+    
     /**
      * Support function for getRelatedIdentities() -- parse a name into a query
      * for WorldCat Identities.
      *
-     * @param string $name Name to parse.
-     *
-     * @return mixed       False if useless string; Identities query otherwise.
      * @access  private
+     * @param   string      $name           Name to parse.
+     * @return  mixed                       Boolean false if useless string;
+     *                                      Identities query otherwise.
      */
-    private function _getIdentitiesQuery($name)
+    private function getIdentitiesQuery($name)
     {
         // Clean up user query and try to find name components within it:
         $name = trim(str_replace(array('"', ',', '-'), ' ', $name));
         $parts = explode(' ', $name);
         $first = $last = '';
-        foreach ($parts as $current) {
+        foreach($parts as $current) {
             $current = trim($current);
             // Do we want to store this chunk?
-            if ($this->_isUsefulNameChunk($current)) {
+            if ($this->isUsefulNameChunk($current)) {
                 // Is the first name empty?  If so, save this there.
                 if (empty($first)) {
                     $first = $current;
+                // If this isn't the first name, we always want to save it as the
+                // last name UNLESS it's an initial, in which case we'll only save
+                // it if we don't already have something better!
                 } else if (strlen($current) > 2 || empty($last)) {
-                    // If this isn't the first name, we always want to save it as the
-                    // last name UNLESS it's an initial, in which case we'll only
-                    // save it if we don't already have something better!
                     $last = $current;
                 }
             }
         }
-
+        
         // Fail if we found no useful name components; otherwise, build up the query
         // based on whether we found a first name only or both first and last names:
         if (empty($first) && empty($last)) {
@@ -243,15 +180,14 @@ class WorldCatUtils
     }
 
     /**
-     * Support method for getRelatedIdentities() -- extract subject headings from
+     * Support method for getRelatedIdentities() -- extract subject headings from 
      * the current node of the Identities API response.
      *
-     * @param array $current Current response node.
-     *
-     * @return array         Extracted subject headings.
-     * @access private
+     * @access  private
+     * @param   array           $current            Current response node.
+     * @return  array                               Extracted subject headings.
      */
-    private function _processIdentitiesSubjects($current)
+    private function processIdentitiesSubjects($current)
     {
         // Normalize subjects array if it has only a single entry:
         $subjects = isset($current['fastHeadings']['fast']) ?
@@ -263,17 +199,16 @@ class WorldCatUtils
         // Collect subjects for current name:
         $retVal = array();
         if (is_array($subjects)) {
-            foreach ($subjects as $currentSubject) {
-                if ($currentSubject['tag'] == '650'
-                    && !empty($currentSubject['_content'])
-                ) {
+            foreach($subjects as $currentSubject) {
+                if ($currentSubject['tag'] == '650' && 
+                    !empty($currentSubject['_content'])) {
                     // Double dash will cause problems with Solr searches, so
                     // represent subject heading subdivisions differently:
                     $retVal[] = str_replace('--', ': ', $currentSubject['_content']);
                 }
             }
         }
-
+        
         return $retVal;
     }
 
@@ -283,20 +218,21 @@ class WorldCatUtils
      * Return value is an associative array where key = author name and value =
      * subjects used in that author's works.
      *
-     * @param string $name       Name to search for (any format).
-     * @param int    $maxRecords Max # of records to read from API (more = slower).
-     *
-     * @return mixed             False on error, otherwise array of related names.
-     * @access public
+     * @access  public
+     * @param   string      $name           Name to search for (any format).
+     * @param   int         $maxRecords     The maximum number of identity records
+     *                                      to consult via the API (more = slower).
+     * @return  mixed                       False on error, otherwise array of
+     *                                      related names.
      */
     public function getRelatedIdentities($name, $maxRecords = 10)
     {
         // Build the WorldCat Identities API query:
-        $query = $this->_getIdentitiesQuery($name);
+        $query = $this->getIdentitiesQuery($name);
         if (!$query) {
             return false;
         }
-
+        
         // Get the API response:
         $url = "http://worldcat.org/identities/search/PersonalIdentities" .
             "?query=" . urlencode($query) .
@@ -331,30 +267,29 @@ class WorldCatUtils
         }
 
         // Loop through data and collect names and related subjects:
-        $output = array();
-        foreach ($baseData as $current) {
+        $processedData = array();
+        foreach($baseData as $current) {
             // Build current name string:
             $current = isset($current['recordData']['Identity']['nameInfo']) ?
                 $current['recordData']['Identity']['nameInfo'] : array();
-            if (isset($current['type']) && $current['type'] == 'personal'
-                && !empty($current['rawName']['suba'])
-            ) {
+            if (isset($current['type']) && $current['type'] == 'personal' && 
+                !empty($current['rawName']['suba'])) {
                 $currentName = $current['rawName']['suba'] .
-                    (isset($current['rawName']['subd']) ?
+                    (isset($current['rawName']['subd']) ? 
                         ', ' . $current['rawName']['subd'] : '');
 
-                // Get subject list for current identity; if the current name is a
-                // duplicate of a previous name, merge the subjects together:
-                $subjects = $this->_processIdentitiesSubjects($current);
-                $output[$currentName] = isset($output[$currentName])
-                    ? array_unique(array_merge($output[$currentName], $subjects))
-                    : $subjects;
+            // Get subject list for current identity; if the current name is a 
+            // duplicate of a previous name, merge the subjects together:
+            $subjects = $this->processIdentitiesSubjects($current);
+            $processedData[$currentName] = isset($processedData[$currentName]) ?
+                array_unique(array_merge($processedData[$currentName], $subjects)) :
+                $subjects;
             }
         }
 
-        return $output;
+        return $processedData;
     }
-
+    
     /**
      * Given a subject term, get related (broader/narrower/alternate) terms.
      * Loosely adapted from Eric Lease Morgan's Term Finder demo (see
@@ -364,14 +299,14 @@ class WorldCatUtils
      * key, possible broader terms in the 'broader' key and possible narrower
      * terms in the 'narrower' key of the return array.
      *
-     * @param string $term       Term to get related terms for.
-     * @param string $vocabulary Vocabulary to search (default = LCSH; see OCLC docs
-     * for other options).
-     * @param int    $maxRecords Max # of records to read from API (more = slower).
-     *
-     * @return mixed             False on error, otherwise array of related terms,
-     * keyed by category.
-     * @access public
+     * @access  public
+     * @param   string      $term           Term to get related terms for.
+     * @param   string      $vocabulary     Vocabulary to search (default = LCSH;
+     *                                      see OCLC docs for other options).
+     * @param   int         $maxRecords     The maximum number of authority records
+     *                                      to consult via the API (more = slower).
+     * @return  mixed                       False on error, otherwise array of
+     *                                      related terms, keyed by category.
      */
     public function getRelatedTerms($term, $vocabulary = 'lcsh', $maxRecords = 10)
     {
@@ -380,9 +315,8 @@ class WorldCatUtils
 
         // Build the request URL:
         $url = "http://tspilot.oclc.org/" . urlencode($vocabulary) . "/?" .
-            // Search for the user-supplied term in both preferred and alternative
-            // fields!
-            "query=oclcts.preferredTerm+%3D+%22" . urlencode($term) .
+            // Search for the user-supplied term in both preferred and alternative fields!
+            "query=oclcts.preferredTerm+%3D+%22" . urlencode($term) . 
                 "%22+OR+oclcts.alternativeTerms+%3D+%22" . urlencode($term) . "%22" .
             "&version=1.1" .
             "&operation=searchRetrieve" .
@@ -392,7 +326,7 @@ class WorldCatUtils
             "&resultSetTTL=300" .
             "&recordPacking=xml" .
             "&recordXPath=" .
-            "&sortKeys=recordcount";
+            "&sortKeys=";
 
         // Get the API response:
         $data = @file_get_contents($url);
@@ -419,7 +353,7 @@ class WorldCatUtils
         $exact = array();
         $broader = array();
         $narrower = array();
-
+        
         while ($record = $marc->next()) {
             // Get exact terms:
             $actual = $record->getField('150');
@@ -430,15 +364,15 @@ class WorldCatUtils
                     // strings properly (giving back XML objects instead); let's
                     // cast to string to be sure we get what we expect!
                     $main = (string)$main->getData();
-
+                    
                     // Add subdivisions:
                     $subdivisions = $actual->getSubfields('x');
                     if ($subdivisions) {
-                        foreach ($subdivisions as $current) {
+                        foreach($subdivisions as $current) {
                             $main .= ', ' . (string)$current->getData();
                         }
                     }
-
+                    
                     // Only save the actual term if it is not a subset of the
                     // requested term.
                     if (!stristr($term, $main)) {
@@ -446,10 +380,10 @@ class WorldCatUtils
                     }
                 }
             }
-
+            
             // Get broader/narrower terms:
             $related = $record->getFields('550');
-            foreach ($related as $current) {
+            foreach($related as $current) {
                 $type = $current->getSubfield('w');
                 $value = $current->getSubfield('a');
                 if ($type && $value) {
@@ -469,15 +403,11 @@ class WorldCatUtils
                 }
             }
         }
-
-        // Send back everything we found, sorted and filtered for uniqueness; note
-        // that we do NOT sort FAST results since they support relevance ranking.
-        // As of this writing, other vocabularies do not support relevance.
-        if ($vocabulary !== 'fast') {
-            natcasesort($exact);
-            natcasesort($broader);
-            natcasesort($narrower);
-        }
+        
+        // Send back everything we found, sorted and filtered for uniqueness:
+        natcasesort($exact);
+        natcasesort($broader);
+        natcasesort($narrower);
         return array(
             'exact' => array_unique($exact),
             'broader' => array_unique($broader),

@@ -1,8 +1,5 @@
 <?php
 /**
- * Home action for Admin module.
- *
- * PHP version 5
  *
  * Copyright (C) Villanova University 2007.
  *
@@ -19,45 +16,22 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- * @category VuFind
- * @package  Controller_Admin
- * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
- * @author   Demian Katz <demian.katz@villanova.edu>
- * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     http://vufind.org/wiki/building_a_module Wiki
  */
-require_once 'Admin.php';
+ 
+require_once 'Action.php';
 
 require_once 'XML/Unserializer.php';
 
-/**
- * Home action for Admin module.
- *
- * @category VuFind
- * @package  Controller_Admin
- * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
- * @author   Demian Katz <demian.katz@villanova.edu>
- * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     http://vufind.org/wiki/building_a_module Wiki
- */
-class Home extends Admin
+class Home extends Action
 {
-    /**
-     * Process parameters and display the page.
-     *
-     * @return void
-     * @access public
-     */
-    public function launch()
+    function launch()
     {
         global $configArray;
         global $interface;
 
         // Load SOLR Statistics
         if ($configArray['Index']['engine'] == 'Solr') {
-            $xml = @file_get_contents(
-                $configArray['Index']['url'] . '/admin/multicore'
-            );
+            $xml = @file_get_contents($configArray['Index']['url'] . '/admin/multicore');
 
             if ($xml) {
                 $options = array('parseAttributes' => 'true',

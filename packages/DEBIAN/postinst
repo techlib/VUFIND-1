@@ -2,20 +2,10 @@
  
 # Script for installing VuFind trunk on Ubuntu
 # This does not include the OCI8 libraries
-
-# Update the profile file to set required environment variables (unless they are
-# already defined there):
-grep -q JAVA_HOME= /etc/profile
-if [ $? -ne 0 ]; then
-    sudo sh -c 'echo export JAVA_HOME=\"/usr/lib/jvm/default-java\" >> /etc/profile'
-fi
-grep -q VUFIND_HOME= /etc/profile
-if [ $? -ne 0 ]; then
-    sudo sh -c 'echo export VUFIND_HOME=\"/usr/local/vufind\"  >> /etc/profile'
-fi
+ 
+sudo sh -c 'echo export JAVA_HOME=\"/usr/lib/jvm/default-java\" >> /etc/profile'
+sudo sh -c 'echo export VUFIND_HOME=\"/usr/local/vufind\"  >> /etc/profile'
 source /etc/profile
-
-# Turn on mod_rewrite in Apache.
 sudo a2enmod rewrite
  
 # Set permissions so apache can write to certain directories.
@@ -29,6 +19,7 @@ sudo /etc/init.d/apache2 force-reload
  
 # Finalize the installation 
 cd $VUFIND_HOME
-sudo bash $VUFIND_HOME/install
-sudo chmod +x $VUFIND_HOME/*.sh
+sudo $VUFIND_HOME/install
+sudo chmod +x $VUFIND_HOME/vufind.sh
+sudo chmod +x $VUFIND_HOME/import-marc.sh
 

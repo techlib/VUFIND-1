@@ -1,8 +1,5 @@
 <?php
 /**
- * VuFind Mailer Class
- *
- * PHP version 5
  *
  * Copyright (C) Villanova University 2009.
  *
@@ -19,11 +16,6 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- * @category VuFind
- * @package  Support_Classes
- * @author   Demian Katz <demian.katz@villanova.edu>
- * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     http://vufind.org/wiki/system_classes Wiki
  */
 require_once 'Mail.php';
 require_once 'Mail/RFC822.php';
@@ -32,25 +24,22 @@ require_once 'Mail/RFC822.php';
  * VuFind Mailer Class
  *
  * This is a wrapper class to load configuration options and perform email
- * functions.  See the comments in web/conf/config.ini for details on how
+ * functions.  See the comments in web/conf/config.ini for details on how 
  * email is configured.
  *
- * @category VuFind
- * @package  Support_Classes
- * @author   Demian Katz <demian.katz@villanova.edu>
- * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     http://vufind.org/wiki/system_classes Wiki
+ * @author      Demian Katz <demian.katz@villanova.edu>
+ * @access      public
  */
 class VuFindMailer
 {
     protected $settings;      // settings for PEAR Mail object
-
+    
     /**
      * Constructor
      *
      * Sets up mailing functionality using settings from config.ini.
      *
-     * @access public
+     * @access  public
      */
     public function __construct()
     {
@@ -61,9 +50,8 @@ class VuFindMailer
         // detection easier to control.
         $this->settings = array('host' => $configArray['Mail']['host'],
                                 'port' => $configArray['Mail']['port']);
-        if (isset($configArray['Mail']['username'])
-            && isset($configArray['Mail']['password'])
-        ) {
+        if (isset($configArray['Mail']['username']) && 
+            isset($configArray['Mail']['password'])) {
             $this->settings['auth'] = true;
             $this->settings['username'] = $configArray['Mail']['username'];
             $this->settings['password'] = $configArray['Mail']['password'];
@@ -73,13 +61,12 @@ class VuFindMailer
     /**
      * Send an email message.
      *
-     * @param string $to      Recipient email address
-     * @param string $from    Sender email address
-     * @param string $subject Subject line for message
-     * @param string $body    Message body
-     *
-     * @return mixed          PEAR error on error, boolean true otherwise
-     * @access public
+     * @access  public
+     * @param   string  $to         Recipient email address
+     * @param   string  $from       Sender email address
+     * @param   string  $subject    Subject line for message
+     * @param   string  $body       Message body
+     * @return  mixed               PEAR error on error, boolean true otherwise
      */
     public function send($to, $from, $subject, $body)
     {
@@ -90,37 +77,18 @@ class VuFindMailer
         if (!Mail_RFC822::isValidInetAddress($from)) {
             return new PEAR_Error('Invalid Sender Email Address');
         }
-
-        // Change error handling behavior to avoid termination during mail
-        // process....
-        PEAR::setErrorHandling(PEAR_ERROR_RETURN);
-
+        
         // Get mail object
         $mail =& Mail::factory('smtp', $this->settings);
         if (PEAR::isError($mail)) {
             return $mail;
         }
-
+        
         // Send message
         $headers = array('From' => $from, 'To' => $to, 'Subject' => $subject,
             'Date' => date('D, d M Y H:i:s O'),
             'Content-Type' => 'text/plain; charset="UTF-8"');
-        $result = $mail->send($to, $headers, $body);
-
-        return $result;
-    }
-
-    /**
-     * Get settings
-     *
-     * Returns Mail settings for use in external functions such as Logger.php
-     *
-     * @return array Settings loaded at construction from config.ini
-     * @access public
-     */
-    public function getSettings()
-    { 
-        return $this->settings;
+        return $mail->send($to, $headers, $body);
     }
 }
 
@@ -129,16 +97,13 @@ class VuFindMailer
  *
  * This class extends the VuFindMailer to send text messages.
  *
- * @category VuFind
- * @package  Support_Classes
- * @author   Demian Katz <demian.katz@villanova.edu>
- * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     http://vufind.org/wiki/system_classes Wiki
+ * @author      Demian Katz <demian.katz@villanova.edu>
+ * @access      public
  */
 class SMSMailer extends VuFindMailer
 {
     // Defaults, usually overridden by contents of web/conf/sms.ini:
-    private $_carriers = array(
+    private $carriers = array(
         'virgin' => array('name' => 'Virgin Mobile', 'domain' => 'vmobl.com'),
         'att' => array('name' => 'AT&T', 'domain' => 'txt.att.net'),
         'verizon' => array('name' => 'Verizon', 'domain' => 'vtext.com'),
@@ -154,7 +119,7 @@ class SMSMailer extends VuFindMailer
      *
      * Sets up SMS carriers and other settings from sms.ini.
      *
-     * @access public
+     * @access  public
      */
     public function __construct()
     {
@@ -165,14 +130,14 @@ class SMSMailer extends VuFindMailer
         if (isset($configArray['Extra_Config']['sms'])) {
             $smsConfig = getExtraConfigArray('sms');
             if (isset($smsConfig['Carriers']) && !empty($smsConfig['Carriers'])) {
-                $this->_carriers = array();
+                $this->carriers = array();
                 foreach ($smsConfig['Carriers'] as $id=>$config) {
                     list($domain, $name) = explode(':', $config, 2);
-                    $this->_carriers[$id] = array('name'=>$name, 'domain'=>$domain);
+                    $this->carriers[$id] = array('name'=>$name, 'domain'=>$domain);
                 }
             }
         }
-
+        
         parent::__construct();
     }
 
@@ -181,36 +146,35 @@ class SMSMailer extends VuFindMailer
      * associative arrays indexed by carrier ID and containing "name" and "domain"
      * keys.
      *
-     * @access public
-     * @return array
+     * @access  public
+     * @return  array
      */
     public function getCarriers()
     {
-        return $this->_carriers;
+        return $this->carriers;
     }
 
     /**
      * Send a text message to the specified provider.
      *
-     * @param string $provider The provider ID to send to
-     * @param string $to       The phone number at the provider
-     * @param string $from     The email address to use as sender
-     * @param string $message  The message to send
-     *
-     * @return mixed           PEAR error on error, boolean true otherwise
-     * @access public
+     * @param   string      $provider       The provider ID to send to
+     * @param   string      $to             The phone number at the provider
+     * @param   string      $from           The email address to use as sender
+     * @param   string      $message        The message to send
+     * @access  public
+     * @return  mixed               PEAR error on error, boolean true otherwise
      */
     public function text($provider, $to, $from, $message)
     {
-        $knownCarriers = array_keys($this->_carriers);
+        $knownCarriers = array_keys($this->carriers);
         if (empty($provider) || !in_array($provider, $knownCarriers)) {
             return new PEAR_Error('Unknown Carrier');
         }
-
-        $to = $to . '@' . $this->_carriers[$provider]['domain'];
+        
+        $to = $to . '@' . $this->carriers[$provider]['domain'];
         $mail = new VuFindMailer();
         $subject = '';
         return $this->send($to, $from, $subject, $message);
-    }
+    }    
 }
 ?>

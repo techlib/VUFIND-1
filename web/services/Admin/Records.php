@@ -1,8 +1,5 @@
 <?php
 /**
- * Records action for Admin module
- *
- * PHP version 5
  *
  * Copyright (C) Villanova University 2007.
  *
@@ -19,47 +16,33 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- * @category VuFind
- * @package  Controller_Admin
- * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
- * @author   Demian Katz <demian.katz@villanova.edu>
- * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     http://vufind.org/wiki/building_a_module Wiki
  */
-require_once 'Admin.php';
+ 
+require_once 'Action.php';
 
-/**
- * Records action for Admin module
- *
- * @category VuFind
- * @package  Controller_Admin
- * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
- * @author   Demian Katz <demian.katz@villanova.edu>
- * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     http://vufind.org/wiki/building_a_module Wiki
- */
-class Records extends Admin
+require_once 'CatalogConnection.php';
+
+class Records extends Action
 {
-    private $_db;
+    private $db;
 
-    /**
-     * Process parameters and display the page.
-     *
-     * @return void
-     * @access public
-     */
-    public function launch()
+    function launch()
     {
+        global $configArray;
         global $interface;
 
         // Run the specified method if it exists...  but don't run the launch
         // method or we'll end up in an infinite loop!!
-        if (isset($_GET['util']) && $_GET['util'] != 'launch'
-            && method_exists($this, $_GET['util'])
-        ) {
+        if (isset($_GET['util']) && $_GET['util'] != 'launch' && 
+            method_exists($this, $_GET['util'])) {
             // Setup Search Engine Connection
-            $this->_db = ConnectionManager::connectToIndex();
-
+            $class = $configArray['Index']['engine'];
+            $url = $configArray['Index']['url'];
+            $this->db = new $class($url);
+            if ($configArray['System']['debug']) {
+                $this->db->debug = true;
+            }
+        
             $this->$_GET['util']();
         } else {
             $interface->setTemplate('records.tpl');
@@ -68,64 +51,95 @@ class Records extends Admin
         }
     }
 
-    /**
-     * Display a specified record.
-     *
-     * @return void
-     * @access public
-     */
-    public function viewRecord()
+    function editRecord($allowChanges = true)
     {
         global $interface;
 
         // Read in the original record:
-        $record = $this->_db->getRecord($_GET['id']);
+        $record = $this->db->getRecord($_GET['id']);
 
+        // Save changes if necessary
+        if (isset($_POST['submit']) && $_POST['submit'] == 'Save') {
+            // Strip off the "solr_" prefix used to identify index fields:
+            $fields = array();
+            foreach($_POST as $field => $value) {
+                if (substr($field, 0, 5) == 'solr_') {
+                    $fields[substr($field, 5)] = $value;
+                }
+            }
+            
+            // Make sure we haven't lost the ID:
+            if (strlen(trim($fields['id'][0])) == 0) {
+                $fields['id'][0] = $_GET['id'];
+            }
+            
+            // Write the changes to Solr using the XML interface.
+            // TODO: Find a way to represent control characters (ASCII 29, 30, 31)
+            //       commonly found in MARC; until we can do this, we can't save
+            //       changes due to the content of the fullrecord field and the
+            //       limitations of XML.  This may need to wait until a non-XML
+            //       transport layer is available for external Solr interfacing.
+            $xml = $this->db->getSaveXML($fields);
+            $this->db->saveRecord($xml);
+            $this->db->commit();
+            
+            // Redirect to the newly-saved record (in case the ID changed):
+            if ($_GET['id'] != $fields['id']) {
+                header("Location: Records?util=editRecord&id=" . urlencode($fields['id'][0]));
+                die();
+            }
+        }
+        
         $interface->assign('record', $record);
         $interface->assign('recordId', $_GET['id']);
+        $interface->assign('allowChanges', $allowChanges);
 
-        $interface->setTemplate('record-view.tpl');
+        $interface->setTemplate('record-edit.tpl');
         $interface->display('layout-admin.tpl');
     }
 
-    /**
-     * Delete a specified record.
-     *
-     * @return void
-     * @access public
-     */
-    public function deleteRecord()
+    function viewRecord()
+    {
+        // View is exactly the same as edit, but it doesn't allow changes.
+        $this->editRecord(false);
+    }
+    
+    function deleteRecord()
     {
         global $interface;
-
+        
         if (!empty($_GET['id'])) {
-            $this->_db->deleteRecord($_GET['id']);
-            $this->_db->commit();
-            //$this->_db->optimize();
+            $this->db->deleteRecord($_GET['id']);
+            $this->db->commit();
+            //$this->db->optimize();
             $interface->assign('status', 'Record ' . $_GET['id'] . ' deleted.');
         } else {
             $interface->assign('status', 'Please specify a record to delete.');
         }
-
+        
         $interface->setTemplate('records.tpl');
         $interface->display('layout-admin.tpl');
     }
 
-    /**
-     * Delete suppressed records.
-     *
-     * @return void
-     * @access public
-     */
-    public function deleteSuppressed()
+    function deleteSuppressed()
     {
         global $interface;
+        global $configArray;
 
         ini_set('memory_limit', '50M');
         ini_set('max_execution_time', '3600');
 
         // Make ILS Connection
-        $catalog = ConnectionManager::connectToCatalog();
+        try {
+            $catalog = new CatalogConnection($configArray['Catalog']['driver']);
+        } catch (PDOException $e) {
+            // What should we do with this error?
+            if ($configArray['System']['debug']) {
+                echo '<pre>';
+                echo 'DEBUG: ' . $e->getMessage();
+                echo '</pre>';
+            }
+        }
 
         /*
         // Display Progress Page
@@ -136,16 +150,41 @@ class Records extends Admin
 
         // Get Suppressed Records and Delete from index
         $deletes = array();
-        if ($catalog && $catalog->status) {
+        if ($catalog->status) {
             $result = $catalog->getSuppressedRecords();
             if (!PEAR::isError($result)) {
-                $status = $this->_db->deleteRecords($result);
-                foreach ($result as $current) {
+                $status = $this->db->deleteRecords($result);
+                foreach($result as $current) {
                     $deletes[] = array('id' => $current);
                 }
 
-                $this->_db->commit();
-                $this->_db->optimize();
+                /*
+                // Update Loading Page
+                $message = "Loading Result List";
+                echo '<Script language="JavaScript" type="text/javascript">' .
+                     "if (document.getElementById) document.getElementById('statusLabel').innerHTML = '$message';\n" .
+                     "if (document.all) document.all['statusLabel'].innerHTML = '$message';\n" .
+                     "if (document.layers) document.layers['statusLabel'].innerHTML = '$message';\n" .
+                     '</script>';
+                ob_flush();
+                flush();
+                */
+                
+                $this->db->commit();
+                
+                /*
+                // Update Loading Page
+                $message = "Loading Result List";
+                echo '<Script language="JavaScript" type="text/javascript">' .
+                     "if (document.getElementById) document.getElementById('statusLabel').innerHTML = '$message';\n" .
+                     "if (document.all) document.all['statusLabel'].innerHTML = '$message';\n" .
+                     "if (document.layers) document.layers['statusLabel'].innerHTML = '$message';\n" .
+                     '</script>';
+                ob_flush();
+                flush();
+                */
+
+                $this->db->optimize();
             }
         } else {
             PEAR::raiseError(new PEAR_Error('Cannot connect to ILS'));

@@ -1,7 +1,7 @@
 <div class="yui-u first">
     <ul id="list1">
-      <li{if $action == "Home"} class="active"{/if} style="float: none;"><a href="Home">Home</a></li>
-      <li{if $action == "Statistics"} class="active"{/if} style="float: none;"><a href="Statistics">Statistics</a></li>
+      <li{if $action == "Home"} class="active"{/if} style="float: none;"><a href="Home">Home</a><li>
+      <li{if $action == "Statistics"} class="active"{/if} style="float: none;"><a href="Statistics">Statistics</a><li>
       <li{if $action == "Config"} class="active"{/if} style="float: none;"><a href="Config">Configuration</a>
         {if $action == "Config"}
         <ul style="padding-left:20px;">
@@ -26,5 +26,6 @@
         {/if}
       </li>
       <li{if $action == "Maintenance"} class="active"{/if} style="float: none;"><a href="Maintenance">System Maintenance</a></li>
+      <!--<li{if $action == "Targets"} class="active"{/if} style="float: none;"><a href="Targets">Search Targets</a></li>-->
     </ul>
 </div>

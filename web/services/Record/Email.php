@@ -1,8 +1,5 @@
 <?php
 /**
- * Email action for Record module
- *
- * PHP version 5
  *
  * Copyright (C) Villanova University 2007.
  *
@@ -19,56 +16,30 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- * @category VuFind
- * @package  Controller_Record
- * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
- * @author   Demian Katz <demian.katz@villanova.edu>
- * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     http://vufind.org/wiki/building_a_module Wiki
  */
+
 require_once 'Record.php';
 require_once 'sys/Mailer.php';
 
-/**
- * Email action for Record module
- *
- * @category VuFind
- * @package  Controller_Record
- * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
- * @author   Demian Katz <demian.katz@villanova.edu>
- * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     http://vufind.org/wiki/building_a_module Wiki
- */
 class Email extends Record
 {
-    /**
-     * Process incoming parameters and display the page.
-     *
-     * @return void
-     * @access public
-     */
-    public function launch()
+    function launch()
     {
         global $interface;
         global $configArray;
 
         if (isset($_POST['submit'])) {
-            $result = $this->sendEmail(
-                $_POST['to'], $_POST['from'], $_POST['message']
-            );
+            $result = $this->sendEmail($_POST['to'], $_POST['from'], $_POST['message']);
             if (!PEAR::isError($result)) {
-                include_once 'Home.php';
+                require_once 'Home.php';
                 Home::launch();
                 exit();
             } else {
-                $interface->assign('errorMsg', $result->getMessage());
+                $interface->assign('message', $result->getMessage());
             }
         }
-
+        
         // Display Page
-        $interface->assign(
-            'formTargetPath', '/Record/' . urlencode($_GET['id']) . '/Email'
-        );
         if (isset($_GET['lightbox'])) {
             $interface->assign('title', $_GET['message']);
             return $interface->fetch('Record/email.tpl');
@@ -79,22 +50,12 @@ class Email extends Record
             $interface->display('layout.tpl', 'RecordEmail' . $_GET['id']);
         }
     }
-
-    /**
-     * Send a record email.
-     *
-     * @param string $to      Message recipient address
-     * @param string $from    Message sender address
-     * @param string $message Message to send
-     *
-     * @return mixed          Boolean true on success, PEAR_Error on failure.
-     * @access public
-     */
-    public function sendEmail($to, $from, $message)
+    
+    function sendEmail($to, $from, $message)
     {
         global $interface;
-
-        $subject = translate("Library Catalog Record") . ": " .
+        
+        $subject = translate("Library Catalog Record") . ": " . 
             $this->recordDriver->getBreadcrumb();
         $interface->assign('from', $from);
         $interface->assign('emailDetails', $this->recordDriver->getEmail());

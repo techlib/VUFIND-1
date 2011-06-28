@@ -13,35 +13,12 @@
 #   Options to pass to the JVM
 #
 
-#####################################################
-# handle the -p option to override properties file
-#####################################################
-if [ -z "$PROPERTIES_FILE" ]
-then
-  PROPERTIES_FILE="import.properties"
-fi
-while getopts ":p:" Option
-do
-  case $Option in
-    p) PROPERTIES_FILE=$OPTARG;;
-    :)
-      echo "argument to '-$OPTARG' is missing" >&2
-      exit -1;;
-    \?) echo "Unrecognized option '-$OPTARG'" >&2;;
-  esac
-done
-#Decrement the argument pointer so it points to next argument
-shift $(($OPTIND - 1))
-
-#####################################################
-# Make sure we have the expected number of arguments
-#####################################################
 E_BADARGS=65
 EXPECTED_ARGS=1
 
 if [ $# -ne $EXPECTED_ARGS ]
 then
-  echo "    Usage: `basename $0` [-p ./path/to/import.properties] ./path/to/marc.mrc"
+  echo "    Usage: `basename $0` ./path/to/marc.mrc"
   exit $E_BADARGS
 fi
 

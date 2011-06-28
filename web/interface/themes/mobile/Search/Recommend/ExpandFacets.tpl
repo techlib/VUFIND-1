@@ -1,10 +1,12 @@
 {if $expandFacetSet}
-<ul class="pageitem">
-{foreach from=$expandFacetSet item=cluster key=title}
-  <li class="textbox"><span class="header">{translate text=$cluster.label}</span></li>
+  <div class="box submenu narrow">
+  {foreach from=$expandFacetSet item=cluster key=title}
+    <h4>{translate text=$cluster.label}</h4>
+    <ul class="similar">
     {foreach from=$cluster.list item=thisFacet}
-      <li class="menu"><a class="noeffect" href="{$thisFacet.expandUrl|escape}"><span class="name">{$thisFacet.value|escape}</span><span class="arrow"></span></a></li>
+      <li><a href="{$thisFacet.expandUrl|escape}">{$thisFacet.value|escape}</a></li>
     {/foreach}
-{/foreach}
-</ul>
+    </ul>
+  {/foreach}
+  </div>
 {/if}

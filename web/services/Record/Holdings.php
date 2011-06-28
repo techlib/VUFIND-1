@@ -1,8 +1,5 @@
 <?php
 /**
- * Holdings action for Record module
- *
- * PHP version 5
  *
  * Copyright (C) Villanova University 2007.
  *
@@ -19,58 +16,63 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- * @category VuFind
- * @package  Controller_Record
- * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
- * @author   Demian Katz <demian.katz@villanova.edu>
- * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     http://vufind.org/wiki/building_a_module Wiki
  */
+ 
+require_once 'CatalogConnection.php';
+
 require_once 'Record.php';
 
-/**
- * Holdings action for Record module
- *
- * @category VuFind
- * @package  Controller_Record
- * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
- * @author   Demian Katz <demian.katz@villanova.edu>
- * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     http://vufind.org/wiki/building_a_module Wiki
- */
 class Holdings extends Record
 {
-    /**
-     * Process incoming parameters and display the page.
-     *
-     * @return void
-     * @access public
-     */
-    public function launch()
+    function launch()
     {
         global $interface;
         global $configArray;
 
         // Do not cache holdings page
         $interface->caching = 0;
-        
-        // See if patron is logged in to pass details onto get holdings for 
-        // holds / recalls
-        $patron = UserAccount::isLoggedIn() ? UserAccount::catalogLogin() : false;
 
-        $interface->setPageTitle(
-            translate('Holdings') . ': ' . $this->recordDriver->getBreadcrumb()
-        );
-        $interface->assign(
-            'holdingsMetadata', $this->recordDriver->getHoldings($patron)
-        );
+        $interface->setPageTitle(translate('Holdings') . ': ' . $this->recordDriver->getBreadcrumb());
+        $interface->assign('holdingsMetadata', $this->recordDriver->getHoldings());
+        try {
+            $catalog = new CatalogConnection($configArray['Catalog']['driver']);
+        } catch (PDOException $e) {
+            // What should we do with this error?
+            if ($configArray['System']['debug']) {
+                echo '<pre>';
+                echo 'DEBUG: ' . $e->getMessage();
+                echo '</pre>';
+            }
+        }
+
+        // Get Holdings Data
+        $id = $this->recordDriver->getUniqueID();
+        if ($catalog->status) {
+            $result = $catalog->getHolding($id);
+            if (PEAR::isError($result)) {
+                PEAR::raiseError($result);
+            }
+            $holdings = array();
+            if (count($result)) {
+              foreach ($result as $copy) {
+                  if ($copy['location'] != 'World Wide Web') {
+                      $holdings[$copy['location']][] = $copy;
+                  }
+              }
+            }
+            $interface->assign('holdings', $holdings);
+    
+            // Get Acquisitions Data
+            $result = $catalog->getPurchaseHistory($id);
+            if (PEAR::isError($result)) {
+                PEAR::raiseError($result);
+            }
+            $interface->assign('history', $result);
+        }
+        
         $interface->assign('subTemplate', 'view-holdings.tpl');
         $interface->setTemplate('view.tpl');
-
-        // Set Messages
-        $interface->assign('infoMsg', $this->infoMsg);
-        $interface->assign('errorMsg', $this->errorMsg);
-
+        
         // Display Page
         $interface->display('layout.tpl');
     }

@@ -1,8 +1,5 @@
 <?php
 /**
- * Hold action for Record module
- *
- * PHP version 5
  *
  * Copyright (C) Villanova University 2007.
  *
@@ -19,215 +16,80 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- * @category VuFind
- * @package  Controller_Record
- * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
- * @author   Demian Katz <demian.katz@villanova.edu>
- * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     http://vufind.org/wiki/building_a_module Wiki
  */
+ 
+require_once 'CatalogConnection.php';
 
-require_once 'Record.php';
-require_once 'Crypt/generateHMAC.php';
+require_once 'Action.php';
 
-/**
- * Hold action for Record module
- *
- * @category VuFind
- * @package  Controller_Record
- * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
- * @author   Demian Katz <demian.katz@villanova.edu>
- * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     http://vufind.org/wiki/building_a_module Wiki
- */
-class Hold extends Record
+class Hold extends Action
 {
-    /**
-     * Process incoming parameters and display the page.
-     *
-     * @return void
-     * @access public
-     */
-    public function launch()
+    var $catalog;
+
+    function launch()
     {
         global $configArray;
-        global $interface;
-        global $user;
 
-        // Are Holds Allowed?
-        $this->checkHolds = $this->catalog->checkFunction("Holds");
-        if ($this->checkHolds != false) {
-
-            // Do we have valid information?
-            // Sets $this->logonURL and $this->gatheredDetails
-            $validate = $this->_validateHoldData($this->checkHolds['HMACKeys']);
-            if (!$validate) {
-                header(
-                    'Location: ../../Record/' .
-                    urlencode($this->recordDriver->getUniqueID())
-                );
-                return false;
+        try {
+            $this->catalog = new CatalogConnection($configArray['Catalog']['driver']);
+        } catch (PDOException $e) {
+            // What should we do with this error?
+            if ($configArray['System']['debug']) {
+                echo '<pre>';
+                echo 'DEBUG: ' . $e->getMessage();
+                echo '</pre>';
             }
+        }
 
-            // Assign FollowUp Details required for login and catalog login
-            $interface->assign('followup', true);
-            $interface->assign('recordId', $this->recordDriver->getUniqueID());
-            $interface->assign('followupModule', 'Record');
-            $interface->assign('followupAction', 'Hold'.$this->logonURL);
-
-            // User Must be logged In to Place Holds
-            if (UserAccount::isLoggedIn()) {
-
-                if ($patron = UserAccount::catalogLogin()) {
-
-                    $interface->assign('formURL', $this->logonURL);
-
-                    $interface->assign('gatheredDetails', $this->gatheredDetails);
-
-                    // Get List of PickUp Libraries
-                    $libs = $this->catalog->getPickUpLocations($patron);
-                    $interface->assign('pickup', $libs);
-                    $interface->assign('home_library', $user->home_library);
-
-                    $interface->assign('defaultDuedate', $this->getDefaultDueDate());
-
-                    $extraHoldFields = isset($this->checkHolds['extraHoldFields'])
-                        ? explode(":", $this->checkHolds['extraHoldFields'])
-                            : array();
-                    $interface->assign('extraHoldFields', $extraHoldFields);
-
-                    $defaultPickUpLocation
-                        = $this->catalog->getDefaultPickUpLocation($patron);
-                    $interface->assign(
-                        'defaultPickUpLocation', $defaultPickUpLocation
-                    );
-
-                    // Form Has Been Sucessfully Submitted
-                    if (isset($_POST['placeHold'])) {
-                        $this->_placeHold($patron);
-                    }
-                }
-                // Display Hold Form
-                $interface->assign('subTemplate', 'hold-submit.tpl');
-
-                // Main Details
-                $interface->setTemplate('view.tpl');
-                // Display Page
-                $interface->display('layout.tpl');
+        // Check How to Process Hold
+        if (method_exists($this->catalog->driver, 'placeHold')) {
+            $this->placeHold();
+        } elseif (method_exists($this->catalog->driver, 'getHoldLink')) {
+            // Redirect user to Place Hold screen on ILS OPAC
+            $link = $this->catalog->getHoldLink($_GET['id']);
+            if (!PEAR::isError($link)) {
+                header('Location:' . $link);
             } else {
-                // User is not logged in
-                // Display Login Form
-                $interface->setTemplate('../MyResearch/login.tpl');
-                // Display Page
-                $interface->display('layout.tpl');
+                PEAR::raiseError($link);
             }
-
         } else {
-            // Shouldn't Be Here
-            header(
-                'Location: ../../Record/' .
-                urlencode($this->recordDriver->getUniqueID())
-            );
-            return false;
+            PEAR::raiseError(new PEAR_Error('Cannot Process Place Hold - ILS Not Supported'));
         }
     }
-
-    /**
-     * Protected method for getting a default due date
-     *
-     * @return string A formatted default due date
-     * @access protected
-     */
-
-    protected function getDefaultDueDate()
-    {
-        include_once 'sys/VuFindDate.php';
-        $formatDate = new VuFindDate();
-
-        $dateArray = isset($this->checkHolds['defaultRequiredDate'])
-             ? explode(":", $this->checkHolds['defaultRequiredDate'])
-             : array(0, 1, 0);
-        list($d, $m, $y) = $dateArray;
-        $nextMonth  = mktime(
-            0, 0, 0, date("m")+$m,   date("d")+$d,   date("Y")+$y
-        );
-
-        return $formatDate->convertToDisplayDate("U", $nextMonth);
-    }
-
-    /**
-     * Private method for validating hold data
-     *
-     * @param array $linkData An array of keys to check
-     *
-     * @return boolean True on success
-     * @access private
-     */
-    private function _validateHoldData($linkData)
-    {
-        foreach ($linkData as $details) {
-            $keyValueArray[$details] = $_GET[$details];
-        }
-        $hashKey = generateHMAC($linkData, $keyValueArray);
-
-        if ($_REQUEST['hashKey'] != $hashKey) {
-            return false;
-        } else {
-            // Get Values Passed from holdings.php
-            $i=0;
-            foreach ($linkData as $details) {
-                $this->gatheredDetails[$details] = $_GET[$details];
-                // Build Logon URL
-                if ($i == 0) {
-                    $this->logonURL = "?".$details."=".urlencode($_GET[$details]);
-                } else {
-                    $this->logonURL .= "&".$details."=".urlencode($_GET[$details]);
-                }
-                $i++;
-            }
-            $this->logonURL .= ($i == 0 ? '?' : '&') .
-                "hashKey=".urlencode($hashKey);
-        }
-        return true;
-    }
-
-    /**
-     * Private method for placing holds
-     *
-     * @param array $patron An array of patron information
-     *
-     * @return boolean true on success, false on failure
-     * @access private
-     */
-    private function _placeHold($patron)
+    
+    function placeHold()
     {
         global $interface;
-
-        // Collect all gathered Details and assign them to variable incase hold
-        // fails
-        $this->gatheredDetails = $_POST['gatheredDetails'];
-        $interface->assign('gatheredDetails', $this->gatheredDetails);
-
-        // Add Patron Data to Submitted Data
-        $this->gatheredDetails['patron'] = $patron;
-        $this->holdDetails = $this->gatheredDetails;
-
-        $function = (string)$this->checkHolds['function'];
-        $results = $this->catalog->$function($this->holdDetails);
-        if (PEAR::isError($results)) {
-            PEAR::raiseError($results);
+        global $configArray;
+        
+        $interface->assign('id', $_GET['id']);
+        $holding = $this->catalog->getHolding($_GET['id']);
+        if (PEAR::isError($holding)) {
+            PEAR::raiseError($holding);
         }
-        // Success: Go to Display Holds
-        if ($results['success'] == true) {
-            header('Location: ../../MyResearch/Holds?success=true');
-            return true;
+        $interface->assign('holding', $holding);
+
+        if (isset($_POST['id'])) {
+            $patron = $this->catalog->patronLogin($_POST['id'], $_POST['lname']);
+            if ($patron && !PEAR::isError($patron)) {
+                $this->catalog->placeHold($_GET['id'], $patron['id'], $_POST['comment'], $type);
+            } else {
+                $interface->assign('message', 'Incorrect Patron Information');
+            }
+        }
+
+        $class = $configArray['Index']['engine'];
+        $db = new $class($configArray['Index']['url']);
+        $record = $db->getRecord('id:' . $_GET['id']);
+        if ($record) {
+            $interface->assign('record', $record);
         } else {
-            // Fail: Display Form for Try Again
-            // Get as much data back as possible
-            $interface->assign('results', $results);
-            $interface->assign('subTemplate', 'hold-submit.tpl');
+            PEAR::raiseError(new PEAR_Error(translate('Cannot find record')));
         }
-        return false;
+
+        $interface->setTemplate('hold.tpl');
+
+        $interface->display('layout.tpl');
     }
 }
 

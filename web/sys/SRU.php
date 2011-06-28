@@ -1,8 +1,5 @@
 <?php
 /**
- * SRU Search Interface
- *
- * PHP version 5
  *
  * Copyright (C) Andrew Nagy 2008.
  *
@@ -19,11 +16,6 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- * @category VuFind
- * @package  Support_Classes
- * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
- * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     http://vufind.org/wiki/system_classes#searching Wiki
  */
 
 require_once 'XML/Unserializer.php';
@@ -34,14 +26,11 @@ require_once 'sys/Proxy_Request.php';
 /**
  * SRU Search Interface
  *
- * @category VuFind
- * @package  Support_Classes
- * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
- * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     http://vufind.org/wiki/system_classes#searching Wiki
+ * @version     $Revision$
+ * @author      Andrew S. Nagy <asnagy@gmail.com>
+ * @access      public
  */
-class SRU
-{
+class SRU  {
     /**
      * A boolean value detemrining whether to print debug information
      * @var bool
@@ -59,7 +48,7 @@ class SRU
      * @var object HTTP_Request
      */
     protected $client;
-
+    
     /**
      * The host to connect to
      * @var string
@@ -77,17 +66,16 @@ class SRU
      *
      * Sets up the SOAP Client
      *
-     * @param string $host The URL of the eXist Server
-     *
-     * @access public
-     */
-    public function __construct($host)
+     * @param   string  $host       The URL of the eXist Server
+     * @access  public
+     */     
+    function __construct($host)
     {
         global $configArray;
-
+    
         $this->host = $host;
         $this->client = new Proxy_Request(null, array('useBrackets' => false));
-
+        
         if ($configArray['System']['debug']) {
             $this->debug = true;
         }
@@ -96,13 +84,12 @@ class SRU
     /**
      * Retrieves a document specified by the ID and returns a MARC record.
      *
-     * @param string $id The document to retrieve from Solr
-     *
-     * @throws object    PEAR Error
-     * @return string    The requested resource
-     * @access public
+     * @param   string  $id         The document to retrieve from Solr
+     * @access  public
+     * @throws  object              PEAR Error
+     * @return  string              The requested resource
      */
-    public function getRecord($id)
+    function getRecord($id)
     {
         if ($this->debug) {
             echo "<pre>Get Record: $id</pre>\n";
@@ -115,11 +102,11 @@ class SRU
                          'startRecord' => 1,
                          'recordSchema' => 'marcxml');
 
-        $result = $this->call('GET', $options, false);
+        $result = $this->_call('GET', $options, false);
         if (PEAR::isError($result)) {
             PEAR::raiseError($result);
         }
-
+        
         $style = new DOMDocument;
         $style->load('xsl/sru-marcxml.xsl');
         $xsl = new XSLTProcessor();
@@ -135,77 +122,73 @@ class SRU
     /**
      * Build Query string from search parameters
      *
-     * @param array $search An array of search parameters
-     *
-     * @throws object       PEAR Error
-     * @return array        An array of query results
-     * @access public
+     * @access  public
+     * @param   array               An array of search parameters
+     * @throws  object              PEAR Error
+     * @static
+     * @return  array               An array of query results
      */
-    public function buildQuery($search)
+    function buildQuery($search)
     {
         foreach ($search as $params) {
             if ($params['lookfor'] != '') {
                 $query = (isset($query)) ? $query . ' ' . $params['bool'] . ' ' : '';
                 switch ($params['field']) {
-                case 'title':
-                    $query .= 'dc.title="' . $params['lookfor'] . '" OR ';
-                    $query .= 'dc.title=' . $params['lookfor'];
-                    break;
-                case 'id':
-                    $query .= 'rec.id=' . $params['lookfor'];
-                    break;
-                case 'author':
-                    preg_match_all('/"[^"]*"|[^ ]+/', $params['lookfor'], $wordList);
-                    $author = array();
-                    foreach ($wordList[0] as $phrase) {
-                        if (substr($phrase, 0, 1) == '"') {
-                            $arr = explode(
-                                ' ', substr($phrase, 1, strlen($phrase) - 2)
-                            );
-                            $author[] = implode(' AND ', $arr);
-                        } else {
-                            $author[] = $phrase;
+                    case 'title':
+                        $query .= 'dc.title="' . $params['lookfor'] . '" OR ';
+                        $query .= 'dc.title=' . $params['lookfor'];
+                        break;
+                    case 'id':
+                        $query .= 'rec.id=' . $params['lookfor'];
+                        break;
+                    case 'author':
+                        preg_match_all('/"[^"]*"|[^ ]+/', $params['lookfor'], $wordList);
+                        $author = array();
+                        foreach ($wordList[0] as $phrase) {
+                            if (substr($phrase, 0, 1) == '"') {
+                                $arr = explode(' ', substr($phrase, 1, strlen($phrase)-2));
+                                $author[] = implode(' AND ', $arr);
+                            } else {
+                                $author[] = $phrase;
+                            }
                         }
-                    }
-                    $author = implode(' ', $author);
-                    $query .= 'dc.creator any "' . $author . '" OR';
-                    $query .= 'dc.creator any ' . $author;
-                    break;
-                case 'callnumber':
-                    break;
-                case 'publisher':
-                    break;
-                case 'year':
-                    $query = 'dc.date=' . $params['lookfor'];
-                    break;
-                case 'series':
-                    break;
-                case 'language':
-                    break;
-                case 'toc':
-                    break;
-                case 'topic':
-                    break;
-                case 'geo':
-                    break;
-                case 'era':
-                    break;
-                case 'genre':
-                    break;
-                case 'subject':
-                    break;
-                case 'isn':
-                    break;
-                case 'all':
-                default:
-                    $query = 'dc.title="' . $params['lookfor'] . '" OR dc.title=' .
-                        $params['lookfor'] . ' OR dc.creator="' .
-                        $params['lookfor'] . '" OR dc.creator=' .
-                        $params['lookfor'] . ' OR dc.subject="' .
-                        $params['lookfor'] . '" OR dc.subject=' .
-                        $params['lookfor'] . ' OR dc.description=' . 
-                        $params['lookfor'] . ' OR dc.date=' . $params['lookfor'];
-                    break;
+                        $author = implode(' ', $author);
+                        $query .= 'dc.creator any "' . $author . '" OR';
+                        $query .= 'dc.creator any ' . $author;
+                        break;
+                    case 'callnumber':
+                        break;
+                    case 'publisher':
+                        break;
+                    case 'year':
+                        $query = 'dc.date=' . $params['lookfor'];
+                        break;
+                    case 'series':
+                        break;
+                    case 'language':
+                        break;
+                    case 'toc':
+                        break;
+                    case 'topic':
+                        break;
+                    case 'geo':
+                        break;
+                    case 'era':
+                        break;
+                    case 'genre':
+                        break;
+                    case 'subject':
+                        break;
+                    case 'isn':
+                        break;
+                    case 'all':
+                    default:
+                        $query = 'dc.title="' . $params['lookfor'] . '" OR dc.title=' . $params['lookfor'] . ' OR ' .
+                                 'dc.creator="' . $params['lookfor'] . '" OR dc.creator=' . $params['lookfor'] . ' OR ' .
+                                 'dc.subject="' . $params['lookfor'] . '" OR dc.subject=' . $params['lookfor'] . ' OR ' .
+                                 'dc.description=' . $params['lookfor'] . ' OR ' .
+                                 'dc.date=' . $params['lookfor'];
+                        break;
                 }
             }
         }
@@ -216,22 +199,21 @@ class SRU
     /**
      * Get records similiar to one record
      *
-     * @param array  $record An associative array of the record data
-     * @param string $id     The record id
-     * @param int    $max    The maximum records to return; Default is 5
-     *
-     * @throws object        PEAR Error
-     * @return array         An array of query results
-     * @access public
+     * @access  public
+     * @param   array       An associative array of the record data
+     * @param   id          The record id
+     * @param   max         The maximum records to return; Default is 5
+     * @throws  object      PEAR Error
+     * @return  array       An array of query results
      */
-    public function getMoreLikeThis($record, $id, $max = 5)
+    function getMoreLikeThis($record, $id, $max = 5)
     {
         global $configArray;
 
         // More Like This Query
         $query = 'title="' . $record['245']['a'] . '" ' .
                  "NOT rec.id=$id";
-
+    
         // Query String Parameters
         $options = array('operation' => 'searchRetrieve',
                          'query' => $query,
@@ -245,7 +227,7 @@ class SRU
             echo "</pre>\n";
         }
 
-        $result = $this->call('GET', $options);
+        $result = $this->_call('GET', $options);
         if (PEAR::isError($result)) {
             PEAR::raiseError($result);
         }
@@ -256,14 +238,13 @@ class SRU
     /**
      * Scan
      *
-     * @param string $clause   The CQL clause specifying the start point
-     * @param int    $pos      The position of the start point in the response
-     * @param int    $maxTerms The maximum number of terms to return
-     *
-     * @return string          XML response
-     * @access public
+     * @param   string  $clause     The CQL clause specifying the start point
+     * @param   int     $pos        The position of the start point in the response
+     * @param   int     $maxTerms   The maximum number of terms to return
+     * @access  public
+     * @return  string              XML response
      */
-    public function scan($clause, $pos = null, $maxTerms = null)
+    function scan($clause, $pos = null, $maxTerms = null)
     {
         $options = array('operation' => 'scan',
                          'scanClause' => $clause);
@@ -274,7 +255,7 @@ class SRU
             $options['maximumTerms'] = $maxTerms;
         }
 
-        $result = $this->call('GET', $options, false);
+        $result = $this->_call('GET', $options, false);
         if (PEAR::isError($result)) {
             PEAR::raiseError($result);
         }
@@ -285,20 +266,19 @@ class SRU
     /**
      * Search
      *
-     * @param string $query   The search query
-     * @param string $start   The record to start with
-     * @param string $limit   The amount of records to return
-     * @param string $sortBy  The value to be used by for sorting
-     * @param string $schema  Record schema to use in results list
-     * @param bool   $process Process into array (true) or return raw (false)
-     *
-     * @throws object         PEAR Error
-     * @return array          An array of query results
-     * @access public
+     * @param   string  $query      The search query
+     * @param   string  $start      The record to start with
+     * @param   string  $limit      The amount of records to return
+     * @param   string  $sortBy     The value to be used by for sorting
+     * @param   string  $schema     Record schema to use in results list
+     * @param   bool    $process    Process into array (true) or return raw (false)
+     * @access  public
+     * @throws  object              PEAR Error
+     * @return  array               An array of query results
      */
-    public function search($query, $start = 1, $limit = null, $sortBy = null,
-        $schema = 'marcxml', $process = true
-    ) {
+    function search($query, $start = 1, $limit = null, $sortBy = null, 
+        $schema = 'marcxml', $process = true)
+    {
         if ($this->debug) {
             echo '<pre>Query: ';
             print_r($query);
@@ -317,7 +297,7 @@ class SRU
             $options['sortKeys'] = $sortBy;
         }
 
-        $result = $this->call('GET', $options, $process);
+        $result = $this->_call('GET', $options, $process);
         if (PEAR::isError($result)) {
             PEAR::raiseError($result);
         }
@@ -328,20 +308,22 @@ class SRU
     /**
      * Submit REST Request
      *
-     * @param string $method  HTTP Method to use: GET, POST,
-     * @param array  $params  An array of parameters for the request
-     * @param bool   $process Should we convert the MARCXML?
-     *
-     * @return string         The response from the XServer
-     * @access protected
+     * @param   string      $method     HTTP Method to use: GET, POST, 
+     * @param   string      $action     A string to determine which SRU action
+     *                                  to process
+     * @param   array       $params     An array of parameters for the request
+     * @param   bool        $process    A boolean value to determine whether or
+     *                                  not to convert the MARCXML
+     * @return  string                  The response from the XServer
+     * @access  private
      */
-    protected function call($method = HTTP_REQUEST_METHOD_GET, $params = null,
-        $process = true
-    ) {
+    function _call($method = HTTP_REQUEST_METHOD_GET, $params = null,
+                   $process = true)
+    {
         if ($params) {
             $query = array('version='.$this->sruVersion);
             foreach ($params as $function => $value) {
-                if (is_array($value)) {
+                if(is_array($value)) {
                     foreach ($value as $additional) {
                         $additional = urlencode($additional);
                         $query[] = "$function=$additional";
@@ -353,12 +335,18 @@ class SRU
             }
             $url = implode('&', $query);
         }
-
+        
         if ($this->debug) {
             echo '<pre>Connect: ';
             print_r($this->host . '?' . $url);
             echo "</pre>\n";
         }
+
+        // Ensure server is available
+        if (!$fp = @fopen($this->host, 'r')) {
+            return new PEAR_Error('Cannot access SRU server');
+        }
+        @fclose($fp);
 
         $this->client->setMethod($method);
         $this->client->setURL($this->host);
@@ -376,19 +364,11 @@ class SRU
         }
     }
 
-    /**
-     * Process an SRU response.
-     *
-     * @param string $result SRU response
-     *
-     * @return array         Unserialized version of XML.
-     * @access private
-     */
-    private function _process($result)
+    function _process($result)
     {
         global $configArray;
 
-        if (substr($result, 0, 5) != '<?xml') {
+         if (substr($result, 0, 5) != '<?xml') {
             PEAR::raiseError(new PEAR_Error('Cannot Load Results'));
         }
 
@@ -411,8 +391,8 @@ class SRU
 
             if (!PEAR::isError($result)) {
                 $output = $unxml->getUnserializedData();
-                // Make sure the result list is always an array, even if there is
-                // only a single result!
+                // Make sure the result list is always an array, even if there is only
+                // a single result!
                 if (isset($output['record']['title'])) {
                     $output['record'] = array($output['record']);
                 }

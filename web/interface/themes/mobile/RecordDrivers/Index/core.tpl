@@ -1,7 +1,7 @@
-{if $coreThumbMedium}
-  <img alt="{translate text='Cover Image'}" src="{$coreThumbMedium|escape}" style="float:right; width:25%; padding: 3px 3px 0px 3px;">
+{if $isbn}
+  <img alt="{translate text='Book Cover'}" src="{$path}/bookcover.php?isn={$isbn|escape:"url"}&amp;size=medium">
 {else}
-  <img src="{$path}/bookcover.php" alt="{translate text='No Cover Image'}" style="float:right; padding: 3px 3px 0px 3px;">
+  <img src="{$path}/bookcover.php" alt="{translate text='No Cover Image'}">
 {/if}
 
 {* Display Title *}
@@ -144,23 +144,14 @@
   <tr valign="top">
     <th>{translate text='Online Access'}: </th>
     <td>
-      {foreach from=$coreURLs item=desc key=currentUrl name=loop}
-        <a href="{if $proxy}{$proxy}/login?qurl={$currentUrl|escape:"url"}{else}{$currentUrl|escape}{/if}">{$desc|escape}</a><br/>
+      {foreach from=$coreURLs item=desc key=url name=loop}
+        <a href="{if $proxy}{$proxy}/login?url={$url|escape:"url"}{else}{$url|escape}{/if}">{$desc|escape}</a><br/>
       {/foreach}
       {if $coreOpenURL}
         {include file="Search/openurl.tpl" openUrl=$coreOpenURL}<br/>
       {/if}
     </td>
   </tr>
-  {/if}
-
-  {if !empty($coreRecordLinks)}
-  {foreach from=$coreRecordLinks item=coreRecordLink}
-  <tr valign="top">
-    <th>{translate text=$coreRecordLink.title}: </th>
-    <td><a href="{$coreRecordLink.link|escape}">{$coreRecordLink.value|escape}</a></td>
-  </tr>
-  {/foreach}
   {/if}
 
   {* TODO: Remove this "if $taglist" once add tag functionality is added; for now, we want to

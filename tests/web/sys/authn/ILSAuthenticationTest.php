@@ -1,77 +1,32 @@
 <?php
-/**
- * ILS authentication test class
- *
- * PHP version 5
- *
- * Copyright (C) Villanova University 2010.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2,
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- * @category VuFind
- * @package  Tests
- * @author   Franck Borel <franck.borel@gbv.de>
- * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     http://vufind.org/wiki/unit_tests Wiki
- */
-require_once dirname(__FILE__) . '/../../prepend.inc.php';
+require_once '../../prepend.inc.php';
 require_once 'PEAR.php';
+require_once 'PHPUnit/Framework.php';
 require_once 'sys/authn/ILSAuthentication.php';
 require_once 'sys/authn/IOException.php';
 require_once 'sys/authn/ConfigurationReader.php';
-require_once 'sys/ConnectionManager.php';
 
-/**
- * ILS authentication test class
- *
- * @category VuFind
- * @package  Tests
- * @author   Franck Borel <franck.borel@gbv.de>
- * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     http://vufind.org/wiki/unit_tests Wiki
- */
-class ILSAuthenticationTest extends PHPUnit_Framework_TestCase
-{
-    private $_username = 'testuser';       // a valid username
-    private $_password = 'testpass';       // a valid password
+class ILSAuthenticationTest extends PHPUnit_Framework_TestCase {
 
-    /**
-     * Standard setup method.
-     *
-     * @return void
-     * @access public
-     */
-    public function setUp()
-    {
+    private $username = 'testuser';       // a valid username
+    private $password = 'testpass';       // a valid password
+    
+    public function setUp(){
         // Set up the global config array required by the ILS driver:
         global $configArray;
-        $configArray = parse_ini_file(
-            dirname(__FILE__) . '/../../conf/config.ini', true
-        );
+        $configArray = parse_ini_file('conf/config.ini', true);
+        
+	    // Setup Local Database Connection
+        define('DB_DATAOBJECT_NO_OVERLOAD', 0);
+        $options =& PEAR::getStaticProperty('DB_DataObject', 'options');
+        $configurationReader = new ConfigurationReader();
+        $options = $configurationReader->readConfiguration('Database');
     }
 
-    /**
-     * Make sure authentication fails with no username.
-     *
-     * @return void
-     * @access public
-     */
-    public function testWithEmptyUsername()
-    {
+    public function test_with_empty_username(){
         try {
             $_POST['username'] = '';
-            $_POST['password'] = $this->_password;
+            $_POST['password'] = $this->password;
             $authN = new ILSAuthentication();
             $this->assertTrue(PEAR::isError($authN->authenticate()));
         } catch (InvalidArgumentException $unexpected) {
@@ -79,16 +34,9 @@ class ILSAuthenticationTest extends PHPUnit_Framework_TestCase
         }
     }
 
-    /**
-     * Make sure authentication fails with no password.
-     *
-     * @return void
-     * @access public
-     */
-    public function testWithEmptyPassword()
-    {
+    public function test_with_empty_password(){
         try {
-            $_POST['username'] = $this->_username;
+            $_POST['username'] = $this->username;
             $_POST['password'] = '';
             $authN = new ILSAuthentication();
             $this->assertTrue(PEAR::isError($authN->authenticate()));
@@ -97,17 +45,10 @@ class ILSAuthenticationTest extends PHPUnit_Framework_TestCase
         }
     }
 
-    /**
-     * Make sure authentication fails with wrong password.
-     *
-     * @return void
-     * @access public
-     */
-    public function testWithWrongCredentials()
-    {
+    public function test_with_wrong_credentials(){
         try {
-            $_POST['username'] = $this->_username;
-            $_POST['password'] = $this->_password . 'test';
+            $_POST['username'] = $this->username;
+            $_POST['password'] = 'test';
             $authN = new ILSAuthentication();
             $this->assertTrue(PEAR::isError($authN->authenticate()));
         } catch (IOException $unexpected) {
@@ -115,15 +56,11 @@ class ILSAuthenticationTest extends PHPUnit_Framework_TestCase
         }
     }
 
-    /* TODO -- figure out a way to make this test work cleanly in our continuous
-               integration environment.
-    public function testWithWorkingCredentials()
-    {
-        $_POST['username'] = $this->_username;
-        $_POST['password'] = $this->_password;
+    public function test_with_working_credentials(){
+        $_POST['username'] = $this->username;
+        $_POST['password'] = $this->password;
         $authN = new ILSAuthentication();
         $this->assertTrue($authN->authenticate() instanceof User);
     }
-     */
 }
 ?>

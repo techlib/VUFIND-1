@@ -1,8 +1,5 @@
 <?php
 /**
- * Search action for Web module
- *
- * PHP version 5
  *
  * Copyright (C) Villanova University 2007.
  *
@@ -19,34 +16,13 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- * @category VuFind
- * @package  Controller_Web
- * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
- * @author   Demian Katz <demian.katz@villanova.edu>
- * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     http://vufind.org/wiki/building_a_module Wiki
  */
+ 
 require_once 'Action.php';
 
-/**
- * Search action for Web module
- *
- * @category VuFind
- * @package  Controller_Web
- * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
- * @author   Demian Katz <demian.katz@villanova.edu>
- * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     http://vufind.org/wiki/building_a_module Wiki
- */
 class Search extends Action
 {
-    /**
-     * Process incoming parameters and display the page.
-     *
-     * @return void
-     * @access public
-     */
-    public function launch()
+    function launch()
     {
         global $configArray;
         global $interface;
@@ -60,10 +36,8 @@ class Search extends Action
         // you can append a string to the user's queries.  This can be useful
         // for filtering to a particular type of content or subsection of the
         // site using various advanced Google operators (i.e. inurl:example).
-        $interface->assign(
-            'queryAddition',
-            isset($_GET['queryAddition']) ? $_GET['queryAddition'] : false
-        );
+        $interface->assign('queryAddition', isset($_GET['queryAddition']) ?
+            $_GET['queryAddition'] : false);
 
         // Load recommendation module settings -- default to CatalogResults if
         // no settings were found.
@@ -74,12 +48,10 @@ class Search extends Action
 
         // Build recommendations modules based on the loaded settings:
         $recommendations = array();
-        foreach ($recSettings as $current) {
+        foreach($recSettings as $current) {
             if (!empty($current)) {
                 @list($name, $params) = explode(':', $current, 2);
-                $rec = RecommendationFactory::initRecommendation(
-                    $name, null, $params
-                );
+                $rec = RecommendationFactory::initRecommendation($name, null, $params);
                 $rec->init();
                 $rec->process();
                 $recommendations[] = $rec->getTemplate();

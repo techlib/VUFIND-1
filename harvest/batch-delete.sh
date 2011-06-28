@@ -14,9 +14,6 @@ then
   echo ""
   echo "Usage: `basename $0` [$VUFIND_HOME/harvest subdirectory]"
   echo ""
-  echo "[index type] is optional; defaults to Solr for main bibliographic index, but"
-  echo "can be set to SolrAuth for authority index."
-  echo ""
   echo "Example: `basename $0` oai_source"
   exit 1
 fi
@@ -39,10 +36,7 @@ fi
 cd $VUFIND_HOME/util
 for file in $BASEPATH/*.delete
 do
-  if [ -f $file ]
-  then
-    echo "Processing $file ..."
-    php deletes.php $file flat $2
-    mv $file $BASEPATH/processed/`basename $file`
-  fi
+  echo "Processing $file ..."
+  php deletes.php $file flat
+  mv $file $BASEPATH/processed/`basename $file`
 done

@@ -12,14 +12,11 @@
 * @author     John Wohlers <john@wohlershome.net>
 * @licence    http://opensource.org/licenses/gpl-3.0.html
 * @copyright  John Wohlers <john@wohlershome.net>
-* @version    $Id$
+* @version    $Id: sip2.class.php 26 2008-04-21 17:25:51Z cap60552 $
 * @link       http://php-sip2.googlecode.com/
 */
 
 /**
-*  2010.10.08
-*  Fixed a potential endless loop condition if a socket lost connection in the middle of a transaction.
-*
 *  2008.04.11
 *  Encorported a bug fix submitted by Bob Wicksall
 *  
@@ -401,7 +398,7 @@ class sip2
 
     }
 
-    function msgRenew($item = '', $title = '', $nbDateDue = '', $itmProp = '', $fee= 'N', $noBlock = 'N', $thirdParty = 'N') 
+    function msgRenew($item = '', $title = '', $nbDueDate = '', $itmProp = '', $fee= 'N', $noBlock = 'N', $thirdParty = 'N') 
     {
         /* renew a single item (29) - untested */
         $this->_newMessage('29');
@@ -409,7 +406,7 @@ class sip2
         $this->_addFixedOption($noBlock, 1);
         $this->_addFixedOption($this->_datestamp(), 18);
         if ($nbDateDue != '') {
-            /* override default date due */
+            /* override defualt date due */
             $this->_addFixedOption($this->_datestamp($nbDateDue), 18);
         } else {
             /* send a blank date due to allow ACS to use default date due computed for item */
@@ -666,14 +663,14 @@ class sip2
         /* sends the current message, and gets the response */
         $result     = '';
         $terminator = '';
-        $nr         = '';
+
         
         $this->_debugmsg('SIP2: Sending SIP2 request...');
         socket_write($this->socket, $message, strlen($message));
 
         $this->_debugmsg('SIP2: Request Sent, Reading response');
 
-        while ($terminator != "\x0D" && $nr !== FALSE) {
+        while ($terminator != "\x0D") {
             $nr = socket_recv($this->socket,$terminator,1,0);
             $result = $result . $terminator;
         }

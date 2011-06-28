@@ -1,8 +1,5 @@
 <?php
 /**
- * Table of Contents action for WorldCat module
- *
- * PHP version 5
  *
  * Copyright (C) Andrew Nagy 2009.
  *
@@ -19,34 +16,13 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- * @category VuFind
- * @package  Controller_WorldCat
- * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
- * @author   Demian Katz <demian.katz@villanova.edu>
- * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     http://vufind.org/wiki/building_a_module Wiki
  */
+ 
 require_once 'Record.php';
 
-/**
- * Table of Contents action for WorldCat module
- *
- * @category VuFind
- * @package  Controller_WorldCat
- * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
- * @author   Demian Katz <demian.katz@villanova.edu>
- * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     http://vufind.org/wiki/building_a_module Wiki
- */
 class TOC extends Record
 {
-    /**
-     * Process incoming parameters and display the page.
-     *
-     * @return void
-     * @access public
-     */
-    public function launch()
+    function launch() 
     {
         global $interface;
 
@@ -56,9 +32,9 @@ class TOC extends Record
             $toc = '';
             if ($fields) {
                 // If we got this far, we have a table -- collect it as a string:
-                foreach ($fields as $field) {
+                foreach($fields as $field) {
                     $subfields = $field->getSubfields();
-                    foreach ($subfields as $subfield) {
+                    foreach($subfields as $subfield) {
                         $toc .= $subfield->getData() . ' ';
                     }
                 }

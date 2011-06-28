@@ -1,8 +1,5 @@
 <?php
 /**
- * Export action for Record module
- *
- * PHP version 5
  *
  * Copyright (C) Villanova University 2007.
  *
@@ -19,47 +16,22 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- * @category VuFind
- * @package  Controller_Record
- * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
- * @author   Demian Katz <demian.katz@villanova.edu>
- * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     http://vufind.org/wiki/building_a_module Wiki
  */
+ 
 require_once 'Record.php';
 require_once 'sys/Proxy_Request.php';
 
-/**
- * Export action for Record module
- *
- * @category VuFind
- * @package  Controller_Record
- * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
- * @author   Demian Katz <demian.katz@villanova.edu>
- * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     http://vufind.org/wiki/building_a_module Wiki
- */
 class Export extends Record
 {
-    /**
-     * Process incoming parameters and display the page.
-     *
-     * @return void
-     * @access public
-     */
-    public function launch()
+    function launch()
     {
         global $interface;
-        global $configArray;
 
         $tpl = $this->recordDriver->getExport($_GET['style']);
         if (!empty($tpl)) {
             $interface->display($tpl);
         } else {
-            $url = $configArray['Site']['url']."/Record/" .
-                urlencode($_GET['id']) . "?errorMsg=export_unsupported_format";
-            header("Location: " . $url);
-            exit();
+            die(translate("Unsupported export format."));
         }
     }
 }
