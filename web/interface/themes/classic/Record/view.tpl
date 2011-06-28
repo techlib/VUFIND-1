@@ -57,7 +57,7 @@
           <!-- Display Tab Navigation -->
           <div id="tabnav" style="clear: left;">
             <ul>
-              <li{if $tab == 'Holdings'} class="active"{/if}>
+              <li{if $tab == 'Holdings' || $tab == 'Hold'} class="active"{/if}>
                 <a href="{$url}/Record/{$id|escape:"url"}/Holdings#tabnav" class="first"><span></span>{translate text='Holdings'}</a>
               </li>
               <li{if $tab == 'Description'} class="active"{/if}>

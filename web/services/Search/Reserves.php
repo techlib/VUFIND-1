@@ -43,9 +43,13 @@ class Reserves extends Action {
 
             // Must have atleast Action and Module set to continue
             $interface->setPageTitle('Reserves Search Results');
-            $interface->assign('subpage', 'Search/list-list.tpl');
             $interface->setTemplate('reserves-list.tpl');
+            //Get view & load template
+            $currentView  = $searchObject->getView();
+            $interface->assign('subpage', 'Search/list-' . $currentView .'.tpl');
+            $interface->assign('viewList',   $searchObject->getViewList());
             $interface->assign('sortList', $searchObject->getSortList());
+            $interface->assign('limitList', $searchObject->getLimitList());
             $interface->assign('rssLink', $searchObject->getRSSUrl());
 
             // Get reserve info from the catalog and catch any fatal errors:

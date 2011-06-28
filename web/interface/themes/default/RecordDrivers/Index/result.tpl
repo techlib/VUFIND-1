@@ -22,20 +22,23 @@
       <div class="resultItemLine3">
       <b>{translate text='Call Number'}:</b> <span id="callnumber{$summId|escape}">{translate text='Loading'}</span><br>
       <b>{translate text='Located'}:</b> <span id="location{$summId|escape}">{translate text='Loading'}</span>
-
+      </div>
+      
+      <div class="resultItemLine4">
       {if $summOpenUrl || !empty($summURLs)}
         {if $summOpenUrl}
           <br>
           {include file="Search/openurl.tpl" openUrl=$summOpenUrl}
         {/if}
         {foreach from=$summURLs key=recordurl item=urldesc}
-          <br><a href="{$recordurl|escape}" class="fulltext" target="new">{if $recordurl == $urldesc}{translate text='Get full text'}{else}{$urldesc|escape}{/if}</a>
+          <br><a href="{if $proxy}{$proxy}/login?qurl={$recordurl|escape:"url"}{else}{$recordurl|escape}{/if}" class="fulltext" target="new">{if $recordurl == $urldesc}{translate text='Get full text'}{else}{$urldesc|escape}{/if}</a>
         {/foreach}
       {else}
         <div class="status" id="status{$summId|escape}">
           <span class="unknown" style="font-size: 8pt;">{translate text='Loading'}...</span>
         </div>
       {/if}
+        <div style="display: none;" id="locationDetails{$summId|escape}">&nbsp;</div>
       </div>
       {foreach from=$summFormats item=format}
         <span class="iconlabel {$format|lower|regex_replace:"/[^a-z0-9]/":""}">{translate text=$format}</span>

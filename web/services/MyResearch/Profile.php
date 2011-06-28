@@ -26,11 +26,25 @@ class Profile extends MyResearch
     {
         global $configArray;
         global $interface;
+        global $user;
 
         // Get My Profile
-        if ($patron = $this->catalogLogin()) {
+        if ($patron = UserAccount::catalogLogin()) {
+            if (isset($_POST['home_library']) &&  $_POST['home_library'] != "") {
+                $home_library = $_POST['home_library'];
+                $updateProfile = $user->changeHomeLibrary($home_library);
+                if ($updateProfile == true) {
+                    $interface->assign('userMsg', 'profile_update');
+                }
+            }
             $result = $this->catalog->getMyProfile($patron);
             if (!PEAR::isError($result)) {
+                $result['home_library'] = $user->home_library;
+                $libs = $this->catalog->getPickUpLocations($patron);
+                $defaultPickUpLocation 
+                    = $this->catalog->getDefaultPickUpLocation($patron);
+                $interface->assign('defaultPickUpLocation', $defaultPickUpLocation);
+                $interface->assign('pickup', $libs);
                 $interface->assign('profile', $result);
             }
         }

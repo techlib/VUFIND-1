@@ -16,12 +16,12 @@
         {/if}
         
         <div class="resultitem">
-          <div id="resultItemLine1">
+          <div class="resultItemLine1">
             <a href="{$url}/Summon/Record?id={$record.ID.0|escape:"url"}"
             class="title">{if !$record.Title.0}{translate text='Title not available'}{else}{$record.Title.0|truncate:180:"..."|highlight:$lookfor}{/if}</a>
           </div>
 
-          <div id="resultItemLine2">
+          <div class="resultItemLine2">
             {if $record.Author}
             {translate text='by'}
             {foreach from=$record.Author item=author name="loop"}
@@ -35,7 +35,7 @@
             {if $record.$pdxml}({if $record.$pdxml.0.month}{$record.$pdxml.0.month|escape}/{/if}{if $record.$pdxml.0.day}{$record.$pdxml.0.day|escape}/{/if}{if $record.$pdxml.0.year}{$record.$pdxml.0.year|escape}){/if}{elseif $record.PublicationDate}{$record.PublicationDate.0|escape}{/if}
           </div>
 
-          <div id="resultItemLine3">
+          <div class="resultItemLine3">
             {if $record.Snippet.0 != ""}
             <blockquote>
               <span class="quotestart">&#8220;</span>{$record.Snippet.0|escape}<span class="quoteend">&#8221;</span>
@@ -43,9 +43,9 @@
             {/if}
           </div>
 
-          <div id="resultItemLine4">
-            {if $record.URI && (!$openUrlBase || !$record.hasFullText)}
-            <a href="{$record.URI.0|escape}" class="fulltext">{translate text='Get full text'}</a>
+          <div class="resultItemLine4">
+            {if $record.url && (!$openUrlBase || !$record.hasFullText)}
+            <a href="{$record.url.0|escape}" class="fulltext">{translate text='Get full text'}</a>
             {elseif $openUrlBase}
             {include file="Search/openurl.tpl" openUrl=$record.openUrl}
             {/if}

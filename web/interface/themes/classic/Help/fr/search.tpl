@@ -8,9 +8,9 @@
   <li><a href="#Boosting a Term">Valoriser un terme</a></li>
   <li><a href="#Boolean operators">Opérateurs  booléens</a>
     <ul>
-      <li><a href="#OR">OR</a></li>
       <li><a href="#AND">AND</a></li>
       <li><a href="#+">+</a></li>
+      <li><a href="#OR">OR</a></li>
       <li><a href="#NOT">NOT</a></li>
       <li><a href="#-">-</a></li>
     </ul>
@@ -97,31 +97,22 @@
     </p>
     <p>Notez: Les opérateurs booléens doivent être ecrit en lettre majuscules</p>
     <dl>
-      <dt><a name="OR"></a>OR</dt>
-      <dd>
-        <p>L'oppérateur <strong>OR</strong> (OU) est l'opérateur par défaut. Ce
-           qui veut dire, que si vous faitez une recherche avec deux termes sans
-           l'opérateur OR, le moteur de recherche utilse automatiquement
-           l'opérateur OR.
-           Au moins l'un de termes reliès par OR doit être présent dans le
-           résultat.</p>
-        <p>Pour rechercher un document qui présente le terme "miammiam le croissant"
-           ou seulement le terme "croissant", utilisez la recherche suivante:
-        </p>
-        <pre class="code">"miammiam le croissant" croissant</pre>
-        <p>ou</p>
-        <pre class="code">"miammiam le croissant" OR croissant</pre>
-      </dd>
-      
       <dt><a name="AND"></a>AND</dt>
       <dd>
-          <p>Utilisez <strong>AND</strong> pour croiser plusieurs termes de 
+          <p>L'oppérateur <strong>AND</strong> est l'opérateur par défaut. Ce
+           qui veut dire, que si vous faitez une recherche avec deux termes sans
+           l'opérateur AND, le moteur de recherche utilse automatiquement
+           l'opérateur AND.
+           
+           Utilisez <strong>AND</strong> pour croiser plusieurs termes de 
              recherche. Vous obtiendrez les notices bibliographiques qui
-             contiennent tous les mots recherchés.Il permet d'affiner la
+             contiennent tous les mots recherchés. Il permet d'affiner la
              recherche ou de réduire le nombre de réponses.</p>
-        <p>Example, les resultats contiendront "Théodore Monod et désert si vous
+        <p>Example, les resultats contiendront "Théodore Monod" et "désert" si vous
            utilisez la recherche suicante:</p>
-        <pre class="code">"Théodore Monod " AND "désert"</pre>
+        <pre class="code">"Théodore Monod" désert</pre>
+        <p>ou</p>
+        <pre class="code">"Théodore Monod" AND désert</pre>
       </dd>
       <dt><a name="+"></a>+</dt>
       <dd>
@@ -134,6 +125,16 @@
         </p>
         <pre class="code">+miau chat</pre>
       </dd>
+      <dt><a name="OR"></a>OR</dt>
+      <dd>
+        <p>
+           Au moins l'un de termes reliès par OR doit être présent dans le
+           résultat.</p>
+        <p>Pour rechercher un document qui présente le terme "miammiam le croissant"
+           ou seulement le terme "croissant", utilisez la recherche suivante:
+        </p>
+        <pre class="code">"miammiam le croissant" OR croissant</pre>
+      </dd>
       <dt><a name="NOT"></a>NOT</dt>
       <dd>
         <p>L'opérateur NOT permet d'exclure des termes de la recherche.</p>
@@ -142,7 +143,7 @@
         <pre class="code">"raton" NOT "laveur"</pre>
         <p>Notez: L'opérateur NOT ne peut pas être utilisé avec un seul terme.
            L'exemple suivant donne aucun resultat:</p>
-        <pre class="code">NOT "inconnus"</pre>
+        <pre class="code">NOT inconnus</pre>
       </dd>
       <dt><a name="-"></a>-</dt>
       <dd>
@@ -150,7 +151,7 @@
            recherche qui se situe derriere l'opérateur.</p>
         <p>Pour rechercher tous les documents qui contiennent le term
            "Valéry" mais pas "Giscard" utilisez la recherche suivante: </p>
-        <pre class="code">"Valéry" -"Giscard"</pre>
+        <pre class="code">Valéry -Giscard</pre>
       </dd>
     </dl>
   </dd>

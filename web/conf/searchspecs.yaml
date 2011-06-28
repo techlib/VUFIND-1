@@ -129,6 +129,7 @@
 Author:
   DismaxFields:
     - author^100
+    - author_fuller^50
     - author2
     - author_additional
   QueryFields:
@@ -136,6 +137,10 @@ Author:
       - [onephrase, 350]
       - [and, 200]
       - [or, 100]
+    - author_fuller:
+      - [onephrase, 200]
+      - [and, 100]
+      - [or, 50]
     - author2:
       - [onephrase, 100]
       - [and, 50]
@@ -159,11 +164,16 @@ ISN:
 
 Subject:
   DismaxFields:
+    - topic_unstemmed^150
     - topic^100
     - geographic^50
     - genre^50
     - era
   QueryFields:
+    - topic_unstemmed:
+      - [onephrase, 350]
+      - [and, 150]
+      - [or, ~]
     - topic:
       - [onephrase, 300]
       - [and, 100]
@@ -183,6 +193,7 @@ Subject:
 JournalTitle:
   DismaxFields:
     - title_short^500
+    - title_full_unstemmed^450
     - title_full^400
     - title^300
     - title_alt^200
@@ -193,6 +204,9 @@ JournalTitle:
   QueryFields:
     - title_short:
       - [onephrase, 500]
+    - title_full_unstemmed:
+      - [onephrase, 450]
+      - [and, 400]
     - title_full:
       - [onephrase, 400]
     - title:
@@ -215,6 +229,7 @@ JournalTitle:
 Title:
   DismaxFields:
     - title_short^500
+    - title_full_unstemmed^450
     - title_full^400
     - title^300
     - title_alt^200
@@ -225,6 +240,9 @@ Title:
   QueryFields:
     - title_short:
       - [onephrase, 500]
+    - title_full_unstemmed:
+      - [onephrase, 450]
+      - [and, 400]
     - title_full:
       - [onephrase, 400]
     - title:
@@ -260,6 +278,7 @@ Series:
 AllFields:
   DismaxFields:
     - title_short^750
+    - title_full_unstemmed^600
     - title_full^400
     - title^500
     - title_alt^200
@@ -267,16 +286,24 @@ AllFields:
     - series^50
     - series2^30
     - author^300
+    - author_fuller^150
     - contents^10
+    - topic_unstemmed^550
     - topic^500
     - geographic^300
     - genre^300
+    - allfields_unstemmed^10
+    - fulltext_unstemmed^10
     - allfields
+    - fulltext
   QueryFields:
     - 
       - [OR, 50]
       - title_short:
         - [onephrase, 750]
+      - title_full_unstemmed:
+        - [onephrase, 600]
+        - [and, 500]
       - title_full:
         - [onephrase, 400]
       - title:
@@ -293,19 +320,31 @@ AllFields:
     author:
       - [onephrase, 300]
       - [and, 250]
+    author_fuller:
+      - [onephrase, 150]
+      - [and, 125]
     author2:
       - [and, 50]
     author_additional:
       - [and, 50]
     contents:
       - [and, 10]
+    topic_unstemmed:
+      - [onephrase, 550]
+      - [and, 500]
     topic:
       - [onephrase, 500]
     geographic:
       - [onephrase, 300]
     genre:
       - [onephrase, 300]
+    allfields_unstemmed:
+      - [or, 10]
+    fulltext_unstemmed:
+      - [or, 10]
     allfields:
+      - [or, ~]
+    fulltext:
       - [or, ~]
 
 # These are advanced searches that never use Dismax:
@@ -314,9 +353,49 @@ id:
     - id:
       - [onephrase, ~]
 
+# Fields for exact matches originating from alphabetic browse
+ids:
+  QueryFields:
+    - id:
+      - [or, ~]
+
+TopicBrowse:
+  QueryFields:
+    - topic_browse:
+      - [onephrase, ~]
+
+AuthorBrowse:
+  QueryFields:
+    - author_browse:
+      - [onephrase, ~]
+
+TitleBrowse:
+  QueryFields:
+    - title_full:
+      - [onephrase, ~]
+
+DeweyBrowse:
+  QueryFields:
+    - dewey-raw:
+      - [onephrase, ~]
+
+LccBrowse:
+  QueryFields:
+    - callnumber-a:
+      - [onephrase, ~]
+
 CallNumber:
+  # We use two similar munges here -- one for exact matches, which will get
+  # a very high boost factor, and one for left-anchored wildcard searches,
+  # which will return a larger number of hits at a lower boost.
   CustomMunge:
-    callnumber:
+    callnumber_exact:
+      - [uppercase]
+      # Strip whitespace and quotes:
+      - [preg_replace, '/[ "]/', ""]
+      # Strip pre-existing trailing asterisks:
+      - [preg_replace, "/\*+$/", ""]
+    callnumber_fuzzy:
       - [uppercase]
       # Strip whitespace and quotes:
       - [preg_replace, '/[ "]/', ""]
@@ -328,9 +407,11 @@ CallNumber:
       - [append, "* "]
   QueryFields:
     - callnumber:
-      - [callnumber, ~]
+      - [callnumber_exact, 1000]
+      - [callnumber_fuzzy, ~]
     - dewey-full:
-      - [callnumber, ~]
+      - [callnumber_exact, 1000]
+      - [callnumber_fuzzy, ~]
 
 publisher:
   QueryFields:
@@ -380,3 +461,13 @@ era:
   QueryFields:
     - era:
       - [and, ~]
+
+oclc_num:
+  CustomMunge:
+    oclc_num:
+      - [preg_replace, "/[^0-9]/", ""]
+      # trim leading zeroes:
+      - [preg_replace, "/^0*/", ""]
+  QueryFields:
+    - oclc_num:
+      - [oclc_num, ~]

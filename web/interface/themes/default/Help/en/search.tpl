@@ -8,9 +8,9 @@
   <li><a href="#Boosting a Term">Boosting a Term</a></li>
   <li><a href="#Boolean operators">Boolean Operators</a>
     <ul>
-      <li><a href="#OR">OR</a></li>
       <li><a href="#AND">AND</a></li>
       <li><a href="#+">+</a></li>
+      <li><a href="#OR">OR</a></li>
       <li><a href="#NOT">NOT</a></li>
       <li><a href="#-">-</a></li>
     </ul>
@@ -83,20 +83,13 @@
     </p>
     <p>Note: Boolean operators must be ALL CAPS</p>
     <dl>
-      <dt><a name="OR"></a>OR</dt>
-      <dd>
-        <p>The <strong>OR</strong> operator is the default conjunction operator. This means that if there is no Boolean operator between two terms, the OR operator is used. The OR operator links two terms and finds a matching record if either of the terms exist in a record.</p>
-        <p>To search for documents that contain either "economics Keynes" or just "Keynes" use the query:</p>
-        <pre class="code">"economics Keynes" Keynes</pre>
-        <p>or</p>
-        <pre class="code">"economics Keynes" OR Keynes</pre>
-      </dd>
-      
       <dt><a name="AND"></a>AND</dt>
       <dd>
-        <p>The AND operator matches records where both terms exist anywhere in the field of a record.</p>
+        <p>The <strong>AND</strong> operator is the default conjunction operator. This means that if there is no Boolean operator between two terms, the AND operator is used. The AND operator matches records where both terms exist anywhere in the field of a record.</p>
         <p>To search for records that contain "economics" and "Keynes" use the query: </p>
-        <pre class="code">"economics" AND "Keynes"</pre>
+        <pre class="code">economics Keynes</pre>
+        <p>or</p>
+        <pre class="code">economics AND Keynes</pre>
       </dd>
       <dt><a name="+"></a>+</dt>
       <dd>
@@ -104,19 +97,25 @@
         <p>To search for records that must contain "economics" and may contain "Keynes" use the query:</p>
         <pre class="code">+economics Keynes</pre>
       </dd>
+      <dt><a name="OR"></a>OR</dt>
+      <dd>
+        <p>The OR operator links two terms and finds a matching record if either of the terms exist in a record.</p>
+        <p>To search for documents that contain either "economics Keynes" or just "Keynes" use the query:</p>
+        <pre class="code">"economics Keynes" OR Keynes</pre>
+      </dd>
       <dt><a name="NOT"></a>NOT</dt>
       <dd>
         <p>The NOT operator excludes records that contain the term after NOT.</p>
         <p>To search for documents that contain "economics" but not "Keynes" use the query: </p>
-        <pre class="code">"economics" NOT "Keynes"</pre>
+        <pre class="code">economics NOT Keynes</pre>
         <p>Note: The NOT operator cannot be used with just one term. For example, the following search will return no results:</p>
-        <pre class="code">NOT "economics"</pre>
+        <pre class="code">NOT economics</pre>
       </dd>
       <dt><a name="-"></a>-</dt>
       <dd>
         <p>The <Strong>-</strong> or prohibit operator excludes documents that contain the term after the "-" symbol.</p>
         <p>To search for documents that contain "economics" but not "Keynes" use the query: </p>
-        <pre class="code">"economics" -"Keynes"</pre>
+        <pre class="code">economics -Keynes</pre>
       </dd>
     </dl>
   </dd>

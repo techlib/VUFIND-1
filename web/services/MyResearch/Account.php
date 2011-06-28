@@ -1,5 +1,8 @@
 <?php
 /**
+ * Account action for MyResearch module
+ *
+ * PHP version 5
  *
  * Copyright (C) Villanova University 2007.
  *
@@ -16,22 +19,47 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
+ * @category VuFind
+ * @package  Controller_MyResearch
+ * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
+ * @author   Demian Katz <demian.katz@villanova.edu>
+ * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
+ * @link     http://vufind.org/wiki/building_a_module Wiki
  */
-
 require_once "Action.php";
 
 require_once 'sys/User.php';
 
 require_once 'Mail/RFC822.php';
 
-
+/**
+ * Account action for MyResearch module
+ *
+ * @category VuFind
+ * @package  Controller_MyResearch
+ * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
+ * @author   Demian Katz <demian.katz@villanova.edu>
+ * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
+ * @link     http://vufind.org/wiki/building_a_module Wiki
+ */
 class Account extends Action
 {
-    function __construct()
+    /**
+     * Constructor
+     *
+     * @access public
+     */
+    public function __construct()
     {
     }
 
-    function launch()
+    /**
+     * Process parameters and display the page.
+     *
+     * @return void
+     * @access public
+     */
+    public function launch()
     {
         global $interface;
         global $configArray;
@@ -44,7 +72,7 @@ class Account extends Action
         }
 
         if (isset($_POST['submit'])) {
-            $result = $this->processInput();
+            $result = $this->_processInput();
             if (PEAR::isError($result)) {
                 $interface->assign('message', $result->getMessage());
                 $interface->assign('formVars', $_POST);
@@ -57,12 +85,19 @@ class Account extends Action
                 die();
             }
         } else {
+            $interface->setPageTitle('User Account');
             $interface->setTemplate('account.tpl');
             $interface->display('layout.tpl');
         }
     }
     
-    function processInput()
+    /**
+     * Process incoming parameters for account creation.
+     *
+     * @return mixed True on successful account creation, PEAR_Error otherwise.
+     * @access private
+     */
+    private function _processInput()
     {
         // Validate Input
         if (trim($_POST['username']) == '') {

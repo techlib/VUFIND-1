@@ -1,11 +1,11 @@
-<script language="JavaScript" type="text/javascript" src="{$path}/js/ajax_common.js"></script>
-<script language="JavaScript" type="text/javascript" src="{$path}/services/Search/ajax.js"></script>
+{js filename="ajax_common.js"}
+{js filename="search.js"}
 
 {* Main Listing *}
 <div id="bd">
   <div id="yui-main" class="content">
     <div class="yui-b first contentbox">
-    
+
       <b class="btop"><b></b></b>
       {if empty($recordSet)}
         <p>{translate text="No new item information is currently available."}</p>
@@ -29,8 +29,19 @@
           </div>
 
           <div class="yui-u toggle">
-            {translate text='Sort'}
-            <select name="sort" onChange="document.location.href = this.options[this.selectedIndex].value;">
+            {if $limitList|@count gt 1}
+             <form action="{$path}/Search/LimitResults" method="post">
+              <label for="limit">{translate text='Results per page'}</label>
+              <select id="limit" name="limit" onChange="document.location.href = this.options[this.selectedIndex].value;">
+                {foreach from=$limitList item=limitData key=limitLabel}
+                  <option value="{$limitData.limitUrl|escape}"{if $limitData.selected} selected="selected"{/if}>{$limitData.desc|escape}</option>
+                {/foreach}
+              </select>
+              <noscript><input type="submit" value="{translate text="Set"}" /></noscript>
+            </form>
+            {/if}
+            <label for="sort_options_1">{translate text='Sort'}</label>
+            <select id="sort_options_1" name="sort" onChange="document.location.href = this.options[this.selectedIndex].value;">
             {foreach from=$sortList item=sortData key=sortLabel}
               <option value="{$sortData.sortUrl|escape}"{if $sortData.selected} selected{/if}>{translate text=$sortData.desc}</option>
             {/foreach}
@@ -39,10 +50,14 @@
         </div>
         {* End Listing Options *}
 
-        {include file="Search/list-list.tpl"}
+        {if $subpage}
+          {include file=$subpage}
+        {else}
+          {$pageContent}
+        {/if}
 
       {if $pageLinks.all}<div class="pagination">{$pageLinks.all}</div>{/if}
-      
+
         <div class="searchtools">
           <strong>{translate text='Search Tools'}:</strong>
           <a href="{$rssLink|escape}" class="feed">{translate text='Get RSS Feed'}</a>
@@ -51,7 +66,7 @@
       {/if}
       <b class="bbot"><b></b></b>
     </div>
-     
+
     {* End Main Listing *}
   </div>
 

@@ -125,7 +125,22 @@ class Aleph implements DriverInterface
         }
         return $holdings;
     }
-    public function getHolding($id)
+
+    /**
+     * Get Holding
+     *
+     * This is responsible for retrieving the holding information of a certain
+     * record.
+     *
+     * @param string $id     The record id to retrieve the holdings for
+     * @param array  $patron Patron data
+     *
+     * @return mixed     On success, an associative array with the following keys:
+     * id, availability (boolean), status, location, reserve, callnumber, duedate,
+     * number, barcode; on failure, a PEAR_Error.
+     * @access public
+     */
+    public function getHolding($id, $patron = false)
     {
         $xml = $this->doXRequest(
           "circ-status",
@@ -507,6 +522,25 @@ class Aleph implements DriverInterface
     }
 
     public function getNewItems($page, $limit, $startdate, $enddate, $fundId = null) {
+    /**
+     * Get New Items
+     *
+     * Retrieve the IDs of items recently added to the catalog.
+     *
+     * @param int $page    Page number of results to retrieve (counting starts at 1)
+     * @param int $limit   The size of each page of results to retrieve
+     * @param int $daysOld The maximum age of records to retrieve in days (max. 30)
+     * @param int $fundId  optional fund ID to use for limiting results (use a value
+     * returned by getFunds, or exclude for no limit); note that "fund" may be a
+     * misnomer - if funds are not an appropriate way to limit your new item
+     * results, you can return a different set of values from getFunds. The
+     * important thing is that this parameter supports an ID returned by getFunds,
+     * whatever that may mean.
+     *
+     * @return array       Associative array with 'count' and 'results' keys
+     * @access public
+     */
+    {
         $items = array();
         return $items;
     }

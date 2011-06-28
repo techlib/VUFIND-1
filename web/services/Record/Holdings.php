@@ -31,9 +31,15 @@ class Holdings extends Record
 
         // Do not cache holdings page
         $interface->caching = 0;
+        
+        // See if patron is logged in to pass details onto get holdings for 
+        // holds / recalls
+        $patron = UserAccount::isLoggedIn() ? UserAccount::catalogLogin() : false;
 
         $interface->setPageTitle(translate('Holdings') . ': ' . $this->recordDriver->getBreadcrumb());
-        $interface->assign('holdingsMetadata', $this->recordDriver->getHoldings());
+        $interface->assign(
+            'holdingsMetadata', $this->recordDriver->getHoldings($patron)
+        );
         try {
             $catalog = new CatalogConnection($configArray['Catalog']['driver']);
         } catch (PDOException $e) {

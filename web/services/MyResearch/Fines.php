@@ -30,11 +30,23 @@ class Fines extends MyResearch
         global $finesIndexEngine;
 
         // Get My Fines
-        if ($patron = $this->catalogLogin()) {
+        if ($patron = UserAccount::catalogLogin()) {
             if (PEAR::isError($patron))
                 PEAR::raiseError($patron);
             $result = $this->catalog->getMyFines($patron);
             if (!PEAR::isError($result)) {
+                // assign the "raw" fines data to the template so it can be formatted
+                // by the smarty template instead of using DataGrid
+                // NOTE: could use foreach($result as &$row) here but it only works
+                // with PHP5
+                for ($i = 0; $i < count($result); $i++) {
+                    $row = &$result[$i];
+                    $record = $this->db->getRecord($row['id']);
+                    $row['title'] = $record ? $record['title_short'] : null;
+                }
+                $interface->assign('rawFinesData', $result);
+                // format the fines data as HTML using the DataGrid (old way)
+                // FIXME: we should gradually get rid of DataGrid
                 if (count($result)) {
                     // Drop the index object into a global
                     //  so it's accessible inside the callback.
@@ -83,7 +95,7 @@ function printLink($params)
         $record = $finesIndexEngine->getRecord($record['id']);
         return '<a href="' . $configArray['Site']['url'] . '/Record/' . urlencode($record['id']) . '">' . htmlspecialchars($record['title_short']) . '</a>';
     } else {
-        return "n/a";
+        return translate('not_applicable');
     }
 }
 

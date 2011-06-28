@@ -32,7 +32,6 @@ class Home extends Action
     {
         global $configArray;
         global $interface;
-        global $user;
 
         // Initialise from the current search globals
         $searchObject = SearchObjectFactory::initSearchObject();
@@ -135,8 +134,10 @@ class Home extends Action
         // Set Interface Variables
         //   Those we can construct BEFORE the search is executed
         $interface->setPageTitle('Author Search Results');
-        $interface->assign('sortList',   $searchObject->getSortList());
-        $interface->assign('rssLink',    $searchObject->getRSSUrl());
+        $interface->assign('sortList',  $searchObject->getSortList());
+        $interface->assign('limitList', $searchObject->getLimitList());
+        $interface->assign('viewList',  $searchObject->getViewList());
+        $interface->assign('rssLink',   $searchObject->getRSSUrl());
 
         // Process Search
         $result = $searchObject->processSearch(false, true);
@@ -174,6 +175,9 @@ class Home extends Action
         // Save the URL of this search to the session so we can return to it easily:
         $_SESSION['lastSearchURL'] = $searchObject->renderSearchUrl();
 
+        //Get view & load template
+        $currentView  = $searchObject->getView();
+        $interface->assign('subpage', 'Search/list-' . $currentView .'.tpl');
         $interface->setTemplate('home.tpl');
         $interface->display('layout.tpl', 'Author' . $_GET['author']);
     }

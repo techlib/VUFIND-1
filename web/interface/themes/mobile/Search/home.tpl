@@ -8,6 +8,7 @@
     <input type="submit" name="submit" value="{translate text="Find"}">
   </li>
 </ul>
+{if $lastSort}<input type="hidden" name="sort" value="{$lastSort|escape}" />{/if}
 </form>
 
 <ul class="pageitem">

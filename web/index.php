@@ -1,5 +1,8 @@
 <?php
 /**
+ * CORE APPLICATION CONTROLLER
+ *
+ * PHP version 5
  *
  * Copyright (C) Villanova University 2007.
  *
@@ -16,9 +19,13 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
+ * @category VuFind
+ * @package  Controller
+ * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
+ * @author   Demian Katz <demian.katz@villanova.edu>
+ * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
+ * @link     http://vufind.org/wiki/developer_manual Wiki
  */
-
-/** CORE APPLICATION CONTROLLER **/
 
 // Retrieve values from configuration file
 require_once 'sys/ConfigArray.php';
@@ -26,8 +33,10 @@ $configArray = readConfig();
 
 // Try to set the locale to UTF-8, but fail back to the exact string from the config
 // file if this doesn't work -- different systems may vary in their behavior here.
-setlocale(LC_MONETARY, array($configArray['Site']['locale'] . ".UTF-8", 
-    $configArray['Site']['locale']));
+setlocale(
+    LC_MONETARY, array($configArray['Site']['locale'] . ".UTF-8",
+    $configArray['Site']['locale'])
+);
 date_default_timezone_set($configArray['Site']['timezone']);
 
 // Require System Libraries
@@ -37,12 +46,16 @@ require_once 'sys/Logger.php';
 require_once 'sys/User.php';
 require_once 'sys/Translator.php';
 require_once 'sys/SearchObject/Factory.php';
+require_once 'sys/ConnectionManager.php';
+require_once 'sys/Autoloader.php';
+spl_autoload_register('vuFindAutoloader');
 
-// Set up autoloader (needed for YAML)
-function vufind_autoloader($class) {
-    require str_replace('_', '/', $class) . '.php';
+// Load local overrides file (if it exists) to pick up local class overrides.
+// This can be used to override autoloaded classes, allowing local customizations
+// of some features without the need to modify core VuFind code.
+if (file_exists(dirname(__FILE__).'/local_overrides.php')) {
+    include_once dirname(__FILE__).'/local_overrides.php';
 }
-spl_autoload_register('vufind_autoloader');
 
 // Sets global error handler for PEAR errors
 PEAR::setErrorHandling(PEAR_ERROR_CALLBACK, 'handlePEARError');
@@ -63,37 +76,36 @@ $mode = checkAvailabilityMode();
 if ($mode['online'] === false) {
     // Why are we offline?
     switch ($mode['level']) {
-      // Forced Downtime
-      case "unavailable":
-          // TODO : Variable reasons, and translated
-          //$interface->assign('message', $mode['message']);
-          $interface->display($mode['template']);
-          break;
-
-      // Should never execute. checkAvailabilityMode() would 
-      //    need to know we are offline, but not why.
-      default:
-          // TODO : Variable reasons, and translated
-          //$interface->assign('message', $mode['message']);
-          $interface->display($mode['template']);
-          break;
+    // Forced Downtime
+    case "unavailable":
+        // TODO : Variable reasons, and translated
+        //$interface->assign('message', $mode['message']);
+        $interface->display($mode['template']);
+        break;
+    // Should never execute. checkAvailabilityMode() would
+    // need to know we are offline, but not why.
+    default:
+        // TODO : Variable reasons, and translated
+        //$interface->assign('message', $mode['message']);
+        $interface->display($mode['template']);
+        break;
     }
     exit();
 }
 
 // Proxy server settings
 if (isset($configArray['Proxy']['host'])) {
-  if (isset($configArray['Proxy']['port'])) {
-    $proxy_server = $configArray['Proxy']['host'].":".$configArray['Proxy']['port'];
-  } else {
-    $proxy_server = $configArray['Proxy']['host'];
-  }
-  $proxy = array('http' => array('proxy' => "tcp://$proxy_server", 'request_fulluri' => true));
-  stream_context_get_default($proxy);
+    if (isset($configArray['Proxy']['port'])) {
+        $proxy_server
+            = $configArray['Proxy']['host'] . ":" . $configArray['Proxy']['port'];
+    } else {
+        $proxy_server = $configArray['Proxy']['host'];
+    }
+    $proxy = array(
+        'http' => array('proxy' => "tcp://$proxy_server", 'request_fulluri' => true)
+    );
+    stream_context_get_default($proxy);
 }
-
-// Include Search Engine Class
-require_once 'sys/' . $configArray['Index']['engine'] . '.php';
 
 // Setup Translator
 if (isset($_POST['mylang'])) {
@@ -108,56 +120,69 @@ $validLanguages = array_keys($configArray['Languages']);
 if (!in_array($language, $validLanguages)) {
     $language = $configArray['Site']['language'];
 }
-$translator = new I18N_Translator('lang', $language, $configArray['System']['debug']);
+$translator = new I18N_Translator(
+    'lang', $language, $configArray['System']['debug']
+);
 $interface->setLanguage($language);
 
 // Setup Local Database Connection
-define('DB_DATAOBJECT_NO_OVERLOAD', 0);
-$options =& PEAR::getStaticProperty('DB_DataObject', 'options');
-$options = $configArray['Database'];
+ConnectionManager::connectToDatabase();
 
 // Initiate Session State
 $session_type = $configArray['Session']['type'];
 $session_lifetime = $configArray['Session']['lifetime'];
 require_once 'sys/' . $session_type . '.php';
 if (class_exists($session_type)) {
-   $session = new $session_type();
-   $session->init($session_lifetime);
+    $session = new $session_type();
+    $session->init($session_lifetime);
 }
 
 // Determine Module and Action
-$module = ($user = UserAccount::isLoggedIn()) ? 'MyResearch' : $configArray['Site']['defaultModule'];
+$loggedInModule = isset($configArray['Site']['defaultLoggedInModule'])
+    ? $configArray['Site']['defaultLoggedInModule'] : 'MyResearch';
+$loggedOutModule = isset($configArray['Site']['defaultModule'])
+    ? $configArray['Site']['defaultModule'] : 'Search';
+$module = ($user = UserAccount::isLoggedIn()) ? $loggedInModule : $loggedOutModule;
 $module = (isset($_GET['module'])) ? $_GET['module'] : $module;
 $module = preg_replace('/[^\w]/', '', $module);
-$interface->assign('module', $module);
 $action = (isset($_GET['action'])) ? $_GET['action'] : 'Home';
 $action = preg_replace('/[^\w]/', '', $action);
-$interface->assign('action', $action);
 
 // Process Authentication
-if ($user) {
-    $interface->assign('user', $user);
-} else if (// Special case for Shibboleth:
-    ($configArray['Authentication']['method'] == 'Shibboleth' && $module == 'MyResearch') ||
+if (!$user) {
+    // Special case for Shibboleth:
+    $shibLoginNeeded = ($configArray['Authentication']['method'] == 'Shibboleth'
+        && $module == 'MyResearch');
     // Default case for all other authentication methods:
-    ((isset($_POST['username']) && isset($_POST['password'])) && ($_GET['action'] != 'Account'))) {
-    $user = UserAccount::login();
-    if (PEAR::isError($user)) {
-        require_once 'services/MyResearch/Login.php';
-        Login::launch($user->getMessage());
-        exit();
+    $standardLoginNeeded = (isset($_POST['username']) && isset($_POST['password'])
+        && $action != 'Account');
+
+    // Perform a login if necessary:
+    if ($shibLoginNeeded || $standardLoginNeeded) {
+        $user = UserAccount::login();
+        if (PEAR::isError($user)) {
+            $interface->initGlobals();
+            include_once 'services/MyResearch/Login.php';
+            Login::launch($user->getMessage());
+            exit();
+        }
     }
-    $interface->assign('user', $user);
 }
+
+// Assign global interface values now that the environment is all set up:
+$interface->initGlobals();
 
 // Process Login Followup
 if (isset($_REQUEST['followup'])) {
     processFollowup();
 }
 
+// Process Solr shard settings
+processShards();
+
 // Call Action
 if (is_readable("services/$module/$action.php")) {
-    require_once "services/$module/$action.php";
+    include_once "services/$module/$action.php";
     if (class_exists($action)) {
         $service = new $action();
         $service->launch();
@@ -168,37 +193,91 @@ if (is_readable("services/$module/$action.php")) {
     PEAR::RaiseError(new PEAR_Error('Cannot Load Action'));
 }
 
+/**
+ * Handle processing and/or redirection for user followup actions.
+ *
+ * @return void
+ */
 function processFollowup()
 {
     global $configArray;
 
-    switch($_REQUEST['followup']) {
-        case 'SaveRecord':
-            $result = file_get_contents($configArray['Site']['url'] .
-                    "/Record/AJAX?method=SaveRecord&id=" . urlencode($_REQUEST['id']));
-            break;
-        case 'SaveTag':
-            $result = file_get_contents($configArray['Site']['url'] .
-                    "/Record/AJAX?method=SaveTag&id=" . urlencode($_REQUEST['id']) .
-                    "&tag=" . urlencode($_REQUEST['tag']));
-            break;
-        case 'SaveComment':
-            $result = file_get_contents($configArray['Site']['url'] .
-                    "/Record/AJAX?method=SaveComment&id=" . urlencode($_REQUEST['id']) .
-                    "&comment=" . urlencode($_REQUEST['comment']));
-            break;
-        case 'SaveSearch':
-            header("Location: {$configArray['Site']['url']}/".$_REQUEST['followupModule']."/".$_REQUEST['followupAction']."?".$_REQUEST['recordId']);
-            die();
-            break;
+    // The MyResearch/Login action may assign a value to followup.  In the case of
+    // a SaveSearch action, we need to redirect after a successful login.  This
+    // behavior is rather confusing -- we should consider achieving the same effect
+    // in a more straightforward way.
+    switch ($_REQUEST['followup']) {
+    case 'SaveSearch':
+        header(
+            "Location: {$configArray['Site']['url']}/" .
+            $_REQUEST['followupModule'] . "/" . $_REQUEST['followupAction'] .
+            "?" . $_REQUEST['recordId']
+        );
+        die();
+        break;
     }
 }
 
-// Process any errors that are thrown
-function handlePEARError($error, $method = null)
+/**
+ * Process Solr-shard-related parameters and settings.
+ *
+ * @return void
+ */
+function processShards()
 {
     global $configArray;
-    
+    global $interface;
+
+    // If shards are not configured, give up now:
+    if (!isset($configArray['IndexShards']) || empty($configArray['IndexShards'])) {
+        return;
+    }
+
+    // If a shard selection list is found as an incoming parameter, we should save
+    // it in the session for future reference:
+    if (array_key_exists('shard', $_REQUEST)) {
+        $_SESSION['shards'] = $_REQUEST['shard'];
+    } else if (!array_key_exists('shards', $_SESSION)) {
+        // If no selection list was passed in, use the default...
+
+        // If we have a default from the configuration, use that...
+        if (isset($configArray['ShardPreferences']['defaultChecked'])
+            && !empty($configArray['ShardPreferences']['defaultChecked'])
+        ) {
+            $checkedShards = $configArray['ShardPreferences']['defaultChecked'];
+            $_SESSION['shards'] = is_array($checkedShards) ?
+                $checkedShards : array($checkedShards);
+        } else {
+            // If no default is configured, use all shards...
+            $_SESSION['shards'] = array_keys($configArray['IndexShards']);
+        }
+    }
+
+    // If we are configured to display shard checkboxes, send a list of shards
+    // to the interface, with keys being shard names and values being a boolean
+    // value indicating whether or not the shard is currently selected.
+    if (isset($configArray['ShardPreferences']['showCheckboxes'])
+        && $configArray['ShardPreferences']['showCheckboxes'] == true
+    ) {
+        $shards = array();
+        foreach ($configArray['IndexShards'] as $shardName => $shardAddress) {
+            $shards[$shardName] = in_array($shardName, $_SESSION['shards']);
+        }
+        $interface->assign('shards', $shards);
+    }
+}
+
+/**
+ * Callback function to handle any PEAR errors that are thrown.
+ *
+ * @param PEAR_Error $error The error object.
+ *
+ * @return void
+ */
+function handlePEARError($error)
+{
+    global $configArray;
+
     // It would be really bad if an error got raised from within the error handler;
     // we would go into an infinite loop and run out of memory.  To avoid this,
     // we'll set a static value to indicate that we're inside the error handler.
@@ -211,23 +290,29 @@ function handlePEARError($error, $method = null)
     } else {
         $errorAlreadyOccurred = true;
     }
-    
+
     // Display an error screen to the user:
     $interface = new UInterface();
 
     $interface->assign('error', $error);
     $interface->assign('debug', $configArray['System']['debug']);
-    
+
     $interface->display('error.tpl');
 
     // Exceptions we don't want to log
     $doLog = true;
     // Microsoft Web Discussions Toolbar polls the server for these two files
     //    it's not script kiddie hacking, just annoying in logs, ignore them.
-    if (strpos($_SERVER['REQUEST_URI'], "cltreq.asp") !== false) $doLog = false;
-    if (strpos($_SERVER['REQUEST_URI'], "owssvr.dll") !== false) $doLog = false;
+    if (strpos($_SERVER['REQUEST_URI'], "cltreq.asp") !== false) {
+        $doLog = false;
+    }
+    if (strpos($_SERVER['REQUEST_URI'], "owssvr.dll") !== false) {
+        $doLog = false;
+    }
     // If we found any exceptions, finish here
-    if (!$doLog) exit();
+    if (!$doLog) {
+        exit();
+    }
 
     // Log the error for administrative purposes -- we need to build a variety
     // of pieces so we can supply information at five different verbosity levels:
@@ -240,7 +325,7 @@ function handlePEARError($error, $method = null)
     $detailedServer = "\nServer Context:\n" . print_r($_SERVER, true);
     $basicBacktrace = "\nBacktrace:\n";
     if (is_array($error->backtrace)) {
-        foreach($error->backtrace as $line) {
+        foreach ($error->backtrace as $line) {
             $basicBacktrace .= "{$line['file']} line {$line['line']} - " .
                 "class = {$line['class']}, function = {$line['function']}\n";
         }
@@ -256,12 +341,17 @@ function handlePEARError($error, $method = null)
 
     $logger = new Logger();
     $logger->log($errorDetails, PEAR_LOG_ERR);
-    
+
     exit();
 }
 
-// Check for the various stages of functionality
-function checkAvailabilityMode() {
+/**
+ * Check for the various stages of functionality
+ *
+ * @return void
+ */
+function checkAvailabilityMode()
+{
     global $configArray;
     $mode = array();
 

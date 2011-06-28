@@ -87,6 +87,7 @@ class Login extends Action
         if (isset($_REQUEST['username'])) {
             $interface->assign('username', $_REQUEST['username']);
         }
+        $interface->setPageTitle('Login');
         $interface->setTemplate('login.tpl');
         $interface->display('layout.tpl');
     }

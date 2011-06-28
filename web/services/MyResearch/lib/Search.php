@@ -67,6 +67,7 @@ class SearchEntry extends DB_DataObject
         $sql = "SELECT * FROM search WHERE saved=0 AND created<\"{$expirationDate}\";";
         $s = new SearchEntry();
         $s->query($sql);
+        $searches = array();
         if ($s->N) {
             while ($s->fetch()) {
                 $searches[] = clone($s);

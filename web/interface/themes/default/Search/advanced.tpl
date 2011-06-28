@@ -62,6 +62,45 @@
                 </tr>
               </table>
               {/if}
+              {if $limitList|@count gt 1}
+                <div id="advSearchLimit">
+                  <label for="limit">{translate text='Results per page'}:</label>
+                  <select id="limit" name="limit">
+                    {foreach from=$limitList item=limitData key=limitLabel}
+                      {* If a previous limit was used, make that the default; otherwise, use the "default default" *}
+                      {if $lastLimit}
+                        <option value="{$limitData.desc|escape}"{if $limitData.desc == $lastLimit} selected="selected"{/if}>{$limitData.desc|escape}</option>
+                      {else}
+                        <option value="{$limitData.desc|escape}"{if $limitData.selected} selected="selected"{/if}>{$limitData.desc|escape}</option>
+                      {/if}
+                    {/foreach}
+                  </select>
+                </div>
+              {/if}
+              {if $lastSort}<input type="hidden" name="sort" value="{$lastSort|escape}" />{/if}
+              {if $dateRangeLimit}
+              {* Load the publication date slider UI widget *}
+              {js filename="yui/slider-min.js"}
+              {js filename="pubdate_slider.js"}
+              <br/>
+              <table summary="{translate text='adv_search_year'}">
+                <tr>
+                  <th valign="top" align="right">{translate text="adv_search_year"}:&nbsp;</th>
+                  <td>
+                    <input type="hidden" name="daterange[]" value="publishDate"/>
+                    <label for="publishDatefrom" class='yearboxlabel'>{translate text='date_from'}:</label>
+                    <input type="text" size="4" maxlength="4" class="yearbox" name="publishDatefrom" id="publishDatefrom" value="{$dateRangeLimit.0|escape}" />
+                    <label for="publishDateto" class='yearboxlabel'>{translate text='date_to'}:</label>
+                    <input type="text" size="4" maxlength="4" class="yearbox" name="publishDateto" id="publishDateto" value="{$dateRangeLimit.1|escape}" />
+                    <div id="publishDateSlider" class="yui-h-slider dateSlider" title="{translate text='Range slider'}" style="display:none;">
+                      <div id="publishDateslider_min_thumb" class="yui-slider-thumb"><img src="{$path}/images/yui/left-thumb.png"></div>
+                      <div id="publishDateslider_max_thumb" class="yui-slider-thumb"><img src="{$path}/images/yui/right-thumb.png"></div>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+              <br/>
+              {/if}
               <input type="submit" name="submit" value="{translate text="Find"}"><br>
             </div>
           </div>
@@ -112,7 +151,7 @@
     var searchFormId    = 'advSearchForm';
 </script>
 {* Step 2: Call the javascript to make use of the above *}
-<script language="JavaScript" type="text/javascript" src="{$path}/services/Search/advanced.js"></script>
+{js filename="advanced.js"}
 {* Step 3: Build the page *}
 <script language="JavaScript" type="text/javascript">
   {if $searchDetails}

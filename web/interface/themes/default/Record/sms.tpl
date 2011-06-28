@@ -1,3 +1,8 @@
+{if $errorMsg}<div class="error">{$errorMsg|translate}</div>{/if}
+{if $infoMsg}<div class="userMsg">{$infoMsg|translate}</div>{/if}
+
+<div id="popupMessages"></div>
+<div id="popupDetails">
 <form method="post" action="{$url}{$formTargetPath|escape}" name="popupForm"
       onSubmit='SendSMS(&quot;{$id|escape}&quot;, this.elements[&quot;to&quot;].value, 
                 this.elements[&quot;provider&quot;][this.elements[&quot;provider&quot;].selectedIndex].value,
@@ -32,3 +37,4 @@
   </tr>
   </table>
 </form>
+</div>

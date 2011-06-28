@@ -63,6 +63,7 @@
     </div>
   </div>
 
+{if $lastSort}<input type="hidden" name="sort" value="{$lastSort|escape}" />{/if}
         </form>
 </div>
 

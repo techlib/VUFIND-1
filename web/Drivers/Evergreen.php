@@ -1,5 +1,8 @@
 <?php
 /**
+ * Evergreen ILS Driver
+ *
+ * PHP version 5
  *
  * Copyright (C) Villanova University 2007.
  *
@@ -16,103 +19,145 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
+ * @category VuFind
+ * @package  ILS_Drivers
+ * @author   Warren Layton, NRCan Library <warren.layton@gmail.com>
+ * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
+ * @link     http://vufind.org/wiki/building_an_ils_driver Wiki
  */
 require_once 'Interface.php';
 
-
 /**
  * VuFind Connector for Evergreen
- * 
+ *
  * Written by Warren Layton at the NRCan (Natural Resources Canada)
  * Library.
  *
- * @author Warren Layton, NRCan Library <warren.layton@gmail.com>
+ * @category VuFind
+ * @package  ILS_Drivers
+ * @author   Warren Layton, NRCan Library <warren.layton@gmail.com>
+ * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
+ * @link     http://vufind.org/wiki/building_an_ils_driver Wiki
  */
 class Evergreen implements DriverInterface
 {
-    private $db;
-    private $dbName;
-    private $config;
+    private $_db;
+    private $_dbName;
+    private $_config;
 
-    function __construct()
+    /**
+     * Constructor
+     *
+     * @access public
+     */
+    public function __construct()
     {
         // Load Configuration for this Module
-        $this->config = parse_ini_file('conf/Evergreen.ini', true);
+        $this->_config = parse_ini_file('conf/Evergreen.ini', true);
 
         // Define Database Name
-        $this->dbName = $this->config['Catalog']['database'];
+        $this->_dbName = $this->_config['Catalog']['database'];
 
         try {
-            $this->db = new PDO('pgsql:host='
-                                .$this->config['Catalog']['hostname']
-                                .' user='
-                                .$this->config['Catalog']['user']
-                                .' dbname='
-                                .$this->config['Catalog']['database'] 
-                                .' password='
-                                .$this->config['Catalog']['password']
-                                .' port='
-                                .$this->config['Catalog']['port']);
+            $this->_db = new PDO(
+                'pgsql:host='
+                .$this->_config['Catalog']['hostname']
+                .' user='
+                .$this->_config['Catalog']['user']
+                .' dbname='
+                .$this->_config['Catalog']['database']
+                .' password='
+                .$this->_config['Catalog']['password']
+                .' port='
+                .$this->_config['Catalog']['port']
+            );
         } catch (PDOException $e) {
             throw $e;
         }
     }
 
+    /**
+     * Get Status
+     *
+     * This is responsible for retrieving the status information of a certain
+     * record.
+     *
+     * @param string $id The record id to retrieve the holdings for
+     *
+     * @return mixed     On success, an associative array with the following keys:
+     * id, availability (boolean), status, location, reserve, callnumber; on
+     * failure, a PEAR_Error.
+     * @access public
+     */
     public function getStatus($id)
     {
+        $holding = array();
+
+        // Build SQL Statement
+        $sql = "select copy_status.name as status, " .
+               "call_number.label as callnumber, " .
+               "copy_location.name as location " .
+               "from $this->_dbName.config.copy_status, " .
+               "$this->_dbName.asset.call_number, " .
+               "$this->_dbName.asset.copy_location, " .
+               "$this->_dbName.asset.copy " .
+               "where copy.id = $id " .
+               "and copy.status = copy_status.id " .
+               "and copy.call_number = call_number.id " .
+               "and copy.location = copy_location.id";
+
+        // Execute SQL
+        try {
             $holding = array();
-        
-            // Build SQL Statement
-            $sql = "select copy_status.name as status, " .
-                   "call_number.label as callnumber, " .
-                   "copy_location.name as location " .
-                   "from $this->dbName.config.copy_status, " .
-                   "$this->dbName.asset.call_number, " .
-                   "$this->dbName.asset.copy_location, " .
-                   "$this->dbName.asset.copy " .
-                   "where copy.id = $id " .
-                   "and copy.status = copy_status.id " .
-                   "and copy.call_number = call_number.id " .
-                   "and copy.location = copy_location.id";
+            $sqlStmt = $this->_db->prepare($sql);
+            $sqlStmt->execute();
+        } catch (PDOException $e) {
+            return new PEAR_Error($e->getMessage());
+        }
 
-            // Execute SQL
-            try {
-                $holding = array();
-                $sqlStmt = $this->db->prepare($sql);
-                $sqlStmt->execute();
-            } catch (PDOException $e) {
-                return new PEAR_Error($e->getMessage());
+        // Build Holdings Array
+        while ($row = $sqlStmt->fetch(PDO::FETCH_ASSOC)) {
+            switch ($row['status']) {
+            case 'Available':
+                $available = true;
+                $reserve = false;
+                break;
+            case 'On holds shelf':
+                $available = false;
+                $reserve = true;
+                break;
+            default:
+                $available = false;
+                $reserve = false;
+                break;
             }
 
-            // Build Holdings Array
-            while ($row = $sqlStmt->fetch(PDO::FETCH_ASSOC)) {
-                switch ($row['status']) {
-                    case 'Available':
-                        $available = true;
-                        $reserve = false;
-                        break;
-                    case 'On holds shelf':
-                        $available = false;
-                        $reserve = true;
-                        break;
-                    default:
-                        $available = false;
-                        $reserve = false;
-                        break;
-                }
+            $holding[] = array(
+                'id' => $id,
+                'availability' => $available,
+                'status' => $row['status'],
+                'location' => $row['location'],
+                'reserve' => $reserve,
+                'callnumber' => $row['callnumber']
+            );
+        }
 
-                $holding[] = array('id' => $id,
-                                   'availability' => $available,
-                                   'status' => $row['status'],
-                                   'location' => $row['location'],
-                                   'reserve' => $reserve,
-                                   'callnumber' => $row['callnumber']);
-            }
-
-            return $holding;
+        return $holding;
     }
 
 
+    /**
+     * Get Statuses
+     *
+     * This is responsible for retrieving the status information for a
+     * collection of records.
+     *
+     * @param array $idList The array of record ids to retrieve the status for
+     *
+     * @return mixed        An array of getStatus() return values on success,
+     * a PEAR_Error object otherwise.
+     * @access public
+     */
     public function getStatuses($idList)
     {
         $status = array();
@@ -122,7 +167,21 @@ class Evergreen implements DriverInterface
         return $status;
     }
 
-    public function getHolding($id)
+    /**
+     * Get Holding
+     *
+     * This is responsible for retrieving the holding information of a certain
+     * record.
+     *
+     * @param string $id     The record id to retrieve the holdings for
+     * @param array  $patron Patron data
+     *
+     * @return mixed     On success, an associative array with the following keys:
+     * id, availability (boolean), status, location, reserve, callnumber, duedate,
+     * number, barcode; on failure, a PEAR_Error.
+     * @access public
+     */
+    public function getHolding($id, $patron = false)
     {
         $holding = array();
 
@@ -135,11 +194,11 @@ class Evergreen implements DriverInterface
                "extract (year from circulation.due_date) as due_year, " .
                "extract (month from circulation.due_date) as due_month, " .
                "extract (day from circulation.due_date) as due_day " .
-               "from $this->dbName.config.copy_status, " .
-               "$this->dbName.asset.call_number, " .
-               "$this->dbName.actor.org_unit, " .
-               "$this->dbName.asset.copy " .
-               "FULL JOIN $this->dbName.action.circulation " .
+               "from $this->_dbName.config.copy_status, " .
+               "$this->_dbName.asset.call_number, " .
+               "$this->_dbName.actor.org_unit, " .
+               "$this->_dbName.asset.copy " .
+               "FULL JOIN $this->_dbName.action.circulation " .
                "ON (copy.id = circulation.target_copy " .
                " and circulation.checkin_time is null) " .
                "where copy.id = $id " .
@@ -149,7 +208,7 @@ class Evergreen implements DriverInterface
 
         // Execute SQL
         try {
-            $sqlStmt = $this->db->prepare($sql);
+            $sqlStmt = $this->_db->prepare($sql);
             $sqlStmt->execute();
         } catch (PDOException $e) {
             return new PEAR_Error($e->getMessage());
@@ -158,23 +217,23 @@ class Evergreen implements DriverInterface
         // Build Holdings Array
         while ($row = $sqlStmt->fetch(PDO::FETCH_ASSOC)) {
             switch ($row['status']) {
-                case 'Available':
-                    $available = true;
-                    $reserve = false;
-                    break;
-                case 'On holds shelf':
-                    // Instead of relying on status = 'On holds shelf',
-                    // I might want to see if:
-                    // action.hold_request.current_copy = asset.copy.id
-                    // and action.hold_request.capture_time is not null
-                    // and I think action.hold_request.fulfillment_time is null    
-                    $available = false;
-                    $reserve = true;
-                    break;
-                default:
-                    $available = false;
-                    $reserve = false;
-                    break;
+            case 'Available':
+                $available = true;
+                $reserve = false;
+                break;
+            case 'On holds shelf':
+                // Instead of relying on status = 'On holds shelf',
+                // I might want to see if:
+                // action.hold_request.current_copy = asset.copy.id
+                // and action.hold_request.capture_time is not null
+                // and I think action.hold_request.fulfillment_time is null
+                $available = false;
+                $reserve = true;
+                break;
+            default:
+                $available = false;
+                $reserve = false;
+                break;
             }
 
             if ($row['due_year']) {
@@ -198,17 +257,39 @@ class Evergreen implements DriverInterface
         return $holding;
     }
 
-    // To be implemented for Evergreen 2.0, when serials module is added
+    /**
+     * Get Purchase History
+     *
+     * This is responsible for retrieving the acquisitions history data for the
+     * specific record (usually recently received issues of a serial).
+     *
+     * @param string $id The record id to retrieve the info for
+     *
+     * @return mixed     An array with the acquisitions data on success, PEAR_Error
+     * on failure
+     * @access public
+     */
     public function getPurchaseHistory($id)
     {
     }
 
 
-    // The parameters to this function are actually the "username/barcode"
-    // and "password"
+    /**
+     * Patron Login
+     *
+     * This is responsible for authenticating a patron against the catalog.
+     *
+     * @param string $barcode The patron username OR barcode number
+     * @param string $passwd  The patron password
+     *
+     * @return mixed          Associative array of patron info on successful login,
+     * null on unsuccessful login, PEAR_Error on error.
+     * @access public
+     */
     public function patronLogin($barcode, $passwd)
     {
-        $sql = "select usr.id as id " .
+        $sql = "select usr.id as id, usr.first_given_name as firstName, " .
+               "usr.family_name as lastName, usr.email, usrname " .
                "from actor.usr, actor.card " .
                "where usr.card = card.id " .
                "and card.active = true " .
@@ -222,13 +303,21 @@ class Evergreen implements DriverInterface
             $sql .= "and usr.usrname = '$barcode'";
         }
 
-
         try {
-            $sqlStmt = $this->db->prepare($sql);
+            $sqlStmt = $this->_db->prepare($sql);
             $sqlStmt->execute();
             $row = $sqlStmt->fetch(PDO::FETCH_ASSOC);
             if (isset($row['id']) && ($row['id'] != '')) {
-                return array('id' => $row['id']);
+                $return = array();
+                $return['id'] = $row['id'];
+                $return['firstname'] = $row['firstname'];
+                $return['lastname'] = $row['lastname'];
+                $return['cat_username'] = $row['usrname'];
+                $return['cat_password'] = $passwd;
+                $return['email'] = $row['email'];
+                $return['major'] = null;    // Don't know which table this comes from
+                $return['college'] = null;  // Don't know which table this comes from
+                return $return;
             } else {
                 return null;
             }
@@ -237,6 +326,18 @@ class Evergreen implements DriverInterface
         }
     }
 
+    /**
+     * Get Patron Transactions
+     *
+     * This is responsible for retrieving all transactions (i.e. checked out items)
+     * by a specific patron.
+     *
+     * @param array $patron The patron array from patronLogin
+     *
+     * @return mixed        Array of the patron's transactions on success,
+     * PEAR_Error otherwise.
+     * @access public
+     */
     public function getMyTransactions($patron)
     {
         $transList = array();
@@ -245,12 +346,12 @@ class Evergreen implements DriverInterface
                "extract (year from circulation.due_date) as due_year, " .
                "extract (month from circulation.due_date) as due_month, " .
                "extract (day from circulation.due_date) as due_day " .
-               "from $this->dbName.action.circulation " .
+               "from $this->_dbName.action.circulation " .
                "where circulation.usr = '" . $patron['id'] . "' " .
                "and circulation.checkin_time is null";
 
         try {
-            $sqlStmt = $this->db->prepare($sql);
+            $sqlStmt = $this->_db->prepare($sql);
             $sqlStmt->execute();
 
             while ($row = $sqlStmt->fetch(PDO::FETCH_ASSOC)) {
@@ -271,6 +372,17 @@ class Evergreen implements DriverInterface
     }
 
 
+    /**
+     * Get Patron Fines
+     *
+     * This is responsible for retrieving all fines by a specific patron.
+     *
+     * @param array $patron The patron array from patronLogin
+     *
+     * @return mixed        Array of the patron's fines on success, PEAR_Error
+     * otherwise.
+     * @access public
+     */
     public function getMyFines($patron)
     {
         $fineList = array();
@@ -285,15 +397,15 @@ class Evergreen implements DriverInterface
                "extract (day from billable_xact_summary.xact_start) ".
                "as start_day, " .
                "billable_cirulations.target_copy " .
-               "from $this->dbName.money.billable_xact_summary " .
-               "LEFT JOIN $this->dbName.action.billable_cirulations " .
+               "from $this->_dbName.money.billable_xact_summary " .
+               "LEFT JOIN $this->_dbName.action.billable_cirulations " .
                "ON (billable_xact_summary.id = billable_cirulations.id " .
                " and billable_cirulations.xact_finish is null) " .
                "where billable_xact_summary.usr = '" . $patron['id'] . "' " .
                "and billable_xact_summary.xact_finish is null";
 
         try {
-            $sqlStmt = $this->db->prepare($sql);
+            $sqlStmt = $this->_db->prepare($sql);
             $sqlStmt->execute();
 
             while ($row = $sqlStmt->fetch(PDO::FETCH_ASSOC)) {
@@ -317,7 +429,17 @@ class Evergreen implements DriverInterface
         }
     }
 
-
+    /**
+     * Get Patron Holds
+     *
+     * This is responsible for retrieving all holds by a specific patron.
+     *
+     * @param array $patron The patron array from patronLogin
+     *
+     * @return mixed        Array of the patron's holds on success, PEAR_Error
+     * otherwise.
+     * @access public
+     */
     public function getMyHolds($patron)
     {
         $holdList = array();
@@ -330,15 +452,15 @@ class Evergreen implements DriverInterface
                "extract (month from hold_request.request_time) as req_month, " .
                "extract (day from hold_request.request_time) as req_day, " .
                "org_unit.name as lib_name " .
-               "from $this->dbName.action.hold_request, " .
-               "$this->dbName.actor.org_unit " .
+               "from $this->_dbName.action.hold_request, " .
+               "$this->_dbName.actor.org_unit " .
                "where hold_request.usr = '" . $patron['id'] . "' " .
                "and hold_request.pickup_lib = org_unit.id " .
                "and hold_request.capture_time is not null " .
                "and hold_request.fulfillment_time is null";
 
         try {
-            $sqlStmt = $this->db->prepare($sql);
+            $sqlStmt = $this->_db->prepare($sql);
             $sqlStmt->execute();
             while ($row = $sqlStmt->fetch(PDO::FETCH_ASSOC)) {
                 if ($row['req_year']) {
@@ -367,7 +489,17 @@ class Evergreen implements DriverInterface
         }
     }
 
-
+    /**
+     * Get Patron Profile
+     *
+     * This is responsible for retrieving the profile for a specific patron.
+     *
+     * @param array $patron The patron array
+     *
+     * @return mixed        Array of the patron's profile data on success,
+     * PEAR_Error otherwise.
+     * @access public
+     */
     public function getMyProfile($patron)
     {
         $sql = "select usr.family_name, usr.first_given_name, " .
@@ -380,7 +512,7 @@ class Evergreen implements DriverInterface
                "and usr.mailing_address = usr_address.id";
 
         try {
-            $sqlStmt = $this->db->prepare($sql);
+            $sqlStmt = $this->_db->prepare($sql);
             $sqlStmt->execute();
             $row = $sqlStmt->fetch(PDO::FETCH_ASSOC);
 
@@ -409,7 +541,7 @@ class Evergreen implements DriverInterface
         }
     }
 
-    
+
     /**
      * Only one of the following 2 function should be implemented.
      * Placing a hold directly can be done with placeHold.
@@ -417,7 +549,20 @@ class Evergreen implements DriverInterface
      * a hold via the ILS.
      */
 
-    //public function placeHold($recordId, $patronId, $comment, $type)
+    /**
+     * Place Hold
+     *
+     * Attempts to place a hold or recall on a particular item and returns
+     * an array with result details or a PEAR error on failure of support classes
+     *
+     * @param array $holdDetails An array of item and patron data
+     *
+     * @return mixed An array of data on the request including
+     * whether or not it was successful and a system message (if available) or a
+     * PEAR error on failure of support classes
+     * @access public
+     */
+    //public function placeHold($holdDetails)
     //{
         // Need to check asset.copy.status -> config.copy_status.holdable = true
         // If it is holdable, place hold in action.hold_request:
@@ -425,12 +570,12 @@ class Evergreen implements DriverInterface
         // usr to action.usr.id of requesting patron,
         // phone_notify to phone number, email_notify to t/f
         // set pickup_lib too?
-        
+
         /*
         $sql = "";
 
         try {
-            $sqlStmt = $this->db->prepare($sql);
+            $sqlStmt = $this->_db->prepare($sql);
             $sqlStmt->execute();
         } catch (PDOException $e) {
             return new PEAR_Error($e->getMessage());
@@ -438,11 +583,41 @@ class Evergreen implements DriverInterface
         */
     //}
 
+    /**
+     * Get Hold Link
+     *
+     * The goal for this method is to return a URL to a "place hold" web page on
+     * the ILS OPAC. This is used for ILSs that do not support an API or method
+     * to place Holds.
+     *
+     * @param string $recordId The id of the bib record
+     *
+     * @return string          URL to ILS's OPAC's place hold screen.
+     * @access public
+     */
     //public function getHoldLink($recordId)
     //{
     //}
-    
 
+
+    /**
+     * Get New Items
+     *
+     * Retrieve the IDs of items recently added to the catalog.
+     *
+     * @param int $page    Page number of results to retrieve (counting starts at 1)
+     * @param int $limit   The size of each page of results to retrieve
+     * @param int $daysOld The maximum age of records to retrieve in days (max. 30)
+     * @param int $fundId  optional fund ID to use for limiting results (use a value
+     * returned by getFunds, or exclude for no limit); note that "fund" may be a
+     * misnomer - if funds are not an appropriate way to limit your new item
+     * results, you can return a different set of values from getFunds. The
+     * important thing is that this parameter supports an ID returned by getFunds,
+     * whatever that may mean.
+     *
+     * @return array       Associative array with 'count' and 'results' keys
+     * @access public
+     */
     public function getNewItems($page, $limit, $daysOld, $fundId = null)
     {
         $items = array();
@@ -462,7 +637,7 @@ class Evergreen implements DriverInterface
                "and copy.create_date < '$enddate'";
 
         try {
-            $sqlStmt = $this->db->prepare($sql);
+            $sqlStmt = $this->_db->prepare($sql);
             $sqlStmt->execute();
             $row = $sqlStmt->fetch(PDO::FETCH_ASSOC);
             $items['count'] = $row['count'];
@@ -480,7 +655,7 @@ class Evergreen implements DriverInterface
                "and copy.create_date < '$enddate'";
 
         try {
-            $sqlStmt = $this->db->prepare($sql);
+            $sqlStmt = $this->_db->prepare($sql);
             $sqlStmt->execute();
             while ($row = $sqlStmt->fetch(PDO::FETCH_ASSOC)) {
                 $items['results'][]['id'] = $row['id'];
@@ -491,6 +666,14 @@ class Evergreen implements DriverInterface
         }
     }
 
+    /**
+     * Get Funds
+     *
+     * Return a list of funds which may be used to limit the getNewItems list.
+     *
+     * @return array An associative array with key = fund ID, value = fund name.
+     * @access public
+     */
     public function getFunds()
     {
         /*
@@ -499,7 +682,7 @@ class Evergreen implements DriverInterface
         $sql = "";
 
         try {
-            $sqlStmt = $this->db->prepare($sql);
+            $sqlStmt = $this->_db->prepare($sql);
             $sqlStmt->execute();
             while ($row = $sqlStmt->fetch(PDO::FETCH_ASSOC)) {
                 $list[] = $row['name'];
@@ -512,16 +695,22 @@ class Evergreen implements DriverInterface
         */
     }
 
-    function getSuppressedRecords()
+    /**
+     * Get suppressed records.
+     *
+     * @return array ID numbers of suppressed records in the system.
+     * @access public
+     */
+    public function getSuppressedRecords()
     {
         $list = array();
 
         $sql = "select copy.id as id " .
-               "from $this->dbName.asset " .
+               "from $this->_dbName.asset " .
                "where copy.opac_visible = false";
 
         try {
-            $sqlStmt = $this->db->prepare($sql);
+            $sqlStmt = $this->_db->prepare($sql);
             $sqlStmt->execute();
             while ($row = $sqlStm->fetch(PDO::FETCH_ASSOC)) {
                 $list[] = $row['id'];
@@ -532,21 +721,59 @@ class Evergreen implements DriverInterface
 
         return $list;
     }
-    
-# The functions below are not (yet) applicable to Evergreen
-    function getDepartments()
+
+    // *** The functions below are not (yet) applicable to Evergreen ***
+
+    /**
+     * Get Departments
+     *
+     * Obtain a list of departments for use in limiting the reserves list.
+     *
+     * @return array An associative array with key = dept. ID, value = dept. name.
+     * @access public
+     */
+    public function getDepartments()
     {
     }
 
-    function getInstructors()
+    /**
+     * Get Instructors
+     *
+     * Obtain a list of instructors for use in limiting the reserves list.
+     *
+     * @return array An associative array with key = ID, value = name.
+     * @access public
+     */
+    public function getInstructors()
     {
     }
 
-    function getCourses()
+    /**
+     * Get Courses
+     *
+     * Obtain a list of courses for use in limiting the reserves list.
+     *
+     * @return array An associative array with key = ID, value = name.
+     * @access public
+     */
+    public function getCourses()
     {
     }
 
-    function findReserves($course, $inst, $dept)
+    /**
+     * Find Reserves
+     *
+     * Obtain information on course reserves.
+     *
+     * @param string $course ID from getCourses (empty string to match all)
+     * @param string $inst   ID from getInstructors (empty string to match all)
+     * @param string $dept   ID from getDepartments (empty string to match all)
+     *
+     * @return mixed An array of associative arrays representing reserve items (or a
+     * PEAR_Error object if there is a problem)
+     * @access public
+     */
+    public function findReserves($course, $inst, $dept)
     {
     }
 

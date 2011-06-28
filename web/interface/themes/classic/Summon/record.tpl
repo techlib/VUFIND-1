@@ -35,8 +35,8 @@
              these URI values aren't always very useful, so they should be linked
              as a last resort only. *}
           <div class="button alignright">
-          {if $record.URI && (!$openUrlBase || !$record.hasFullText)}
-            {foreach from=$record.URI.0 item="value"}
+          {if $record.url && (!$openUrlBase || !$record.hasFullText)}
+            {foreach from=$record.url.0 item="value"}
           <a href="{$value|escape}">{translate text='Get full text'}</a><br>
             {/foreach}
           {elseif $openUrlBase}
