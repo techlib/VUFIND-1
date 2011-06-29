@@ -540,7 +540,7 @@ class Aleph implements DriverInterface
      * @return array       Associative array with 'count' and 'results' keys
      * @access public
      */
-    {
+    
         $items = array();
         return $items;
     }

@@ -115,7 +115,6 @@ function fetchFromISBN($isn, $size)
             dieWithFailImage();
         }
     }
-} else {
     dieWithFailImage();
 }
 
