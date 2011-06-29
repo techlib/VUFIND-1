@@ -147,7 +147,7 @@ class Aleph implements DriverInterface
           array(
             "library" => $this->bib,
             "sys_no" => $id
-          )
+          ), false //<MJ.>
         );
         foreach ($xml->xpath("//item-data") as $itemdata) {
           $loanStatus = $itemdata->xpath("loan-status");
@@ -173,6 +173,7 @@ class Aleph implements DriverInterface
             'number' => 1
           );
         }
+    return $holding ;//<MJ.>
     }
     /*
     public function getHolding($id) {
