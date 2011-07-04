@@ -1,9 +1,15 @@
 <?php
 /**
+ * Aleph ILS driver
  *
- * Copyright (C) Moravian Library, Brno, Czech Republic
+ * PHP version 5
+ *
  * Copyright (C) UB/FU Berlin
  *
+ * last update: 7.11.2007
+ * tested with X-Server Aleph 18.1.
+ *
+ * TODO: login, course information, getNewItems, duedate in holdings, https connection to x-server, ...
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2,
@@ -18,77 +24,125 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
+ * @category VuFind
+ * @package  ILS_Drivers
+ * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
+ * @link     http://vufind.org/wiki/building_an_ils_driver Wiki
  */
 require_once 'Interface.php';
+require_once 'AlephTables.php';
+require_once 'sys/Proxy_Request.php';
 
+/**
+ * Aleph ILS driver
+ *
+ * @category VuFind
+ * @package  ILS_Drivers
+ * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
+ * @link     http://vufind.org/wiki/building_an_ils_driver Wiki
+ */
 class Aleph implements DriverInterface
 {
-    private $db;
-    private $dbName;
 
-    function __construct() {
+    /**
+     * Constructor
+     *
+     * @access public
+     */
+    function __construct()
+    {
         // Load Configuration for this Module
         $configArray = parse_ini_file('conf/Aleph.ini', true);
-
         $this->host = $configArray['Catalog']['host'];
-        $this->dlfport = $configArray['Catalog']['dlfport'];
-        $this->dlfurl = $this->host . ":" . $this->dlfport;
-        $this->bib = $configArray['Catalog']['bib'];
+        $this->bib = split(',', $configArray['Catalog']['bib']);
         $this->useradm = $configArray['Catalog']['useradm'];
         $this->admlib = $configArray['Catalog']['admlib'];
-        $this->loanlib = $configArray['Catalog']['loanlib'];
         $this->wwwuser = $configArray['Catalog']['wwwuser'];
         $this->wwwpasswd = $configArray['Catalog']['wwwpasswd'];
+        $this->dlfport = $configArray['Catalog']['dlfport'];
         $this->sublibadm = $configArray['sublibadm'];
-    }
-    
-    public function formatCollection($collection) {
-      if (
-        preg_match(
-          "/^.+(?P<floor>\d)(?P<sector>[A-Z])/(?P<shelf>\d+)$/",
-          $collection,
-          $matches
-        )
-      ) {
-        
-      }
-      return $location;
-    }
-    
-    public function doXRequest($op, $params, $auth) {
-        $url = "http://$this->host/X?op=$op";
-        foreach ($params as $key => $value) {
-           $url.="&$key=$value";
-        }
-        if ($auth) {
-           $url.="&user_name=$this->wwwuser&user_password=$this->wwwpasswd";
-        }
-        return $this->doRequest($url);
+        $this->available_statuses = split(',', $configArray['Catalog']['available_statuses']);
     }
 
-    public function doRequest($request) {
-        $answer = file($request);
-        $xmlfile = '';
-        foreach($answer as $line) {
-           $xmlfile .= $line;
+    protected function doXRequest($op, $params, $auth=false)
+    {
+        $url = "http://$this->host/X?op=$op";
+        $url = $this->appendQueryString($url, $params);
+        if ($auth) {
+           $url = $this->appendQueryString($url, array('user_name' => $this->wwwuser, 'user_password' => $this->wwwpasswd));
         }
-        $xmlfile = str_replace('xmlns=', 'ns=', $xmlfile);
-        $result = simplexml_load_string($xmlfile) or print "error creating xml";
+        $result = $this->doHTTPRequest($url);
+        if ($result->error) {
+           throw new Exception("XServer error: $result->error.");
+        }
         return $result;
     }
 
-   /*
-    * Fast check of status of an item
-    */
-   public function getStatus($id) {
-        $xml = $this->doXRequest(
-          "publish_avail",
-          array(
-            'library' => $this->bib,
-            'doc_num' => $id
-          ),
-          false
-        );
+    protected function doRestDLFRequest($path_elements, $params = null, $method='GET', $body = null) {
+        $path = '';
+        foreach ($path_elements as $path_element) {
+           $path .= $path_element . "/";
+        }
+        $url = "http://$this->host:$this->dlfport/rest-dlf/" . $path;
+        $url = $this->appendQueryString($url, $params);
+        return $this->doHTTPRequest($url, $method, $body);
+    }
+
+    protected function appendQueryString($url, $params) {
+        $sep = (strpos($url, "?") === false)?'?':'&';
+        if ($params != null) {
+           foreach ($params as $key => $value) {
+              $url.= $sep . $key . "=" . $value;
+              $sep = "&";
+           }
+        }
+        return $url;
+    }
+
+    protected function doHTTPRequest($url, $method='GET', $body = null) {
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        if ($body != null) {
+           curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
+        }
+        $answer = curl_exec($ch);
+        curl_close($ch);
+        $answer = str_replace('xmlns=', 'ns=', $answer);
+        $result = simplexml_load_string($answer);
+        if (!$result) { 
+           throw new Exception("XML is not valid, URL is '$url'.");
+        }
+        return $result;
+    }
+
+
+    protected function parseId($id) 
+    {
+        if (count($this->bib)==1) {
+            return array($this->bib[0], $id);
+        } else {
+            return split('-', $id);
+        }
+    }
+
+    /**
+     * Get Status
+     *
+     * This is responsible for retrieving the status information of a certain
+     * record.
+     *
+     * @param string $id The record id to retrieve the holdings for
+     *
+     * @return mixed     On success, an associative array with the following keys:
+     * id, availability (boolean), status, location, reserve, callnumber; on
+     * failure, a PEAR_Error.
+     * @access public
+     */
+    public function getStatus($id) 
+    {
+        list($bib, $sys_no) = $this->parseId($id);
+        $xml = $this->doXRequest("publish_avail", array('library' => $bib, 'doc_num' => $sys_no), false);
         $records = $xml->xpath('/publish-avail/OAI-PMH/ListRecords/record/metadata/record') or print "xpath eval failed";
         $holding = array();
         foreach ($records as $record) {
@@ -99,27 +153,33 @@ class Aleph implements DriverInterface
                $availability = ($status[0] == 'available' || $status[0] == 'check_holdings');
                $reserve = true;
                $callnumber = $signature;
-               $duedate = '';
-               $collection = '';
-               $number = '';
-               $barcode = '';
                $holding[] = array('id' => $id,
                                'availability' => $availability,
                                'status' => (string) $status[0],
                                'location' => (string) $location[0],
                                'signature' => (string) $signature[0],
                                'reserve' => $reserve,
-                               'callnumber' => (string) $callnumber[0],
-                               'duedate' => (string) $duedate,
-                               'number' => (string) $number,
-                               'collection' => (string) $collection,
-                               'barcode' => (string) $barcode);
+                               'callnumber' => (string) $signature[0]
+                            );
            }
         }
         return $holding;
     }
 
-    public function getStatuses($idList) {
+    /**
+     * Get Statuses
+     *
+     * This is responsible for retrieving the status information for a
+     * collection of records.
+     *
+     * @param array $idList The array of record ids to retrieve the status for
+     *
+     * @return mixed        An array of getStatus() return values on success,
+     * a PEAR_Error object otherwise.
+     * @access public
+     */
+    public function getStatuses($idList)
+    {
         foreach ($idList as $id) {
             $holdings[] = $this->getStatus($id);
         }
@@ -142,45 +202,13 @@ class Aleph implements DriverInterface
      */
     public function getHolding($id, $patron = false)
     {
-        $xml = $this->doXRequest(
-          "circ-status",
-          array(
-            "library" => $this->bib,
-            "sys_no" => $id
-          ), false //<MJ.>
-        );
-        foreach ($xml->xpath("//item-data") as $itemdata) {
-          $loanStatus = $itemdata->xpath("loan-status");
-          $dueDate = $itemdata->xpath("due-date");
-          $collection = $itemdata->xpath("collection");
-          $location = $itemdata->xpath("location");
-          $lcc = $itemdata->xpath("location-2");
-          
-          $loanStatus = $loanStatus[0];
-          $dueDate = $dueDate[0];
-          $collection = $collection[0];
-          $location = $location[0];
-          $lcc = $lcc[0] ? $lcc[0] : false;
-          
-          $holding[] = array(
-            'availability' => 1,
-            'id' => $id,
-            'status' => 'Available',
-            'location' => '3rd Floor Main Library',
-            'reserve' => 'No',
-            'callnumber' => 'A1234.567',
-            'duedate' => '',
-            'number' => 1
-          );
-        }
-    return $holding ;//<MJ.>
-    }
-    /*
-    public function getHolding($id) {
-        $resource = $this->bib . $id[0];
-        $url = "http://$this->dlfurl/rest-dlf/record/" . $resource . "/items?view=full";
-        $xml = $this->doRequest($url);
+        $holding = array();
+        list($bib, $sys_no) = $this->parseId($id);
+        $resource = $bib . $sys_no;
+        $xml = $this->doRestDLFRequest(array('record', $resource, 'items'), array('view' => 'full'));
         foreach ($xml->xpath('//items/item') as $item) {
+           $item_id = $item->xpath('@href');
+           $item_id = substr($item_id[0], strrpos($item_id[0], '/') + 1);
            $item_status = $item->xpath('z30-item-status-code/text()'); // $isc
            $item_process_status = $item->xpath('z30-item-process-status-code/text()'); // $ipsc
            $sub_library = $item->xpath('z30-sub-library-code/text()'); // $slc
@@ -208,12 +236,12 @@ class Aleph implements DriverInterface
            $requested = false;
            $duedate = '';
            $status = $status[0];
-           // FIXME: you may need to costumize it
-           if ($status == "On Shelf" || $status == "Open St.-Month" || $status == "Vol.výb.-měs.") {
+           if (in_array($status, $this->available_statuses)) {
                $availability = true;
            }
+           $reserve = 'N';
            if ($item_status['request'] == 'Y' && $availability == false) {
-              $reserve = true;
+              $reserve = 'Y';
            }
            $matches = array();
            if (preg_match("/([0-9]*\\/[a-zA-Z]*\\/[0-9]*);([a-zA-Z ]*)/", $status, &$matches)) {
@@ -221,83 +249,316 @@ class Aleph implements DriverInterface
                $requested = (trim($matches[2]) == "Requested");
            } else if (preg_match("/([0-9]*\\/[a-zA-Z]*\\/[0-9]*)/", $status, &$matches)) {
                $duedate = $this->parseDate($matches[1]);
-           }
-           $temp = mb_substr((string) $item_status['desc_cz'], 0, 6, "UTF-8");
-           if ($availability) {
-              if (strcmp($temp, "Jen do")==0 || strcmp($temp, "Studov")==0) {
-                 $duedate = "only for present studium";
-              } else if (strcmp($temp, "Příruč")==0) {
-                 $duedate = "reference library";
-              } else if (strcmp($temp, "Ve zpr")==0) {
-                 $duedate = "in processing";
-              } else {
-                 $duedate = "absent loan";
-              }
            } else {
-              if ($status == "On Hold" || $status == "Requested") {
-                 $duedate = "requested";
-              }
+               $duedate = null;
            }
-           // 
            $holding[] = array('id' => $id,
-                               'availability' => $availability,
-                               'status' => (string) $item_status['desc_cz'],
-                               'location' => (string) $location[0],
-                               'reserve' => $reserve,
-                               'callnumber' => (string) $callnumber[0],
-                               'duedate' => (string) $duedate,
-                               'requested' => (string) $requested,
-                               'number' => (string) $number[0],
-                               'collection' => (string) $collection[0],
-                               'collection_desc' => (string) $collection_desc['desc_cz'],
-                               'barcode' => (string) $barcode[0],
-                               'description' => (string) $desc[0],
-                               'note' => (string) $note[0],
-                               'sig1' => (string) $sig1[0],
-                               'sig2' => (string) $sig2[0],
-                               'sub_lib_desc' => (string) $item_status['sub_lib_desc'],
-                               'no_of_loans' => (integer) $no_of_loans[0],
-                               'group' => (string) $group);
+                              'item_id' => $item_id,
+                              'availability' => $availability, // was true
+                              'status' => (string) $item_status['desc'],
+                              'location' => (string) $location[0],
+                              'reserve' => $reserve, // was 'reserve' => 'N'
+                              'callnumber' => (string) $callnumber[0],
+                              'duedate' => (string) $duedate,
+                              'number' => (string) $number[0],
+                              'collection' => (string) $collection[0],
+                              'collection_desc' => (string) $collection_desc['desc'],
+                              'barcode' => (string) $barcode[0],
+                              'description' => (string) $desc[0],
+                              'note' => (string) $note[0],
+                              'is_holdable' => true,
+                              'holdtype' => 'hold',
+                              /* below are optional attributes*/
+                              'sig1' => (string) $sig1[0],
+                              'sig2' => (string) $sig2[0],
+                              'sub_lib_desc' => (string) $item_status['sub_lib_desc'],
+                              'no_of_loans' => (integer) $no_of_loans[0],
+                              'requested' => (string) $requested);
         }
         return $holding;
     }
-    */
-    public function getHoldingInfoForItem($patronId, $id, $group) {
-        list($bib, $sys_no) = split("-", $id, 2);
-        $resource = $bib . $sys_no;
-        $url = "http://$this->dlfurl/rest-dlf/patron/$patronId/record/$resource/items/$group";
-        $xml = $this->doRequest($url);
-        $locations = array();
-        $part = $xml->xpath('//pickup-locations');
-        foreach ($part[0]->children() as $node) {
-           $arr = $node->attributes();
-           $code = (string) $arr['code'];
-           $loc_name = (string) $node;
-           $locations[$code] = $loc_name;
+
+    /**
+     * Get Patron Transactions
+     *
+     * This is responsible for retrieving all transactions (i.e. checked out items)
+     * by a specific patron.
+     *
+     * @param array $user The patron array from patronLogin
+     *
+     * @return mixed      Array of the patron's transactions on success,
+     * PEAR_Error otherwise.
+     * @access public
+     */
+    public function getMyTransactions($user)
+    {
+        $userId = $user['id'];
+        $transList = array();
+        $xml = $this->doRestDLFRequest(array('patron', $userId, 'circulationActions', 'loans'), array("view" => "full"));
+        foreach ($xml->xpath('//loan') as $item) {
+           $z36 = $item->z36;
+           $z13 = $item->z13;
+           $z30 = $item->z30;
+           $group = $item->xpath('@href');
+           $group = substr(strrchr($group[0], "/"), 1);
+           $renew = $item->xpath('@renew');
+           $docno = (string) $z36->{'z36-doc-number'};
+           $itemseq = (string) $z36->{'z36-item-sequence'};
+           $seq = (string) $z36->{'z36-sequence'};
+           $location = (string) $z36->{'z36_pickup_location'};
+           $reqnum = (string) $z36->{'z36-doc-number'} .
+              (string) $z36->{'z36-item-sequence'} . (string) $z36->{'z36-sequence'};
+           $due = (string) $z36->{'z36-due-date'};
+           $loaned = (string) $z36->{'z36-loan-date'};
+           $title = (string) $z13->{'z13-title'};
+           $author = (string) $z13->{'z13-author'};
+           $isbn = (string) $z13->{'z13-isbn-issn'};
+           $barcode = (string) $z30->{'z30-barcode'};
+           $transList[] = array('type' => $type,
+			       'id' => $this->barcodeToID($barcode),
+                               'item_id' => $group,
+                               'location' => $location,
+                               'title' => $title,
+                               'author' => $author,
+                               'isbn' => array($isbn),
+                               'reqnum' => $reqnum,
+                               'barcode' => $barcode,
+                               'duedate' => $this->parseDate($due),
+                               'holddate' => $holddate,
+                               'delete' => $delete,
+                               'renewable' => true,
+                               'create' => $this->parseDate($create));
         }
-        $str = $xml->xpath('//item/queue/text()');
-        list($requests, $other) = split(' ', trim($str[0]));
-        if ($requests == null) {
-           $requests = 0;
-        }
-        $date = $xml->xpath('//last-interest-date/text()');
-        $date = $date[0];
-        $date = "" . substr($date, 6, 2) . "." . substr($date, 4, 2) . "." . substr($date, 0, 4); 
-        return array('pickup-locations' => $locations, 'last-interest-date' => $date, 'order' => $requests + 1);
+        return $transList;
     }
 
-    public function getHoldings($id)
-    {
-        return $this->getStatus($id);
+    public function getRenewDetails($details) {
+        return $details['item_id'];
     }
 
-    public function getPurchaseHistory($id)
-    {
-        return array();
+    public function renewMyItems($details) {
+        $patron = $details['patron'];
+        foreach ($details['details'] as $id) {
+           $xml = $this->doRestDLFRequest(array('patron', $patron['id'], 'circulationActions', 'loans', $id), null, 'POST', null);
+        }
+        return array('blocks' => false, 'details' => array());
     }
-    
-    public function patronLogin($barcode, $lname) {
-        try {
+
+    /**
+     * Get Patron Holds
+     *
+     * This is responsible for retrieving all holds by a specific patron.
+     *
+     * @param array $user The patron array from patronLogin
+     *
+     * @return mixed      Array of the patron's holds on success, PEAR_Error
+     * otherwise.
+     * @access public
+     */
+    public function getMyHolds($user)
+    {
+        $userId = $user['id'];
+        $holdList = array();
+        $xml = $this->doRestDLFRequest(array('patron', $userId, 'circulationActions', 'requests', 'holds'), array('view' => 'full'));
+        foreach ($xml->xpath('//hold-request') as $item) {
+           $z37 = $item->z37;
+           $z13 = $item->z13;
+           $z30 = $item->z30;
+           $delete = $item->xpath('@delete');
+           if ((string) $z37->{'z37-request-type'} == "Hold Request" || true) {
+                $type = "hold";
+                $docno = (string) $z37->{'z37-doc-number'};
+                $itemseq = (string) $z37->{'z37-item-sequence'};
+                $seq = (string) $z37->{'z37-sequence'};
+                $location = (string) $z37->{'z37_pickup_location'};
+                $reqnum = (string) $z37->{'z37-doc-number'} .
+                    (string) $z37->{'z37-item-sequence'} . (string) $z37->{'z37-sequence'};
+                $expire = (string) $z37->{'z37-end-request-date'};
+                $create = (string) $z37->{'z37-open-date'};
+                $holddate = (string) $z37->{'z37-hold-date'};
+                $title = (string) $z13->{'z13-title'};
+                $author = (string) $z13->{'z13-author'};
+                $isbn = (string) $z13->{'z13-isbn-issn'};
+                $barcode = (string) $z30->{'z30-barcode'};
+                if ($holddate == "00000000") {
+                    $holddate = null;
+                } else {
+                    $holddate = $this->parseDate($holddate);
+                }
+                $delete = ($delete[0] == "Y");
+                $holdList[] = array('type' => $type,
+                                    'item_id' => $user['college'] . $docno . $itemseq . $seq,
+                                    'location' => $location,
+                                    'title' => $title,
+                                    'author' => $author,
+                                    'isbn' => array($isbn),
+                                    'reqnum' => $reqnum,
+                                    'barcode' => $barcode,
+                                    'id' => $this->barcodeToID($barcode), 
+                                    'expire' => $this->parseDate($expire),
+                                    'holddate' => $holddate,
+                                    'delete' => $delete,
+                                    'create' => $this->parseDate($create));
+           }
+        }
+        return $holdList;
+    }
+
+    public function getCancelHoldDetails($holdDetails)
+    {
+        return $holdDetails['item_id'];
+    }
+
+    public function cancelHolds($details)
+    {
+        $patron = $details['patron'];
+        $patronId = $patron['id'];
+        $count = 0;
+        $statuses = array();
+        foreach ($details['details'] as $id) {
+           $result = $this->doRestDLFRequest(array('patron', $patronId, 'circulationActions', 'requests', 'holds', $id), null, HTTP_REQUEST_METHOD_DELETE);
+           $reply_code = $result->{'reply-code'};
+           if ($reply_code != "0000") {
+              $message = $result->{'del-pat-hold'}->{'note'};
+              if ($message == null) {
+                 $message = $result->{'reply-text'};
+              }
+              $statuses[$id] = array('success' => false, 'status' => 'cancel_hold_failed', 'sysMessage' => (string) $message);
+           } else {
+              $count++;
+              $statuses[$id] = array('success' => true, 'status' => 'cancel_hold_ok');
+           }
+        }
+        $statuses['count'] = $count;
+        return $statuses;
+    }
+     
+
+    /**
+     * Get Patron Fines
+     *
+     * This is responsible for retrieving all fines by a specific patron.
+     *
+     * @param array $user The patron array from patronLogin
+     *
+     * @return mixed      Array of the patron's fines on success, PEAR_Error
+     * otherwise.
+     * @access public
+     */
+    public function getMyFines($user)
+    {
+        $finesList = array();
+        $finesListSort = array();
+
+        $xml = $this->doRestDLFRequest(array('patron', $user['id'], 'circulationActions', 'cash'));
+
+        foreach ($xml->xpath('//cash') as $item) {
+            $z31 = $item->z31;
+            $z13 = $item->z13;
+            $z30 = $item->z30;
+            $delete = $item->xpath('@delete');
+            $title = (string) $z13->{'z13-title'}; 
+            $transactiondate = date('d-m-Y', strtotime((string) $z31->{'z31-date'}));
+            $transactiontype = (string) $z31->{'z31-credit-debit'};
+            $id = (string) $z13->{'z13-doc-number'};
+            $barcode = (string) $z30->{'z30-barcode'};
+            if($transactiontype=="Debit")
+                $mult=-100;
+            elseif($transactiontype=="Credit")
+                $mult=100;
+            $amount = (float)(preg_replace("/[\(\)]/", "", (string) $z31->{'z31-sum'}))*$mult;
+            $cashref = (string) $z31->{'z31-sequence'};
+            $cashdate = date('d-m-Y', strtotime((string) $z31->{'z31-date'}));
+            $balance = 0;
+            $finesListSort["$cashref"]  = array(
+                    "title"   => $title,
+                    "barcode" => $barcode,
+                    "amount" => $amount,
+                    "transactiondate" => $transactiondate,
+                    "transactiontype" => $transactiontype,
+                    "balance"  => $balance,
+                    "id"  => $id
+            ); 
+        }
+        ksort($finesListSort);
+        foreach ($finesListSort as $key => $value){
+            $title = $finesListSort[$key]["title"]; 
+            $barcode = $finesListSort[$key]["barcode"]; 
+            $amount = $finesListSort[$key]["amount"]; 
+            $transactiondate = $finesListSort[$key]["transactiondate"]; 
+            $transactiontype = $finesListSort[$key]["transactiontype"]; 
+            $balance += $finesListSort[$key]["amount"];
+            $id = $finesListSort[$key]["id"];
+            $finesList[] = array(
+                "title"   => $title,
+                "barcode"  => $barcode,
+                "amount"   => $amount,
+                "transactiondate" => $transactiondate,
+                "transactiontype" => $transactiontype,
+                "balance"  => $balance,
+                "id"  => $id
+            ); 
+        }
+        return $finesList;
+    }
+
+    /**
+     * Get Patron Profile
+     *
+     * This is responsible for retrieving the profile for a specific patron.
+     *
+     * @param array $user The patron array
+     *
+     * @return mixed      Array of the patron's profile data on success, PEAR_Error otherwise.
+     * @access public
+     */
+    function getMyProfile($user)
+    {   
+        $xml = $this->doRestDLFRequest(array('patron', $user['id'], 'patronInformation', 'address'));
+
+        $address = $xml->xpath('//address-information');
+        $address = $address[0];
+        $address1 = (string)$address->{'z304-address-1'};
+        $address2 = (string)$address->{'z304-address-2'};
+        $address3 = (string)$address->{'z304-address-3'};
+        $address4 = (string)$address->{'z304-address-4'};
+        $address5 = (string)$address->{'z304-address-5'};
+        $zip = (string)$address->{'z304-zip'};
+        $phone = (string)$address->{'z304-telephone-1'};
+        $email = (string)$address->{'z404-email-address'};
+        $dateFrom = (string)$address->{'z304-date-from'};
+        $dateTo = (string)$address->{'z304-date-to'};
+
+        $recordList['firstname'] = $user['firstname'];
+        $recordList['lastname'] = $user['lastname'];
+        $recordList['address1'] = $address1;
+        $recordList['address2'] = $address2;
+        $recordList['address3'] = $address3;
+        $recordList['address4'] = $address4;
+        $recordList['address5'] = $address5;
+        $recordList['zip'] = $zip;
+        $recordList['phone'] = $phone;
+        $recordList['email'] = $email;
+        $recordList['dateFrom'] = $dateFrom;
+        $recordList['dateTo'] = $dateTo;
+        return $recordList;
+    }
+
+    /**
+     * Patron Login
+     *
+     * This is responsible for authenticating a patron against the catalog.
+     *
+     * @param string $barcode The patron barcode
+     * @param string $lname   The patron last name
+     *
+     * @return mixed          Associative array of patron info on successful login,
+     * null on unsuccessful login, PEAR_Error on error.
+     * @access public
+     */
+    public function patronLogin($barcode, $lname)
+    {
+       try {
             $xml = $this->doXRequest('bor-auth', array('library' => $this->useradm, 'bor_id' => $barcode, 'verification' => $lname), true);
         } catch (Exception $ex) {
             $patron = new PEAR_Error($ex->getMessage());
@@ -330,183 +591,65 @@ class Aleph implements DriverInterface
         return $patron;
     }
 
-    public function getMyTransactions($user) {
-        $userId = $user['id'];
-        $transList = array();
-        $url = "http://$this->dlfurl/rest-dlf/patron/$userId/circulationActions/loans/?view=full";
-        $transList = array();
-        $xml = $this->doRequest($url);
-        foreach ($xml->xpath('//loan') as $item) {
-           $z36 = $item->z36;
-           $z13 = $item->z13;
-           $z30 = $item->z30;
-           $renew = $item->xpath('@renew');
-           $docno = (string) $z36->{'z36-doc-number'};
-           $itemseq = (string) $z36->{'z36-item-sequence'};
-           $seq = (string) $z36->{'z36-sequence'};
-           $location = (string) $z36->{'z36_pickup_location'};
-           $reqnum = (string) $z36->{'z36-doc-number'} .
-              (string) $z36->{'z36-item-sequence'} . (string) $z36->{'z36-sequence'};
-           $due = (string) $z36->{'z36-due-date'};
-           $loaned = (string) $z36->{'z36-loan-date'};
-           $title = (string) $z13->{'z13-title'};
-           $author = (string) $z13->{'z13-author'};
-           $isbn = (string) $z13->{'z13-isbn-issn'};
-           $barcode = (string) $z30->{'z30-barcode'};
-           $transList[] = array('type' => $type,
-                               'holdid' => $user['college'] . $docno . $itemseq . $seq,
-                               'location' => $location,
-                               'title' => $title,
-                               'author' => $author,
-                               'isbn' => array($isbn),
-                               'reqnum' => $reqnum,
-                               'barcode' => $barcode,
-                               'duedate' => $this->parseDate($due),
-                               'holddate' => $holddate,
-                               'delete' => $delete,
-                               'create' => $this->parseDate($create));
+    public function getHoldingInfoForItem($patronId, $id, $group) {
+        list($bib, $sys_no) = $this->parseId($id);
+        $resource = $bib . $sys_no;
+        $xml = $this->doRestDLFRequest(array('patron', $patronId, 'record', $resource, 'items', $group));
+        $locations = array();
+        $part = $xml->xpath('//pickup-locations');
+        foreach ($part[0]->children() as $node) {
+           $arr = $node->attributes();
+           $code = (string) $arr['code'];
+           $loc_name = (string) $node;
+           $locations[$code] = $loc_name;
         }
-        return $transList;
+        $str = $xml->xpath('//item/queue/text()');
+        list($requests, $other) = split(' ', trim($str[0]));
+        if ($requests == null) {
+           $requests = 0;
+        }
+        $date = $xml->xpath('//last-interest-date/text()');
+        $date = $date[0];
+        $date = "" . substr($date, 6, 2) . "." . substr($date, 4, 2) . "." . substr($date, 0, 4); 
+        return array('pickup-locations' => $locations, 'last-interest-date' => $date, 'order' => $requests + 1);
     }
 
-    public function getMyHolds($user) {
-        // var_dump($user);
-        $userId = $user['id'];
-        $holdList = array();
-        $url = "http://$this->dlfurl/rest-dlf/patron/$userId/circulationActions/requests/holds?view=full";
-        $xml = $this->doRequest($url);
-        // foreach ($xml->xpath('//z37') as $item) {
-        foreach ($xml->xpath('//hold-request') as $item) {
-           $z37 = $item->z37;
-           $z13 = $item->z13;
-           $z30 = $item->z30;
-           $delete = $item->xpath('@delete');
-           if ((string) $z37->{'z37-request-type'} == "Hold Request" || true) {
-                $type = "hold";
-                $docno = (string) $z37->{'z37-doc-number'};
-                $itemseq = (string) $z37->{'z37-item-sequence'};
-                $seq = (string) $z37->{'z37-sequence'};
-                $location = (string) $z37->{'z37_pickup_location'};
-                $reqnum = (string) $z37->{'z37-doc-number'} .
-                    (string) $z37->{'z37-item-sequence'} . (string) $z37->{'z37-sequence'};
-                $expire = (string) $z37->{'z37-end-request-date'};
-                $create = (string) $z37->{'z37-open-date'};
-                $holddate = (string) $z37->{'z37-hold-date'};
-                $title = (string) $z13->{'z13-title'};
-                $author = (string) $z13->{'z13-author'};
-                $isbn = (string) $z13->{'z13-isbn-issn'};
-                $barcode = (string) $z30->{'z30-barcode'};
-                if ($holddate == "00000000") {
-                    $holddate = null;
-                } else {
-                    $holddate = $this->parseDate($holddate);
-                }
-                $delete = ($delete[0] == "Y");
-                $holdList[] = array('type' => $type,
-                                    'holdid' => $user['college'] . $docno . $itemseq . $seq,
-                                    'location' => $location,
-                                    'title' => $title,
-                                    'author' => $author,
-                                    'isbn' => array($isbn),
-                                    'reqnum' => $reqnum,
-                                    'barcode' => $barcode,
-                                    'expire' => $this->parseDate($expire),
-                                    'holddate' => $holddate,
-                                    'delete' => $delete,
-                                    'create' => $this->parseDate($create));
-           }
-        }
-        return $holdList;
-    }
-
-    public function getMyFines($user) {
-        $xml = $this->doXRequest("bor-info", array('loans' => 'N', 'hold' => 'N', 'cash' => 'Y', 'library' => $user['college'],
-            'bor_id' => $user['id'], 'verification' => ''), true);
-        $max = substr_count($xmlfile, "<fine>");
-
-        for($i=0;$i < $max ; $i++){
-            if (preg_match("/not paid/i",(string)$xml->fine[$i]->z31->z31_status)) {
-                $description = preg_replace("/paid.*/i" ,"", (string) $xml->fine[$i]->z31->z31_description);
-                $balance = (int)((float) preg_replace("/[\(\)]/", "", (string) $xml->fine[$i]->z31->z31_sum) * 100);
-                if (preg_match_all("/(\d+\.\d{2})/", (string) $xml->fine[$i]->z31->z31_description, $matches)) {
-                    $fine = (int)((float)$matches[0][1]*100);
-                } else {
-                    $fine = $balance;
-                }
-                $id = (string) $xml->fine[$i]->z30->z30_doc_number;
-                // Note Aleph's X-Server doesn't tell us when the book was checked out or due back, just when the fine was issued.
-                $finesList[] = array(
-                    "amount"   => $fine,
-                    "checkout" => "",
-                    "fine"     => $description,
-                    "balance"  => $balance,
-                    "duedate"  => "",
-                    "id"       => sprintf("%09d",$id) );
-            }
-        }
-        return $finesList;
-    }
-
-    public function cancelHold($patronId, $id) {
-        $url = "http://$this->dlfurl/rest-dlf/patron/$patronId/circulationActions/requests/holds/$id";
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        $output = curl_exec($ch);
-        $result = simplexml_load_string($output);
-        $reply_code = $result->{'reply-code'};
-        if ($reply_code != "0000") {
-           $message = $result->{'del-pat-hold'}->{'note'};
-           if ($message == null) {
-              $message = $result->{'reply-text'};
-           }
-           return new PEAR_Error($message);
-        } else {
-           return true;
-        }
-    }
-
-    public function placeHold($patronId, $recordId, $itemId , $pickup_location, $last_interest_date, $comment) {
-        list($bib, $sys_no) = split("-", $recordId, 2);
+    function placeHold($details) {
+        list($bib, $sys_no) = $this->parseId($details['id']);
         $recordId = $bib . $sys_no;
-        $patron = array();
-        $patron['cat_username'] = $patronId;
-        $patron['college'] = $this->admlib;
-        $patron = $this->getMyProfile($patron);
+        $itemId = $details['item_id'];
+        $patron = $details['patron'];
+        $requiredBy = $details['requiredBy'];
+        list($month, $day, $year) = split("-", $requiredBy);
+        $requiredBy = $year . $month . $day;
         $patronId = $patron['id'];
-        $url = "http://$this->dlfurl/rest-dlf/patron/$patronId/record/$recordId/items/$itemId/hold";
-        // print "$url<br>";
-        $ch = curl_init($url);
-        // print "$url<br>";
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
-        $data = "<?xml version='1.0' encoding='UTF-8'?>\n" .
+        $info = $this->getHoldingInfoForItem($patronId, $recordId, $itemId);
+        // FIXME: choose preffered location
+        $pickup_location = '';
+        foreach($info['pickup-locations'] as $key => $value) {
+           $pickup_location = $key;
+        }
+        $data = "post_xml=<?xml version='1.0' encoding='UTF-8'?>\n" .
            "<hold-request-parameters>\n" .
            "   <pickup-location>$pickup_location</pickup-location>\n" .
-           "   <last-interest-date>$last_interest_date</last-interest-date>\n" .
+           "   <last-interest-date>$requiredBy</last-interest-date>\n" .
            "   <note-1>$comment</note-1>\n".
            "</hold-request-parameters>\n";
-        curl_setopt($ch, CURLOPT_POSTFIELDS, "post_xml=$data");
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        $output = curl_exec($ch);
-        // print "$output<br>";
-        $result = simplexml_load_string($output);
+        $result = $this->doRestDLFRequest(array('patron', $patronId, 'record', $recordId, 'items', $itemId, 'hold'), null, HTTP_REQUEST_METHOD_PUT, $data);
         $reply_code = $result->{'reply-code'};
-        // print "$reply_code<br>";
         if ($reply_code != "0000") {
            $message = $result->{'create-hold'}->{'note'};
            if ($message == null) {
               $message = $result->{'reply-text'};
            }
-           return new PEAR_Error($message);
+           return array('success' => false, 'sysMessage' => $message); // new PEAR_Error($message);
         } else {
-           return true;
+           return array('success' => true);
         }
-        curl_close($ch);
     }
 
     public function barcodeToID($bar) {
-        // foreach (array('MZK01', 'MZK03') as $base) {
-        foreach ($this->bases as $base) {
+        foreach ($this->bib as $base) {
            try {
               $xml = $this->doXRequest("find", array("base" => $base, "request" => "BAR=$bar"), false);
               $docs = (int) $xml->{"no_records"};
@@ -514,7 +657,11 @@ class Aleph implements DriverInterface
                  $set = (string) $xml->{"set_number"};
                  $result = $this->doXRequest("present", array("set_number" => $set, "set_entry" => "1"), false);
                  $id = $result->xpath('//doc_number/text()');
-                 return $base . "-" . $id[0];
+                 if (count($this->bib)==1) {
+                    return $id[0];
+                 } else {
+                    return $base . "-" . $id[0];
+                 }
               }
            } catch (Exception $ex) {
            }
@@ -522,7 +669,44 @@ class Aleph implements DriverInterface
         return new PEAR_Error('barcode not found');
     }
 
-    public function getNewItems($page, $limit, $startdate, $enddate, $fundId = null) {
+    function parseDate($date) {
+       if (preg_match("/^[0-9]{8}$/", $date) === 1) {
+           return substr($date, 6, 2) . "." .substr($date, 4, 2) . "." . substr($date, 0, 4);
+        } else {
+           list($day, $month, $year) = split("/", $date, 3);
+           $translate_month = array ( 'jan' => 1, 'feb' => 2, 'mar' => 3, 'apr' => 4, 'may' => 5, 'jun' => 6,
+              'jul' => 7, 'aug' => 8, 'sep' => 9, 'oct' => 10, 'nov' => 11, 'dec' => 12);
+           return $day . "." . $translate_month[strtolower($month)] . "." . $year;
+        }
+    }
+
+    public function getConfig($func) {
+        if ($func == "Holds") {
+           return array("HMACKeys" => "id:item_id", "extraHoldFields" => "comments:requiredByDate",
+              "defaultRequiredDate" => "0:1:0");
+        } else {
+           return array();
+        }
+    }
+
+     /**
+     * Get Purchase History
+     *
+     * This is responsible for retrieving the acquisitions history data for the
+     * specific record (usually recently received issues of a serial).
+     *
+     * @param string $id The record id to retrieve the info for
+     *
+     * @return mixed     An array with the acquisitions data on success, PEAR_Error
+     * on failure
+     * @access public
+     */
+    public function getPurchaseHistory($id)
+    {
+        return array();
+    }
+
+    
     /**
      * Get New Items
      *
@@ -541,76 +725,73 @@ class Aleph implements DriverInterface
      * @return array       Associative array with 'count' and 'results' keys
      * @access public
      */
-    
+    public function getNewItems($page, $limit, $daysOld, $fundId = null)
+    {
         $items = array();
         return $items;
     }
-    
-    function getDepartments() {
-        $deptList = array();
-        return $deptList;
-    }
-    
-    function getInstructors() {
-        $deptList = array();
-        return $deptList;
-    }
-    
-    function getCourses() {
+
+    /**
+     * Get Departments
+     *
+     * Obtain a list of departments for use in limiting the reserves list.
+     *
+     * @return array An associative array with key = dept. ID, value = dept. name.
+     * @access public
+     */
+    public function getDepartments()
+    {
         $deptList = array();
         return $deptList;
     }
 
-    function findReserves($course, $inst, $dept) {
+    /**
+     * Get Instructors
+     *
+     * Obtain a list of instructors for use in limiting the reserves list.
+     *
+     * @return array An associative array with key = ID, value = name.
+     * @access public
+     */
+    public function getInstructors()
+    {
+        $deptList = array();
+        return $deptList;
+    }
+
+    /**
+     * Get Courses
+     *
+     * Obtain a list of courses for use in limiting the reserves list.
+     *
+     * @return array An associative array with key = ID, value = name.
+     * @access public
+     */
+    public function getCourses()
+    {
+        $deptList = array();
+        return $deptList;
+    }
+
+    /**
+     * Find Reserves
+     *
+     * Obtain information on course reserves.
+     *
+     * @param string $course ID from getCourses (empty string to match all)
+     * @param string $inst   ID from getInstructors (empty string to match all)
+     * @param string $dept   ID from getDepartments (empty string to match all)
+     *
+     * @return mixed An array of associative arrays representing reserve items (or a
+     * PEAR_Error object if there is a problem)
+     * @access public
+     */
+    public function findReserves($course, $inst, $dept)
+    {
         $recordList = array();
         return $recordList;
     }
 
-    function parseDate($date) {
-       if (preg_match("/^[0-9]{8}$/", $date) === 1) {
-           return substr($date, 6, 2) . "." .substr($date, 4, 2) . "." . substr($date, 0, 4);
-        } else {
-           list($day, $month, $year) = split("/", $date, 3);
-           $translate_month = array ( 'jan' => 1, 'feb' => 2, 'mar' => 3, 'apr' => 4, 'may' => 5, 'jun' => 6,
-              'jul' => 7, 'aug' => 8, 'sep' => 9, 'oct' => 10, 'nov' => 11, 'dec' => 12);
-           return $day . "." . $translate_month[strtolower($month)] . "." . $year;
-        }
-    }
-
-
-    function getMyProfile($user) {
-        $recordList=array();
-        $xml = $this->doXRequest("bor-info", array('loans' => 'N', 'cash' => 'N', 'hold' => 'N', 'library' => $user['college'],
-            'bor_id' => $user['cat_username']), true);
-        $id = (string) $xml->z303->{'z303-id'};
-        $address1 = (string) $xml->z304->{'z304-address-2'};
-        $address2 = (string) $xml->z304->{'z304-address-3'};
-        $zip = (string) $xml->z304->{'z304-zip'};
-        $phone = (string) $xml->z304->{'z304-telephone'};
-        $barcode = (string) $xml->z304->{'z304-address-0'};
-        $group = (string) $xml->z305->{'z305-bor-status'};
-        $expiry = (string) $xml->z305->{'z305-expiry-date'};
-        $credit_sum = (string) $xml->z305->{'z305-sum'};
-        $credit_sign = (string) $xml->z305->{'z305-credit-debit'};
-        if ($credit_sing == null) {
-           $credit_sign = "C";
-        }
-        $recordList['firstname'] = $user['firstname'];
-        $recordList['lastname'] = $user['lastname'];
-        $recordList['email'] = $user['email'];
-        $recordList['address1'] = $address1;
-        $recordList['address2'] = $address2;
-        $recordList['zip'] = $zip;
-        $recordList['phone'] = $phone;
-        $recordList['group'] = $group;
-        $recordList['barcode'] = $barcode;
-        $recordList['expiry'] = $expiry;
-        $recordList['credit'] = $expiry;
-        $recordList['credit_sum'] = $credit_sum;
-        $recordList['credit_sign'] = $credit_sign;
-        $recordList['id'] = $id;
-        return $recordList;
-    }
 }
 
 ?>
