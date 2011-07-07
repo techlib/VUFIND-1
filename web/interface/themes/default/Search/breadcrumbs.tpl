@@ -3,7 +3,7 @@
 {elseif $pageTemplate=="newitem.tpl" || $pageTemplate=="newitem-list.tpl"}
 <em>{translate text="New Items"}</em>
 {elseif $pageTemplate=="view-alt.tpl"}
-<em>{translate text=$subTemplate|replace:'.tpl':''|capitalize|translate}</em>
+<em>{translate text=$subTemplate|replace:'.tpl':''|capitalize}</em>
 {elseif $pageTemplate!=""}
 <em>{translate text=$pageTemplate|replace:'.tpl':''|capitalize|translate}</em>
 {/if}
