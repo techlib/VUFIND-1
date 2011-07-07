@@ -20,7 +20,7 @@
     <script language="JavaScript" type="text/javascript">
       path = '{$url}';
     </script>
-
+    
     <script language="JavaScript" type="text/javascript" src="{$path}/js/yui/yahoo-dom-event.js"></script>
     <script language="JavaScript" type="text/javascript" src="{$path}/js/yui/yahoo-min.js"></script>
     <script language="JavaScript" type="text/javascript" src="{$path}/js/yui/event-min.js"></script>
