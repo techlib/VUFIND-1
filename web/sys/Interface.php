@@ -229,7 +229,7 @@ class UInterface extends Smarty
      */
     public function setPageTitle($title)
     {
-        $this->assign('pageTitle', translate($title));
+        $this->assign('pageTitle', $title);
     }
 
     /**
