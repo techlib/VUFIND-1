@@ -1,0 +1,1 @@
+<p>{if $error}{translate text="Hold request has failed. The reason is"}:&nbsp;{$error_str|translate}{else}{translate text="hold_success"}{/if}</p>

@@ -552,4 +552,63 @@ function summon($id)
         '/' . $_GET['size'];
     return processImageURL($url);
 }
+
+/**
+ * Retrive a cover from ObalkyKnih.cz
+ *
+ * @return bool      True if image displayed, false otherwise.
+ */
+function obalkyknih() {
+  
+  global $logger;
+  
+  $sizeMap = array(
+    "small" => "",
+    "medium" => "",
+    "large" => "",
+  );
+  // Create permalink, pass an extra parameter with record ID
+  $permalink = "http://vufind.techlib.cz/vufind/Record/" + $_GET["id"];
+  
+  // convert normalized 10 char isn to 13 digits
+  $isn = $_GET['isn'];
+  if (strlen($isn) != 13) {
+    $ISBN = new ISBN($isn);
+    $isn = $ISBN->get13();
+  }
+  
+  $baseUrl = "www.obalkyknih.cz/api/books?books=";
+  // TODO: delete unused and non-required params
+  $params = array(
+    array(
+      "bibinfo" => array(
+        "isbn" => $isn,
+      ),
+      "permalink" => $permalink, // Perzistentní odkaz na dokument v katalogu knihovny
+      "callback" => "strip", // Leave empty, this is intended for JSON-P use
+    )
+  );
+  $url = $baseUrl . json_encode($params);
+  // Log the URL
+  $logger->log(
+    "ObalkyKnih.cz retrieved URL: " . $url,
+    PEAR_LOG_ERR
+  );
+  // Retrieve JSON response
+  // Strip callback()
+  // Determine image $url based on requested size
+  /*
+  switch ($_GET["size"]) {
+    case "small":
+      break;
+    case "medium":
+      break;
+    case "large":
+      break;
+    default:
+      break;
+  }
+  return processImageURL($url);
+  */
+}
 ?>
