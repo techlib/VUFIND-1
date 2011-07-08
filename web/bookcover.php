@@ -562,53 +562,61 @@ function obalkyknih() {
   
   global $logger;
   
-  $sizeMap = array(
-    "small" => "",
-    "medium" => "",
-    "large" => "",
-  );
-  // Create permalink, pass an extra parameter with record ID
-  $permalink = "http://vufind.techlib.cz/vufind/Record/" + $_GET["id"];
-  
-  // convert normalized 10 char isn to 13 digits
-  $isn = $_GET['isn'];
-  if (strlen($isn) != 13) {
-    $ISBN = new ISBN($isn);
-    $isn = $ISBN->get13();
+  // Don't bother trying if we can't read JSON
+  if (is_callable("json_decode")) {
+    
+    $baseUrl = "http://www.obalkyknih.cz/api/books?books=";
+    $sizeMap = array(
+      "small" => "cover_thumbnail_url",
+      "medium" => "cover_medium_url",
+      "large" => "cover_medium_url",
+    );
+
+    // Create permalink, pass an extra parameter with record ID
+    $permalink = "http://vufind.techlib.cz/vufind/Record/" + $_GET["id"];
+    
+    // Convert normalized 10 char isn to 13 digits
+    $isn = $_GET['isn'];
+    if (strlen($isn) != 13) {
+      $ISBN = new ISBN($isn);
+      $isn = $ISBN->get13();
+    }
+    $params = array(
+      array(
+        "bibinfo" => array(
+          "isbn" => $isn,
+        ),
+        "permalink" => $permalink,
+      )
+    );
+    
+    $url = $baseUrl . json_encode($params);
+    
+    // Make the HTTP request:
+    $client = new Proxy_Request();
+    $client->setMethod(HTTP_REQUEST_METHOD_GET);
+    $client->setURL($url);
+    $result = $client->sendRequest();
+
+    // Was the request successful?
+    if (!PEAR::isError($result)) {
+      // grab the response:
+      $json = $client->getResponseBody();
+      if (preg_match("/.+\((?P<inside>\[.*\])\);/", $response, $match)) {
+        $data = json_decode($match["inside"]);
+        $url = $data[0]->$sizeMap[$size];
+        return processImageURL($url);
+      }
+      else {
+        return false;
+      }
+    }
+    else {
+      return false;
+    }
   }
-  
-  $baseUrl = "www.obalkyknih.cz/api/books?books=";
-  // TODO: delete unused and non-required params
-  $params = array(
-    array(
-      "bibinfo" => array(
-        "isbn" => $isn,
-      ),
-      "permalink" => $permalink, // Perzistentní odkaz na dokument v katalogu knihovny
-      "callback" => "strip", // Leave empty, this is intended for JSON-P use
-    )
-  );
-  $url = $baseUrl . json_encode($params);
-  // Log the URL
-  $logger->log(
-    "ObalkyKnih.cz retrieved URL: " . $url,
-    PEAR_LOG_ERR
-  );
-  // Retrieve JSON response
-  // Strip callback()
-  // Determine image $url based on requested size
-  /*
-  switch ($_GET["size"]) {
-    case "small":
-      break;
-    case "medium":
-      break;
-    case "large":
-      break;
-    default:
-      break;
+  else {
+    return false;
   }
-  return processImageURL($url);
-  */
 }
 ?>
