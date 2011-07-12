@@ -602,20 +602,32 @@ function obalkyknih() {
     if (!PEAR::isError($result)) {
       // grab the response:
       $json = $client->getResponseBody();
-      if (preg_match("/.+\((?P<inside>\[.*\])\);/", $response, $match)) {
+      if (preg_match("/.+\((?P<inside>\[.*\])\);/", $json, $match)) {
         $data = json_decode($match["inside"]);
-        $url = $data[0]->$sizeMap[$size];
+        $url = $data[0]->$sizeMap[$_GET["size"]];
         return processImageURL($url);
       }
       else {
+        $logger->log(
+          "ObalkyKnih.cz: chyba regexpu. Odpoved: " . $json,
+          PEAR_LOG_ERR
+        );
         return false;
       }
     }
     else {
+      $logger->log(
+        "ObalkyKnih.cz: chyba v HTTP requestu.",
+        PEAR_LOG_ERR
+      );
       return false;
     }
   }
   else {
+    $logger->log(
+      "ObalkyKnih.cz: nefunguje JSON.",
+      PEAR_LOG_ERR
+    );
     return false;
   }
 }
