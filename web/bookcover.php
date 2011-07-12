@@ -30,6 +30,7 @@ require_once 'sys/Proxy_Request.php';
 require_once 'sys/Logger.php';
 require_once 'sys/ISBN.php';
 
+
 // Retrieve values from configuration file
 $configArray = parse_ini_file('conf/config.ini', true);
 $logger = new Logger();
@@ -275,6 +276,7 @@ function processImageURL($url, $cache = true)
         // Figure out file paths -- $tempFile will be used to store the downloaded
         // image for analysis.  $finalFile will be used for long-term storage if
         // $cache is true or for temporary display purposes if $cache is false.
+        
         $tempFile = str_replace('.jpg', uniqid(), $localFile);
         $finalFile = $cache ? $localFile : $tempFile . '.jpg';
 
@@ -437,6 +439,8 @@ function openlibrary()
  */
 function google()
 {
+    global $logger;
+    
     // Don't bother trying if we can't read JSON:
     if (is_callable('json_decode')) {
         // Construct the request URL:
@@ -476,7 +480,12 @@ function google()
             // find the first thumbnail URL and process it:
             foreach ($json as $current) {
                 if (isset($current['thumbnail_url'])) {
-                    return processImageURL($current['thumbnail_url'], false);
+                    $url = $current['thumbnail_url'];
+                    $logger->log(
+                      "Google: " . $url,
+                      PEAR_LOG_ERR
+                    );
+                    return processImageURL($url, false);
                 }
             }
         }
@@ -567,7 +576,7 @@ function obalkyknih() {
     
     $baseUrl = "http://www.obalkyknih.cz/api/books?books=";
     $sizeMap = array(
-      "small" => "cover_thumbnail_url",
+      "small" => "cover_medium_url", // cover_thumbnail_url
       "medium" => "cover_medium_url",
       "large" => "cover_medium_url",
     );
@@ -605,6 +614,10 @@ function obalkyknih() {
       if (preg_match("/.+\((?P<inside>\[.*\])\);/", $json, $match)) {
         $data = json_decode($match["inside"]);
         $url = $data[0]->$sizeMap[$_GET["size"]];
+        $logger->log(
+          "ObalkyKnih.cz: " . $url,
+          PEAR_LOG_ERR
+        );
         return processImageURL($url);
       }
       else {
