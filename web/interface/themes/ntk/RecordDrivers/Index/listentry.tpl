@@ -1,6 +1,6 @@
 <div class="yui-ge">
   <div class="yui-u first">
-    <img src="{$path}/bookcover.php?isn={$listISBN|escape:"url"}&amp;size=small&amp;id={$listId|escape:"url"}" class="alignleft">
+    <img src="{$path}/bookcover.php?isn={$listISBN|escape:"url"}&amp;size=small&amp;id={$listId|escape:"url"}" class="alignleft summcover">
 
     <div class="resultitem">
       <a href="{$url}/Record/{$listId|escape:"url"}" class="title">{$listTitle|escape}</a><br>

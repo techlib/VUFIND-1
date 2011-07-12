@@ -1,9 +1,9 @@
 <div id="record{$summId|escape}" class="yui-ge">
   <div class="yui-u first">
     {if $summISBN}
-    <img src="{$path}/bookcover.php?isn={$summISBN|escape:"url"}&amp;size=small&amp;id={$summId|escape}" class="alignleft" alt="{translate text='Cover Image'}" width="76" />
+    <img src="{$path}/bookcover.php?isn={$summISBN|escape:"url"}&amp;size=small&amp;id={$summId|escape}" class="alignleft summcover" alt="{translate text='Cover Image'}" />
     {else}
-    <img src="{$path}/bookcover.php" class="alignleft" alt="{translate text='No Cover Image'}"/>
+    <img src="{$path}/bookcover.php" class="alignleft summcover" alt="{translate text='No Cover Image'}"/>
     {/if}
     <div class="resultitem">
       <div class="resultItemLine1">
