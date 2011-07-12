@@ -608,26 +608,14 @@ function obalkyknih() {
         return processImageURL($url);
       }
       else {
-        $logger->log(
-          "ObalkyKnih.cz: chyba regexpu. Odpoved: " . $json,
-          PEAR_LOG_ERR
-        );
         return false;
       }
     }
     else {
-      $logger->log(
-        "ObalkyKnih.cz: chyba v HTTP requestu.",
-        PEAR_LOG_ERR
-      );
       return false;
     }
   }
   else {
-    $logger->log(
-      "ObalkyKnih.cz: nefunguje JSON.",
-      PEAR_LOG_ERR
-    );
     return false;
   }
 }
