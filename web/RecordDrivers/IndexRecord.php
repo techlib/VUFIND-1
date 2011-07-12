@@ -1763,7 +1763,8 @@ class IndexRecord implements RecordInterface
 
         if ($isbn = $this->getCleanISBN()) {
             return $configArray['Site']['url'] . '/bookcover.php?isn=' .
-                urlencode($isbn) . '&size=' . urlencode($size);
+                urlencode($isbn) . '&size=' . urlencode($size) . '&id=' .
+                urlencode($this->fields['id']);
         }
         return false;
     }
