@@ -573,7 +573,7 @@ function obalkyknih() {
     );
 
     // Create permalink, pass an extra parameter with record ID
-    $permalink = "http://vufind.techlib.cz/vufind/Record/" + $_GET["id"];
+    $permalink = "http://vufind.techlib.cz/vufind/Record/" . $_GET["id"];
     
     // Convert normalized 10 char isn to 13 digits
     $isn = $_GET['isn'];
