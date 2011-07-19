@@ -1407,3 +1407,6 @@ alignleft {
   padding:0;
   margin:0;
 }
+.recordcover {
+  max-width: 169px;
+}
