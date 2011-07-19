@@ -8,7 +8,7 @@
         <div class="toolbar">
         <ul>
             {* TODO: WorldCat citations <li><a href="{$url}/WorldCat/{$id}/Cite" class="cite" onClick="getLightbox('Record', 'Cite', '{$id}', null, '{translate text="Cite this"}'); return false;">{translate text="Cite this"}</a></li> *}
-            <li><a href="{$url}/WorldCat/SMS?id={$id|escape:"url"}" class="sms" onClick="getLightbox('WorldCat', 'SMS', '{$id|escape}', null, '{translate text="Text this"}'); return false;">{translate text="Text this"}</a></li>
+            {* TODO: Implement texting <li><a href="{$url}/WorldCat/SMS?id={$id|escape:"url"}" class="sms" onClick="getLightbox('WorldCat', 'SMS', '{$id|escape}', null, '{translate text="Text this"}'); return false;">{translate text="Text this"}</a></li> *}
             <li><a href="{$url}/WorldCat/Email?id={$id|escape:"url"}" class="mail" onClick="getLightbox('WorldCat', 'Email', '{$id|escape}', null, '{translate text="Email this"}'); return false;">{translate text="Email this"}</a></li>
             {* TODO: WorldCat Export <li><a href="{$url}/WorldCat/{$id}/Export?style=endnote" class="export" onClick="toggleMenu('exportMenu'); return false;">{translate text="Import Record"}</a>
               <ul class="menu" id="exportMenu">
