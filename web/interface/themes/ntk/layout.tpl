@@ -21,14 +21,14 @@
       path = '{$url}';
     </script>
     
-    <script language="JavaScript" type="text/javascript" src="{$path}/js/yui/yahoo-dom-event.js"></script>
-    <script language="JavaScript" type="text/javascript" src="{$path}/js/yui/yahoo-min.js"></script>
-    <script language="JavaScript" type="text/javascript" src="{$path}/js/yui/event-min.js"></script>
-    <script language="JavaScript" type="text/javascript" src="{$path}/js/yui/connection-min.js"></script>
-    <script language="JavaScript" type="text/javascript" src="{$path}/js/yui/dragdrop-min.js"></script>
-    <script language="JavaScript" type="text/javascript" src="{$path}/js/scripts.js"></script>
-    <script language="JavaScript" type="text/javascript" src="{$path}/js/rc4.js"></script>
-    <script language="JavaScript" type="text/javascript" src="{$path}/js/ajax.yui.js"></script>
+    {js filename="yui/yahoo-dom-event.js"}
+    {js filename="yui/yahoo-min.js"}
+    {js filename="yui/event-min.js"}
+    {js filename="yui/connection-min.js"}
+    {js filename="yui/dragdrop-min.js"}
+    {js filename="scripts.js"}
+    {js filename="rc4.js"}
+    {js filename="ajax.yui.js"}
   </head>
 
   <body>
