@@ -457,14 +457,14 @@ function google()
         if (!PEAR::isError($result)) {
             // grab the response:
             $json = $client->getResponseBody();
-
+            
             // extract the useful JSON from the response:
             $count = preg_match('/^[^{]*({.*})[^}]*$/', $json, $matches);
             if ($count < 1) {
                 return false;
             }
             $json = $matches[1];
-
+            
             // convert \x26 or \u0026 to &
             $json = str_replace(array("\\x26", "\\u0026"), "&", $json);
 
@@ -481,6 +481,11 @@ function google()
             foreach ($json as $current) {
                 if (isset($current['thumbnail_url'])) {
                     $url = $current['thumbnail_url'];
+                    $url = str_replace(
+                      array("&edge=curl", "zoom=5"),
+                      array("", "zoom=2"),
+                      $url
+                    );
                     $logger->log(
                       "Google: " . $url,
                       PEAR_LOG_ERR
@@ -576,7 +581,7 @@ function obalkyknih() {
     
     $baseUrl = "http://www.obalkyknih.cz/api/books?books=";
     $sizeMap = array(
-      "small" => "cover_medium_url", // cover_thumbnail_url
+      "small" => "cover_medium_url", // Small version (i.e., cover_thumbnail_url) is probably too small
       "medium" => "cover_medium_url",
       "large" => "cover_medium_url",
     );
