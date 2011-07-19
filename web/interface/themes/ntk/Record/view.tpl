@@ -68,11 +68,13 @@
               <li{if $tab == 'UserComments'} class="active"{/if}>
                 <a href="{$url}/Record/{$id|escape:"url"}/UserComments#tabnav" class="first"><span></span>{translate text='Comments'}</a>
               </li>
+              {* TODO: implement reviews
               {if $hasReviews}
               <li{if $tab == 'Reviews'} class="active"{/if}>
                 <a href="{$url}/Record/{$id|escape:"url"}/Reviews#tabnav" class="first"><span></span>{translate text='Reviews'}</a>
               </li>
               {/if}
+              *}
               {if $hasExcerpt}
               <li{if $tab == 'Excerpt'} class="active"{/if}>
                 <a href="{$url}/Record/{$id|escape:"url"}/Excerpt#tabnav" class="first"><span></span>{translate text='Excerpt'}</a>
