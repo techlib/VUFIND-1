@@ -1,8 +1,8 @@
 {include file=$holdingsMetadata}
 {foreach from=$holdings item=holding key=location}
 
-<script type="text/javascript" src="/js/yui/container-min.js"></script>
-<script type="text/javascript" src="/js/mzk.js"></script>
+{js filename="yui/container-min.js"}
+{js filename="mzk.js"}
 
 <script type="text/javascript">
    translate_signature1 = "{translate text='signature1'|escape:'quotes'}";
@@ -68,5 +68,5 @@
 </table>
 {/foreach}
 <link rel="stylesheet" type="text/css" media="print" href="/interface/themes/ntk/css/calendar.css" />
-<script type="text/javascript" src="/js/calendar-min.js"></script>
-<script type="text/javascript" src="/js/calendar.js"></script>
+{js filename="calendar-min.js"}
+{js filename="calendar.js"}
