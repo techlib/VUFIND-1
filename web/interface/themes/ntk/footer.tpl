@@ -20,6 +20,11 @@
     {* <li><a href="#">{translate text='FAQs'}</a></li> *}
   </ul>
 </div>
+<div>
+  <ul>
+    <li><a href="?ui=mobile">{translate text="Mobile version"}</a></li>
+  </ul>
+</div>
 <div><p><strong>{translate text='In collaboration with'}</strong></p>
   <ul>
     <li><a href="http://www.obalkyknih.cz/">Obálky knih</a></li>

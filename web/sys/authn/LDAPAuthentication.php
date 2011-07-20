@@ -45,7 +45,8 @@ class LDAPAuthentication implements Authentication {
         // Set LDAP options -- use protocol version 3 and then initiate TLS so we 
         // can have a secure connection over the standard LDAP port.
         @ldap_set_option($ldapConnection, LDAP_OPT_PROTOCOL_VERSION, 3);
-        if (!@ldap_start_tls($ldapConnection)) {
+        if (!ldap_start_tls($ldapConnection)) {
+//            print "LDAP ERROR:<".ldap_error(@ldap_start_tls($ldapConnection))." >";
             return new PEAR_ERROR('authentication_error_technical');
         }
 
