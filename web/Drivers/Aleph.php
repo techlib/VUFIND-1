@@ -206,19 +206,19 @@ class Aleph implements DriverInterface
         list($bib, $sys_no) = $this->parseId($id);
         $resource = $bib . $sys_no;
         $xml = $this->doRestDLFRequest(array('record', $resource, 'items'), array('view' => 'full'));
-print  htmlentities($xml->asXML()); // <MJ.>
+// <MJ.> print  htmlentities($xml->asXML()); // <MJ.>
         foreach ($xml->xpath('//items/item') as $item) {
            $item_id = $item->xpath('@href');
            $item_id = substr($item_id[0], strrpos($item_id[0], '/') + 1);
-print "<br>item_id: $item_id<br>";
+// <MJ.> print "<br>item_id: $item_id<br>";
            $item_status = $item->xpath('z30-item-status-code/text()'); // $isc
            $item_process_status = $item->xpath('z30-item-process-status-code/text()'); // $ipsc
            $sub_library = $item->xpath('z30-sub-library-code/text()'); // $slc
-      print "tutem: $sub_library[0] <br>"; //<MJ.>
-           $item_status = tab15_translate((string) $sub_library[0], (string) $item_status[0], (string) $item_process_status[0]);
+// <MJ.>       print "tutem: $sub_library[0] <br>"; //<MJ.>
 // <MJ.>           $item_status = tab15_translate((string) $sub_library[0], (string) $item_status[0], (string) $item_process_status[0]);
-print "item status: " . http_build_query($item_status) . "<br>";
-print "item status opac: ". $item_status['opac'] . "<br>";
+           $item_status = tab15_translate((string) $sub_library[0], (string) $item_status[0], (string) $item_process_status[0]);
+// <MJ.> print "item status: " . http_build_query($item_status) . "<br>";
+// <MJ.> print "item status opac: ". $item_status['opac'] . "<br>";
            if ($item_status['opac'] != 'Y') {
               continue;
            }
@@ -229,7 +229,7 @@ print "item status opac: ". $item_status['opac'] . "<br>";
 
            $location = $item->xpath('z30/z30-sub-library-code/text()');
 // <MJ.> nemame v z30, ale o uroven vys, v tab kolekce nejsou
-	   $location = array("");
+// <MJ.>	   $location = array("");
 
            $reserve = ($item_status['request'] == 'C');
            $callnumber = $item->xpath('z30/z30-call-no/text()');
@@ -237,13 +237,13 @@ print "item status opac: ". $item_status['opac'] . "<br>";
            $number = $item->xpath('z30/z30-inventory-number/text()');
            $collection = $item->xpath('z30/z30-collection/text()');
            $collection_code = $item->xpath('z30-collection-code/text()');
-print "collection code: ". implode("::",$collection_code) . "<br>";
-print "collection code -arg: ". $collection_code["0"] . "<br>";
+// <MJ.> print "collection code: ". implode("::",$collection_code) . "<br>";
+// <MJ.> print "collection code -arg: ". $collection_code["0"] . "<br>";
 
-print "location: ". implode("::",$location) . "<br>";
+// <MJ.> print "location: ". implode("::",$location) . "<br>";
 
-// <MJ.>           $collection_desc = tab40_translate((string) $collection_code[0], (string) $location[0]);
-           $collection_desc = tab40_translate((string) $collection_code[0],"");
+           $collection_desc = tab40_translate((string) $collection_code[0], (string) $location[0]);
+// <MJ.>           $collection_desc = tab40_translate((string) $collection_code[0],"");
 
            $sig1 = $item->xpath('z30/z30-call-no/text()');
            $sig2 = $item->xpath('z30/z30-call-no-2/text()');
@@ -283,23 +283,23 @@ print "location: ". implode("::",$location) . "<br>";
                               'barcode' => (string) $barcode[0],
 
 
-                              'description' => "",
-// <MJ.>                              'description' => (string) $desc[0],
+// <MJ.>                              'description' => "",
+                              'description' => (string) $desc[0],
 
-// <MJ.>                              'note' => (string) $note[0],
-                              'note' => "",
+                              'note' => (string) $note[0],
+// <MJ.>                              'note' => "",
 
                               'is_holdable' => true,
                               'holdtype' => 'hold',
                               /* below are optional attributes*/
                               'sig1' => (string) $sig1[0],
-// <MJ.>                             'sig2' => (string) $sig2[0],
-                             'sig2' => "",
+                             'sig2' => (string) $sig2[0],
+// <MJ.>                             'sig2' => "",
                               'sub_lib_desc' => (string) $item_status['sub_lib_desc'],
                               'no_of_loans' => (integer) $no_of_loans[0],
                               'requested' => (string) $requested);
         }
-print "HOLDING : ". http_build_query($holding) ." <br>";
+//<MJ.> print "HOLDING : ". http_build_query($holding) ." <br>";
         return $holding;
     }
 
