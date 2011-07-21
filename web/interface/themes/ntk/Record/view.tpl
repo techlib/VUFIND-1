@@ -1,5 +1,6 @@
-<script language="JavaScript" type="text/javascript" src="{$path}/js/ajax_common.js"></script>
-<script language="JavaScript" type="text/javascript" src="{$path}/services/Record/ajax.js"></script>
+{js filename="ajax_common.js"}
+{js filename="Record/ajax.js"}
+
 {if !empty($addThis)}
 <script type="text/javascript" src="https://s7.addthis.com/js/250/addthis_widget.js?pub={$addThis|escape:"url"}"></script>
 {/if}

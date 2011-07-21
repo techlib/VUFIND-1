@@ -1,8 +1,11 @@
 {include file=$holdingsMetadata}
 {foreach from=$holdings item=holding key=location}
 
-{js filename="yui/container-min.js"}
-{js filename="mzk.js"}
+{*
+// Zbytečný JavaScript od MZK zakomentován (JM)
+  {js filename="yui/container-min.js"}
+  {js filename="mzk.js"}
+
 
 <script type="text/javascript">
    translate_signature1 = "{translate text='signature1'|escape:'quotes'}";
@@ -12,6 +15,7 @@
    translate_no_of_loans = "{translate text='no of loans'|escape:'quotes'}";
    translate_note = "{translate text='note'|escape:'quotes'}";
 </script>
+*}
 
 <h3>{translate text=$location}</h3>
 <table cellpadding="2" cellspacing="0" border="0" class="citation" summary="{translate text='Holdings details from'} {translate text=$location}">
@@ -67,6 +71,9 @@
   {/foreach}
 </table>
 {/foreach}
+
+{*
 <link rel="stylesheet" type="text/css" media="print" href="/interface/themes/ntk/css/calendar.css" />
 {js filename="calendar-min.js"}
 {js filename="calendar.js"}
+*}
