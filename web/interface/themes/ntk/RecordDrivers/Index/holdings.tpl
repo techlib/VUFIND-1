@@ -28,10 +28,10 @@
   </span>
 {/if}
 
+{*
 {foreach from=$holdings item=holding key=location}
 <h3>{translate text=$location}</h3>
 <table cellpadding="2" cellspacing="0" border="0" class="citation" summary="{translate text='Holdings details from'} {translate text=$location}">
-  {*
   {if $holding.0.callnumber}
   <tr>
     <th>{translate text="Call Number"}: </th>
@@ -58,7 +58,6 @@
     </td>
   </tr>
   {/if}
-  *}
   {foreach from=$holding item=row}
     {if $row.barcode != ""}
   <tr>
@@ -68,7 +67,7 @@
       {translate text="On Reserve - Ask at Circulation Desk"}
       {else}
         {if $row.availability}
-        {* Begin Available Items (Holds) *}
+        <!-- Begin Available Items (Holds) -->
           <div>
            <span class="available">{translate text="Available"}</span>
           {if $row.link}
@@ -76,7 +75,7 @@
           {/if}
           </div>
         {else}
-        {* Begin Unavailable Items (Recalls) *}
+        <!-- Begin Unavailable Items (Recalls) -->
           <div>
           <span class="checkedout">{translate text=$row.status}</span>
           {if $row.returnDate} <span class="statusExtra">{$row.returnDate|escape}</span>{/if}
@@ -98,6 +97,7 @@
   {/foreach}
 </table>
 {/foreach}
+*}
 
 {if $history}
 <h3>{translate text="Most Recent Received Issues"}</h3>
