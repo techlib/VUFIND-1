@@ -55,11 +55,11 @@
     <td>
         {$row.collection_desc|escape}
     </td>
-    <!--
+    {*
     <td>
         {$row.sig1|escape}
     </td>
-    -->
+    *}
     <td>
         {$row.sig2|escape}
     </td>
