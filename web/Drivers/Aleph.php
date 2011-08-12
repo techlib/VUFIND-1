@@ -225,6 +225,7 @@ class Aleph implements DriverInterface
            $group = $item->xpath('@href');
            $group = substr(strrchr($group[0], "/"), 1);
            $status = $item->xpath('status/text()');
+           $status = $status[0];
            $availability = false;
 
            $location = $item->xpath('z30/z30-sub-library-code/text()');
@@ -252,7 +253,6 @@ class Aleph implements DriverInterface
            $no_of_loans = $item->xpath('z30/z30-no-loans/text()');
            $requested = false;
            $duedate = '';
-           $status = $status[0];
            if (in_array($status, $this->available_statuses)) {
                $availability = true;
            }
@@ -261,11 +261,13 @@ class Aleph implements DriverInterface
               $reserve = 'Y';
            }
            $matches = array();
-           if (preg_match("/([0-9]*\\/[a-zA-Z]*\\/[0-9]*);([a-zA-Z ]*)/", $status, &$matches)) {
+           if (preg_match("/([0-9]*\\/[a-zA-Z]*\\/[0-9]*);([a-zA-Z ]*)/", $status, $matches)) {
                $duedate = $this->parseDate($matches[1]);
                $requested = (trim($matches[2]) == "Requested");
-           } else if (preg_match("/([0-9]*\\/[a-zA-Z]*\\/[0-9]*)/", $status, &$matches)) {
+           } else if (preg_match("/([0-9]*\\/[a-zA-Z]*\\/[0-9]*)/", $status, $matches)) {
                $duedate = $this->parseDate($matches[1]);
+           } else if (preg_match("/^(\d+\/?){3}$/", $status, $matches)) {
+              $duedate = $this->parseDate($status);
            } else {
                $duedate = null;
            }
@@ -699,9 +701,15 @@ class Aleph implements DriverInterface
            return substr($date, 6, 2) . "." .substr($date, 4, 2) . "." . substr($date, 0, 4);
         } else {
            list($day, $month, $year) = split("/", $date, 3);
-           $translate_month = array ( 'jan' => 1, 'feb' => 2, 'mar' => 3, 'apr' => 4, 'may' => 5, 'jun' => 6,
-              'jul' => 7, 'aug' => 8, 'sep' => 9, 'oct' => 10, 'nov' => 11, 'dec' => 12);
-           return $day . "." . $translate_month[strtolower($month)] . "." . $year;
+           if (!is_numeric($month)) {
+             $translate_month = array ( 'jan' => 1, 'feb' => 2, 'mar' => 3, 'apr' => 4, 'may' => 5, 'jun' => 6,
+                'jul' => 7, 'aug' => 8, 'sep' => 9, 'oct' => 10, 'nov' => 11, 'dec' => 12);
+             $month = $translate_month[strtolower($month)];
+           }
+           $day = ltrim($day, "0");
+           $month = ltrim($month, "0");
+           $year = "20" . $year;
+           return $day . "." . $month . ". " . $year;
         }
     }
 
