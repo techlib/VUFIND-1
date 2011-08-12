@@ -216,7 +216,10 @@ class Aleph implements DriverInterface
            $sub_library = $item->xpath('z30-sub-library-code/text()'); // $slc
 // <MJ.>       print "tutem: $sub_library[0] <br>"; //<MJ.>
 // <MJ.>           $item_status = tab15_translate((string) $sub_library[0], (string) $item_status[0], (string) $item_process_status[0]);
-           $item_status = tab15_translate((string) $sub_library[0], (string) $item_status[0], (string) $item_process_status[0]);
+           $sub_library = $this->firstString($sub_library);
+           $item_status = $this->firstString($item_status);
+           $item_process_status = $this->firstString($item_process_status);
+           $item_status = tab15_translate($sub_library, $item_status, $item_process_status);
 // <MJ.> print "item status: " . http_build_query($item_status) . "<br>";
 // <MJ.> print "item status opac: ". $item_status['opac'] . "<br>";
            if ($item_status['opac'] != 'Y') {
@@ -225,7 +228,7 @@ class Aleph implements DriverInterface
            $group = $item->xpath('@href');
            $group = substr(strrchr($group[0], "/"), 1);
            $status = $item->xpath('status/text()');
-           $status = $status[0];
+           $status = $this->firstString($status);
            $availability = false;
 
            $location = $item->xpath('z30/z30-sub-library-code/text()');
@@ -242,8 +245,9 @@ class Aleph implements DriverInterface
 // <MJ.> print "collection code -arg: ". $collection_code["0"] . "<br>";
 
 // <MJ.> print "location: ". implode("::",$location) . "<br>";
-
-           $collection_desc = tab40_translate((string) $collection_code[0], (string) $location[0]);
+           $collection_code = $this->firstString($collection_code);
+           $location = $this->firstString($location);
+           $collection_desc = tab40_translate($collection_code, $location);
 // <MJ.>           $collection_desc = tab40_translate((string) $collection_code[0],"");
 
            $sig1 = $item->xpath('z30/z30-call-no/text()');
@@ -275,27 +279,27 @@ class Aleph implements DriverInterface
                               'item_id' => $item_id,
                               'availability' => $availability, // was true
                               'status' => (string) $item_status['desc'],
-                              'location' => (string) $location[0],
+                              'location' => $this->firstString($location),
                               'reserve' => $reserve, // was 'reserve' => 'N'
-                              'callnumber' => (string) $callnumber[0],
+                              'callnumber' => $this->firstString($callnumber),
                               'duedate' => (string) $duedate,
-                              'number' => (string) $number[0],
-                              'collection' => (string) $collection[0],
+                              'number' => $this->firstString($number),
+                              'collection' => $this->firstString($collection),
                               'collection_desc' => (string) $collection_desc['desc'],
-                              'barcode' => (string) $barcode[0],
+                              'barcode' => $this->firstString($barcode),
 
 
 // <MJ.>                              'description' => "",
-                              'description' => (string) $desc[0],
+                              'description' => $this->firstString($desc),
 
-                              'note' => (string) $note[0],
+                              'note' => $this->firstString($note),
 // <MJ.>                              'note' => "",
 
                               'is_holdable' => true,
                               'holdtype' => 'hold',
                               /* below are optional attributes*/
-                              'sig1' => (string) $sig1[0],
-                             'sig2' => (string) $sig2[0],
+                              'sig1' => $this->firstString($sig1),
+                             'sig2' => $this->firstString($sig2),
 // <MJ.>                             'sig2' => "",
                               'sub_lib_desc' => (string) $item_status['sub_lib_desc'],
                               'no_of_loans' => (integer) $no_of_loans[0],
@@ -720,6 +724,10 @@ class Aleph implements DriverInterface
         } else {
            return array();
         }
+    }
+    
+    function firstString($array) {
+      return !empty($array) ? (string) $array[0] : "";
     }
 
      /**
