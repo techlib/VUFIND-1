@@ -90,7 +90,7 @@ class CheckedOut extends MyResearch
         }
         $interface->assign('transList', $transList);
         $interface->setTemplate('checkedout.tpl');
-        $interface->setPageTitle('Checked Out Items');
+        $interface->setPageTitle(translate('Checked Out Items'));
         $interface->display('layout.tpl');
     }
 

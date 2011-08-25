@@ -49,7 +49,7 @@ class ListEdit extends Action
         if (!$this->user) {
             if (isset($_GET['lightbox'])) {
                 $interface->assign('title', $_GET['message']);
-                $interface->assign('message', 'You must be logged in first');
+                $interface->assign('message', translate('You must be logged in first'));
                 return $interface->fetch('AJAX/login.tpl');
             } else {
                 require_once 'Login.php';
@@ -77,7 +77,7 @@ class ListEdit extends Action
                     die();
                 }
             }
-            $interface->setPageTitle('Create a List');
+            $interface->setPageTitle(translate('Create a List'));
             $interface->assign('subTemplate', 'list-form.tpl');
             $interface->setTemplate('view-alt.tpl');
             $interface->display('layout.tpl');
