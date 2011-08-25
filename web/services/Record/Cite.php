@@ -43,7 +43,7 @@ class Cite extends Record
             //return transform($html, 'services/Record/xsl/worldcat-cite.xsl');
         } else {
             // Display Page
-            $interface->setPageTitle('Record Citations');
+            $interface->setPageTitle(translate('Record Citations'));
             $interface->assign('subTemplate', 'cite.tpl');
             $interface->setTemplate('view-alt.tpl');
             $interface->display('layout.tpl', 'RecordCite' . $_GET['id']);
