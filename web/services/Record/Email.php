@@ -44,7 +44,7 @@ class Email extends Record
             $interface->assign('title', $_GET['message']);
             return $interface->fetch('Record/email.tpl');
         } else {
-            $interface->setPageTitle('Email Record');
+            $interface->setPageTitle(translate('Email Record'));
             $interface->assign('subTemplate', 'email.tpl');
             $interface->setTemplate('view-alt.tpl');
             $interface->display('layout.tpl', 'RecordEmail' . $_GET['id']);

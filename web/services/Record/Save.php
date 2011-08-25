@@ -45,7 +45,7 @@ class Save extends Action
             $interface->assign('recordId', $_GET['id']);
             if (isset($_GET['lightbox'])) {
                 $interface->assign('title', $_GET['message']);
-                $interface->assign('message', 'You must be logged in first');
+                $interface->assign('message', translate('You must be logged in first'));
                 $interface->assign('followup', true);
                 $interface->assign('followupModule', 'Record');
                 $interface->assign('followupAction', 'Save');
@@ -54,7 +54,7 @@ class Save extends Action
                 $interface->assign('followup', true);
                 $interface->assign('followupModule', 'Record');
                 $interface->assign('followupAction', 'Save');
-                $interface->setPageTitle('You must be logged in first');
+                $interface->setPageTitle(translate('You must be logged in first'));
                 $interface->assign('subTemplate', '../MyResearch/login.tpl');
                 $interface->setTemplate('view-alt.tpl');
                 $interface->display('layout.tpl', 'RecordSave' . $_GET['id']);
@@ -105,10 +105,10 @@ class Save extends Action
         // Display Page
         $interface->assign('id', $_GET['id']);
         if (isset($_GET['lightbox'])) {
-            $interface->assign('title', $_GET['message']);
+            $interface->assign('title', translate($_GET['message']));
             return $interface->fetch('Record/save.tpl');
         } else {
-            $interface->setPageTitle('Add to favorites');
+            $interface->setPageTitle(translate('Add to favorites'));
             $interface->assign('subTemplate', 'save.tpl');
             $interface->setTemplate('view-alt.tpl');
             $interface->display('layout.tpl', 'RecordSave' . $_GET['id']);

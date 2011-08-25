@@ -48,7 +48,7 @@ class UserComments extends Record
             $interface->assign('followup', true);
             $interface->assign('followupModule', 'Record');
             $interface->assign('followupAction', 'UserComments');
-            $interface->setPageTitle('You must be logged in first');
+            $interface->setPageTitle(translate('You must be logged in first'));
             $interface->assign('subTemplate', '../MyResearch/login.tpl');
             $interface->setTemplate('view-alt.tpl');
             $interface->display('layout.tpl', 'UserComments' . $_GET['id']);
