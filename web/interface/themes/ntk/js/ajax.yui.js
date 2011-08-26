@@ -21,7 +21,7 @@ function getLightbox(module, action, id, lookfor, message, followupModule, follo
 
     // Popup Lightbox
     lightbox();
-
+    
     // Load Popup Box Content from AJAX Server
     var url = path + "/AJAX/JSON";
     var params = 'method=GetLightbox' +
@@ -34,9 +34,11 @@ function getLightbox(module, action, id, lookfor, message, followupModule, follo
                  '&followupModule=' + encodeURIComponent(followupModule) +
                  '&followupAction=' + encodeURIComponent(followupAction) +
                  '&followupId=' + encodeURIComponent(followupId);
+    
     var callback =
     {
         success: function(transaction) {
+            console.log(transaction);
             var response = (transaction && transaction.responseText)
                 ? transaction.responseText
                 : document.getElementById('lightboxError').innerHTML;
@@ -54,6 +56,7 @@ function getLightbox(module, action, id, lookfor, message, followupModule, follo
             setTimeout(focusIt, 250);
         },
         failure: function(transaction) {
+            console.log(transaction);
             document.getElementById('popupbox').innerHTML =
                 document.getElementById('lightboxError').innerHTML;
         }
