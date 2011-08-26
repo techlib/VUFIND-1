@@ -45,7 +45,7 @@ class Advanced extends Base {
             $interface->assign('searchFilters', $savedSearch->getFilterList());
         }
 
-        $interface->setPageTitle('Advanced Search');
+        $interface->setPageTitle(translate('Advanced Search'));
         $interface->setTemplate('advanced.tpl');
         $interface->display('layout.tpl');
     }

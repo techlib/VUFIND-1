@@ -70,7 +70,7 @@ class Home extends MyResearch
         // Get My Tags
         $tagList = $user->getTags();
         $interface->assign('tagList', $tagList);
-        $interface->setPageTitle('Favorites');
+        $interface->setPageTitle(translate('Favorites'));
         $interface->setTemplate('favorites.tpl');
         $interface->display('layout.tpl');
     }

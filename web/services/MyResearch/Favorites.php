@@ -82,7 +82,7 @@ class Favorites extends MyResearch
         $interface->assign('errorMsg', $this->errorMsg);
         $interface->assign('showExport', $this->showExport);
 
-        $interface->setPageTitle('Favorites');
+        $interface->setPageTitle(translate('Favorites'));
         $interface->setTemplate('favorites.tpl');
         $interface->display('layout.tpl');
     }

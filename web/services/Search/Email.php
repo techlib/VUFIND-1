@@ -54,7 +54,7 @@ class Email extends Action
             // time through, we need to rely on the referer to find out the target.
             $searchURL = isset($_POST['url']) ? 
                 $_POST['url'] : $_SERVER['HTTP_REFERER'];
-            $interface->setPageTitle('Email This Search');
+            $interface->setPageTitle(translate('Email this Search'));
             $interface->assign('subTemplate', 'email.tpl');
             // For form POST:
             $interface->assign('searchURL', $searchURL);
