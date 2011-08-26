@@ -25,11 +25,6 @@
     <li><a href="http://www.obalkyknih.cz/">Obálky knih</a></li>
   </ul>
 </div>
-<div>
-  <ul>
-    <li><a href="?ui=mobile">{translate text="Mobile version"}</a></li>
-  </ul>
-</div>
 <br clear="all">
 {* Comply with Serials Solutions terms of service -- this is intentionally left untranslated. *}
 {if $module == "Summon"}Powered by Summon™ from Serials Solutions, a division of ProQuest.{/if}
