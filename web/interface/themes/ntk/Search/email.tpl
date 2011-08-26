@@ -9,12 +9,26 @@
      failure: &quot;{translate text='email_failure'}&quot;{literal}}{/literal}
     ); return false;'>
     <input type="hidden" name="url" value="{$searchURL|escape:"html"}">
-    <b>{translate text='To'}:</b><br>
-    <input type="text" name="to" size="40"><br>
-    <b>{translate text='From'}:</b><br>
-    <input type="text" name="from" size="40"><br>
-    <b>{translate text='Message'}:</b><br>
-    <textarea name="message" rows="3" cols="40"></textarea><br>
-    <input type="submit" name="submit" value="{translate text='Send'}">
+    <p>
+      <strong>{translate text='To'}:</strong>
+    </p>
+    <p>
+      <input type="text" name="to" size="40" />
+    </p>
+    <p>
+      <strong>{translate text='From'}:</strong>
+    </p>
+    <p>
+      <input type="text" name="from" size="40" />
+    </p>
+    <p>
+      <strong>{translate text='Message'}:</strong>
+    </p>
+    <p>
+      <textarea name="message" rows="3" cols="40"></textarea>
+    </p>
+    <p>
+      <input type="submit" name="submit" value="{translate text='Send'}" />
+    </p>
   </form>
 </div>
