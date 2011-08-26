@@ -25,6 +25,8 @@
     {js filename="yui/yahoo-min.js"}
     {js filename="yui/event-min.js"}
     {js filename="yui/connection-min.js"}
+    {js filename="yui/datasource-min.js"}
+    {js filename="yui/autocomplete-min.js"}
     {js filename="yui/dragdrop-min.js"}
     {js filename="scripts.js"}
     {js filename="rc4.js"}
