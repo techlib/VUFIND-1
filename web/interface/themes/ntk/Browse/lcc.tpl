@@ -1,4 +1,4 @@
-<script language="JavaScript" type="text/javascript" src="{$path}/services/Browse/ajax.js"></script>
+<script type="text/javascript" src="{$path}/services/Browse/ajax.js"></script>
 
 <div id="bd">
   <div id="yui-main" class="content">
@@ -15,7 +15,7 @@
             <div class="browseNav" style="margin: 0px;">
             <ul class="browse" id="list2">
               {foreach from=$defaultList item=area}
-              <li><a href="" onClick="highlightBrowseLink('list2', this); LoadOptions('callnumber-first:%22{$area.0|escape:"url"}%22', 'callnumber-subject', 'list3', false); return false;">{$area.0|escape:"html"} ({$area.1})</a></li>
+              <li><a href="" onClick="highlightBrowseLink('list2', this); LoadOptions('callnumber-first:%22{$area.0|escape:"url"}%22', 'callnumber-subject', 'list3', false); return false;">{$area.0|translate|escape:"html"} ({$area.1})</a></li>
               {/foreach}
             </ul>
             </div>

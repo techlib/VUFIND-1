@@ -93,7 +93,7 @@ class NewItem extends Action {
             
             // Special case -- if no new items were found, don't bother hitting
             // the index engine:
-            if ($newItems['count'] > 0) {
+            if (array_key_exists("count", $newItems) && $newItems['count'] > 0) {
                 // Query Index for BIB Data
                 $bibIDs = array();
                 for ($i=0; $i<count($newItems['results']); $i++) {
