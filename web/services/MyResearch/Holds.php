@@ -89,7 +89,6 @@ class Holds extends MyResearch
                     // Get List of PickUp Libraries based on patrons home library
                     $libs = $this->catalog->getPickUpLocations($patron);
                     $interface->assign('pickup', $libs);
-                    $interface->assign('home_library', $user->home_library);
 
                     if ($this->cancelHolds != false) {
                         $recordList = $this->_addCancelDetails($recordList);

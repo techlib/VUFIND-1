@@ -785,6 +785,16 @@ div.recordsubcontent {
 .holdsMessage {
     margin-top: 1em;
 }
+
+/* hack to hide redundant titles introduced by syndetics plus */
+#syn_nyreview .syn_title, 
+#syn_chreview .syn_title, 
+#syn_dbchapter .syn_title, 
+#syn_anotes .syn_title, 
+#syn_video_clip .syn_title {
+    display:none;
+}
+
 /***** Citation Table *****/
 .citation {
     font-size:90%;

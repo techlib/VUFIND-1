@@ -135,6 +135,18 @@ class Record extends Action
             }
         }
 
+        // Determine whether to include script tag for syndetics plus
+        if (isset($configArray['Syndetics']['plus'])
+            && $configArray['Syndetics']['plus']
+            && isset($configArray['Syndetics']['plus_id'])
+        ) {
+            $interface->assign(
+                'syndetics_plus_js',
+                "http://plus.syndetics.com/widget.php?id=" . 
+                $configArray['Syndetics']['plus_id']
+            );
+        }
+
         // Set flags that control which tabs are displayed:
         if (isset($configArray['Content']['reviews'])) {
             $interface->assign('hasReviews', $this->recordDriver->hasReviews());

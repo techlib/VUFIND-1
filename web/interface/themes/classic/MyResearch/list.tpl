@@ -34,7 +34,7 @@
           {if $errorMsg || $infoMsg}
           <div class="messages">
             {if $errorMsg}<p class="error">{$errorMsg|translate}</p>{/if}
-            {if $infoMsg}<p class="userMsg">{$infoMsg|translate}{if $showExport} <a class="save" target="_new" href="{$url}/MyResearch/Export?exportInit">{translate text="export_save"}</a>{/if}</p>{/if}
+            {if $infoMsg}<p class="userMsg">{$infoMsg|translate}{if $showExport} <a class="save" target="_new" href="{$showExport|escape}">{translate text="export_save"}</a>{/if}</p>{/if}
           </div>
           {/if}
 

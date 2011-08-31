@@ -56,7 +56,7 @@
     </div>
 
     {if $showPreviews}
-      {if (!empty($summLCCN)|!empty($summISBN)|!empty($summOCLC))}
+      {if (!empty($summLCCN) || !empty($summISBN) || !empty($summOCLC))}
       <div class="span-3 last">
         {if $showGBSPreviews}
           <div class="previewDiv">

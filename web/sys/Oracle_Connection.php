@@ -338,7 +338,7 @@ class Oracle_Connection
     {
         $stmt = $this->prepare($sql);
         foreach ($fields as $field => $datum) {
-            list($column, $type) = split(":", $field);
+            list($column, $type) = explode(":", $field);
             $this->bindParam($stmt, ":".$column, $datum, $type);
         }
 
@@ -370,7 +370,7 @@ class Oracle_Connection
 
         // Split all the fields up into arrays
         foreach ($fields as $field => $datum) {
-            list($column, $type) = split(":", $field);
+            list($column, $type) = explode(":", $field);
             $types[$column] = $type;
             $data[$column]  = $datum;
             $clauses[]      = "$column = :$column";
@@ -416,7 +416,7 @@ class Oracle_Connection
 
         // Split all the fields up into arrays
         foreach ($fields as $field => $datum) {
-            $tmp = split(":", $field);
+            $tmp = explode(":", $field);
             $column = array_shift($tmp);
 
             // For binding
@@ -467,7 +467,7 @@ class Oracle_Connection
     {
         $stmt = $this->prepare($sql);
         foreach ($fields as $field => $datum) {
-            list($column, $type) = split(":", $field);
+            list($column, $type) = explode(":", $field);
             $this->bindParam($stmt, ":".$column, $datum, $type);
         }
         if ($this->exec($stmt)) {

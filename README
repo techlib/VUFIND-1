@@ -17,7 +17,22 @@ II. Requirements
     
         http://vufind.org/wiki/requirements
 
-III. Installation Procedure
+III. Bundled Components
+
+    VuFind is bundled with (and relies upon) several ready-built programs.  If you
+    wish to rebuild or upgrade any of these components, you should visit their own
+    project pages.
+
+    Apache Solr (solr/jetty/webapps/solr.war)
+        http://lucene.apache.org/solr/
+    NLA Browse Handler (import/browse-indexing.jar; solr/lib/browse-handler.jar)
+        https://code.nla.gov.au/redmine/projects/show/nlabrowse
+    Jetty (solr/jetty/*)
+        http://jetty.codehaus.org/jetty/
+    SolrMarc (import/SolrMarc.jar; import/VuFindIndexer.jar)
+        http://code.google.com/p/solrmarc/
+
+IV. Installation Procedure
 
     Installation details vary depending on your platform.  VuFind can run on
     Windows or various flavors of Linux.  For detailed instructions, please
@@ -25,7 +40,7 @@ III. Installation Procedure
     
         http://vufind.org/wiki/installation
 
-IV. Security
+V. Security
 
     The latest notes on ensuring that your VuFind installation is secure can
     be found here:
@@ -34,9 +49,9 @@ IV. Security
         
     Please review carefully!
 
-V. Copyright and Licensing
+VI. Copyright and Licensing
 
-    Copyright (C) Villanova University 2007-2009.
+    Copyright (C) Villanova University 2007-2011.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License version 2,
@@ -51,7 +66,7 @@ V. Copyright and Licensing
     along with this program; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-VI. Additional Credits
+VII. Additional Credits
 
     The themes provided with VuFind make use of the free Silk and Tango icon 
     sets.  For more information on these icons, see:

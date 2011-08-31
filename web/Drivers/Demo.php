@@ -772,7 +772,7 @@ class Demo implements DriverInterface
     {
         if ($function == 'Holds') {
             return array(
-                'HMACKeys' => array('id'),
+                'HMACKeys' => 'id',
                 'extraHoldFields' => 'comments'
             );
         }

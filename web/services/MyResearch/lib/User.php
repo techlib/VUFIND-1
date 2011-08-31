@@ -133,10 +133,8 @@ class User extends DB_DataObject
         $join->resource_id = $resource->id;
         $join->list_id = $list->id;
         if ($join->find(true)) {
-            if ($notes) {
-                $join->notes = $notes;
-                $join->update();
-            }
+            $join->notes = $notes;
+            $join->update();
             $result = true;
         } else {
             if ($notes) {
@@ -145,12 +143,16 @@ class User extends DB_DataObject
             $result = $join->insert();
         }
         if ($result) {
+            $join = new Resource_tags();
+            $join->resource_id = $resource->id;
+            $join->user_id = $this->id;
+            $join->list_id = $list->id;
+
+            // Delete old tags:
+            $join->delete();
+
+            // Add new tags, if any:
             if (is_array($tagArray) && count($tagArray)) {
-                $join = new Resource_tags();
-                $join->resource_id = $resource->id;
-                $join->user_id = $this->id;
-                $join->list_id = $list->id;
-                $join->delete();
                 foreach ($tagArray as $value) {
                     $value = str_replace('"', '', $value);
                     $tag = new Tags();

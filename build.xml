@@ -14,7 +14,7 @@
   <property name="mysqlrootuser" value="root" />
   <property name="mysqlrootpass" value="password" />
   <property name="marctestfile" value="${project.basedir}/tests/catalog_INCR-TEST_SAMPLE.mrc" />
-  <property name="version" value="1.2" />
+  <property name="version" value="1.3" />
 
   <!-- Main Target -->
   <target name="main" description="main target">

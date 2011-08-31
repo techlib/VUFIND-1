@@ -3,7 +3,10 @@
   {if $infoMsg}<div class="userMsg">{$infoMsg|translate}</div>{/if}
 
   <div id="popupMessages"></div>
-  <div id="popupDetails"> 
+  <div id="popupDetails">
+    {if empty($exportOptions)}
+      <div class="error">{translate text="bulk_export_not_supported"}</div>
+    {else}
     <form action="{$url}/MyResearch/Export" method="POST" onSubmit='exportIDS(this.elements[&quot;ids[]&quot;], this.elements[&quot;format&quot;].value,
       {* Pass translated strings to Javascript -- ugly but necessary: *}
       {literal}{{/literal}exporting: &quot;{translate text='export_exporting'}&quot;, 
@@ -47,5 +50,6 @@
       <input type="hidden" name="followupAction" value="{$followupAction|escape}" />
       {/if}
     </form>
+    {/if}
   </div>
 </div>

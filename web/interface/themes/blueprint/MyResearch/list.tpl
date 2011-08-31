@@ -21,7 +21,7 @@
   {if $errorMsg || $infoMsg}
   <div class="messages">
     {if $errorMsg}<p class="error">{$errorMsg|translate}</p>{/if}
-    {if $infoMsg}<p class="info">{$infoMsg|translate}{if $showExport} <a class="save" target="_new" href="{$url}/MyResearch/Export?exportInit">{translate text="export_save"}</a>{/if}</p>{/if}
+    {if $infoMsg}<p class="info">{$infoMsg|translate}{if $showExport} <a class="save" target="_new" href="{$showExport|escape}">{translate text="export_save"}</a>{/if}</p>{/if}
   </div>
   {/if}
   {if $resourceList}
@@ -54,7 +54,7 @@
     <div class="bulkActionButtons">
       <input type="checkbox" class="selectAllCheckboxes floatleft" name="selectAll" id="addFormCheckboxSelectAll"/> <label for="addFormCheckboxSelectAll">{translate text="select_page"}</label>
       <input type="submit" class="mail floatright smallButton" name="email" value="{translate text='email_selected'}" title="{translate text='email_selected'}"/>
-      {if $listEditAllowed}<input type="submit" class="delete floatright smallButton" name="delete" value="{translate text='delete_selected'}" title="{translate text='delete_selected'}"/>{/if}
+      {if $listEditAllowed}<input id="delete_list_items_{if $list}{$list->id|escape}{/if}" type="submit" class="delete floatright smallButton" name="delete" value="{translate text='delete_selected'}" title="{translate text='delete_selected'}"/>{/if}
       {if is_array($exportOptions) && count($exportOptions) > 0}
       <input type="submit" class="export floatright smallButton" name="export" value="{translate text='export_selected'}" title="{translate text='export_selected'}"/>
       {/if}
