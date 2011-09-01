@@ -1,6 +1,6 @@
 <?php
 /**
- * Code for fetching external excerpts.
+ * Code for fetching external video clips.
  *
  * PHP version 5
  *
@@ -30,18 +30,19 @@ require_once 'sys/Proxy_Request.php';
 require_once 'sys/ISBN.php';
 
 /**
- * ExternalExcerpts Class
+ * ExternalVideoClips Class
  *
- * This class fetches excerpts from various services for presentation to
+ * This class fetches video clips from various services for presentation to
  * the user.
  *
  * @category VuFind
  * @package  Support_Classes
+ * @author   Anna Headley <aheadle1@swarthmore.edu>
  * @author   Demian Katz <demian.katz@villanova.edu>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     http://vufind.org/wiki/system_classes#external_content Wiki
  */
-class ExternalExcerpts
+class ExternalVideoClips
 {
     private $_isbn;
     private $_results;
@@ -49,9 +50,9 @@ class ExternalExcerpts
     /**
      * Constructor
      *
-     * Do the actual work of loading the excerpts.
+     * Do the actual work of loading the video clips.
      *
-     * @param string $isbn ISBN of book to find excerpts for
+     * @param string $isbn ISBN of resource to find video clips for
      *
      * @access public
      */
@@ -68,8 +69,8 @@ class ExternalExcerpts
         }
 
         // Fetch from provider
-        if (isset($configArray['Content']['excerpts'])) {
-            $providers = explode(',', $configArray['Content']['excerpts']);
+        if (isset($configArray['Content']['videoClips'])) {
+            $providers = explode(',', $configArray['Content']['videoClips']);
             foreach ($providers as $provider) {
                 $provider = explode(':', trim($provider));
                 $func = '_' . strtolower($provider[0]);
@@ -77,7 +78,7 @@ class ExternalExcerpts
                 $this->_results[$func] = method_exists($this, $func) ?
                     $this->$func($key) : false;
 
-                // If the current provider had no valid excerpts, store nothing:
+                // If the current provider had no valid video clips, store nothing:
                 if (empty($this->_results[$func])
                     || PEAR::isError($this->_results[$func])
                 ) {
@@ -88,9 +89,9 @@ class ExternalExcerpts
     }
 
     /**
-     * Get the excerpt information.
+     * Get the video clip information.
      *
-     * @return array Associative array of excerpts.
+     * @return array Associative array of video clips.
      * @access public
      */
     public function fetch()
@@ -117,32 +118,36 @@ class ExternalExcerpts
     /**
      * syndetics
      *
-     * This method is responsible for connecting to Syndetics and abstracting
-     * excerpts.
+     * This method is responsible for connecting to Syndetics and extracting
+     * video clips.
      *
-     * It first queries the master url for the ISBN entry seeking an excerpt URL.
-     * If an excerpt URL is found, the script will then use HTTP request to
-     * retrieve the script. The script will then parse the excerpt according to
-     * US MARC (I believe). It will provide a link to the URL master HTML page
+     * It first queries the master url for the ISBN entry seeking 
+     * an video clips URL.
+     * If a URL is found, the script will then use HTTP request to
+     * retrieve the data. The script will parse the XML response 
+     * It will provide a link to the URL master HTML page
      * for more information.
      * Configuration:  Sources are processed in order - refer to $sourceList.
      *
-     * @param string $id Client access key
+     * @param string $id     Client access key
+     * @param bool   $s_plus Are we operating in Syndetics Plus mode?
      *
-     * @return array     Returns array with excerpt data, otherwise a PEAR_Error.
+     * @return array     Returns array with video clips data, otherwise a PEAR_Error.
      * @access private
+     * @author Anna Headley <aheadle1@swarthmore.edu>
      * @author Joel Timothy Norman <joel.t.norman@wmich.edu>
      * @author Andrew Nagy <vufind-tech@lists.sourceforge.net>
      */
-    private function _syndetics($id)
+    private function _syndetics($id, $s_plus=false)
     {
         global $configArray;
 
-        //list of syndetic revies
+        //list of syndetic video clips
         $sourceList = array(
-            'DBCHAPTER' => array(
-                'title' => 'First Chapter or Excerpt',
-                'file' => 'DBCHAPTER.XML'
+            'VIDEOCLIP' => array(
+                'title' => 'Video Clips',
+                'file' => 'VIDEOCLIP.XML',
+                'div' => '<div id="syn_video_clip"></div>'
             )
         );
 
@@ -152,7 +157,7 @@ class ExternalExcerpts
         $url = $baseUrl . '/index.aspx?isbn=' . $this->_getIsbn10() .
                '/index.xml&client=' . $id . '&type=rw12,hw7';
 
-        //find out if there are any reviews
+        //find out if there are any video clips
         $client = new Proxy_Request();
         $client->setMethod(HTTP_REQUEST_METHOD_GET);
         $client->setURL($url);
@@ -165,14 +170,15 @@ class ExternalExcerpts
             return new PEAR_Error('Invalid XML');
         }
 
-        $review = array();
+        $vclips = array();
         $i = 0;
         foreach ($sourceList as $source => $sourceInfo) {
             $nodes = $xmldoc->getElementsByTagName($source);
             if ($nodes->length) {
-                // Load reviews
-                $url = $baseUrl . '/index.aspx?isbn=' . $this->_getIsbn10() . '/' .
-                       $sourceInfo['file'] . '&client=' . $id . '&type=rw12,hw7';
+                // Load video clips
+                $url = $baseUrl . '/index.aspx?isbn=' . $this->_getIsbn10() .
+                    '/' . $sourceInfo['file'] . '&client=' . $id . 
+                    '&type=rw12,hw7';
                 $client->setURL($url);
                 if (PEAR::isError($http = $client->sendRequest())) {
                     return $http;
@@ -184,44 +190,60 @@ class ExternalExcerpts
                     return new PEAR_Error('Invalid XML');
                 }
 
-                // Get the marc field for excerpts (520)
-                $nodes = $xmldoc2->GetElementsbyTagName("Fld520");
-                if (!$nodes->length) {
-                    // Skip excerpts with missing text
-                    continue;
-                }
-                $review[$i]['Content']
-                    = html_entity_decode($xmldoc2->saveXML($nodes->item(0)));
-
-                // Get the marc field for copyright (997)
-                $nodes = $xmldoc->GetElementsbyTagName("Fld997");
-                if ($nodes->length) {
-                    $review[$i]['Copyright']
-                        = html_entity_decode($xmldoc2->saveXML($nodes->item(0)));
+                // If we have syndetics plus, we don't actually want the content
+                // we just want to place the relevant div
+                if ($s_plus) {
+                    $vclips[$i]['Content'] = $sourceInfo['div'];
                 } else {
-                    $review[$i]['Copyright'] = null;
-                }
+                    // Get the field for video clips (VideoLink)
+                    $nodes = $xmldoc2->GetElementsbyTagName("VideoLink");
+                    if (!$nodes->length) {
+                        // Skip video clips with missing text
+                        continue;
+                    }
+                    // stick the link into an embed tag.
+                    $vclips[$i]['Content']
+                        = '<embed width="400" height="300" type="' .
+                        'application/x-shockwave-flash"' .
+                        'allowfullscreen="true" src="' .
+                        html_entity_decode($nodes->item(0)->nodeValue) .
+                        '">';
 
-                if ($review[$i]['Copyright']) {  //stop duplicate copyrights
-                    $location
-                        = strripos($review[0]['Content'], $review[0]['Copyright']);
-                    if ($location > 0) {
-                        $review[$i]['Content']
-                            = substr($review[0]['Content'], 0, $location);
+                    // Get the marc field for copyright (997)
+                    $nodes = $xmldoc->GetElementsbyTagName("Fld997");
+                    if ($nodes->length) {
+                        $vclips[$i]['Copyright'] = html_entity_decode(
+                            $xmldoc2->saveXML($nodes->item(0))
+                        );
+                    } else {
+                        $vclips[$i]['Copyright'] = null;
                     }
                 }
 
                 // change the xml to actual title:
-                $review[$i]['Source'] = $sourceInfo['title'];
+                $vclips[$i]['Source'] = $sourceInfo['title'];
 
-                $review[$i]['ISBN'] = $this->_getIsbn10(); //show more link
-                $review[$i]['username'] = $id;
+                $vclips[$i]['ISBN'] = $this->_getIsbn10(); //show more link
+                $vclips[$i]['username'] = $id;
 
                 $i++;
             }
         }
 
-        return $review;
+        return $vclips;
     }
+
+    /**
+     * Wrapper around _syndetics to provide Syndetics Plus functionality.
+     *
+     * @param string $id Client access key
+     *
+     * @return array     Returns array with auth notes data, otherwise a PEAR_Error.
+     */
+    private function _syndeticsplus($id) 
+    {
+        return $this->_syndetics($id, true);
+    }
+
 }
 ?>

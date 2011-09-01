@@ -324,7 +324,7 @@ class CitationBuilder
         $exceptions = array('a', 'an', 'the', 'against', 'between', 'in', 'of',
             'to', 'and', 'but', 'for', 'nor', 'or', 'so', 'yet', 'to');
 
-        $words = explode(' ', $str);
+        $words = split(' ', $str);
         $newwords = array();
         $followsColon = false;
         foreach ($words as $word) {
