@@ -64,14 +64,8 @@ class JSON_Browse extends JSON
         
         if (isset($_GET['next_query_field']) && !empty($_GET['next_query_field'])) {
             $interface->assign('next_query_field', $_GET['next_query_field']);
-            $interface->assign(
-                'next_facet_field',
-                isset($_GET['next_facet_field']) ? $_GET['next_facet_field'] : null
-            );
-            $interface->assign(
-                'next_target',
-                isset($_GET['next_target']) ? $_GET['next_target'] : null
-            );
+            $interface->assign('next_facet_field', $_GET['next_facet_field']);
+            $interface->assign('next_target', $_GET['next_target']);
         }
         $this->output($this->_processSearch('Browse/options.tpl'), JSON::STATUS_OK);
     }
@@ -103,19 +97,15 @@ class JSON_Browse extends JSON
         global $interface;
 
         $letters = array();
-        if (isset($_GET['include_numbers']) && $_GET['include_numbers']) {
+        if ($_GET['include_numbers']) {
             $letters = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9');
         }
         for ($i=0; $i<26; $i++) {
             $letters[] = chr(65 + $i);
         }
         $interface->assign('letters', $letters);
-        $interface->assign(
-            'query_field', isset($_GET['query_field']) ? $_GET['query_field'] : null
-        );
-        $interface->assign(
-            'facet_field', isset($_GET['facet_field']) ? $_GET['facet_field'] : null
-        );
+        $interface->assign('query_field', $_GET['query_field']);
+        $interface->assign('facet_field', $_GET['facet_field']);
         $this->output($interface->fetch('Browse/alphabet.tpl'), JSON::STATUS_OK);
     }
 
@@ -151,12 +141,8 @@ class JSON_Browse extends JSON
         
         $facets = $result['facet_counts']['facet_fields'][$_GET['facet_field']];
         $interface->assign('facets', $facets);
-        $interface->assign(
-            'query_field', isset($_GET['query_field']) ? $_GET['query_field'] : null
-        );
-        $interface->assign(
-            'facet_field', isset($_GET['facet_field']) ? $_GET['facet_field'] : null
-        );
+        $interface->assign('query_field', $_GET['query_field']);
+        $interface->assign('facet_field', $_GET['facet_field']);
         $interface->assign('query', $query);
 
         return $interface->fetch($template);

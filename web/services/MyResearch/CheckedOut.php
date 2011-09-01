@@ -107,6 +107,9 @@ class CheckedOut extends MyResearch
         global $interface;
 
         foreach ($transList as $key => $item) {
+
+            // Reset $renew_details for next item
+            $renew_details = "";
             if ($this->checkRenew['function'] == "renewMyItemsLink") {
                 // Build OPAC URL
                 $transList[$key]['ils_details']['renew_link']

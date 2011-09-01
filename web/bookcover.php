@@ -26,14 +26,13 @@
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     http://vufind.org/wiki/use_of_external_content Wiki
  */
-require_once 'sys/ConfigArray.php';
 require_once 'sys/Proxy_Request.php';
 require_once 'sys/Logger.php';
 require_once 'sys/ISBN.php';
 
 
 // Retrieve values from configuration file
-$configArray = readConfig();
+$configArray = parse_ini_file('conf/config.ini', true);
 $logger = new Logger();
 
 // global to hold filename constructed from ISBN

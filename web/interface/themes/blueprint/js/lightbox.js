@@ -34,11 +34,9 @@ function getLightbox(module, action, id, lookfor, message, followupModule, follo
                     // check if the dialog was successful, if so, load the followup action
                     if (__dialogHandle.processFollowup && __dialogHandle.followupModule
                             && __dialogHandle.followupAction && __dialogHandle.recordId) {
-                        $(this).remove();
                         getLightbox(__dialogHandle.followupModule, __dialogHandle.followupAction,
                                 __dialogHandle.recordId, null, message);
                     }
-                    $(this).remove();
                 }
             });
 
@@ -312,7 +310,7 @@ function refreshTagList(id) {
             if (response.status == 'OK') {
                 $.each(response.data, function(i, tag) {
                     var href = path + '/Search/Results?' + $.param({tag:tag.tag});
-                    var html = (i>0 ? ', ' : ' ') + '<a href="' + htmlEncode(href) + '">' + htmlEncode(tag.tag) +'</a> (' + htmlEncode(tag.cnt) + ')';
+                    var html = (i>0 ? ', ' : ' ') + '<a href="' + href + '">' + tag.tag +'</a> (' + tag.cnt + ')';
                     $('#tagList').append(html);
                 });
             } else if (response.data && response.data.length > 0) {

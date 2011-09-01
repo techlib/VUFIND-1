@@ -691,8 +691,8 @@ class Virtua implements DriverInterface
                 break;
             // Year + Month
             case "(year)(month)":
-                $months = explode("-", $data['data'][1]); $m = count($months);
-                $years  = explode("-", $data['data'][0]); $y = count($years);
+                $months = split("-", $data['data'][1]); $m = count($months);
+                $years  = split("-", $data['data'][0]); $y = count($years);
                 $my = $m.$y;
 
                 $start_time = strtotime("01-".$months[0]."-".$years[0]);
@@ -729,9 +729,9 @@ class Virtua implements DriverInterface
                 break;
             // Year + Month + Day
             case "(year)(month)(day)":
-                $days   = explode("-", $data['data'][2]); $d = count($days);
-                $months = explode("-", $data['data'][1]); $m = count($months);
-                $years  = explode("-", $data['data'][0]); $y = count($years);
+                $days   = split("-", $data['data'][2]); $d = count($days);
+                $months = split("-", $data['data'][1]); $m = count($months);
+                $years  = split("-", $data['data'][0]); $y = count($years);
                 $dmy = $d.$m.$y;
 
                 $start_time = strtotime($days[0]."-".$months[0]."-".$years[0]);
@@ -978,7 +978,7 @@ class Virtua implements DriverInterface
                 if ($subfield['code'] == 8) {
                     // Grab the tag for this sequence whilst here
                     $tag  = $subfield['tag'];
-                    $sort = explode('.', $subfield['data']);
+                    $sort = split("\.", $subfield['data']);
                     $sort_rule  = $sort[0];
                     $sort_order = isset($sort[1]) ? $sort[1] : 0;
                     $sort_order = sprintf("%05d", $sort_order);
@@ -1005,7 +1005,7 @@ class Virtua implements DriverInterface
         $patterns = array();
         $holdings_data = array();
         foreach ($sort_set as $sort => $row) {
-            $rule = explode('.', $sort);
+            $rule = split("\.", $sort);
             if ($row['tag'] == 853) {
                 $patterns[$rule[0]] = $row['data'];
             } else {

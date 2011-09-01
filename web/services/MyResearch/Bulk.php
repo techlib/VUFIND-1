@@ -69,10 +69,6 @@ class Bulk extends Action
         // Export
         if (isset($_REQUEST['export']) || isset($_REQUEST['exportInit'])) {
             include_once 'services/MyResearch/Export.php';
-            if (isset($_REQUEST['exportToRefworks'])) {
-                $_SESSION['exportIDS'] = $_REQUEST['ids'];
-                $_SESSION['exportFormat'] = 'refworks_data';
-            }
             $export = new Export();
             $export->launch();
         } else if (isset($_REQUEST['email'])) {

@@ -9,20 +9,18 @@ function registerBulkActions() {
         });
         var action = $(this).attr('name');
         var message = $(this).attr('title');
-        var id = '';
         switch (action) {
         case 'export':
             action = 'Export';
             break;
         case 'delete':
             action = 'Delete';
-            id = $(this).attr('id').replace('delete_list_items_', '');
             break;
         case 'email':
             action = 'Email';
             break;
         }
-        getLightbox('MyResearch', action, id, '', message, '', '', '', {ids:ids});
+        getLightbox('MyResearch', action, '', '', message, '', '', '', {ids:ids});
         return false;
     });
 

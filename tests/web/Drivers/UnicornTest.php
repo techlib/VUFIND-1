@@ -49,11 +49,6 @@ class UnicornTest extends PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        // Set up the global config array required by the ILS driver:
-        global $configArray;
-        $configArray = parse_ini_file(
-            dirname(__FILE__) . '/../conf/config.ini', true
-        );
         $this->_driver = new Unicorn();
     }
 

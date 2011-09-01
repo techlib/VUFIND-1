@@ -15,12 +15,11 @@ function checkItemStatuses() {
             success: function(response) {
                 if(response.status == 'OK') {
                     $.each(response.data, function(i, result) {
-                        var safeId = jqEscape(result.id);
-                        $('#status' + safeId).empty().append(result.availability_message);
+                        $('#status' + result.id).empty().append(result.availability_message);
                         if (result.locationList) {
-                            $('#callnumber' + safeId).hide();
-                            $('.hideIfDetailed' + safeId).hide();
-                            $('#location' + safeId).hide();
+                            $('#callnumber' + result.id).hide();
+                            $('.hideIfDetailed' + result.id).hide();
+                            $('#location' + result.id).hide();
                             var locationListHTML = "";
                             for (x=0; x<result.locationList.length; x++) {
                                 locationListHTML += '<div class="groupLocation">';
@@ -37,11 +36,11 @@ function checkItemStatuses() {
                                      ?  result.locationList[x].callnumbers : '';
                                 locationListHTML += '</div>';
                             }
-                            $('#locationDetails' + safeId).show();
-                            $('#locationDetails' + safeId).empty().append(locationListHTML);
+                            $('#locationDetails' + result.id).show();
+                            $('#locationDetails' + result.id).empty().append(locationListHTML);
                         } else {
-                            $('#callnumber' + safeId).empty().append(result.callnumber);
-                            $('#location' + safeId).empty().append(result.reserve == 'true' ? result.reserve_message : result.location);
+                            $('#callnumber' + result.id).empty().append(result.callnumber);
+                            $('#location' + result.id).empty().append(result.reserve == 'true' ? result.reserve_message : result.location);
                         }
                     });
                 } else {

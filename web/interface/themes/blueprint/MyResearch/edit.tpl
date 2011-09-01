@@ -1,7 +1,7 @@
 <div class="record">
   <h1>{$record.title|escape:"html"}</h1>
 
-  <form method="post" name="editForm" action="">
+  <form method="post" name="editForm" action="{$url}/MyResearch/Edit?id={$recordId|escape}">
   {if empty($savedData)}
     <p>
       {if isset($listFilter)}

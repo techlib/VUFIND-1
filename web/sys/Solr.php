@@ -125,11 +125,6 @@ class Solr implements IndexEngine
     private $_highlight = false;
 
     /**
-     * How should we cache the search specs?
-     */
-    private $_specCache = false;
-
-    /**
      * Constructor
      *
      * @param string $host  The URL for the local Solr Server
@@ -197,11 +192,6 @@ class Solr implements IndexEngine
             $this->_solrShardsFieldsToStrip = $searchSettings['StripFields'];
         }
 
-        // Deal with search spec cache setting:
-        if (isset($searchSettings['Cache']['type'])) {
-            $this->_specCache = $searchSettings['Cache']['type'];
-        }
-
         // Deal with session-based shard settings:
         if (isset($_SESSION['shards'])) {
             $shards = array();
@@ -237,33 +227,6 @@ class Solr implements IndexEngine
     }
 
     /**
-     * Support method for _getSearchSpecs() -- load the specs from cache or disk.
-     *
-     * @return void
-     * @access private
-     */
-    private function _loadSearchSpecs()
-    {
-        // Generate cache key:
-        $key = md5(
-            basename($this->searchSpecsFile) . '-' .
-            filemtime($this->searchSpecsFile)
-        );
-
-        // Load cache manager:
-        $cache = new VuFindCache($this->_specCache, 'searchspecs');
-
-        // Generate data if not found in cache:
-        if (!($results = $cache->load($key))) {
-            $results = Horde_Yaml::load(
-                file_get_contents($this->searchSpecsFile)
-            );
-            $cache->save($results, $key);
-        }
-        $this->_searchSpecs = $results;
-    }
-
-    /**
      * Get the search specifications loaded from the specified YAML file.
      *
      * @param string $handler The named search to provide information about (set
@@ -277,7 +240,8 @@ class Solr implements IndexEngine
     {
         // Only load specs once:
         if ($this->_searchSpecs === false) {
-            $this->_loadSearchSpecs();
+            $this->_searchSpecs
+                = Horde_Yaml::load(file_get_contents($this->searchSpecsFile));
         }
 
         // Special case -- null $handler means we want all search specs.

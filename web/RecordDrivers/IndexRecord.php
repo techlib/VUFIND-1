@@ -367,37 +367,6 @@ class IndexRecord implements RecordInterface
     }
 
     /**
-     * Get any author notes associated with this record.  For details of
-     * the return format, see sys/AuthorNotes.php.
-     *
-     * @return array Author Notes data.
-     * @access public
-     */
-    public function getAuthorNotes()
-    {
-        include_once 'sys/AuthorNotes.php';
-
-        $ed = new ExternalAuthorNotes($this->getCleanISBN());
-        return $ed->fetch();
-    }
-
-    /**
-     * Get any video clips associated with this record.  For details of
-     * the return format, see sys/Video.php.
-     *
-     * @return array Video Clips content
-     * @access public
-     */
-    public function getVideoClips()
-    {
-        include_once 'sys/VideoClips.php';
-
-        $ed = new ExternalVideoClips($this->getCleanISBN());
-        return $ed->fetch();
-    }
-
-
-    /**
      * Assign necessary Smarty variables and return a template name to
      * load in order to export the record in the requested format.  For
      * legal values, see getExportFormats().  Returns null if format is
@@ -461,8 +430,6 @@ class IndexRecord implements RecordInterface
         $interface->assign('extendedCredits', $this->getProductionCredits());
         $interface->assign('extendedBibliography', $this->getBibliographyNotes());
         $interface->assign('extendedFindingAids', $this->getFindingAids());
-        $interface->assign('extendedAuthorNotes', $this->getAuthorNotes());
-        $interface->assign('extendedVideoClips', $this->getVideoClips());
 
         return 'RecordDrivers/Index/extended.tpl';
     }

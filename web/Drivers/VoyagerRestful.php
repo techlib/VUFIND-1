@@ -43,14 +43,6 @@ require_once 'Voyager.php';
  */
 class VoyagerRestful extends Voyager
 {
-    protected $ws_host;
-    protected $ws_port;
-    protected $ws_app;
-    protected $ws_dbKey;
-    protected $ws_patronHomeUbId;
-    protected $ws_pickUpLocations;
-    protected $defaultPickUpLocation;
-
     /**
      * Constructor
      *

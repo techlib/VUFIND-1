@@ -4,9 +4,6 @@
 
   <div id="popupMessages"></div>
   <div id="popupDetails"> 
-    {if empty($exportOptions)}
-      <div class="error">{translate text="bulk_export_not_supported"}</div>
-    {else}
       {foreach from=$exportList item=favorite}
         <strong>{translate text='Title'}:</strong>
         {$favorite.title|escape}<br />
@@ -31,6 +28,5 @@
       {if $followupAction}
       <input type="hidden" name="followupAction" value="{$followupAction|escape}" />
       {/if}
-    {/if}
   </div>
 </form>

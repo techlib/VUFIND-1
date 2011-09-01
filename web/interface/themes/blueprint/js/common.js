@@ -84,12 +84,9 @@ function lessFacets(name) {
     $("#narrowGroupHidden_"+name).addClass("offscreen");
 }
 
-function filterAll(element, formId) {
+function filterAll(element) {
     //  Look for filters (specifically checkbox filters)
-    if (formId == null) {
-        formId = "searchForm";
-    }
-    $("#" + formId + " :input[type='checkbox'][name='filter[]']")
+    $("#searchForm :input[type='checkbox'][name='filter[]']")
         .attr('checked', element.checked);
 }
 
@@ -144,15 +141,3 @@ function initAutocomplete() {
     });
 }
 
-function htmlEncode(value){
-    if (value) {
-        return jQuery('<div />').text(value).html();
-    } else {
-        return '';
-    }
-}
-
-// mostly lifted from http://docs.jquery.com/Frequently_Asked_Questions#How_do_I_select_an_element_by_an_ID_that_has_characters_used_in_CSS_notation.3F
-function jqEscape(myid) {
-    return String(myid).replace(/(:|\.)/g,'\\$1');
-}

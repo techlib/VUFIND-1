@@ -98,35 +98,6 @@ class Export extends MyResearch
     }
 
     /**
-     * Get the URL for exporting the current set of resources.
-     *
-     * @return string
-     * @access public
-     */
-    public static function getExportUrl()
-    {
-        global $configArray;
-
-        if (strtolower($_POST['format']) == 'refworks') {
-            // can't pass the ids through the session, so need to stringify
-            $id_str = '';
-            foreach ($_POST['ids'] as $id) {
-                $id_str .= '&ids[]='.urlencode($id);
-            }
-            // Build the URL to pass data to RefWorks:
-            $exportUrl = $configArray['Site']['url'] . '/MyResearch/Bulk' .
-                '?export=true&exportInit=true&exportToRefworks=true' . $id_str;
-            // Build up the RefWorks URL:
-            return $configArray['RefWorks']['url'] . '/express/expressimport.asp' .
-                '?vendor=' . urlencode($configArray['RefWorks']['vendor']) .
-                '&filter=RefWorks%20Tagged%20Format&url=' . urlencode($exportUrl);
-        }
-
-        // Default case:
-        return $configArray['Site']['url'] . '/MyResearch/Export?exportInit';
-    }
-
-    /**
      * Support method - process incoming parameters.
      *
      * @return void
@@ -140,17 +111,10 @@ class Export extends MyResearch
             $_SESSION['exportFormat'] = $_POST['format'];
 
             if ($_SESSION['exportIDS'] && $_SESSION['exportFormat']) {
-                // Special case -- for RefWorks, go directly there;
-                // for everything else, provide a save dialog.
-                if (strtolower($_POST['format']) == 'refworks') {
-                    header('Location: ' . self::getExportUrl());
-                } else {
-                    header(
-                        "Location: " . $this->followupUrl .
-                        "?infoMsg=export_success&showExport=" .
-                        urlencode(self::getExportUrl())
-                    );
-                }
+                header(
+                    "Location: " . $this->followupUrl .
+                    "?infoMsg=export_success&showExport=true"
+                );
                 exit();
             } else {
                 $this->errorMsg = 'bulk_fail';
@@ -176,7 +140,7 @@ class Export extends MyResearch
         // testing is needed).  For now, as a work-around, let's always use the
         // text/plain content type when we're dealing with IE and SSL -- the
         // file extension should still allow the browser to do the right thing.
-        if (array_key_exists('HTTPS', $_SERVER) && ($_SERVER['HTTPS'] == 'on')
+        if ($_SERVER['HTTPS'] == 'on'
             && strstr($_SERVER['HTTP_USER_AGENT'], 'MSIE')
         ) {
             $type = 'text/plain';
@@ -220,9 +184,6 @@ class Export extends MyResearch
                 case 'marc':
                     $this->_exportHeaders('application/MARC', 'VuFindExport.mrc');
                     break;
-                case 'refworks_data':
-                    // No extra work necessary.
-                    break;
                 default:
                     $export = false;
                 }
@@ -243,47 +204,29 @@ class Export extends MyResearch
     }
 
     /**
-     * Support method -- assign details about records based on an array of IDs.
+     * Support method -- get details about records based on an array of IDs.
      *
      * @param array $ids IDs to look up.
      *
-     * @return void
+     * @return array
      * @access private
      */
-    private function _assignExportList($ids)
+    private function _getExportList($ids)
     {
-        global $interface;
-
         $exportList = array();
-
-        // Extract the current set of export options from the interface (they were
-        // assigned by the parent class based on config settings).  We'll filter
-        // them down based on what the selected records actually support.
-        $formats = $interface->get_template_vars('exportOptions');
 
         foreach ($ids as $id) {
             $record = $this->db->getRecord($id);
-            $driver = RecordDriverFactory::initRecordDriver($record);
             $exportList[] = array(
                 'id'      => $id,
                 'isbn'    => $record['isbn'],
                 'author'  => $record['author'],
-                'title'   => $driver->getBreadcrumb(),
+                'title'   => $record['title'],
                 'format'  => $record['format']
             );
-
-            // Filter out unsupported export formats:
-            $newFormats = array();
-            foreach ($formats as $current) {
-                if (in_array($current, $driver->getExportFormats())) {
-                    $newFormats[] = $current;
-                }
-            }
-            $formats = $newFormats;
         }
 
-        $interface->assign('exportOptions', $formats);
-        $interface->assign('exportList', $exportList);
+        return $exportList;
     }
 
     /**
@@ -300,7 +243,7 @@ class Export extends MyResearch
         if (!empty($_POST['ids'])) {
             // Assign Item Info
             $interface->assign('exportIDS', $_POST['ids']);
-            $this->_assignExportList($_POST['ids']);
+            $interface->assign('exportList', $this->_getExportList($_POST['ids']));
             $interface->assign('title', $_GET['message']);
             return $interface->fetch('MyResearch/export.tpl');
         } else {
@@ -333,10 +276,10 @@ class Export extends MyResearch
             // Assign Item Info
             $interface->assign('errorMsg', $this->errorMsg);
             $interface->assign('infoMsg', $this->infoMsg);
-            $interface->setPageTitle('Export Favorites');
+            $interface->setPageTitle(translate('Export Favorites'));
             $interface->assign('subTemplate', 'export.tpl');
             $interface->assign('exportIDS', $ids);
-            $this->_assignExportList($ids);
+            $interface->assign('exportList', $this->_getExportList($ids));
             // If we're on a particular list, save the ID so we can redirect to
             // the appropriate page after exporting.
             if (isset($_REQUEST['listID']) && !empty($_REQUEST['listID'])) {

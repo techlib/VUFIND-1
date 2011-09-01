@@ -42,12 +42,11 @@ $mysql_admin_pw = $argv[2];
 $old_config = $argv[3];
 
 // Try to read the ini file:
-$basePath = $old_config . '/web/conf';
-if (!file_exists($basePath . '/config.ini')) {
-    die("\n\nCan't open {$basePath}/config.ini; aborting database upgrade.\n\n");
+$iniFile = $old_config . '/web/conf/config.ini';
+if (!file_exists($iniFile)) {
+    die("\n\nProblem opening {$iniFile}... aborting database upgrade.\n\n");
 }
-require_once dirname(__FILE__) . '/../web/sys/ConfigArray.php';
-$configArray = readConfig($basePath);
+$configArray = parse_ini_file($iniFile, true);
 
 ?>
 
