@@ -4,7 +4,9 @@
     {include file="Search/searchbox.tpl"}
     <ul data-role="listview" data-inset="true" data-dividertheme="b">
       <li data-role="list-divider">{translate text='Find More'}</li>
-      <li><a rel="external" href="{$path}/Search/Reserves">{translate text='Course Reserves'}</a></li>
+      {*
+        <li><a rel="external" href="{$path}/Search/Reserves">{translate text='Course Reserves'}</a></li>
+      *}
       <li><a rel="external" href="{$path}/Search/NewItem">{translate text='New Items'}</a></li>
     </ul>
     
@@ -15,7 +17,7 @@
       <li><a href="#">{translate text='Ask a Librarian'}</a></li>
       <li><a href="#">{translate text='FAQs'}</a></li>
     </ul>
-    *} 
+    *}
   </div>
   {include file="footer.tpl"}
 </div>
