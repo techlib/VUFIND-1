@@ -1,3 +1,10 @@
 <h1>O VuFindu</h1>
 
-<p>VuFind je opravdu chytrý software, který umí spoustu šikovných věcí. Možná byste tomu nevěřili, ale má verzi optimalizovanou pro mobilní zařízení. Není to skvělé?</p>
+<p><a href="http://vufind.org/">VuFind</a> je software pro prohlížení a vyhledávání ve zdrojích zpřístupňovaných knihovnou. Je vytvářen knihovnami a je určen pro knihovny.</p>
+
+<h2>Funkce</h2>
+
+<ul>
+  <li>Facetové vyhledávání</li>
+  <li>Verze pro mobilní zařízení</li>
+</ul>
