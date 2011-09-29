@@ -162,8 +162,9 @@ class Advanced extends Action {
             $currentList = array();
             foreach ($list['list'] as $value) {
                 // Build the filter string for the URL:
-                $fullFilter = $facet.':"'.$value['value'].'"';
-                
+                $fullFilter = $facet.':"'.$value['untranslated'].'"';
+                // Původně:
+                // $fullFilter = $facet.':"'.$value['value'].'"';
                 // If we haven't already found a selected facet and the current
                 // facet has been applied to the search, we should store it as
                 // the selected facet for the current control.
