@@ -768,8 +768,25 @@ class Aleph implements DriverInterface
      */
     public function getNewItems($page, $limit, $daysOld, $fundId = null)
     {
+        $url = "http://aleph.techlib.cz/feed/novinky.xml";
+        $result = $this->doHTTPRequest($url);
+        $links = $result->xpath("/rss/channel/item/link");
         $items = array();
-        return $items;
+        foreach ($links as $link) {
+          $matches = array();
+          preg_match("/\d{9}/", $links[0], $matches);
+          if ($matches) {
+            $items[] = $matches[0];
+          }
+        }
+        if ($limit) {
+          $items = array_slice($items, 0, $limit);
+        }
+        $response = array(
+          "count" => count($items),
+          "results" => $items,
+        );
+        return $response;
     }
 
     /**
