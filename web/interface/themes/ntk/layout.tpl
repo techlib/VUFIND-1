@@ -69,7 +69,7 @@
         </div>
 
         {if $showTopSearchBox}
-          <a href="{$url}"><img src="{$path}/interface/themes/default/images/vufind_logo.png" alt="VuFind" class="alignleft"></a>
+          <a href="{$url}"><img src="{$path}/interface/themes/ntk/images/ntk_logo_115px_wide.png" alt="VuFind" class="alignleft"></a>
           {if $pageTemplate != 'advanced.tpl'}
             {if $module=="Summon"}
               {include file="Summon/searchbox.tpl"}

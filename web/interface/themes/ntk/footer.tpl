@@ -12,8 +12,8 @@
     {*
     Zakomentováno, dokud nebude implementováno. (JM)
     <li><a href="{$path}/Search/Reserves">{translate text='Course Reserves'}</a></li>
-    <li><a href="{$path}/Search/NewItem">{translate text='New Items'}</a></li>
     *}
+    <li><a href="{$path}/Search/NewItem">{translate text='New Items'}</a></li>
   </ul>
 </div>
 <div><p><strong>{translate text='Need Help?'}</strong></p>
