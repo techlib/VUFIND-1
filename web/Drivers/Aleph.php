@@ -100,6 +100,8 @@ class Aleph implements DriverInterface
     }
 
     protected function doHTTPRequest($url, $method='GET', $body = null) {
+        $url = str_replace('items/','items',$url); #<MJ.>
+
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -774,9 +776,11 @@ class Aleph implements DriverInterface
         $items = array();
         foreach ($links as $link) {
           $matches = array();
-          preg_match("/\d{9}/", $links[0], $matches);
+          preg_match("/\d{9}/", $link[0], $matches);
           if ($matches) {
-            $items[] = $matches[0];
+            $items[] = array(
+              "id" => $matches[0]
+            );
           }
         }
         if ($limit) {
@@ -784,7 +788,7 @@ class Aleph implements DriverInterface
         }
         $response = array(
           "count" => count($items),
-          "results" => $items,
+          "results" => $items
         );
         return $response;
     }
