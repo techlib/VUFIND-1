@@ -40,7 +40,9 @@ class NewItem extends Action {
         // Read in search-specific configurations:
         $searchSettings = getExtraConfigArray('searches');
 
-        if (count($_GET) > 2) {
+        // Zakomentován krok výběru filtrování nových jednotek podle stáří.
+        // Zatím to není implementováno. (JM.)
+        // if (count($_GET) > 2) {
             // Initialise from the current search globals
             $searchObject = SearchObjectFactory::initSearchObject();
             $searchObject->init();
@@ -133,7 +135,7 @@ class NewItem extends Action {
 
             // Send the new items to the template
             $interface->assign('recordSet', $searchObject->getResultRecordHTML());
-
+            
             // Setup Record Count Display
             $summary = $searchObject->getResultSummary();
             $interface->assign('recordCount', $summary['resultTotal']);
@@ -152,7 +154,7 @@ class NewItem extends Action {
 
             // Save the URL of this search to the session so we can return to it easily:
             $_SESSION['lastSearchURL'] = $searchObject->renderSearchUrl();
-        } else {
+        /*} else {
             $interface->setPageTitle('New Item Search');
             $interface->setTemplate('newitem.tpl');
             
@@ -176,6 +178,7 @@ class NewItem extends Action {
             }
             $interface->assign('ranges', $ranges);
         }
+        */
         $interface->display('layout.tpl');
     }
 }
