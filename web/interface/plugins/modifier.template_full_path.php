@@ -59,7 +59,7 @@ function smarty_modifier_template_full_path($filename)
     // that has the template file, this allows for themes to override
     // only a subset of template files
     for ($i = count($themes) - 1; $i >= 0; $i--) {
-        $theme = $themes[$i];
+        $theme = trim($themes[$i]);
         $file = "{$local}/interface/themes/{$theme}/{$filename}";
         if (file_exists($file)) {
             return $file;
