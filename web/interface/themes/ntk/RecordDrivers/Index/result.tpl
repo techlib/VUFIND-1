@@ -18,9 +18,12 @@
 
       {if $summDate}{translate text='Published'} {$summDate.0|escape}{/if}
       </div>
-
+      
       <div class="resultItemLine3">
+      {*
+      Zakomentována signatura (JM.)
       <b>{translate text='Call Number'}:</b> <span id="callnumber{$summId|escape}">{translate text='Loading'}</span><br>
+      *}
       <b>{translate text='Located'}:</b> <span id="location{$summId|escape}">{translate text='Loading'}</span>
       </div>
       
@@ -50,7 +53,7 @@
     <div id="saveLink{$summId|escape}">
       <a href="{$url}/Record/{$summId|escape:"url"}/Save" onClick="getLightbox('Record', 'Save', '{$summId|escape}', '', '{translate text='Add to favorites'}', 'Record', 'Save', '{$summId|escape}'); return false;" class="fav tool">{translate text='Add to favorites'}</a>
       <ul id="lists{$summId|escape}"></ul>
-      <script language="JavaScript" type="text/javascript">
+      <script type="text/javascript">
         getSaveStatuses('{$summId|escape:"javascript"}');
       </script>
     </div>
