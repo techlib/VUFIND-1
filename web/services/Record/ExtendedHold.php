@@ -35,6 +35,8 @@ class ExtendedHold extends Record
     {
         global $interface;
 
+       // error_log("record/extendedHold-> launch() id:".$_GET['id']." barcode:".$_GET['barcode']." recordId:".$_GET['id'] . "," . $_GET['lookfor']);
+
         if (!$this->user) {
             // return new PEAR_Error('Prihlaste se.');
             // Needed for "back to record" link in view-alt.tpl:
@@ -84,16 +86,22 @@ class ExtendedHold extends Record
             return new PEAR_Error('Cannot connect to ILS');
         }
         $id = $_GET['id'];
-        $group = $_REQUEST['lookfor'];
+// <MJ.>       $group = $_REQUEST['lookfor'];
+         $group = $_GET['barcode'];
+
         if (strpos($id, ",") !== false) {
            list($id, $group) = split(",", $id); 
         }
         $patron = $catalog->patronLogin($this->user->cat_username, $this->user->cat_password);
+        // error_log("display patron:".$patron['id'].", id:$id, group:$group");
+
         $info = $catalog->getHoldingInfoForItem($patron['id'], $id, $group);
         $interface->assign('order', $info['order']);
         $interface->assign('locations', $info['pickup-locations']);
         $interface->assign('last_interest_date', $info['last-interest-date']);
-        $interface->assign('item', $group); // interface->assign('item', $_GET['barcode']);
+// <MJ.> - bylo zakomentovane obracene..)
+//       $interface->assign('item', $group);
+        $interface->assign('item', $_GET['barcode']);
         $interface->assign('formTargetPath',
             '/Record/' . urlencode($id) . '/ExtendedHold');
         if (isset($_GET['lightbox'])) {
@@ -127,6 +135,7 @@ class ExtendedHold extends Record
         }
         if ($id && $to && $item && $location) {
             $patron = $catalog->patronLogin($this->user->cat_username, $this->user->cat_password);
+             // error_log("putHold to Aleph-placeHold patronID:".$patron['id']." id:".$id." item:".$item." location:".$location." to:".$to." comment:".$comment);
             return $catalog->placeHold($patron['id'], $id, $item, $location, $to, $comment);
         } else {
             return new PEAR_Error('Cannot connect to ILS');
