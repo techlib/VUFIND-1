@@ -52,7 +52,7 @@ class Summon {
      * The secret Key used for authentication
      * @var string
      */
-    public $apiKey;
+    public $apiKey = "m3UReDSG35G5F7uGqWBMxXCmZ0wPee9F";
 
     /**
      * The Client ID used for authentication
@@ -122,7 +122,8 @@ class Summon {
         }
 
         // Query String Parameters
-        $options = array('s.st' => "id,$id");
+        $options = array('s.q' => "id:$id");
+//        $options = array('s.st' => "id,$id");
         $result = $this->call($options);
         if (PEAR::isError($result)) {
             PEAR::raiseError($result);
