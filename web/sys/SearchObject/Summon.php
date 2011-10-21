@@ -455,6 +455,36 @@ class SearchObject_Summon extends SearchObject_Base
         // Return modified list:
         return $facets;
     }
+
+//<MJ.> - Summon testing
+   public function initAdvancedFacets() {
+
+    return false;
+   }
+
+   public function getRSSUrl() {
+
+   return false;
+
+   }
+
+    public function getResultRecordHTML()
+    {
+        global $interface;
+
+        $currentView = $this->getView();
+        $html = array();
+        for ($x = 0; $x < count($this->indexResult['response']['docs']); $x++) {
+            $current = & $this->indexResult['response']['docs'][$x];
+            $record = RecordDriverFactory::initRecordDriver($current);
+            $html[] = $interface->fetch($record->getSearchResult($currentView));
+        }
+        return $html;
+    }
+
+
+
+
 }
 
 ?>

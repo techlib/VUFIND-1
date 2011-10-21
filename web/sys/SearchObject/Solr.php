@@ -180,7 +180,7 @@ class SearchObject_Solr extends SearchObject_Base
         $this->spellSkipNumeric = isset($configArray['Spelling']['skip_numeric']) ?
             $configArray['Spelling']['skip_numeric'] : true;
     }
-
+    
     /**
      * Add filters to the object based on values found in the $_REQUEST superglobal.
      *
