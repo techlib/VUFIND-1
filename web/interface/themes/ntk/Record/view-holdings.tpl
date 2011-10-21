@@ -37,9 +37,18 @@
          <span class="checkedout">{$row.status|escape}</span>
       {/if}
       {if $row.reserve}
+       <a href="{$url}/Record/{$id|escape:'url'}/ExtendedHold?barcode={$row.item_id|escape}"
+
+{* 
          <a href="{$url}/Record/{$id|escape:'url'}/ExtendedHold?barcode={$row.group|escape:'url'}"
-            onClick="getLightbox('Record', 'ExtendedHold', '{$id|escape}', '{$row.group|escape}', '{translate text='PutHold'}'); return false;" >
+ <MJ.>            onClick="getLightbox('Record', 'ExtendedHold', '{$id|escape}', '{$row.group|escape}', '{translate text='Place a Hold'}'); return false;" >
             {translate text="Place a Hold"}
+*}
+
+               onClick="getLightbox('Record', 'ExtendedHold', '{$id|escape}', '{$row.item_id|escape}', '{translate text='Place a Hold'}'); return false;" >
+            {translate text="Place a Hold"}
+
+
          </a>
          <!-- <a href="{$url}/Record/{$id|escape:'url'}/ExtendedHold">
             {translate text="Place a Hold"}
