@@ -41,10 +41,14 @@ class Record extends Base
         
         // Fetch Record
         $summon = new Summon($configArray['Summon']['apiId'], $configArray['Summon']['apiKey']);
+
+
         $record = $summon->getRecord($_GET['id']);
+
         if (PEAR::isError($record)) {
             PEAR::raiseError($record);
         } else if (!isset($record['documents'][0])) {
+            $pole = print_r($record);
             PEAR::raiseError(new PEAR_Error("Cannot access record {$_GET['id']}"));
         } else {
             $this->record = $record['documents'][0];

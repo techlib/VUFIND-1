@@ -45,6 +45,7 @@ class Home extends Action {
         global $configArray;
         global $interface;
 
+
         // Assign our followup
         $interface->assign('followupModule', $_GET['followupModule']);
         $interface->assign('followupAction', $_GET['followupAction']);
