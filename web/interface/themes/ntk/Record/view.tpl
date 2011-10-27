@@ -154,31 +154,14 @@
     {if !empty($isbn)}
     <script src="http://ltfl.librarything.com/forlibraries/widget.js?id=1501-3320533354" type="text/javascript"></script>
     <div class="sidegroup" id="libraryThingHolder">
-      <h4>{translate text="Library Thing Suggestions"}</h4>
-      
-      <h5><strong>{translate text="Related Items"}</strong></h5>
-      <div id="ltfl_related" class="ltfl"></div>
-      
-      <h5><strong>{translate text="Similar Items"}</strong></h5>
-      <div id="ltfl_similars" class="ltfl"></div>
-      
       <h5><strong>{translate text="Tags"}</strong></h5>
       <div id="ltfl_tagbrowse" class="ltfl"></div>
       
       <h5><strong>{translate text="Reviews"}</strong></h5>
       <div class="ltfl_reviews"></div>
 
-      <h5><strong>{translate text="Shelf Browser"}</strong></h5>
-      <div id="ltfl_shelfbrowse_both" class="ltfl"></div>
-      
       <h5><strong>{translate text="Series Browser"}</strong></h5>
       <div id="ltfl_series" class="ltfl"></div>
-      
-      <h5><strong>{translate text="Awards"}</strong></h5>
-      <div id="ltfl_awards" class="ltfl"></div>
-      
-      <h5><strong>{translate text="Lexile"}</strong></h5>
-      <div id="ltfl_lexile" class="ltfl"></div>
     </div>
     {/if}
     
