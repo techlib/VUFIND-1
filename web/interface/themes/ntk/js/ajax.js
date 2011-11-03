@@ -61,18 +61,31 @@ function doGetStatuses(strings)
                 }
 
                 if (items[i].getElementsByTagName('location')) {
-                    var callnumber
+                    var callnumber;
                     var location = items[i].getElementsByTagName('location').item(0).firstChild.data;
                     var reserves = items[i].getElementsByTagName('reserve').item(0).firstChild.data;
 
-                    var locationDiv = getElem('location' + elemId);
-                    if (locationDiv) {
-                        if (reserves == 'Y') {
-                            locationDiv.innerHTML = strings.reserve;
-                        } else {
-                            locationDiv.innerHTML = location;
-                        }
-                    }
+                    var locationDiv = getElem('location' + elemId),
+			collection = elemId.substring(0, 5),
+			sysno = elemId.substring(5);
+
+		    if (locationDiv) {
+			if (collection === "vscht") {
+				locationDiv.innerHTML = "<a href=\""
+					+ "http://aleph.vscht.cz/F?func=direct&doc_number="
+					+ sysno
+					+ "\">"
+					+ "v katalogu VŠCHT"
+					+ "</a>";
+			}
+			else {
+				if (reserves == 'Y') {
+				    locationDiv.innerHTML = strings.reserve;
+				} else {
+				    locationDiv.innerHTML = location;
+				}
+			}
+		    }
 
                     var callnumberDiv = getElem('callnumber' + elemId);
                     if (callnumberDiv) {
