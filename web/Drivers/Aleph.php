@@ -57,8 +57,8 @@ class Aleph implements DriverInterface
         $this->bib = split(',', $configArray['Catalog']['bib']);
         $this->useradm = $configArray['Catalog']['useradm'];
         $this->admlib = $configArray['Catalog']['admlib'];
-        $this->wwwuser = $configArray['Catalog']['wwwuser'];
-        $this->wwwpasswd = $configArray['Catalog']['wwwpasswd'];
+#<MJ.>        $this->wwwuser = $configArray['Catalog']['wwwuser'];
+#<MJ.>        $this->wwwpasswd = $configArray['Catalog']['wwwpasswd'];
         $this->dlfport = $configArray['Catalog']['dlfport'];
         $this->sublibadm = $configArray['sublibadm'];
         $this->available_statuses = split(',', $configArray['Catalog']['available_statuses']);
@@ -69,7 +69,7 @@ class Aleph implements DriverInterface
         $url = "http://$this->host/X?op=$op";
         $url = $this->appendQueryString($url, $params);
         if ($auth) {
-           $url = $this->appendQueryString($url, array('user_name' => $this->wwwuser, 'user_password' => $this->wwwpasswd));
+# <MJ.>           $url = $this->appendQueryString($url, array('user_name' => $this->wwwuser, 'user_password' => $this->wwwpasswd));
         }
         $result = $this->doHTTPRequest($url);
         if ($result->error) {
@@ -85,6 +85,10 @@ class Aleph implements DriverInterface
         }
         $url = "http://$this->host:$this->dlfport/rest-dlf/" . $path;
         $url = $this->appendQueryString($url, $params);
+       # <MJ.>
+       error_log("MJ. doRestDLF log: ".$url);
+       
+
         return $this->doHTTPRequest($url, $method, $body);
     }
 
@@ -100,7 +104,7 @@ class Aleph implements DriverInterface
     }
 
     protected function doHTTPRequest($url, $method='GET', $body = null) {
-        $url = str_replace('items/','items',$url); #<MJ.>
+        //$url = str_replace('items/','items',$url); #<MJ.>
 
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
@@ -150,7 +154,25 @@ class Aleph implements DriverInterface
         foreach ($records as $record) {
            foreach ($record->xpath("//datafield[@tag='AVA']") as $datafield) {
                $status = $datafield->xpath('subfield[@code="e"]/text()');
-               $location = $datafield->xpath('subfield[@code="a"]/text()');
+
+               $location = $datafield->xpath('subfield[@code="j"]/text()');
+               $location = $location[0];
+               /*
+               TODO: Implementovat parsovani umisteni.
+               $matches = array();
+               preg_match("/(\d)([A-Z])(\d+)/", $location, $matches);
+               if ($matches) {
+                 $location = printf(
+                  "[%d]. [%s], [%s] [%s], [%s] [%d]",
+                  $matches[1],
+                  translate("floor"),
+                  translate("sector"),
+                  $matches[2],
+                  translate("shelf"),
+                  $matches[3]
+                );
+               }
+               */
                $signature = $datafield->xpath('subfield[@code="d"]/text()');
                $availability = ($status[0] == 'available' || $status[0] == 'check_holdings');
                $reserve = true;
@@ -158,7 +180,7 @@ class Aleph implements DriverInterface
                $holding[] = array('id' => $id,
                                'availability' => $availability,
                                'status' => (string) $status[0],
-                               'location' => (string) $location[0],
+                               'location' => (string) $location,
                                'signature' => (string) $signature[0],
                                'reserve' => $reserve,
                                'callnumber' => (string) $signature[0]
@@ -480,12 +502,23 @@ class Aleph implements DriverInterface
      */
     public function getMyFines($user)
     {
+        $mult = 1;
         $finesList = array();
         $finesListSort = array();
 
         $xml = $this->doRestDLFRequest(array('patron', $user['id'], 'circulationActions', 'cash'));
 
         foreach ($xml->xpath('//cash') as $item) {
+
+//MJ.
+error_log("ITEM = ".json_encode($item));
+error_log("link = ". $item['href']);
+//MJ. zavola znovu REST API - pro konkretni cash 
+        $item = $this->doHTTPRequest($item['href']);  
+error_log("ITEM2 = ".json_encode($item));
+//MJ. musime jeste otevrit element cash ve stavajicim (nove ziskanem) XMLku
+          $item = $item->cash;
+ 
             $z31 = $item->z31;
             $z13 = $item->z13;
             $z30 = $item->z30;
@@ -501,6 +534,7 @@ class Aleph implements DriverInterface
                 $mult=100;
             $amount = (float)(preg_replace("/[\(\)]/", "", (string) $z31->{'z31-sum'}))*$mult;
             $cashref = (string) $z31->{'z31-sequence'};
+error_log("Z31 ref=". json_encode($z31));
             $cashdate = date('d-m-Y', strtotime((string) $z31->{'z31-date'}));
             $balance = 0;
             $finesListSort["$cashref"]  = array(
@@ -532,6 +566,9 @@ class Aleph implements DriverInterface
                 "id"  => $id
             ); 
         }
+//<MJ.>
+        $log= json_encode($finesList);
+        error_log("FINES: $log");
         return $finesList;
     }
 
@@ -558,7 +595,7 @@ class Aleph implements DriverInterface
         $address5 = (string)$address->{'z304-address-5'};
         $zip = (string)$address->{'z304-zip'};
         $phone = (string)$address->{'z304-telephone-1'};
-        $email = (string)$address->{'z404-email-address'};
+        $email = (string)$address->{'z304-email-address'}; //<MJ. bylo 404.. procpak? :-)
         $dateFrom = (string)$address->{'z304-date-from'};
         $dateTo = (string)$address->{'z304-date-to'};
 
@@ -572,6 +609,12 @@ class Aleph implements DriverInterface
         $recordList['zip'] = $zip;
         $recordList['phone'] = $phone;
         $recordList['email'] = $email;
+       
+        $datePattern="/(....)(..)(..)/"; 
+        $datePatternCz='${3}.${2}. ${1}';
+        $dateFrom=preg_replace($datePattern,$datePatternCz,$dateFrom);
+        $dateTo=preg_replace($datePattern,$datePatternCz,$dateTo);
+
         $recordList['dateFrom'] = $dateFrom;
         $recordList['dateTo'] = $dateTo;
         return $recordList;
@@ -626,6 +669,7 @@ class Aleph implements DriverInterface
 
     public function getHoldingInfoForItem($patronId, $id, $group) {
         list($bib, $sys_no) = $this->parseId($id);
+        error_log("aleph - getHoldingInfoForItem jsem tu - pID: $patronId id: $id gr: $group");
         $resource = $bib . $sys_no;
         $xml = $this->doRestDLFRequest(array('patron', $patronId, 'record', $resource, 'items', $group));
         $locations = array();
@@ -647,24 +691,64 @@ class Aleph implements DriverInterface
         return array('pickup-locations' => $locations, 'last-interest-date' => $date, 'order' => $requests + 1);
     }
 
-    function placeHold($details) {
-        list($bib, $sys_no) = $this->parseId($details['id']);
+
+#    function placeHold($details) {
+#        error_log("placehold details: $details");
+#        list($bib, $sys_no) = $this->parseId($details['id']);
+#        $recordId = $bib . $sys_no;
+#        $itemId = $details['item_id'];
+#        $patron = $details['patron'];
+#        $requiredBy = $details['requiredBy'];
+#        list($month, $day, $year) = split("-", $requiredBy);
+#        $requiredBy = $year . $month . $day;
+#        $patronId = $patron['id'];
+#        error_log ("placeHold patronId:$patronId recordId:$recordId itemId:$itemId" );
+#        $info = $this->getHoldingInfoForItem($patronId, $recordId, $itemId);
+#        // FIXME: choose preffered location
+#        $pickup_location = '';
+#        foreach($info['pickup-locations'] as $key => $value) {
+#           $pickup_location = $key;
+#        }
+#        $data = "post_xml=<?xml version='1.0' encoding='UTF-8'? >" . <MJ. '? >' ma byt u sebe;-)
+#           "<hold-request-parameters>\n" .
+#           "   <pickup-location>$pickup_location</pickup-location>\n" .
+#           "   <last-interest-date>$requiredBy</last-interest-date>\n" .
+#           "   <note-1>$comment</note-1>\n".
+#           "</hold-request-parameters>\n";
+#        $result = $this->doRestDLFRequest(array('patron', $patronId, 'record', $recordId, 'items', $itemId, 'hold'), null, HTTP_REQUEST_METHOD_PUT, $data);
+#        $reply_code = $result->{'reply-code'};
+#        if ($reply_code != "0000") {
+#           $message = $result->{'create-hold'}->{'note'};
+#           if ($message == null) {
+#              $message = $result->{'reply-text'};
+#           }
+#           return array('success' => false, 'sysMessage' => $message); // new PEAR_Error($message);
+#        } else {
+#           return array('success' => true);
+#        }
+#    }
+
+
+// prepsal MJ. protoze vyse uvedena verze ponekud nekoresponduje s tim co je v Record/ExtendedHold.php
+    function placeHold($patronId, $recordId, $itemId, $location, $requiredBy, $comment) {
+        list($bib, $sys_no) = $this->parseId($recordId);
         $recordId = $bib . $sys_no;
-        $itemId = $details['item_id'];
-        $patron = $details['patron'];
-        $requiredBy = $details['requiredBy'];
-        list($month, $day, $year) = split("-", $requiredBy);
-        $requiredBy = $year . $month . $day;
-        $patronId = $patron['id'];
-        $info = $this->getHoldingInfoForItem($patronId, $recordId, $itemId);
+//        $itemId = $details['item_id'];
+//        $patron = $details['patron'];
+//        $requiredBy = $details['requiredBy'];
+//        list($month, $day, $year) = split("-", $requiredBy);
+//        $requiredBy = $year . $month . $day;
+//        $patronId = $patron['id'];
+        error_log ("placeHold patronId:$patronId recordId:$recordId itemId:$itemId" );
+//        $info = $this->getHoldingInfoForItem($patronId, $recordId, $itemId);
         // FIXME: choose preffered location
-        $pickup_location = '';
-        foreach($info['pickup-locations'] as $key => $value) {
-           $pickup_location = $key;
-        }
+//        $pickup_location = '';
+//        foreach($info['pickup-locations'] as $key => $value) {
+//          $pickup_location = $key;
+//        }
         $data = "post_xml=<?xml version='1.0' encoding='UTF-8'?>\n" .
            "<hold-request-parameters>\n" .
-           "   <pickup-location>$pickup_location</pickup-location>\n" .
+           "   <pickup-location>$location</pickup-location>\n" .
            "   <last-interest-date>$requiredBy</last-interest-date>\n" .
            "   <note-1>$comment</note-1>\n".
            "</hold-request-parameters>\n";
@@ -680,6 +764,9 @@ class Aleph implements DriverInterface
            return array('success' => true);
         }
     }
+
+
+
 
     public function barcodeToID($bar) {
         foreach ($this->bib as $base) {
