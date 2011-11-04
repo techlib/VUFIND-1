@@ -1414,5 +1414,5 @@ alignleft {
 #libraryThingHolder h5 {
   border-bottom: solid 1px #D5D5D5;
   padding-bottom: .2em;
-  margin-bottom: .5em;
+  margin: .5em 0;
 }

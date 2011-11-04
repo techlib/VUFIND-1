@@ -155,7 +155,7 @@ class AJAX extends Action {
             echo join(PHP_EOL, array(
               ' <item id="' . htmlspecialchars($missingId) . '">',
               '   <availability>false</availability>',
-              '   <location>Unknown</location>',
+              '   <location>'.translate("Unknown").'</location>',
               '   <reserve>N</reserve>',
               '   <callnumber></callnumber>',
               ' </item>'

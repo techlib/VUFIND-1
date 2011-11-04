@@ -127,7 +127,7 @@ function doGetSaveStatuses()
                 var elemId = items[i].getAttribute('id');
 
                 var result = items[i].getElementsByTagName('result').item(0).firstChild.data;
-                if (result != 'False') {
+		if (result != 'False') {
                     YAHOO.util.Dom.addClass(document.getElementById('saveLink' + elemId), 'savedFavorite');
                     var lists = eval('(' + result + ')');
                     var listNames = '';

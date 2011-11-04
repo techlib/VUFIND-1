@@ -13672,18 +13672,20 @@ function tab15_translate($slc, $isc, $ipsc) {
     'opac' => 'N',
   ),
 );
-
+  
   $tab15 = $table_sub_library[$slc];
   if ($tab15 == NULL) {
-     print "tab15 is null!<br>";
+     throw new Exception("Undefined translate table for item statuses!");
   }
   $findme = $tab15['tab15'] . "|" . $isc . "|" . $ipsc;
-  // print "$findme<BR>";
-  $result = $table15[$findme];
-  if ($result == NULL) {
+  if (!array_key_exists($findme, $table15)) {
      $findme = $tab15['tab15'] . "||" . $ipsc;
-     // print "$findme<BR>";
-     $result = $table15[$findme];
+     if (!array_key_exists($findme, $table15)) {
+       $result = $table15[$findme];
+     }
+  }
+  else {
+    $result = $table15[$findme];
   }
   $result['sub_lib_desc'] = $tab15['desc'];
   return $result;
