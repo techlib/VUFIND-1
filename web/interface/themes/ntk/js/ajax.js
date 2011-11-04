@@ -70,20 +70,10 @@ function doGetStatuses(strings)
 			sysno = elemId.substring(5);
 
 		    if (locationDiv) {
-			if (collection === "vscht") {
-				locationDiv.innerHTML = "<a href=\""
-					+ "http://aleph.vscht.cz/F?func=item-global&doc_library=ICT01&doc_number="
-					+ sysno
-					+ "\">"
-					+ "v katalogu VŠCHT"
-					+ "</a>";
-			}
-			else {
-				if (reserves == 'Y') {
-				    locationDiv.innerHTML = strings.reserve;
-				} else {
-				    locationDiv.innerHTML = location;
-				}
+			if (reserves == 'Y') {
+			    locationDiv.innerHTML = strings.reserve;
+			} else {
+			    locationDiv.innerHTML = location;
 			}
 		    }
 
