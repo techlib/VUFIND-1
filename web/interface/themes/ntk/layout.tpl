@@ -31,6 +31,18 @@
     {js filename="scripts.js"}
     {js filename="rc4.js"}
     {js filename="ajax.yui.js"}
+
+    <script type="text/javascript">
+      {literal}
+      YAHOO.util.Event.onDOMReady(function() {
+	      var searchBox = document.getElementById("lookfor");
+	      if (searchBox) {
+		searchBox.focus();
+	      }
+      });
+      {/literal}
+    </script>
+
   </head>
 
   <body>
