@@ -28,6 +28,10 @@
   </span>
 {/if}
 
+{if empty($holdings) && $id|substr:0:5 === "vscht"}
+  <a href="http://aleph.vscht.cz/F?func=item-global&doc_library=ICT01&doc_number={$id|ltrim:"vscht"}">{translate text="Look for holdings in catalogue of VSCHT"}<a>
+{/if}
+
 {*
 {foreach from=$holdings item=holding key=location}
 <h3>{translate text=$location}</h3>
