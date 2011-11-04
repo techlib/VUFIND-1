@@ -152,15 +152,32 @@ class AJAX extends Action {
 
         // If any IDs were missing, send back appropriate dummy data
         foreach($missingIds as $missingId => $junk) {
-            echo join(PHP_EOL, array(
-              ' <item id="' . htmlspecialchars($missingId) . '">',
-              '   <availability>false</availability>',
-              '   <location>'.translate("Unknown").'</location>',
-              '   <reserve>N</reserve>',
-              '   <callnumber></callnumber>',
-              ' </item>'
-              )
-            );
+	    if (substr($missingId, 0, 5) === "vscht") {
+		    $id = ltrim($missingId, "vscht");
+		    $text = translate("in the catalogue of VSCHT");
+		    $location = htmlspecialchars(
+		    	"<a href=\"http://aleph.vscht.cz/F?func=item-global&doc_library=ICT01&doc_number=".$id."\">".$text."</a>"
+		    );
+		    echo join(PHP_EOL, array(
+		      ' <item id="' . htmlspecialchars($missingId) . '">',
+		      '   <availability>false</availability>',
+		      '   <location>'.$location.'</location>',
+		      '   <reserve>N</reserve>',
+		      '   <callnumber></callnumber>',
+		      ' </item>'
+		      )
+		    );
+	    } else {
+		    echo join(PHP_EOL, array(
+		      ' <item id="' . htmlspecialchars($missingId) . '">',
+		      '   <availability>false</availability>',
+		      '   <location>'.translate("Unknown").'</location>',
+		      '   <reserve>N</reserve>',
+		      '   <callnumber></callnumber>',
+		      ' </item>'
+		      )
+		    );
+	    }
         }
     }
     
