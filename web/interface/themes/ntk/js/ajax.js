@@ -72,7 +72,7 @@ function doGetStatuses(strings)
 		    if (locationDiv) {
 			if (collection === "vscht") {
 				locationDiv.innerHTML = "<a href=\""
-					+ "http://aleph.vscht.cz/F?func=direct&doc_number="
+					+ "http://aleph.vscht.cz/F?func=item-global&doc_library=ICT01&doc_number="
 					+ sysno
 					+ "\">"
 					+ "v katalogu VŠCHT"
