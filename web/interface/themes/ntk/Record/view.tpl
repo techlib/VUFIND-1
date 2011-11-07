@@ -30,7 +30,7 @@
             {/if}
           </ul>
         </div>
-        <script language="JavaScript" type="text/javascript">
+        <script type="text/javascript">
           function redrawSaveStatus() {literal}{{/literal}
               getSaveStatus('{$id|escape:"javascript"}', 'saveLink');
           {literal}}{/literal}
@@ -94,8 +94,8 @@
 
           {* Add COINS *}  
           <span class="Z3988" title="{$openURL|escape}"></span>
-
-      <b class="bbot"><b></b></b>
+      
+	<b class="bbot"><b></b></b>
 
 
     </div>

@@ -81,6 +81,13 @@
 </table>
 {/foreach}
 
+{if !empty($row.collection_desc)}
+<h3>{translate text="Location QR code"}</h3>
+<p>
+	<img src="https://chart.googleapis.com/chart?chl={$row.collection_desc|escape:"url"}&chs=150x150&cht=qr&choe=UTF-8" width="150" height="150" />
+</p>
+{/if}
+
 {*
 <link rel="stylesheet" type="text/css" media="print" href="/interface/themes/ntk/css/calendar.css" />
 {js filename="calendar-min.js"}
