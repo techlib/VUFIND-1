@@ -470,7 +470,7 @@ ul.similar li {
 ul.browse {
     border: solid 1px;
     height: 300px;
-    overflow: scroll;
+    overflow: auto;
 }
 
 /****** Record Vertical Tabs ******/
