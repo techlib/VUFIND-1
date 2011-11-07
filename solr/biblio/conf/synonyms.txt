@@ -2,4 +2,2234 @@ I,i,1,one,One
 II,ii,2,two,Two
 III,iii,3,three,Three
 IV,iv,4,four,Four
-V,v,5,five,Five
+V,v,5,five,Fiveabnormalita,nepravidelnost
+absolutní vladař,vladař,absolutní vládce,potentát,vládce
+administrativa,vedení,řízení
+administrativní zaměstnanci,administrativní pracovníci
+administrovat,spravovat
+agent,federální agent
+agentura,kancelář,obchodní zastoupení
+akademický administrátor,akademický řídící pracovník
+akademik,vysokoškolský učitel
+akceptovat,přibrat,přijmout
+akceptovat,uznat,přijmout,souhlasit
+akt,skutek,lidská činnost
+akutní,naléhavý
+aliance,spojenectví
+alternativa,výběr,možnost
+ambulance,sanitka,pohotovost,záchranka,sanita
+amputovat,odejmout končetinu
+anatomická struktura,struktura těla
+ansámbl,soubor,sbor
+antagonizmus,nevůle
+aparát,strojní zařízení,mašinerie,stroj
+apatie,netečnost,indiference,lhostejnost
+apex,apex slunce
+artefakt,výtvor,výrobek
+artérie,arterie,tepna
+artikulovat,vyslovit
+asistovat,pomoci,pomoct
+asociace,svaz,sdružení,fronta (zast.),organizace
+atmosférický jev,atmosférický úkaz
+autorita,orgán
+autorita,znalec
+auto,vůz
+babička,stařenka
+bafat,hafat,štěkat,rafat
+bájesloví,mytologie
+balení,karton
+balení,obal,obalový materiál
+banda,taneční kapela,taneční orchestr
+banka,databáze
+bankovní konto,bankovní účet,účet,konto
+bankrot,úpadek,krach
+bariéra,hrazení
+barvivo,barva
+bavlna,bavlněná tkanina,bavlněná látka
+báze,infrastruktura
+běh,provoz,výkonnost,činnost,chod,práce
+benzin,benzín
+beránek,jehně
+beseda,sešlost
+besídka,slavnost,mejdan,večírek
+bezcitnost,necitlivost
+běžet,utíkat
+bezmotorový letoun,větroň,kluzák
+bezobratlý živočich,bezobratlovec
+bezvýznamný,nicotný,nedůležitý
+bída,žebrota,chudoba
+biskupství,diecéze
+bít,bubnovat
+bít,mlátit,flákat,bouchat
+bít,rozbušit se
+bitva,boj
+blamáž,ostuda
+blata,močál,bažina
+bláto,půda
+blednout,zblednout
+bližní,soused
+blok,oddělení
+bloudit,potulovat se,toulat se
+bohatství,luxus
+bohatství,nadbytek
+bojovat,bít se,prát se,rvát se
+bojovat,zápasit,zápolit,potýkat se,potírat
+boj,zápas,bitva
+bok,stěna
+bok,strana
+bolení,zdravotní porucha
+bolest,trápení
+bomba,puma
+bouře,nepořádek,výtržnost
+bouřka,bouře
+box,pěstní souboj,rohování
+bránit,zabránit,zamezit,předejít
+bratranec,sestřenice
+bratr,druh
+bratrstvo,spolek
+brečet,plakat,ronit slzy
+břemeno,závaží
+břichatět,vykrmit,bachratět,ztloustnout
+brloh,rejdiště
+brodit se,přebrodit,přebrodit se
+brouček,nemluvně,miminko,mimino
+brzdit,blokovat,překážet,bránit,zdržovat
+budova,dům,barák
+burácet,dunět,rachotit,hučet
+bůžek,bůh
+bylinky,kuchyňské bylinky
+byssové vlákno,přílipné vlákno
+bystrost,důvtip
+bytí,jsoucno,existence,svět
+být,žít,existovat
+bývat,bydlet,bydlit,obývat,přebývat,sídlit,žít
+capart,dítě,špunt,děcko
+časový limit,časová lhůta
+částečka,kousek
+část,sekce,oddělení
+část,součást,díl,kus
+část zápasu,část hrací doby
+cedule,poutač,plakát
+cejchovat,značit
+celek,soubor
+čelo,líc,předek
+cena,hodnota
+cena,odměna
+čenich,náhubek
+cenit si,oceňovat,hodnotit,posuzovat
+cenit si,vážit si
+centrum,střed
+česat,narvat,chodit,očesat
+cesta,silnice
+céva,cévka
+charakterizovat,být charakterizován
+chátra,lid,masa,lidé
+chemický prvek,prvek
+chladit,ochladit,vychladit
+chlap,element
+chléb,chleba,prach
+chlívek,prázdné místo
+chodit,trampovat
+chování,mrav
+chovat,držet,pěstovat,držet si
+chovat se,držet se,osvědčit se,vést si,počínat si
+chrám,svatyně
+chrastit,chrupat
+chroupat,chřoupat,rozemlít,drtit
+chvátat,kvapit,spěchat
+chvíle,moment,okamžik,minuta
+chýlit se,blížit se,přiblížit se,vyjet
+chýlit se,spět
+chystat,chystat se,připravit se,připravit,přichystat,nachystat
+chytit,dostat,být zasažen,být postižen
+čichat,cítit,přičichnout
+cíl,účel
+čin,akt
+činnost,aktivita
+činnost,tělesná funkce,tělesný proces
+činovník,veřejný činitel,úředník,funkcionář,referent,zodpovědný činitel
+čin,skutek
+číslice,číslo,číslovka
+číslo,rutina,výstup
+čisticí prostředek,čistič
+čítat,obnášet,činit,dávat,dělat,dosahovat
+citový výlev,proud,příval
+čít,vnímat,vytušit,vycítit
+civilizovat,tříbit,zkultivovat
+civilní orgán,civilní autorita
+článek,stať
+člen,položka,bod
+člen,příslušník
+člun,kocábka
+čočka,oční čočka
+čpět,čpít,smrdět
+čtverec,druhá mocnina
+čtvrt,kvartál
+cukroví,sladkosti
+cupat,cupitat
+čutat,kopat
+cvičení,rozcvička,trénink,cvik,pohyb
+cylindr,válec
+dáma,milostivá paní,urozená dáma
+dařit se,kvést,zmohutnět
+dát,dát si,přidat,připojit,přidělat
+dát,poslat
+dát se,obrátit se,zamířit,namířit
+dát se,pustit se,začít
+dát,vložit,vsunout,přidat,připojit,dodat
+dát,zvednout,vyvézt
+dávat,naučit,poučit,vyučovat
+dávka,daň
+dávka,moře,spousta,chumáč,hromada,tucet,záplava,fůra,masa,hora
+dávkovat,odměřit,naměřit
+dav,tlupa
+dbát,poslouchat,dávat pozor,věnovat pozornost
+dbát,starat se,pečovat
+dcerka,dcera
+debata,rozprava
+dědictví,pozůstalost
+degradace,znehodnocení
+degradovat,ponížit,potupit
+dekorativní vzor,vzor,vzorek
+dělat,dělat se,chovat se,stavět se
+dělat,konat,vykonávat
+dělat,vykonávat,být zaměstnán,působit,pracovat
+delegovat,přidělit,rozdělit,zadat,dát,naložit,uložit,svěřit
+dělení,rozvětvení
+delikatesa,pochoutka,pamlsek
+deník,žurnál
+deoxidovat,odkysličovat
+děrovat,proštípnout,perforovat,probít,vyděrovat,proděravit,probíjet,dírkovat,cvaknout
+deska,hrací deska
+děsný,ukrutný
+déšť,dešť
+destilát,lihovina
+děs,úzkost,strach,panika
+dezert,zákusek,moučník
+didaktická pomůcka,učební pomůcka
+difuze,difúze
+diktovat,nadiktovat
+dílna,závod
+diskuse,diskuze
+diskuse,diskuze
+distance,odstup
+divadelní činnost,dramaturgie,dramatické umění,divadlo
+divit se,pochybovat
+dlaždice,skrojek,deska
+dlít,být,zůstávat
+dloubat,prostrčit,vyrýpat,vyrýpnout
+dloubat se,nimrat se,piplat se
+dlouhodobé onemocnění,zdravotní potíže
+dny,časy
+doba,čas,den
+dobrat,vypotřebovat,spotřebovat,vybrat,vyčerpat,žrát
+dobrodružství,riskantní podnik,eskapáda
+dohnat,nutit,donutit,přinutit,vnutit,tlačit
+dohoda,aliance,koalice
+dojet,dolézt,dojít,dospět,doběhnout,doplout
+dokonalost,bezvadnost
+dokonat,dohotovit,dodělat,ukončit,dokončit
+domácnost,dům
+domnívat se,předpokládat,počítat,myslet,myslet si,myslit,myslit si
+domoci se,dobýt
+donáška,dodávka,roznáška,dovoz
+donést,nést
+dopadat,belhat se,napadat,pajdat,kulhat
+dopálit,popudit
+dopoledne,ráno
+doporučit,poradit,nabádat
+doprovázet,provázet,dělat společnost,stýkat se
+dosažení,dospění
+dospět,dosáhnout
+dospět,dozrát,vyrůst
+dotaz,otázka
+dotazování,vyptávání
+dotek,dotyk,kontakt
+doupě,hnízdo
+dovést,zavést,vzít
+dovézt,svézt,zavézt,vozit
+dožadovat se,domáhat se,vyžadovat,požadovat,žádat
+dožadovat se,nárokovat si,domáhat se,hlásit se
+dozorce,kontrolor,školitel,dozor
+dozvuk,následek
+dravec,lovec,dravé zvíře
+dřevěnět,znehybnět
+dril,cvik,cvičení
+dřít,škrábat,škrabat,kousat
+droga,narkotikum
+drsnost,tvrdost
+druh,forma,sorta,třída
+druh,třída
+družstvo,mužstvo,tým,kolektiv,skupina
+držet,udržet,zachovat,uchovat
+duch,intelekt
+důchod,příjem,výdělek
+duchovní bytost,nadpřirozená bytost
+dům,obytný dům,domov,trvalé bydliště,bytová jednotka,obydlí,příbytek
+duševní činnost,mozková činnost
+duševní stav,duševní rozpoložení
+důsledek,následek,výsledek,efekt,účinek
+důvěra,jistota
+dvorana,sál
+džentlmen,gentleman,pán,pan
+echo,informace
+edikt,soudní rozhodnutí,nařízení
+efektivita,účinnost,efektivnost
+ekonomický stav,finanční stav
+ekvipáž,kočár,fiakr
+elaborát,písemná zpráva,zpráva,výkaz
+elektrický proud,proud
+elektřina,elektrika
+elektromagnetické záření,elektromagnetická vlna
+emoce,cit
+emocionální stav,citový stav
+empatie,vcítění
+epocha,doba,éra,věk
+epocha,éra
+eskalátor,pohyblivé schody
+etapa,fáze,období,stadium
+etapa,úsek
+evidovat,zanést
+excentrický,bizarní,divoký,výstřední
+exemplář,kopie
+existence,typ,zjev
+existovat,žít,přežívat
+extrém,nejzazší mez
+faktor,okolnost
+faktor,součást,prvek
+falšovat,padělat,zfalšovat
+figura,útvar
+fiktivní místo,neskutečné místo
+filmař,filmový producent
+filozofie,doktrína,učení,nauka
+finance,finanční prostředky
+finanční tíseň,tíseň
+finanční zisk,peněžní zisk
+firma,podnikatelská firma
+fláknout,zběhnout
+fond,matice,základ
+fond,peněžní fond
+fór,legrace
+formace,útvar
+forma,kadlub,šablona
+forma,tvar,podoba
+frekvence,dopravní ruch,provoz
+fronta,přední linie,frontová linie
+fungovat,zabrat,jet,klapat,běhat,jít,chodit
+funkce,matematická funkce
+funkce,role,úkol
+funkce,účel,určení
+fyzikální věda,fyzika
+gameta,pohlavní buňka
+gang,banda
+gáže,úplata,plat,výplata,výdělek,stálý plat,příjem,mzda,služné
+geografický region,zeměpisná oblast
+gestikulace,řeč těla
+gramatická kategorie,mluvnická kategorie
+gramatický vztah,mluvnická vazba
+hadr,zbytek,kus,ústřižek
+harašit,hrčet,zaštrachat,hrkat,hrkotat,drnčet
+hartusit,repetit
+hazard,hazardní hra
+helikoptéra,vrtulník
+hemisféra,polokoule
+historka,anekdota
+historka,osud,povídačka,vyprávění,vypravování,historie,líčení,příběh
+hit,šlágr
+hladit,ohladit,leštit
+hlas lidu,názor veřejnosti,veřejné mínění
+hlava,paměť
+hledání,pátrání
+hledat,pátrat
+hledisko,perspektiva,pohled
+hltan,hrdlo,chřtán
+hluk,hřmot,kakofonie
+hmota,hmotnost
+hmota,látka
+hmota,materiál
+hnací síla,hybná síla
+hníst,modelovat,vytvarovat,ztvárnit
+hnout,přesunout,pohnout
+hnutí,pohyb
+hodit se,slušet se,být vhodný,patřit se
+hodnost,společenské postavení,místo
+hojit se,zarůst
+holka,slečna,dívka
+honička,štvanice,honba
+hon,shon,chvat,kvap,fofr,spěch
+hora,kopec
+hořejšek,vrch
+hořet,horovat,plát,planout
+hořlavina,pohonná látka,palivo,otop,topivo
+hospodářská soustava,ekonomika,hospodářství
+hostit,bavit
+hostitel,hostitelská organizace
+hradba,oplocení,plot,ohrada
+hra,kolo
+hrana,úhel
+hraní,vystupování
+hrát,fingovat,nafilmovat,filmovat,předstírat,přetvařovat se,dělat
+hrát,zahrát si
+hřbet,záda
+hrdelní zločin,přestupek
+hrobka,hrob
+hrudník,hruď,prsa
+hryznout,kousnout,stisknout,sevřít
+huba,ústa
+hučet,šumět
+hudební skupina,hudební těleso
+huhňat,brblat,kuňkat,mumlat
+hýbat se,pohybovat se
+hýždě,půlka
+ideologie,politická orientace
+idiom,obrat,slovní obrat,fráze,slovní spojení,rčení,jazykový obrat
+imitovat,dělat,kopírovat,napodobovat,simulovat
+import,importovat,dovoz
+impotence,bezmocnost
+incident,událost
+indikace,naznačení
+indikovat,nasvědčovat,napovědět
+informátor,zprostředkovatel zpráv
+ingredience,přísada
+inspekce,kontrola,zkoumání
+institucionalizovat,předat,poslat
+institut,ústav
+instrument,nástroj
+instruovat,poučit
+inteligent,intelektuál,vzdělanec
+intenzivní,intenzívní
+interakce,spolupůsobení,součinnost
+interpret,představitel
+interval,časový interval,rozmezí
+intolerance,nesnášenlivost
+inverze,protiklad
+inženýr,technik
+jásat,radovat se,jubilovat
+jazykověda,lingvistika
+jazyk,přirozený jazyk,řeč
+jazyk,řeč
+jedinec,individuum
+jed,jedovatá látka
+jednatel,sekretář,tajemník
+jednat,postupovat,dělat
+jednat,vyjednávat
+jednotka,díl
+jehla,jehlice,jehlička,injekční jehla
+jektat,cvakat,drkotat
+jemné pečivo,bezvaječné pečivo
+jemnost,detailnost
+jev,zjev,fenomén,úkaz
+jezdit,sedět
+ježek,mořský ježek
+jícen,ústí
+jídlo,potrava
+jihnout,rekreovat se
+jiný,jinaký,jinačí
+jistota,jistá věc
+jíst,přijímat potravu
+jít,chodit,kráčet
+jít,jet
+jít,kvačit
+jít,pohybovat se,chodit,jet
+jít,vést
+jízdní kolo,bicykl,kolo
+jméno,název
+jmenování,dosazení
+jmenování,vyjmenování
+jmenovat,designovat
+kabonit se,ztmavět,ztmavnout
+kácet,skácet
+kalamita,zpustošení
+kalendářní měsíc,měsíc
+kalich,kalich zvonu
+kamufláž,přestrojení
+kanál,stanice,přenosový kanál
+kancléř,ministerský předseda
+kánoe,kajak
+kapesník,šátek,šáteček
+kapka,krůpěj
+karta,list
+karta,štítek
+kauce,záruka
+kázeň,disciplína
+kino,snímek,film
+klání,turnaj
+klan,kmen,rodina
+klasifikace,kategorizace,třídění
+klást,dát,položit,umístit,naložit
+klenba,klenutí
+klepnout,ťuknout
+kleveta,řeč,klep
+klíček,klíč
+klientela,zákaznictvo
+klikatit se,kroutit se,vinout se
+klobouk,čapka
+klokotat,bublat,zurčet
+klonit,naklonit,naklonit se,chýlit se,chýlit,nachýlit se,svažovat se,sklopit,vyklonit
+kmitočtové pásmo,pásmo
+kněží,kněžstvo
+knihovna,programová knihovna
+knižnice,knihovna
+kňourat,kničet,vrnět,kvičet,kňučet
+koalice,sloučení
+kognitivní proces,proces poznávání
+kolébat,rozhoupat
+koleno,kolenní kloub
+koleno,ohyb
+kolize,střet
+kolo,obruč
+kóma,hluboké bezvědomí
+kombinace,slučování
+kombinace,slučování
+komediant,herec
+komfort,pohodlí
+komíhání,klácení
+komik,kabaretní umělec
+komnata,byt,garsoniéra,garsonka
+komora,sněmovna
+komplex budov,komplex
+komplex,komplexní sloučenina,koordinační sloučenina
+kompozice,skladba,sestavení
+komputer,computer,počítač,elektronický počítač
+komunikování,interakce
+koncept,návrh
+koncern,obchodní organizace,obchodní firma
+konec,zánik
+konfederace,sdružení,federace,svaz,svazek
+konflikt,srážka
+konina,švanda,psina
+konkavita,vydutost
+koňská drožka,kabriolet
+konsorcium,syndikát
+konstituce,ústava
+konstituovat,ustavit,zřídit
+kontakt,styk,spojení
+kontejner,přepravník
+kontext,poměr
+kontrola,ovládání
+konverzovat,rozprávět
+konzervovat,preparovat
+konzument,spotřebitel
+kopanec,kop
+kopat,hyzdit
+kopulovat,pářit se
+korespondovat,krýt se,shodovat se
+kosmetika,kosmetické přípravky
+kosmos,svět
+kosodřevina,kleč,roští
+kóta,dimenze
+koulet,kutálet
+koupit,koupit si,odkoupit,zakoupit,nakoupit,pořídit si
+kouřit,udit,čadit,čoudit,čudit
+koutek,kout,roh
+kout,končina
+kovadlina,kovadlinka
+kovat,vykovat,kout
+kovové peníze,ražení,oběživo,mince,ražené peníze
+koza,tělocvičný kůň
+krach,propad
+kraj,region
+kramle,skoba
+krása,nádhera
+krást se,vkrást se
+krátit,zestručnit
+krčit se,přilézt,choulit se
+křeslo,místo,post,pozice
+křídlo,přístavek,trakt
+křivdit,provinit se,ukřivdit
+křížit,překřížit
+krk,život
+krmivo,krmení,žrádlo
+kroutit se,vinout se
+křoví,keř,křovina
+křtít,pokřtít
+kruh,garda,okruh
+krůpěj,perla
+krysa,potkan
+kryt,bunkr
+krýt,pokrývat
+kuchařství,kuchyně,kulinářství
+kuchyně,kuchyň
+kulit,čumět,boulit,poulit,civět
+kultivovat,šlechtit
+kumpán,kamarád
+kůň,koně
+kůže,kůra
+kužel,obušek
+kůže,pleť
+kvádr,cihla,blok
+kvádr,kostka
+kvalita,vlastnost
+kvantifikovat,ohodnotit
+kvas,kvásek
+lačnět,hladovět
+láhev,flaška
+láhev,lahev
+lákat,přitahovat
+lapit,zajmout,polapit,pochytat,dostat,dopadnout,chytit
+láska,miláček,milý,poklad
+láska,milostný vztah,poměr
+laskat,hladit
+laskavost,vlídnost
+lázeň,napajedlo,lázně
+léčebná instituce,léčebný ústav
+lechtat,pošimrat,šimrat
+léčivo,lék
+ledabylost,lehkomyslnost
+lékař,doktor
+lékař,doktor
+lékárna,drogérie
+lék,prostředek,kúra
+letadlo,letoun
+letecký prostředek,vzdušný prostředek
+lézt,plazit se,plížit se
+líčit,zpodobit,zpodobnit
+lidská samička,osoba ženského pohlaví
+lidská síla,chasa
+lidské tělo,tělo,schránka,tělesná schránka
+lidský rod,lidé,svět,plemeno,lidstvo,lidská rasa,pokolení
+lid,veřejnost
+likvidovat,vyplatit
+limita,limitní bod
+linka,stezka,trasa
+lipid,lipoid
+lišit se,odlišit se
+lisovat,lít,odlít
+list,arch
+lístek na výsledky,výsledková kartička
+list,psaní,dopis,úřední dopis
+literární žánr,styl psaní
+litovat,mrzet,kát se
+lokomotiva,mašina
+loudat se,brousit,courat se
+louže,kaluž,tratoliště
+ložisko,půle,srdce,ohnisko,střed,prostředek,jádro,centrum
+lunární měsíc,synodický měsíc
+lupen,lístek,list
+mačkat,pomačkat
+majetek,pozemek,panství,statek
+majetnictví,vlastnické právo
+majitel,vlastník
+makléř,zprostředkovatel,agent
+malba,obraz
+malý,nevelký
+management,vedení,správa,řízení
+manekýn,model
+manévrovat,navést,směrovat,kormidlovat
+mansarda,podkroví,podkrovní byt,půda
+manželský pár,manžel
+mapa,plán
+maření,bránění
+masakrovat,pobít,vraždit,povraždit,vyvraždit
+mašina,motor
+maska,škraboška,kukla
+materiální zdroj,hmotný zdroj
+mazat,vymazat
+mdloba,bezvědomí
+medikament (hovor.),medicína (hovor.),lék
+medvěd,plyšový medvídek
+měna,platidlo,peníz
+měnový systém,měnová soustava
+mentální blok,okno
+mentální schopnosti,mentální dispozice
+měřit si,pozorovat,prohlížet si
+merkantilismus,komercialismus
+měsíční svit,měsíček
+měšťan,občan
+městnat se,shluknout se
+metat,nadhodit,hodit
+metoda,soustava,systém
+metropole,velkoměsto
+mezní hodnota,limit
+mikroorganismus,mikroorganizmus
+milostný poměr,pletka
+mimořádný,znamenitý,eminentní
+mince,peníz,penízek
+mínění,soud
+minerál,nerost
+ministerstvo,budova ministerstva
+mínit,myslet,myslit,chtít
+mínit,mýt na mysli
+míra,hranice,mez
+míra,jednotka
+mise,delegace,deputace
+mísit se,smísit
+místnost,pokoj,světnice
+místo,okolí,sousedství
+místo,pozemek
+mistr,expert,znalec,odborník
+mistrovství,zběhlost
+mít,být nemocný
+mít,nabýt,dostat
+mít,vyznačovat se
+mixovat,splynout,mísit
+mládenec,syn,chlapec
+mladistvá osoba,nezralý člověk
+mlhovina,galaxie
+mluvit,hovořit
+mlýnek,mlýn,drtič,bruska
+mocnost,síla,moc
+mohyla,památník
+moment,prvek
+morálka,mravnost
+moře,oceán
+motivovanost,puzení
+motiv,podnět,popud,pohnutka
+mozková kapacita,hlava,mozek
+možnost,eventualita
+možnost,předpoklad
+mrav,mravouka
+mráz,záchvěv
+mrdat,dělat,souložit,dát,spát,vyspat se
+mrhat,prohospodařit,plýtvat,marnit
+mrtvola,ostatek,tělesné pozůstatky,umrlec
+mučit,trýznit
+mumlání,mručení
+mumlat,mručet
+mutant,zrůda
+muzikant,hráč,hudebník
+muž,voják
+myšlenka,hlavní myšlenka,téma,osa
+myšlenka,nápad,idea
+myšlenková reprezentace,mentální zpodobnění
+mystifikovat,mýlit
+mžikat,mžourat,mrkat
+nabádat,přinutit,mít,pobídnout
+naběhnout,otéci,otéct,zduřet,napuchnout,natéci,natéct,opuchnout,nadout
+náboženská ceremonie,ritus
+náboženství,víra
+nabrat,odebrat
+nabrat,tloustnout
+nabytí,přírůstek,akvizice
+nacházet se,nalézat se
+nacházet se,příslušet
+nadpis,titulek,záhlaví
+nadšení,zápal
+nafilmovat,filmovat,zfilmovat,natočit
+náhoda,nahodilost
+nahodit se,namanout se
+náhrada,kompenzace,odškodnění
+nahradit,vynahradit,odškodnit,kompenzovat
+najet,vrazit,narazit
+najít,nalézt
+najmout,pronajmout,půjčit si
+naklížit,lepit,klížit,přilepit,nalepit
+naklonit si,získat si,získat,nadchnout,přesvědčit,ubezpečit
+nakousnout,načít
+nakrmit,nasytit
+naleštit,napastovat,pastovat
+nalétat,létat
+náležet,patřit
+nalíčit,líčit
+nalíčit,vylíčit,natřít
+nalít,vložit
+nalodit,transportovat
+námaha,usilovná snaha
+námaha,vypětí,dřina,úsilí
+naměřit,odčíst,odečíst
+namoci,namoct
+namontovat,instalovat,zamontovat,montovat
+nanést,namazat
+nanést,přiložit
+nános,sedlina,sediment,usazenina
+nános,vrstva
+nápis,věnování
+nápoj,pití,pitivo
+napumpovat,hustit,nafouknout,nadout,nahustit
+napustit,zavézt,nadmout
+nářadí,náčiní
+nařízení,předpis
+národ,kmen
+národ,lidé
+narovnat,pakovat
+nárůst,přírůstek
+narůst,vzrůst
+násilný čin,násilí
+následující,příští
+naslouchat,poslouchat
+nastínit,nahlásit
+natáhnout se,vypnout,rozkládat
+natočit,natočit si,natočit se
+natrhnout,přetrhat,přetrhnout
+nátura,letora,temperament
+naturalismus,realismus
+navát,čišet,nafoukat,nadout,odfouknout,odfoukat
+navěsit,navěšet,rozvěsit,rozvěšet
+návěští,návěstidlo,znamení,signál,návěst,signalizační zařízení
+navršit se,nashromáždit se,kumulovat se,nakupit se,nahromadit se,narůst
+návštěva,host
+navštívenka,vizitka
+návyk,vzorec chování
+nazírat,pokládat,považovat,mít,řadit,řadit se
+náznak,signál,předznamenání,znak
+názor,mínění,mysl,soud,náhled
+nazvat,pojmenovat,říkat
+nebeské těleso,vesmírné těleso
+nebezpečí,nebezpečenství
+nečestnost,nepoctivost
+nechat,připustit,dopustit,dovolit
+nechat,svěřit,přenechat
+něco,věc
+nedopatření,lapsus
+nedostávat se,scházet,chybět
+neduh,potíž
+nedůvěřivost,skepticismus
+nehoda,neštěstí
+nehýbat se,být v klidu
+nejpřednější,první
+nenávist,žluč,zášť
+nepřátelství,zášť
+nerv,nervová soustava
+nesdílnost,uzavřenost
+nesnáz,trable,problém,překážka
+nesouzvuk,nelibozvuk,disonance
+nést,uhradit
+nešvar,neřest
+neúčast,absence
+neúčast,nezájem
+neuskutečnění,neprovedení
+neúspěch,nezdar
+nevšímavost,záměrná nevšímavost
+nevýhoda,neprospěch
+nezájem,neúčast
+nezdravost,vadnost
+nezralost,nedospělost
+nit,příze
+nížina,tabule
+noclehárna,hostel
+nohavice,kalhoty
+nostalgie,stesk
+nouze,chudoba,nedostatek
+noviny,list
+noviny,poselství,zvěst,novinka
+nutnost,nezbytnost
+obal,pokrývka
+obarvit,vybarvit,kolorovat
+obchod,byznys
+obchodní společnost,společnost
+obchodní značka,obchodní název
+obchodovat,kšeftovat
+obchod,prodejna,krám
+obdarování,dar
+obdarovat,darovat,dát,dávat,věnovat
+obdělávání,kultivace
+období,roční období
+období,vymezené období
+období života,údobí života
+obdržet,dostat
+obecenstvo,auditorium
+obec,samosprávná obec,město
+obelhat,šálit,mámit
+oběsit,pověsit
+oběžnice,planeta
+obílit,nabílit,vybílit,líčit,bílit
+objekt,předmět
+objev,nález
+obkreslit,narýsovat,opsat
+oblak,mrak,mračno
+oblak,mrak,mračno
+oblast,území,prostor
+oblast vědění,doména znalostí
+obléci si,obléct si,obléknout si,ustrojit se,obléci se,obléct se,obléknout se,vzít si
+oblek,šaty
+oblíbenost,popularita
+obloha,nebe
+obměna,mutace,verze,varianta
+obor,disciplína,pole,vědní obor
+obracet se,adresovat
+obřad,ceremoniál,slavnost,ceremonie
+obrat,načesat
+obratnost,zručnost
+obrat zpět,obrácení,reverze
+obrat,zvrat
+obsah,předmět
+obsluha,operátor,manipulátor
+obstarat,sehnat,získat,opatřit
+obuv,obutí
+obvod,okres,teritorium,okrsek
+obyčejný lid,obyčejní lidé
+obytná budova,obydlí,dům
+obytný automobil,přívěs
+obývat,existovat
+očekávat,nadít se,nadát se,čekat
+očekávat,předvídat,čekat
+ochrana,ochranný kryt
+ochranné zařízení,bezpečnostní pomůcka
+ochutnat,zkusit,okusit
+odborník,mistr
+odbourat,ztenčit,redukovat
+odbyt,odbytová prodejna
+odčerpat,odsát,odvodnit
+odchýlit,odchýlit se,odklonit,odklonit se
+odchylka,výkyv
+odčíst,odečíst,odpočítat,odpočíst
+odcizení,krádež
+oddanost,svázanost
+oddělat,odpravit,zlikvidovat
+oddělení,oddělování,rozdělení
+oddělení,referát,katedra,sekce,obor
+oddělit,rozloučit,rozdělit
+oddíl,skupina
+odebírat,odstranit,odejmout,odnít,odebrat,vybrat
+odehnat,zapudit
+odejít,zesnout,skonat,dokonat,zemřít,zahynout,zhynout,umřít
+odepření,odmítnutí
+odepsat,amortizovat
+odeslat,expedovat
+oděv,ústroj,oblečení,textil,odění,šaty,oblek
+odevzdat,vydat
+odezva,reakce
+odhad,mínění
+odhadnout,ocenit,vyčíslit,ohodnotit
+odhláška,stornování,storno
+odhodlat se,umínit si,rozhodnout se,říci si,říct si
+odjezd,odlet,odchod,výjezd
+odlámat,ukrojit,naťuknout
+odmítnout,nepřijmout
+odmořit,vyčistit
+odpal,trefa
+odpojit,rozpojit
+odpor,antipatie
+odpornost,ohavnost
+odstín,odstín zvuku
+odstín,přeliv,zabarvení,tón,nádech
+odstranit,zbavit se,vyhodit,dostat
+odstup,vzdálenost,dálka
+odvelet,rozmístit
+odvolit,hlasovat
+odvoz,odvážka
+ofenziva,útok
+oheň,palba
+ohlásit,vyhlásit
+ohled,zřetel
+ohon,oháňka,ocas
+ohřívač,topení
+okartáčovat,kartáčovat
+okno,okénko
+oko,puštěné oko
+okraj,dělící čára
+okraj,pokraj,periferie,kraj
+okroužkovat,kroužkovat
+oloupat,očistit
+omamná látka,omamný prostředek
+omést,odmést
+omezení,brždění
+omezit,limitovat
+omezit,restringovat
+omyl,kopanec
+opakovat,opětovat
+oplodnit,zbouchnout
+opona,příkrov,závěs,záclona
+opovážit se,troufat si,odvážit se
+opozice,kontrast
+oprava,správka,správa
+optická vlastnost,viditelná vlastnost
+opus,dílo,kus,kompozice,skladba
+opustit,odejít
+orální komunikace,mluvený jazyk,řeč
+organická sloučenina,organická látka
+organismus,bytost,forma života
+ořízka,roh
+ortodoxie,pravověrnost
+osada,kolonie
+osada,tábor,kemp
+osázet,nasázet,sadit,zasázet
+oslabit,zeslabit
+osmažit,usmažit,smažit
+osobní chování,způsoby
+osobnost,charakter,bytost
+ostrov,ostrůvek
+otáčka,obrátka
+otevřít se,rozevřít
+otřelost,omšelost,opotřebovanost
+otřít,přetřít,osušit,smazat,utřít
+ouško,ucho
+ovál,vajíčko,elipsa
+ovce,ovečka
+ovládat,řídit,mít v moci,držet v moci,vládnout,panovat
+ovládnout,zmocnit se,spolknout
+ovlivnit,působit,mít vliv
+ovlivňovat se,působit
+ovoce,plod
+ozbrojené síly,ozbrojená moc,armáda
+oživení,osvěžení
+označení,známka
+označit,označovat
+označit,označovat
+oznámit,nahlásit
+ozvat se,odepsat,odpovědět
+paběrkovat,klidit
+pacholek,sloužící
+pachtit se,prohnat,pídit se,štvát
+padat,napadnout
+pádit,upalovat
+padnout,snést se,spadnout,klesnout
+padnout,zahynout,zemřít
+pakáž,holota,chátra,cháska,sebranka,lůza,luza
+pálit,vypálit
+pamatovat,myslet,myslit,pomyslet
+pamatovat si,mít na paměti
+panel,tabule
+panenka,panna
+pán,pan,vládce
+papír,listina,dokument
+párek,dvojice
+parodie,výsměch
+participovat,zúčastnit se,účastnit se
+partie,krajina
+pás,lán
+pás,pásek
+pata,úpatí
+pazneht,kopyto
+péče,pozornost
+pěna,myš
+peněžní obnos,obnos,peníz,částka,suma
+peněžní zásoba,hotovost
+percepce,vnímání
+perioda,doba,období,etapa,údobí
+periodická událost,opakující se událost
+personál,mužstvo
+pěšina,chodník,stezka,pěšinka
+pěší turistika,chůze
+pět,zpívat,zpívat si,prospěvovat si,vyzpěvovat si
+piano,klavír
+pigment,barvivo
+pilovat,vypilovat
+písmeno,abecední znak,litera,céčko
+plachtoví,plachta
+plantáž,kultura
+plast,umělá hmota
+plášť,útulek
+plavat,plout,uplavat
+plemeno,rasa
+pletivo,tkáň
+plevel,býlí
+plocha,lán,parcela
+plod,produkt,výrobek
+plošná jednotka,čtvereční míra
+plošný obrazec,obrazec
+plošný obsah,plocha,rozloha,plošná výměra,obsah
+plout,splývat,plavat
+plovák,prám
+plyn,plynná látka
+plýtvání,mrhání
+pobavení,zabavení,kratochvíle
+pobavit,povyrazit
+pobožný člověk,nábožný člověk,zbožný člověk
+počátek,zahájení
+počátek,zdroj,kořen,pramen
+pochroumat,poranit
+pocínovat,konzervovat
+počítat,vypočítat,vypočíst
+pocit,smyslový podnět
+podařit se,zdařit se,povést se,pořídit
+podat,dát,předat
+podat,předložit,doporučit,navrhnout,poradit
+poddanství,poroba,područí
+podgraf,podiagram
+podíl,procento
+podíl,účast
+podivný,neznámý
+podklad,patka,základní práce,základna,základ
+podkuřovat,lichotit,pochlebovat,lahodit
+podlaha,země,zem
+podněcovat,podněcovat smysly
+podnět,pobídka,popud,signál
+podnikatelská činnost,obchodní činnost
+podnož,stojan
+podobat se,připomínat
+podplatit,koupit si
+podrobnost,detail,jednotlivost
+podržet,rezervovat
+podstata,jádro
+podstatná část,nadvláda,většina
+poeta,básník
+pohana,potupa,urážka
+pohánět,hnát
+pohazovat,rozhrnout,rozšlapat,rozšlápnout,rozházet
+pohledávka,dluh
+pohledět,pohlédnout,dívat se,podívat se
+pohnout,hnout
+pohon,rozjetí
+pohřeb,pohřební obřad,funus,smuteční obřad
+pohřížit se,nořit se
+pojetí,koncept,koncepce,pojem
+pojítko,spojitost,vazba,souvislost
+pojmenování,označení
+pojmout,představit si,mít pojem
+pokrevní linie,rodokmen,krev
+pokrok,zlepšení
+pokropit,kropit,pocákat,cákat,pošplíchat,šplíchat
+pokroucený tvar,pokřivený tvar
+pokusit se,zkusit,snažit se
+poledne,pravé poledne
+pole,pláň,planina
+pole,role
+polibek,pusinka,hubička,pusa
+policejní sbor,policie,bezpečnost,sbor
+politická strana,strana,partaj
+politování,žal,lítost
+poměr,podíl
+pomočit,naslinit,namočit,mokřit,navlhčit,namokřit,umáčet
+pomocník,pomocná síla,asistent
+pomoc,výpomoc
+ponechat si,nechat si
+ponrava,červ
+poopravit,vylepšit
+popírat,zkreslovat,překrucovat
+popis,kresba,obraz
+poplašit,nahnat,děsit,lekat,postrašit
+poplatek,sazba
+popovídat si,klábosit,tlachat,besedovat,pohovořit si
+poprášit,pokropit,roztahat,nasypat,posypat
+popsat,narýsovat,vykreslit,znázornit,vylíčit,vypsat,líčit
+popsat,pojmenovat,označit
+pořádat,podnikat
+pořádek,pořadí
+pořádek,řád
+pořadí,hodnost
+porážka,prohra
+pořezat,řezat
+porovnat,srovnat,srovnat se,měřit se
+poručník,protektor,zadák,chránič,obhájce,ochránce,hlídač,obránce,správce
+posádka,lodní posádka
+posílit,podepřít,podpořit,podat
+poskočení,výskok
+poškodit,porušit
+poskytnout,přinést
+poslání,žaloba,obžaloba,úloha,úkol,mise
+poslech,příjem
+posloupnost,sled
+posmívat se,vysmát se
+pošta,poštovní zásilka
+postava,role,úloha
+postavení,místo
+postel,lůžko,lože
+postoj,stanovisko,vztah,poměr,mentální postoj
+poštovní balíček,balík
+postřehnout,zpozorovat,rozpoznat
+post,stanoviště
+postupovat,prospívat
+postupovat,utíkat,plynout
+pošuk,rapl,excentrik
+posunek,posuněk
+posunout,předsunout
+posvícení,slavnost,festival,církevní svátek,hody
+potah,zápřež,spřežení
+potěcha,posila,útěcha
+potenciál,kapacita
+potěšení,potěcha
+potíž,nesnáz
+potřást,lomcovat,zalomcovat,protřepat,zatřepat
+potřebovat,vyžadovat,chtít
+potupa,hanba
+potvrdit,verifikovat
+povaha,typ
+považovat,pokládat
+povel,rozkaz,příkaz
+povinnost,závazek
+povlak,krytina,přebal,potah
+povlak,potah
+povlečení,škraloup,povlak,kámen,skořápka,kůra
+povrch,plocha
+povstat,zvednout se,vstát
+povyk,halas
+povýšení,postup
+povýšit,zvednout
+povzbudit,podpořit
+povzbudit,zaktivizovat,stimulovat
+pozadí,okolnosti
+pozice,poloha,póza
+pozice,postavení
+požírat,žrát
+požít,vzít,vzít si,konzumovat
+pozměnit,obměnit,měnit
+poznámka,komentář
+poznání,poznávání,kognice
+pozornost,zaujetí
+pozorování,datum
+pozorovatel,hlídka
+pozvání,pozvánka
+práce,funkce
+práce,výtvor,dílo
+pracovat,makat,nadřít se,dřít se,nadělat se,klopotit se,dřít,hmoždit se
+pracovní oddíl,osazenstvo,štáb,pracovní četa
+pracovní postup,procedura
+prádelník,zásuvková skříň
+pramice,bárka
+prasklina,trhlina
+přátelství,kamarádství
+přát si,chtít
+přát si,chtít,zamýšlet
+právník,právní zástupce,právní poradce,zástupce,obhájce
+právoplatnost,validita
+právo,právnictví
+právo,zákon
+praxe,zkušenost
+prázdno,nicota,prázdnota
+prcek,dítě
+prdel,zadek,pozadí,zadnice
+přeběhnout,projít,přejet,projet,jít,přejít,minout
+přečíst,číst
+předcházet,předběhnout,předjet,předejít
+předchůdce,předek,praotec
+předloha,umělecké dílo,grafika
+předložit,přednést
+předmět,námět,tematika,syžet,téma
+přední,prominentní,význačný
+přednosta,šéf,hlava,náčelník
+přednost,silná stránka
+předpokládat,domýšlet si
+předseda,předsedající
+představení,divadlo,provedení
+představený,šéf
+představivost,vize,fantazie,imaginace
+představovat,hrát,zpívat
+představovat,reprezentovat
+předvedení,ztvárnění
+prehistorie,pravěk
+přehlédnout,prohlédnout
+přehmat,omyl,vina,chyba
+přejet,zajet
+přejít,přejet,přeplout,najet,ujít
+překontrolovat,prohlédnout
+přemítat,meditovat,vypočítat,vypočíst,hloubat,přemýšlet,bádat,koumat,podumat,dumat
+přepojit,přecházet
+přeprat,vyprat,prát
+přeprava,transport,komunikace,doprava,plavba
+přepravní prostředek,transportní prostředek
+přesednout,prohodit
+přestat,zarazit,zastavit
+přestrojit,zastřít,převléci,převléct,převléknout,skrýt
+přesypat,vlít,hrnout,načepovat,nalít
+přetrpět,dovolit,unést,líbit,tolerovat
+přetrvat,žít,přežít
+přetvářka,šalba,oklika,podvod,klam
+přetvořit,přeměnit
+převalit se,zvrátit se,vyklopit se,zvrhnout se
+převléci,převléct,převléknout,přestrojit
+přežvýkavci,sudokopytník
+příbuznost,spřízněnost
+příbuzný,rodina
+příchod,narození
+příchuť,chuťová přísada
+příčina,původ
+přičíst,připsat
+přidat se,dát se
+přidat se,držet,být zajedno
+přihlásit se,hlásit se,zapsat se,vstoupit
+přihlédnout,počítat
+příhoda,událost
+přijít,nabýt,vzít,vzít si,získat,dostat,dostat se
+přijít,obrátit se,oslovit
+přijít,padnout,narazit,kápnout
+přijít,přicestovat,přijet,dostat se,dojít,dorazit
+přijít,přihodit se,postihnout,potkat
+přijít,vyjít,stát
+příjmení,přídomek,rodinné jméno
+příklon,dispozice,tendence
+příklop,víko,vršek
+přikrášlit,zkrášlit,přizdobit
+přílet,příchod,příjezd
+přimáčknout,mačkat,tisknout,tlačit
+přinést,propůjčit,dodat
+připadat si,chtít se
+případ,situace
+připevnit,upnout,přidělat
+příprava,preparát,přípravek
+připravit,připravit si,chystat si
+příroda,divočina
+přírodní fenomén,přírodní úkaz
+přírůstek,přídavek
+přislíbit,dát slib,slíbit
+příslib,slib
+příslušenství,záchod
+přístup,příchod
+přitlouci,přitlouct,přibít
+přívod,přísun,přítok
+přivolávat,říkat si
+přívrženec,stoupenec,vyznavač
+probodat,probodnout,propíchat,propíchnout
+pročesat,zpřevracet,zobracet
+procitnout,vzbudit se,probudit se,budit se
+prodebatovat,prodiskutovat,diskutovat,debatovat,prohovořit,povídat si,projednat
+prodej,obchodování
+prodělat,utrpět
+prodělek,pokles
+produkce,tvorba,výroba
+produkovat,pěstovat
+profese,zaměstnání,řemeslo
+profil,charakter
+prohlášení,výrok,vyjádření
+prohledat,pročesat
+prohlédnout,podívat se
+prohnout,pokrčit
+prohřát,ohřát,oteplit
+projekt,podnik
+projev,proslov,řeč
+prokázat,dokázat,demonstrovat
+prokázat,předvést
+proměnit,převést
+prominout,odpustit
+pronést,vyslovit,vydat,vypravit
+propadnout,unést
+propuknutí,vypuknutí
+prorazit,proniknout,vniknout
+prorazit,razit si cestu
+prosazovat se,uplatňovat se
+prostorová vlastnost,prostorovost
+prostor,plocha
+prostor,zóna
+protáhlý obrazec,podlouhlý obrazec
+proudit-1,rojit se,vyrojit se
+proviant,potraviny,zásoby potravin
+provokace,nastražení
+provokovat,dorážet,dotírat,sužovat
+prožitek,zkušenost
+průchod,chodba
+průchod,uvolnění
+prudký,těžký,velký
+průjezd,přechod,průchod
+průsmyk,soutěska
+prut,tyčka
+průzkum,výzkum
+prvek,součást
+psaný symbol,tištěný symbol
+psát,sepsat,nastylizovat,sestavit,napsat
+psát,vypsat,napsat
+půda,pozadí,aranžmá,rámec
+půjčit si,vypůjčit si
+půjčka,vypůjčka
+puk,sklad,záhyb
+pulzovat,bouchat,vibrovat
+působit,dělat dojem
+působit,poznamenat,postihnout
+působnost,aktivita
+původní,originální
+pytel,taška,sáček
+rada,avízo,ponaučení
+rada,kolegium
+řádek,řada
+radost,veselost
+řád,spolek,společnost,společenství,obec,cech,lóže,klub,sdružení
+rafinovaný cukr,cukr
+rajon,kus,dílec,parcela
+rameno,rámě
+rána,střelba
+rána,třesk
+ranit,stihnout
+raport,referát,hlášení
+rašelina,slatina
+ráz,tvář,povaha
+realita,nemovitý majetek
+realizovat,konkretizovat,uskutečnit
+rebelie,odboj,vzpoura,vzbouření
+recese,vtip,šprým,špás,žert
+recitovat,přednést
+referát,kronika,dějiny
+rekreační středisko,rekreační oblast,výletní místo,letovisko,středisko
+relevance,věcnost
+reliéf,povrch země,pevnina,souš,země,zem
+řemeslník,vyučený řemeslník
+řemeslo,živnost,branže
+reprezentace,zastoupení
+reprezentant,zástupce
+repríza,repetice
+republika,demokracie
+reputace,jméno
+restaurovat,vrátit
+restituce,obnova
+řetěz,sled
+revize,kontrola
+řezačka,obráběcí nástroj,řezný nástroj
+rezervovat,zamluvit
+rituál,obřad
+řízení,soudní řízení,soud
+robota,práce
+rodák,původní obyvatel
+rodič,matka
+rodit se,snovat,snout
+rodná střecha,domov
+rod,příbuzenstvo,rodina
+rohlík,žemle
+rohož,předložka,podložka
+roj,horda,stádo
+rok,léto
+rotace,otáčivý pohyb
+rota,setnina
+rovnováha,vyváženost
+rozbalit,rozšířit,rozmnožit
+rozbořit,ničit,bořit,zničit
+rozčeřit,rozvášnit
+rozchodit,prodloužit
+rozdělit,klasifikovat,přebrat
+rozdělit se,rozejít se,rozcházet se
+rozdělit,vydělit
+rozdrobit se,drolit,udrolit se,rozdrobit
+rozdrobit se,rozdrobit,rozpadat se,rozpadávat se
+rozebrat,analyzovat
+rozedrat,rozedřít,škrábat,škrabat,poškrábat,poškrabat,podrápat
+rožek,růžek
+rozeslat,obeslat
+rozestavit,rozmístit
+rozhodce,rozhodčí,soudce
+rozhodnutí,závěr
+rozhořčení,rozezlenost
+rozjařit,obveselit,rozradostnit,potěšit
+rozjet,započít,rozběhnout
+rozkaz,nařízení
+rozkládat,pokynout,gestikulovat
+rozklepat,roztřást,třást se,otřást se
+rozlít,vylít
+rozloučit se,rozdělit
+rozměnit,směnit,vyměnit
+rozmezí,hranice
+rozmístění,umístění,poloha
+rozmluva,hovor,řeč,pohovor,rozhovor,konverzace
+rozmýšlet,uvažovat,přemítat,myslet,myslit
+rozpad,chátrání,pustnutí
+rozpéci,rozpéct
+rozplemenit se,rozhojnit
+rozplynout se,rozpustit
+rozpoznat,rozeznat
+rozprostřít,rozložit
+rozptýlení,obveselení,zábava
+rozruch,rámus,mela,brajgl,bengál,povyk
+rozrušit,rozložit,zmítat
+rozrůst se,rozšířit se
+rozrůznit,odlišit,diferencovat,rozlišit
+rozsadit,posadit,usadit
+rozšířit se,roztéci se,roztéct se,rozmáznout,rozmazat
+rozsvítit,zapnout
+roztát,rozmrznout,jihnout
+roztoužení,touha
+roztržitost,roztěkanost
+rozumět,znát,umět,domluvit se,dohovořit se
+rozvézt,přivézt,dovézt,roznosit,doručit,vozit
+rozvít,vyvinout se,vypěstovat
+rozvrhnout,vyčlenit
+rozzlobit,rozčílit,rozhněvat,nazlobit
+rušit,vyrušit
+růst,narůst
+růst,vyrůst
+růst,vývin
+rychlost,fofr
+rýha,vráska,jizva,žlábek
+rys,příznak,znak
+rys,tah
+ržát,zaržát
+šachovat,limitovat
+sada,blok,podíl
+sada,soubor
+sad,park
+salát,příloha
+šaty,dámské šaty
+sázet,vsadit
+sázka,riziko,risk
+sběr,sbírání
+sborník,sbírka,kompendium
+schod,stupeň
+schránka,škatule,bedna,škatulka,krabice
+schůzka,sešlost,setkání
+schvalovat,uznávat,aprobovat
+sdělit,oznámit,zveřejnit,vyřídit
+sdělit,povědět,oznámit,ohlásit
+sdělit,říci,říct,povědět,uvést
+sebrat,nashromáždit,shromáždit
+sebrat,soustředit,soustředit se,koncentrovat,koncentrovat se
+sebrat,zatknout,zajistit,zadržet,vzít do vazby
+sedět,sednout,padnout
+sedět,sednout si
+sedřít si,odřít si,odřít se
+šéf,ředitel,manažer
+segmentace,příčka,přehrada,přehrazení
+segment,úsek,část,díl
+sejít,zdegenerovat,upadnout
+sejmout,očistit,osvobodit,zprostit
+sejmout,sundat
+sekce,pododdíl,oddíl
+sele,prasátko,podsvinče
+seminář,praktika
+sen,tužba,touha,ideál,přání
+senzorická činnost,aktivita smyslů
+sepnout,napojit
+série,řada
+seřízení,korekce
+seškrtat,přeškrtat,přeškrtnout
+seskupení,uskupení
+sesout se,sklouznout
+sestehovat,stehovat,brožovat,přišít,všít,našít,sešít
+setnout,stít,srazit
+set,sada
+ševelit,pošeptat,špitat,šeplat,zašeptat
+sex,sexuální aktivita
+sexuální orientace,sexualita,pohlaví,sexuální život
+seznam,jídelní lístek,lístek
+shluk,dav
+shodovat se,souhlasit,shodnout se
+shoz,pád
+shromáždění,schůze
+sídlo,bydliště
+sídlo,ubikace
+šikovnost,znalost
+síla,potence
+síla,pracovník
+síla,prudkost
+síla,vliv
+silný,mocný
+sít,zasít
+sjednotit,sloučit,sdružit
+skelet,kostra
+skladatel,komponista
+sklad,skladištní budova
+sklep,suterén
+skořepina,schránka,škeble,skořápka,ulita,mušle,lastura
+skóre,výsledek
+škrábat,škrabat,dřít
+škrábat,škrabat,škrábat se,škrabat se,drápat,drápat se,poškrábat,poškrabat,poškrábat se,poškrabat se
+škraloup,provinění
+skráň,spánek
+skříň,šatník
+skrýt,pohřbít,pochovat
+skulina,průhled,otvor,mezera
+skupina,kapela,muzika
+skupina,kategorie,třída
+skvost,šperk,bižuterie
+slast,radost
+sláva,oslava,slavnost
+slitování,smilování
+sloučit,vázat se
+sloužit,zastávat
+složka,sektor
+složka,součást,součástka,element,díl
+sluneční svit,sluneční záře,slunce
+směr,cesta
+směr,cesta
+směrnice,direktiva
+směřování,orientace
+směrovat,nasměrovat
+směstnat,stěsnat
+směs,všehochuť,kolekce,sortiment,směsice
+smíchat,namíchat
+šmiknout,rozdělit se,dělit se,rozdělit,podělit,drobit
+smluvit,domluvit,dohodnout
+smrsknout se,smrštit se
+smrtelník,člověk,duše,osoba,jednotlivec
+smrt,úmrtí
+smůla,pech,nešťastná náhoda
+smutek,sklíčenost
+smyčka,oko
+smysl,význam
+snaha,námaha,úsilí,pokus
+sňatek,svatba
+sněhové srážky,sníh
+snímek,fotka
+softwarový systém,software,programové vybavení
+song,píseň
+souboj,zápas,rvačka,boj
+soubor,datový soubor
+součet,úhrn,suma
+soud,dvůr,soudní dvůr,tribunál
+soudit,posoudit
+soudit,usuzovat
+soudní řízení,řádné soudní řízení
+soudní výlohy,náklad
+souhrn,totalita,celkové množství
+soulad,souhra
+šoupat,sunout
+soupiska,rozpis
+soupis,seznam,registr
+souřadný systém,souřadnicový systém
+souviset,vztahovat se
+soužení,choroba
+spáchat,páchat,dopustit se
+spád,tempo
+spálit,pálit,topit-1,spálit se,vypálit
+spánek,sen
+špatnost,zlo
+spát,odpočívat
+spatřit,uvidět,vidět,dohlédnout
+spatřovat,koukat
+spekulovat,rozebírat
+špička,vrchol
+spinkat,dřímat
+spisovatel,pisatel
+splnit,dokončit,vykonat,dorazit
+splňovat,vyhovovat
+spočítat,spočíst
+spodek,rub
+spojení,asociace
+spojení,přípojka,spojovací součástka
+spojení,vazba
+spojitost,kontinuita
+spokojenost,uspokojení
+společenství,osazenstvo,kolonie
+společník,druh,kamarád
+společnost,družina
+společnost,svět
+spolehnout se,přísahat
+spolykat,polknout
+sportovec,atlet,borec
+spřáhnout,svést
+správa,administrativa
+spravit,opravit
+správnost,poctivost
+srážka,šarvátka,hádka,půtka
+srážky,srážka
+srovnávání,porovnávání
+srst,chlup,vlas
+stabilizovat se,ustálit se
+stačit,dostačit,postačit
+štafeta,štafetový závod
+stanovený,prohlášený
+stanovisko,hledisko
+stanovit,ustanovit
+stáří,věk
+staroba,stáří
+starost,péče
+starost,trápení
+start,začátek
+starý,mistr,předák,šéf,faktor
+statek,zemědělská usedlost,farma
+státní příslušník,občan
+stát,provincie
+stát se,dostat,dostat se
+stát se,přihodit se
+stavbař,stavitel
+stavební materiál,stavivo,stavebniny
+stav,rodinný stav
+stav,svazek
+stav,těhotenství
+stéblo,stonek,košťál,lodyha,stvol
+stejšn,polododávka
+stěna,přepážka,pažení,zástěna
+sterilovat,konzervovat
+stesk,stížnost
+štěstí,blaženost
+štětka,kartáč
+stigma,cejch,poskvrna
+stínidlo,clona
+štítek,štít
+štít,značka,firma,tabulka
+stoh,kopec,hromada,halda,kopa,kupa
+stopa,zvířecí stopa
+stránka,strana
+strast,lítost
+strážník,policista
+středisko,centrum
+střední stav,buržoazie
+strejda,strýc
+střelit,zastřelit
+střelnice,dostřel
+střepat,setřepat,zbavit se,třást,střást,setřást
+strnout,otupit
+stroj,mašina
+strouhat,rozstrouhat,umlít
+struktura,architektura
+struktura,stavba,konstrukce
+stržit,vzít si,brát,přijít si,vydělat,vydělat si,mít,dostat
+stud,hanba
+stvůra,vrozená anomálie,potvora,zrůda,netvor,nestvůra,monstrum,ohava
+styk,kontakt
+styk,spolek,známost
+styl,sloh,způsob,manýra,provedení
+styl,výraz,rčení
+substituovat,nahradit
+summit,schůzka (vrcholná)
+sunout,tlačit,zatlačit,opřít se
+šupina,lupen
+šutr,skála,kámen
+suverén,eso,kapacita,senzace,třída,virtuos
+svařit se,svařit
+svařit,vyvařit
+svatba,oddavky
+světlo,elektrická energie,elektřina
+světová výstava,výstava,expozice
+svět,prostředí
+svézt se,klesnout
+svislá plocha,vertikální plocha
+svraštit,brázdit
+svrchní atmosféra,sféra,nebeská klenba,báň
+symbol,znak
+symetrie,souměrnost
+sympatie,obliba,zalíbení,záliba
+syn,synek,chlapec
+systém,režim
+syžet,etáž,podlaží,patro,poschodí
+tabule,tabulka
+tah,zátah
+tajné hlasování,tajná volba,volba
+tajnost,tajemství
+tajný,agent,špion,zvěd,vyzvědač
+talent,nadání
+talíř,disk
+tancovat,tančit
+tancovat,tančit
+tanec,šrumec
+taxon,taxonomická jednotka
+technika,metoda,škola
+téci,téct,přitéci,přitéct,vtéci,vtéct,plynout,vlévat se
+telefonní centrála,telefonní ústředna,centrum,ústředna
+telefonní číslo,telefon
+telefonní přístroj,telefon
+telefonovat,volat
+tělesná dutina,tělní dutina
+tělní látka,tělní substance
+tělní tekutina,tělesná tekutina
+téma,látka
+temno,doba temna
+temno,tma,temnota
+teoretizovat,dohadovat se,domýšlet se,odhadovat
+tepelná energie,teplo
+teplo,teplota
+termín,datum
+termín,lhůta
+těšit se,požívat
+test,písemka
+textil,látka,textilie,plena,tkanina
+textilní potah,látková krytina
+těžba,produkce
+tíha,tíseň
+titul,predikát
+tlak,tlačení
+tlapat,vychodit
+tok,řeka
+torzo,trup,tělo
+touha,tělesná žádostivost
+továrna,fabrika,manufaktura
+trajekt,převozní loď,přívoz
+traktovat,pojednat
+tramvaj,elektrika,trolejbus,dráha
+transformovat,změnit
+transport,náklad
+transportovat,nést,vézt
+transport,přestup,převoz,doprava,přeprava
+třaskavina,trhavina
+třást,zaklepat
+tratit,prodělat
+travina,tráva
+trefa,zásah
+trénink,výcvik
+trestat,potrestat,ztrestat
+trestný čin,škraloup,delikt
+trhnout,strhnout,ucuknout
+třída,ročník
+třída,ročník,rok
+tříštit,lámat,zlomit se
+troufnout si,dovolit si
+trpět,pociťovat bolest
+trubice,průchod
+trvat,stát,stát si
+trylkovat,klokotat
+tumor,nádor,hlíza
+tvářnost,podstata
+tvářnost,vzezření,zjev,vzhled,zevnějšek
+tvář,vzhled
+tvorba,tvoření,kreace
+tvořit,utvářet
+tvořit,utvořit
+tvořit,vytvořit
+tvor,zvíře,živočich
+tyč,oj,voj,bidlo
+týden,neděle
+typ,druh
+uběhnout,zaběhnout
+ubytovací zařízení,hotel
+ucho,držadlo,držátko,násada
+uchopení,chycení
+úcta,respekt
+účtovat,zúčtovat
+udát se,dojít,přihodit se,zběhnout se,proběhnout,odehrát se,nastat,stát se
+udat,udávat
+udělat,dělat,přichystat,uvařit,navařit,připravit
+udělat,dělat,vykonat,učinit,provést,uskutečnit
+udělat,vykonat
+udělat,zvládnout,vypořádat se,poprat se
+udělit,pochválit,chválit,velebit
+udělit,povolit
+úděl,osud,určení
+udeřit,praštit
+úděs,strach
+úd,hnát,končetina
+údiv,úžas,podiv,překvapení
+údolí,důl,dolina,dolík
+udržet,kontrolovat,ovládat
+udržet se,zůstat
+udusit se,zadusit
+uhádnout,uhodnout
+uhlík,karbon
+úhona,úraz
+ukázka,příklad,názorný příklad,vzorový příklad
+uklidit,uspořádat
+uklidňující prostředek,utišující lék,uklidňující lék,sedativum
+úklid,očista
+úkol,domácí práce,práce
+ukončit,zakončit
+úkryt,skrýš
+ukrýt,uschovat
+uletět,ulétnout
+ulevit,nadlehčit
+ulomit,odlomit
+uložení,depozice
+uložit,deponovat
+uložit,položit
+ulpět,viset,vlepit
+ulpít,lpít,ulpět,lpět,držet se
+umazat,našpinit,zablátit,ušpinit,našlapat,upatlat,nadělat
+umdlít,umdlet,unavit,dodělat,vyčerpat,vysílit
+umělecká tvorba,umění
+umělec,kumštýř
+umělecký manažer,manažer
+umotat,kroutit
+umožnit,nechat
+umožnit,přijmout
+umožňovat,připouštět
+um,řemeslná zručnost,kumšt,umění
+úmysl,rozvrh,plán,program
+umýt,čistit
+únava,letargie
+univerzum diskurzu,celková oblast úvah
+univerzum,uzavřený systém
+upláchnout,utéct
+uplynout,uběhnout,projít
+upnout,dotáhnout,napnout
+upnout,sepnout
+upoutat,spoutat,přivázat,připoutat,poutat,převázat
+upozornit,zalarmovat,alarmovat,znepokojit
+úprava,uspořádání
+úprava,změna,obměna
+upravit,začistit
+upřít,odepřít,odmítnout
+úřad,kancelář,úřadovna
+úřad,vládní orgán
+urazit,inzultovat
+určit,vytknout,stanovit
+úroveň,výše,stupeň,hladina
+urozenost,šlechtictví
+usadit,umístit
+uschnout,oschnout,sušit,usušit
+úsek,odbor,útvar
+uškrtit,dávit,zardousit,zadávit
+uskutečnění,vykonání,provedení
+usmrtit,zabít,dostat
+usnadnit,odlehčit
+uspokojit,plnit,vyplnit
+uspořádanost,upravenost
+úspora,ekonomika
+ustat,přestat
+ústa,ústní dutina,ústní otvor,hubička
+ústní zkouška,rigorózum
+ústrojí,mechanizmus
+ústroj,orgán
+utáhnout,stáhnout
+utajování,zatajování,schovávání,schovávačka
+útěk,únik
+utkat se,závodit,soutěžit,konkurovat,soupeřit
+utnout,odkrojit,odkrájet
+utopit,topit-2
+utopit,topit-2
+útrapy,strádání
+uvalit,vybrat,uvrhnout,uložit
+uvažování,logické myšlení
+uvědomovat si,být si vědom
+uvést,zavést,započít
+uvolit se,přivolit,svolit
+uvolnění,vybití
+uvolnit,povolit
+uvolnit,vyprostit
+uzávěr,ucpávka
+užití,praktické užití
+užívání,používání
+úzká cesta,ulička
+úzkost,starost
+uznat,uznávat
+uzrát,dojít,dozrát
+úzus,zvyklost,uzance
+váček,měšec,torba
+válcovat,uválet,rozválcovat,vyválet
+valence,potence,mocenství
+válka,vojna
+valoun,balvan
+vášeň,láska
+vatelín,vycpávka
+váženost,ctihodnost
+večer,předvečer
+věda,vědecká disciplína,vědní disciplína
+vědomí,hlava,mysl,psychika
+vedoucí osobnost,vůdce,čelní představitel,předák
+vegetace,flóra,květena
+věhlas,sláva,dobré jméno
+vějíř,větrník
+velké neurčité množství,značné neurčité množství
+velkodušný,velkomyslný,šlechetný
+venek,exteriér
+venkovní hra,hra pod širým nebem
+věnovat,zasvětit,zaslíbit se,zavázat se
+vesna,jaro
+větev,haluz
+větev,pobočka,odvětví
+větrák,ventilátor
+vězeň,zajatec
+vid,aspekt
+vinná réva,réva
+víra,mínění
+vitalita,svěžest
+vítězství,výhra,triumf
+vjezd,vstup,vchod
+vkus,šlágr,linie
+vládní zřízení,politický systém
+vládnout,ovládat
+vlákno,nit
+vlastník,pán,pan
+vlastnit,mít
+vlastní životopis,životní příběh
+vlastnost,aspekt,atribut
+vlivný,důležitý
+vlk,vlček,káča
+vmíchat,vmísit
+vnímání,percepce
+vnitřek,interiér
+vnitřní sekrece,hormon
+vodní plocha,vodní masa
+volba,výběr
+volba,zvolení
+volný den,svátek,sváteční den,hod
+vplížit se,přilézt
+vracet se,opakovat se
+vrazit,přetáhnout,seknout
+vřesoviště,slatina,močál,bažina
+vřít,planout
+vřít,vařit se
+vrstva,třída,společenská třída
+vteřina,sekunda
+vybavit,vyzbrojit,vypravit
+vyběhnout,vyjít,vylézt,vystoupit,vyšplhat
+výběr,selekce,volba
+vybídnout,pobídnout
+výbor,komise
+vybrat si,vyžádat si
+výčep,bar
+vychovatel,pedagog
+vychválit,opěvovat
+vycídit,vyčistit,cídit,očistit
+vyčkat,počkat,čekat
+vydat,nakázat,rozkázat,dát
+vydat,opustit,uvolnit,vzdát se
+vydat,vytisknout,tisknout,otisknout
+vydělat,obrat,připravit,vzít na hůl
+vydělit,separovat,oddělit,rozčlenit,rozdělit,členit
+vydolovat,dolovat,vyrubat,rubat,vykutat,kutat,získat,vytěžit,těžit
+vydržovat,platit,platit si,držet si
+výduť,oblina,hrbol,hrb,vyvýšenina
+vyfotografovat,vyfotit,ofotografovat,fotit
+vyhovovat,sedět,hodit se
+vyhýbat se,zdržovat se
+vyinkasovat,vybrat
+vyjádření,osobitý projev
+vyjádřit emoce,projevit se
+vyjednávač,vyjednavač
+vyjet,vydat se,rozjet se,odcestovat,odletět
+vyjímat se,vypadat
+vyjít,odejít,dostat se
+vyjmout,vyndat
+vyklestit,vykleštit,klestit,vykastrovat
+vykloubit,vymknout
+vykoktat,koktat
+vykonat,zhostit se
+výkonný ředitel,vedoucí pracovník
+vykopat,vyhloubit
+vykopnout,vyhodit,vyloučit,vyrazit,vyhnat,vykázat
+výkres,kresba,nákres
+vykuchat,kuchat
+vylepšit,zlepšit
+vylézt,stoupnout
+vyložit,vysvětlit,přiblížit
+vyluštit,rozluštit,přijít,dořešit,vyřešit,dojít
+výměšek,výměsek,sekret
+vymísit,rozemnout,zadělat
+vymyslet,vymyslit
+vymyslet,vymyslit,naplánovat
+vynaložit,vydat,utratit
+výnos,plodina,sklizeň,úroda
+vypadat,jevit se,zdát se
+vypařit,odpařit
+vypelichat,línat
+vypísknout,zapištět
+vypláchnout,vymáchat,máchat,proprat
+výplata,hrazení,platba
+vyplatit,vyrovnat
+vyplnit,uspokojit,splnit
+vyplývat,plynout
+výpočet,počet,propočet
+výpomoc,helfnutí
+výpomoc,péče
+výpověď,vyhazov,padák
+výprava,příprava
+vyprávět,povídat
+vyprázdnit,vybrat
+vyprazdňovat,mýtit
+vypudit,vyvrhnout,vyloučit
+vyřadit,znezpůsobit
+výraz,pohled
+výraz,projev
+vyřknout,vyjádřit se,vyjádřit
+výroba,konečný produkt,výsledný produkt
+výroba,průmysl,manufaktura
+výrobce,producent
+vyrovnat,srovnat
+vyšetřovat,šetřit
+vysílání,pořad,relace,televizní vysílání
+výška,velikost
+vyskočit,vyskákat
+výsledek,docílení
+vysloužit si,vydělat
+vysolit,nadělit
+vyšší vůle,vyšší moc
+výstavba,konstituce,složení,struktura
+výstavba,stavba,stavitelství,konstrukce
+vystavený předmět,exhibice
+vystavět,zbudovat,vybudovat
+vystonat se,pookřát
+výstražné světlo,maják
+výstřih,hrdlo
+výstup,vyvádění
+výtěžek,zisk
+výtok,východ,výjezd,výstup,výpust,vývod
+výtopné zařízení,výtopný systém
+vytříbený,vybroušený
+vyučit,zaškolit
+využitkovat,exploatovat,využít
+vyvážit,vyrovnat
+vyvinout se,vyvíjet se
+vývin,vývoj
+vyvolit,vyvolit si,vzít si,vybrat,vybrat si
+vývoz,export
+vyvrácení důkazu,důkaz o opaku
+vyvrátit,odrazit
+vyvrátit se,skroutit
+vyzařovat,svítit,zářit
+výzbroj,nástroj,potřeba
+výzbroj,zařízení,výbava,náčiní,výstroj,inventář,vybavení
+výzdoba,okrasa,ornament,dekorace
+vyzískat,vydělat,vytěžit,těžit,získat,profitovat
+výživná látka,výživa,živina
+vyzkoušení,zkušební běh
+vyzkoušet,zkoušet,otestovat,testovat
+vyznačkovat,vykolíkovat,vyznačovat se,značkovat,nalajnovat,nanést
+význam,důležitost,závažnost
+významná osoba,veličina
+vyznání,prohlášení,oficiální prohlášení
+vyzpovídat se,zpovídat se
+vyzývatel,rival,sok,konkurence,konkurent
+vzdát se,zříct se,zříci se
+vzdát,vzdát se,opustit,upustit,zanechat
+vzdorovitost,rebelantství
+vzdor,rezistence,odbojnost
+vzdor,rezistence,odpor,opozice
+vzdychnout,vzdechnout,tesknit,stonat
+vzestup,vzrůst
+vzít si,obsloužit se
+vzít si s sebou,mít s sebou,mít u sebe
+vzít si,vzít se,vdát se,provdat se,pojmout,oženit se
+vzít,uchopit
+vzkvétat,vykvést,kvést
+vzmužit se,rozveselit se,rozradostnit se
+vznést,nadhodit
+vznést,vynést
+vznik,počátek,začátek,geneze
+vzpomenout si,rozpomenout se,pamatovat si
+vztah,poměr,vazba
+vztah,relace
+vztah,známost
+vztek,zlost
+žába,holčička,děvče
+zabalit,zapíchnout,nechat,skončit,upustit
+zabouchnout,přibouchnout,dorazit
+zábrana,překážka
+zabrat,započítat,započíst
+začátek,počátek
+zacházet,manipulovat,pohybovat
+zacházet,naložit
+záchranná akce,záchrana
+žádat,chtít
+zadní strana,zadní část,zadek
+žádost,prosba
+zahájit,uvést
+zahrádka,ohrada,posada,výběh
+zahradní plody,plodiny,ovoce a zelenina
+zahrnout,začlenit
+záhuba,peklo
+zaječet,zavřísknout,křičet
+zájem,zainteresovanost
+zajímat,zaujmout
+zajímavost,poutavost
+základna,podklad,východisko
+základní,elementární,fundamentální
+žák,následovatel,učedník,následovník
+zákonodárný sbor,valné shromáždění
+zakotvit,usadit se
+zakoukat se,zírat
+zakroutit se,ošívat se,vrtět se
+zakrýt,krýt
+zakývat,přikývnout
+zakývat,zakroužit
+žal,bol,hoře,hluboký žal
+záležitost,starost
+záležitost,věc
+zalíbení,srdce,láska
+zaměnit,nahradit
+zamítnout,smést
+zamyšlenost,pohrouženost
+zamžít,zamlžit
+zanechat,opustit,nechat
+zánět,zápal,zanícení
+zaoblení,křivka
+zapadat,harmonizovat,ladit
+zapadat,pasovat
+zapadnout,zmizet,vymizet,zajít,mizet
+zapalovač,rozžehnout
+zápas,boj
+zápas,mač
+zápěstní kůstky,zápěstí
+zaplatit,vyplatit,platit
+zaplatit,zatáhnout
+zaplavit,přepadnout
+zapotácet se,klátit se,vypotácet se,motat se,zavrávorat,kejklat se,potácet se
+zapříčinit,udělat,způsobit,působit,dát podnět,mít za následek,nadělat
+zapřisáhnout se,trvat
+zapsat,psát
+zapůjčit,půjčit
+zaranžovat,rozmístit,řadit
+zardít se,rdít se,zapýřit se,zrudnout,červenat se,zčervenat,hořet
+záření,radiace
+zařezat,zaříznout,vyrýt
+zařízení,přístroj,aparatura
+zármutek,smutek
+záruka,záštita,patronát
+zásada,báze
+zašifrovat,kódovat,zakódovat
+zaslechnout,pochytit
+zasmát se,smát se
+zásobit,dodat
+zastánce,exponent,stoupenec
+zastávka,stanice
+záštita,stráž,ochrana
+zatáhnout,zalepit
+zatáhnout,zamotat se,zamotat
+zátěž,hmotnost,váha,tíha,tíže
+zatížení,zátěž
+zátop,palivové dříví
+zauzlit,vázat
+zaváhat,odmlčet se
+závažný,významný
+závěr,výtěžek,výsledek,výstup
+zavěsit,pověsit
+zavěsit se,pronásledovat
+zavětřit,zvětřit
+závodiště,hrací plocha,hřiště,sportovní hřiště
+závod,rychlostní závod
+závod,soutěž
+zavolat,přivolat
+zavrhnout,odvrhnout
+zavřít,uzavřít
+zavřít,zamknout
+zážitek,životní zkušenost
+zboží,komodita,tovar
+zbytek,ostatek,pozůstatek,reziduum
+zbytek,reziduum
+zdar,úspěch
+zdecimovat,vyhubit,decimovat
+zdokonalit,vyšperkovat
+zdravit,vítat
+zdravotní sestra,sestra
+zdrženlivost,abstinence
+zdůraznit,podtrhnout,vytknout,vyzdvihnout
+zdvihnout se,zvednout se,stoupat
+zdvihnout,zvednout,postavit
+zdvih,pozdvihování
+zeď,stěna
+žehlicí prkno,prkno
+železniční vagón,motorák
+zemědělství,rolnictví
+země,zem,národ
+země,zem,stát
+země,zem,svět
+zemina,půda
+zeptat se,vyptat se,dotázat se
+zešikmit,zkosit,sklonit
+zesměšňovat,vysmívat se
+zeštíhlet,zredukovat,ubrat,chudnout,hubnout
+zhýčkat,hýčkat,rozmazlit
+získání,nabytí
+získat,nabýt,dosáhnout,docílit,dopracovat se
+získat,přijmout,najmout
+živel,přírodní síla
+živnost,podnik
+živobytí,život
+živost,čilost
+zjevení,odhalení
+zjevit se,ukázat se,zaskvít se,stanout
+zjevit,vyzradit,prozradit,říci,říct
+zkamenělina,fosilie
+zkáza,dekadence
+zkopat,zpackat,mastit,zbabrat
+zkouška,rychlý pokus
+zkusit,zkusit si,vyzkoušet,vyzkoušet si,ozkoušet si,ozkusit si
+zlomenina,fraktura
+zlom,historická událost,předěl,mezník
+změna integrity,změna celistvosti
+zmenšení,úbytek
+zmenšit,snížit
+zmizení,vytracení
+značit,naznačovat,znamenat
+znak,emblém
+znamenat,zaznamenat
+znamení,symbol,značka
+známka,náznak
+známý,známý člověk
+znázornění,vypodobnění
+znervóznit,trémovat,rozčarovat
+znít,rozléhat se,ozývat se
+znovuzískat,naleznout
+žoldnéř,vojín,voják
+zplnomocnit,oprávnit
+zplodit,porodit,mít
+zploštit,utlumit
+zpravit,informovat,seznámit
+zprostředkovatel,spojka
+způsobit,pohnout,podnítit,přimět,přemluvit
+způsobit,vytvořit,dělat
+způsob,manýra
+způsob,prostředek
+způsob vyjádření,styl
+zranit,bolet
+zranit,způsobit
+zřeknout se,zříci se,zříct se
+zrno,obilnina
+zrodit,nosit
+zručnost,um
+zrušení,anulování
+zrýt,zkopat
+ztotožnit,identifikovat
+ztrácet se,pominout
+ztráta,úhona
+ztratit,pozbýt
+ztratit,přijít,pozbýt
+ztrémovat,unést
+ztuhnout,ztvrdnout
+zubař,dentista
+zubní kaz,kaz
+žurnalista,novinář
+zůstat,setrvat,zdržovat se,držet se
+zůstavit,odkázat
+zužitkování,exploatace
+žvástat,žvastat,blekotat,brebentit,blábolit,breptat,brebtat
+zvát,pozvat
+zvědavost,zvídavost
+zvěř,divočina
+zvětšit,navýšit
+zvládat,zvládnout
+zvládnout,vypořádat se,zacházet,vyřídit
+zvrátit,otočit
+zvučet,rezonovat,znít
+zvyk,návyk
