@@ -6,8 +6,8 @@
       <li data-role="list-divider">{translate text='Find More'}</li>
       {*
         <li><a rel="external" href="{$path}/Search/Reserves">{translate text='Course Reserves'}</a></li>
+      	<li><a rel="external" href="{$path}/Search/NewItem">{translate text='New Items'}</a></li>
       *}
-      <li><a rel="external" href="{$path}/Search/NewItem">{translate text='New Items'}</a></li>
     </ul>
     
     {*
