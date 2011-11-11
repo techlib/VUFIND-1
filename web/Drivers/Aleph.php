@@ -158,7 +158,7 @@ class Aleph implements DriverInterface
                $location = $datafield->xpath('subfield[@code="j"]/text()');
                $location = $location[0];
 	       if (preg_match("/(\d)([A-Z])(\d+)/", $location, $matches)) {
-	           $location = translate("Shelf")." ".$location;
+	           $location = translate("shelf")." ".$location;
 	       }
 	       else {
 		   $location = translate("code_".$location);
