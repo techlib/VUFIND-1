@@ -3,5 +3,6 @@
     <core name="biblio" instanceDir="biblio"/>
     <core name="authority" instanceDir="authority"/>
     <core name="stats" instanceDir="stats"/>
+    <!-- uncomment to enable reserves core: <core name="reserves" instanceDir="reserves"/> -->
   </cores>
 </solr>
