@@ -47,8 +47,7 @@ class PSHAutocomplete implements AutocompleteInterface
      */
     public function __construct($params)
     {
-        // For now, incoming parameters are ignored and a hard-coded URL is used:
-        $this->url = 'http://worldcat.org/identities/AutoSuggest';
+        $this->url = "http://";
     }
 
     /**
@@ -68,7 +67,7 @@ class PSHAutocomplete implements AutocompleteInterface
         $results = array();
 
         // Build target URL:
-        $target = $this->url . '?query=' . urlencode($query);
+        $target = $this->url . '?input=' . urlencode($query);
 
         // Retrieve and parse response:
         $tmp = file_get_contents($target);
