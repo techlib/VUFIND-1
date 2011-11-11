@@ -28,14 +28,14 @@ function LoadOptions(query, field, elem, nextElem, nextField, facetPrefix)
 
                     if (nextElem) {
                         responseHTML += '<li>' +
-                                        '<a style="float: right; font-size:70%;" href="' + path + '/Search/Results?lookfor=%22' + encodeURIComponent(facetText) + '%22&type=' + field + '&filter[]=' + query + '">View Records</a>' +
+                                        '<a style="float: right; font-size:70%;" href="' + path + '/Search/Results?lookfor=%22' + encodeURIComponent(facetText) + '%22&type=' + field + '&filter[]=' + query + '">' + translate("View Records") + '</a>' +
                                         '<a href="" onClick="highlightBrowseLink(\'' + elem + '\', this); LoadOptions(\'' + field + ':%22' + encodeURIComponent(facetText) + '%22+AND+' + query + '\', \'' + nextField + '\', \'' + nextElem + '\'); return false;">' +
                                         jsEntityEncode(facetText) + ' (' + facetCount + ')</a>' +
                                         '</li>';
                     } else {
                         // Final Column
                         responseHTML += '<li>' +
-                                        '<a style="float: right; font-size:70%;" href="' + path + '/Search/Results?lookfor=%22' + encodeURIComponent(facetText) + '%22&type=' + field + '&filter[]=' + query + '">View Records</a>' +
+                                        '<a style="float: right; font-size:70%;" href="' + path + '/Search/Results?lookfor=%22' + encodeURIComponent(facetText) + '%22&type=' + field + '&filter[]=' + query + '">' + translate("View Records") + '</a>' +
                                         '<a href="' + path + '/Search/Results?lookfor=%22' + encodeURIComponent(facetText) + '%22&type=' + field + '&filter[]=' + query + '">' +
                                         jsEntityEncode(facetText) + ' (' + facetCount + ')</a>' +
                                         '</li>';
@@ -92,7 +92,7 @@ function LoadSubject(field, column, lookfor)
                         continue;
                     var facetCount = options[i][1];
                     responseHTML += '<li>' +
-                                    '<a style="float: right; font-size:70%;" href="' + path + '/Search/Results?lookfor=%22' + encodeURIComponent(facetText) + '%22&type=' + field + '">View Records</a>' +
+                                    '<a style="float: right; font-size:70%;" href="' + path + '/Search/Results?lookfor=%22' + encodeURIComponent(facetText) + '%22&type=' + field + '">' + translate("View Records") + '</a>' +
                                     '<a href="" onClick="highlightBrowseLink(\'' + column + '\', this); LoadOptions(\'' + field + ':%22' + encodeURIComponent(facetText) + '%22\', \'' + lookfor + '\', \'list4\'); return false;">' +
                                     jsEntityEncode(facetText) + ' (' + facetCount + ')</a>' +
                                     '</li>';
