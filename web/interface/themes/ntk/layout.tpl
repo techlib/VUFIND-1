@@ -19,8 +19,13 @@
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
     <script type="text/javascript">
       path = '{$url}';
+      {literal}
+      var OPTIONS = OPTIONS || {};
+      {/literal}
+      OPTIONS.lang = "{$userLang}";
     </script>
     
+    {js filename="translator.js"} 
     {js filename="yui/yahoo-dom-event.js"}
     {js filename="yui/yahoo-min.js"}
     {js filename="yui/event-min.js"}
