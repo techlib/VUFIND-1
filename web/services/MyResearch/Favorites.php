@@ -68,6 +68,9 @@ class Favorites extends MyResearch
         $favorites = $user->getResources(isset($_GET['tag']) ? $_GET['tag'] : null);
         $favList = new FavoriteHandler($favorites, $user);
         $favList->assign();
+        if (!$this->infoMsg) {
+            $this->infoMsg = $favList->getInfoMsg();
+        }
 
         // Get My Lists
         $listList = $user->getLists();

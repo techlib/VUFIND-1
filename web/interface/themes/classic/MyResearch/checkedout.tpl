@@ -6,7 +6,7 @@
           <h4>{translate text='Your Checked Out Items'}</h4>
           {if $blocks}
             {foreach from=$blocks item=block}
-              <p class="info">{translate text=$block}</p>
+              <p class="userMsg">{translate text=$block}</p>
             {/foreach}
           {/if}
 

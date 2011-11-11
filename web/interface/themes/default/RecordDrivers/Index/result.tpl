@@ -22,12 +22,14 @@
       <div class="resultItemLine3">
       {if !empty($summSnippetCaption)}<b>{translate text=$summSnippetCaption}:</b>{/if}
       {if !empty($summSnippet)}<span class="quotestart">&#8220;</span>...{$summSnippet|highlight}...<span class="quoteend">&#8221;</span><br>{/if}
+      <div id="callnumAndLocation{$summId|escape}">
       {if $summAjaxStatus}
       <b>{translate text='Call Number'}:</b> <span id="callnumber{$summId|escape}">{translate text='Loading'}</span><br>
       <b>{translate text='Located'}:</b> <span id="location{$summId|escape}">{translate text='Loading'}</span>
       {elseif !empty($summCallNo)}
       <b>{translate text='Call Number'}:</b> {$summCallNo|escape}
       {/if}
+      </div>
       </div>
       
       <div class="resultItemLine4">

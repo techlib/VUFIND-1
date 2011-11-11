@@ -497,9 +497,9 @@ case "$ACTION" in
         echo "RUN_CMD        =  $RUN_CMD"
         echo
 
-        if [ -f $JETTY_RUN/vufind.pid ]
+        if [ -f $JETTY_PID ]
         then
-            echo "VuFind running pid="`cat $JETTY_RUN/vufind.pid`
+            echo "VuFind running pid="`cat $JETTY_PID`
             exit 0
         fi
         exit 1

@@ -1,5 +1,8 @@
 {js filename="ajax_common.js"}
 {js filename="record.js"}
+{if isset($syndetics_plus_js)}
+<script src="{$syndetics_plus_js}" type="text/javascript"></script>
+{/if}
 {if !empty($addThis)}
 <script type="text/javascript" src="https://s7.addthis.com/js/250/addthis_widget.js?pub={$addThis|escape:"url"}"></script>
 {/if}
@@ -86,6 +89,11 @@
                 <a href="{$url}/Record/{$id|escape:"url"}/Excerpt#tabnav" class="first"><span></span>{translate text='Excerpt'}</a>
               </li>
               {/if}
+              {if $hasMap}
+                <li{if $tab == 'Map'} class="active"{/if}>
+                  <a href="{$url}/Record/{$id|escape:"url"}/Map#tabnav" class="first"><span></span>{translate text='Map View'}</a>
+                </li>
+              {/if}
               <li{if $tab == 'Details'} class="active"{/if}>
                 <a href="{$url}/Record/{$id|escape:"url"}/Details#tabnav" class="first"><span></span>{translate text='Staff View'}</a>
               </li>
@@ -157,10 +165,10 @@
 </div>
 {if $showPreviews}
 {if $showGBSPreviews} 
-<script src="http://books.google.com/books?jscmd=viewapi&amp;bibkeys={if $isbn}ISBN{$isbn}{/if}{if $holdingLCCN}{if $isbn},{/if}LCCN{$holdingLCCN}{/if}{if $holdingArrOCLC}{if $isbn|$holdingLCCN},{/if}{foreach from=$holdingArrOCLC item=holdingOCLC name=oclcLoop}OCLC{$holdingOCLC}{if !$smarty.foreach.oclcLoop.last},{/if}{/foreach}{/if}&amp;callback=ProcessGBSBookInfo" type="text/javascript"></script>
+<script src="https://encrypted.google.com/books?jscmd=viewapi&amp;bibkeys={if $isbn}ISBN{$isbn}{/if}{if $holdingLCCN}{if $isbn},{/if}LCCN{$holdingLCCN}{/if}{if $holdingArrOCLC}{if $isbn || $holdingLCCN},{/if}{foreach from=$holdingArrOCLC item=holdingOCLC name=oclcLoop}OCLC{$holdingOCLC}{if !$smarty.foreach.oclcLoop.last},{/if}{/foreach}{/if}&amp;callback=ProcessGBSBookInfo" type="text/javascript"></script>
 {/if}
 {if $showOLPreviews}
-<script src="http://openlibrary.org/api/books?bibkeys={if $isbn}ISBN{$isbn}{/if}{if $holdingLCCN}{if $isbn},{/if}LCCN{$holdingLCCN}{/if}{if $holdingArrOCLC}{if $isbn|$holdingLCCN},{/if}{foreach from=$holdingArrOCLC item=holdingOCLC name=oclcLoop}OCLC{$holdingOCLC}{if !$smarty.foreach.oclcLoop.last},{/if}{/foreach}{/if}&amp;callback=ProcessOLBookInfo" type="text/javascript"></script>
+<script src="http://openlibrary.org/api/books?bibkeys={if $isbn}ISBN{$isbn}{/if}{if $holdingLCCN}{if $isbn},{/if}LCCN{$holdingLCCN}{/if}{if $holdingArrOCLC}{if $isbn || $holdingLCCN},{/if}{foreach from=$holdingArrOCLC item=holdingOCLC name=oclcLoop}OCLC{$holdingOCLC}{if !$smarty.foreach.oclcLoop.last},{/if}{/foreach}{/if}&amp;callback=ProcessOLBookInfo" type="text/javascript"></script>
 {/if}
 {if $showHTPreviews}
 <script src="http://catalog.hathitrust.org/api/volumes/brief/json/id:HT{$id|escape};{if $isbn}isbn:{$isbn}{/if}{if $holdingLCCN}{if $isbn};{/if}lccn:{$holdingLCCN}{/if}{if $holdingArrOCLC}{if $isbn || $holdingLCCN};{/if}{foreach from=$holdingArrOCLC item=holdingOCLC name=oclcLoop}oclc:{$holdingOCLC}{if !$smarty.foreach.oclcLoop.last};{/if}{/foreach}{/if}&amp;callback=ProcessHTBookInfo" type="text/javascript"></script>

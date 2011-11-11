@@ -1,7 +1,6 @@
 {* check save statuses via AJAX *}
 {js filename="check_save_statuses.js"}
 {js filename="jquery.cookie.js"}
-{js filename="cart.js"}
 
 <form method="post" name="addForm" action="{$url}/Cart/Home">
   {* hide until complete

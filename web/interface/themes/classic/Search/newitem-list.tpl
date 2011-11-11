@@ -6,6 +6,13 @@
   <div id="yui-main" class="content">
     <div class="yui-b first contentbox">
 
+      {if $errorMsg || $infoMsg}
+      <div class="messages">
+      {if $errorMsg}<div class="error">{$errorMsg|translate}</div>{/if}
+      {if $infoMsg}<div class="userMsg">{$infoMsg|translate}</div>{/if}
+      </div>
+      {/if}
+
       {if empty($recordSet)}
         <p>{translate text="No new item information is currently available."}</p>
       {else}

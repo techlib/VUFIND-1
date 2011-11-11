@@ -87,6 +87,13 @@ class Login extends Action
         if (isset($_REQUEST['username'])) {
             $interface->assign('username', $_REQUEST['username']);
         }
+        if (isset($_REQUEST['extraParams']) && is_array($_REQUEST['extraParams'])) {
+            foreach ($_REQUEST['extraParams'] as $param) {
+                $pair = explode("|", $param, 2);
+                $extraParams[] = array('name' => $pair[0], 'value' => $pair[1]);
+            }
+            $interface->assign('extraParams', $extraParams);
+        }
         $interface->setPageTitle('Login');
         $interface->setTemplate('login.tpl');
         $interface->display('layout.tpl');

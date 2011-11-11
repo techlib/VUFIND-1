@@ -1,5 +1,5 @@
-<script language="JavaScript" type="text/javascript" src="{$path}/js/ajax_common.js"></script>
-<script language="JavaScript" type="text/javascript" src="{$path}/services/Search/ajax.js"></script>
+{js filename="ajax_common.js"}
+{js filename="search.js"}
 
 <div id="bd">
   <div id="yui-main" class="content">
@@ -21,7 +21,13 @@
           <br clear="All"><a href="http://{$wiki_lang}.wikipedia.org/wiki/{$info.name|escape:"url"}" target="new"><span class="note">{translate text='wiki_link'}</span></a>
         </p>
         {/if}
-  
+
+        {if $topRecommendations}
+          {foreach from=$topRecommendations item="recommendations"}
+            {include file=$recommendations}
+          {/foreach}
+        {/if}
+
         {* Listing Options *}
         <div class="yui-gc resulthead">
           <div class="yui-u first">
@@ -96,3 +102,16 @@
   {* End Recommendations *}
 
 </div>
+{if $showPreviews}
+<script type="text/javascript">
+{if $showGBSPreviews}
+document.write(unescape("%3Cscript src=https://encrypted.google.com/books?jscmd=viewapi&bibkeys=" + doGetExtIds() + "&callback=ProcessGBSBookInfo" + " type='text/javascript'%3E%3C/script%3E"));
+{/if}
+{if $showOLPreviews}
+document.write(unescape("%3Cscript src=http://openlibrary.org/api/books?bibkeys=" + doGetExtIds() + "&callback=ProcessOLBookInfo" + " type='text/javascript'%3E%3C/script%3E"));
+{/if}
+{if $showHTPreviews}
+document.write(unescape("%3Cscript src=http://catalog.hathitrust.org/api/volumes/brief/json/" + doGetHTIds() + "&callback=ProcessHTBookInfo" + " type='text/javascript'%3E%3C/script%3E"));
+{/if}
+</script>
+{/if}

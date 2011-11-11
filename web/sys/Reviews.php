@@ -164,14 +164,17 @@ class ExternalReviews
                     $iframe = isset($data->Items->Item->CustomerReviews->IFrameURL)
                         ? (string)$data->Items->Item->CustomerReviews->IFrameURL
                         : null;
-                    // CSS for iframe (explicit dimensions needed for IE
-                    // compatibility -- using 100% has bad results there):
-                    $css = "width: 700px; height: 500px;";
-                    $result[$i] = array(
-                        'Rating' => '',
-                        'Summary' => '',
-                        'Content' => "<iframe style=\"{$css}\" src=\"{$iframe}\" />"
-                    );
+                    if (!empty($iframe)) {
+                        // CSS for iframe (explicit dimensions needed for IE
+                        // compatibility -- using 100% has bad results there):
+                        $css = "width: 700px; height: 500px;";
+                        $result[$i] = array(
+                            'Rating' => '',
+                            'Summary' => '',
+                            'Content' =>
+                                "<iframe style=\"{$css}\" src=\"{$iframe}\" />"
+                        );
+                    }
                 }
 
                 return $result;

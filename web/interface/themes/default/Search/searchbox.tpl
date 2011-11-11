@@ -43,7 +43,7 @@
           <input type="checkbox" {if $isSelected}checked="checked" {/if}name="shard[]" value='{$shard|escape}' /> {$shard|translate}
         {/foreach}
       {/if}
-      {if $filterList || $hasCheckboxFilters}
+      {if ($filterList || $hasCheckboxFilters) && !$disableKeepFilterControl}
         <div class="keepFilters">
           <input id="retainAll" type="checkbox" {if $retainFiltersByDefault}checked="checked" {/if} onclick="filterAll(this);" />
           <label for="retainAll">{translate text="basic_search_keep_filters"}</label>

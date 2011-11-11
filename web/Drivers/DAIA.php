@@ -6,7 +6,7 @@
  *
  * PHP version 5
  *
- * Copyright (C) Oliver Marahrens 2010.
+ * Copyright (C) Oliver Goldschmidt 2010.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2,
@@ -23,7 +23,7 @@
  *
  * @category VuFind
  * @package  ILS_Drivers
- * @author   Oliver Marahrens <o.marahrens@tu-harburg.de>
+ * @author   Oliver Goldschmidt <o.goldschmidt@tu-harburg.de>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     http://vufind.org/wiki/building_an_ils_driver Wiki
  */
@@ -36,7 +36,7 @@ require_once 'Interface.php';
  *
  * @category VuFind
  * @package  ILS_Drivers
- * @author   Oliver Marahrens <o.marahrens@tu-harburg.de>
+ * @author   Oliver Goldschmidt <o.goldschmidt@tu-harburg.de>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     http://vufind.org/wiki/building_an_ils_driver Wiki
  */
@@ -165,6 +165,19 @@ class DAIA implements DriverInterface
         $status = array();
         for ($b = 0; $documentlist->item($b) !== null; $b++) {
             $itemlist = $documentlist->item($b)->getElementsByTagName('item');
+            $emptyResult = array(
+                'callnumber' => '-',
+                'availability' => '0',
+                'number' => 1,
+                'reserve' => 'No',
+                'duedate' => '',
+                'queue'   => '',
+                'delay'   => '',
+                'barcode' => 'No samples',
+                'status' => '',
+                'id' => $id,
+                'label' => 'No samples'
+            );
             for ($c = 0; $itemlist->item($c) !== null; $c++) {
                 $result = array(
                     'callnumber' => '',
@@ -184,33 +197,38 @@ class DAIA implements DriverInterface
                     'location.href' => '',
                     'label' => ''
                 );
-                $result['itemid'] = $itemlist->item($c)->attributes
-                    ->getNamedItem('id')->nodeValue;
+                $result['itemid']
+                    = $itemlist->item($c)->attributes->getNamedItem('id')->nodeValue;
                 if ($itemlist->item($c)->attributes->getNamedItem('href') !== null) {
-                    $result['recallhref'] = $itemlist->item($c)->attributes
-                        ->getNamedItem('href')->nodeValue;
+                    $result['recallhref']
+                        = $itemlist->item($c)->attributes->getNamedItem('href')
+                            ->nodeValue;
                 }
-                $departmentElements = $itemlist->item($c)
-                    ->getElementsByTagName('department');
+                $departmentElements
+                    = $itemlist->item($c)->getElementsByTagName('department');
                 if ($departmentElements->length > 0) {
                     if ($departmentElements->item(0)->nodeValue) {
-                        $result['location'] = $departmentElements->item(0)
-                            ->nodeValue;
-                        $result['location.id'] = $departmentElements->item(0)
-                            ->attributes->getNamedItem('id')->nodeValue;
-                        $result['location.href'] = $departmentElements->item(0)
-                            ->attributes->getNamedItem('href')->nodeValue;
+                        $result['location']
+                            = $departmentElements->item(0)->nodeValue;
+                        $result['location.id']
+                            = $departmentElements->item(0)->attributes
+                                ->getNamedItem('id')->nodeValue;
+                        $result['location.href']
+                            = $departmentElements->item(0)->attributes
+                                ->getNamedItem('href')->nodeValue;
                     }
                 }
-                $storageElements = $itemlist->item($c)
-                    ->getElementsByTagName('storage');
+                $storageElements
+                    = $itemlist->item($c)->getElementsByTagName('storage');
                 if ($storageElements->length > 0) {
                     if ($storageElements->item(0)->nodeValue) {
                         $result['location'] = $storageElements->item(0)->nodeValue;
-                        $result['location.id'] = $storageElements->item(0)
-                            ->attributes->getNamedItem('id')->nodeValue;
-                        $result['location.href'] = $storageElements->item(0)
-                            ->attributes->getNamedItem('href')->nodeValue;
+                        $result['location.id']
+                            = $storageElements->item(0)->attributes
+                                ->getNamedItem('id')->nodeValue;
+                        $result['location.href']
+                            = $storageElements->item(0)->attributes
+                                ->getNamedItem('href')->nodeValue;
                         $result['barcode'] = $result['location.id'];
                     }
                 }
@@ -218,9 +236,15 @@ class DAIA implements DriverInterface
                 if ($labelElements->length > 0) {
                     if ($labelElements->item(0)->nodeValue) {
                         $result['label'] = $labelElements->item(0)->nodeValue;
-                        $result['callnumber'] = urldecode(
-                            $labelElements->item(0)->nodeValue
-                        );
+                        $result['callnumber']
+                            = urldecode($labelElements->item(0)->nodeValue);
+                    }
+                }
+                $messageElements
+                    = $itemlist->item($c)->getElementsByTagName('message');
+                if ($messageElements->length > 0) {
+                    if ($messageElements->item(0)->attributes->getNamedItem('errno')->nodeValue === '404') {
+                        $result['status'] = 'missing';
                     }
                 }
 
@@ -229,12 +253,13 @@ class DAIA implements DriverInterface
                 //$presAvail = 0;
                 //$presExp = 0;
 
-                $unavailableElements = $itemlist->item($c)
-                    ->getElementsByTagName('unavailable');
+                $unavailableElements
+                    = $itemlist->item($c)->getElementsByTagName('unavailable');
                 if ($unavailableElements->item(0) !== null) {
                     for ($n = 0; $unavailableElements->item($n) !== null; $n++) {
-                        $service = $unavailableElements->item($n)->attributes
-                            ->getNamedItem('service')->nodeValue;
+                        $service
+                            = $unavailableElements->item($n)->attributes
+                                ->getNamedItem('service')->nodeValue;
                         if ($service === 'presentation') {
                             $result['presentation.availability'] = '0';
                             if ($unavailableElements->item($n)->attributes->getNamedItem('expected') !== null) {
@@ -290,12 +315,14 @@ class DAIA implements DriverInterface
                         }
                         // TODO: message/limitation
                         if ($unavailableElements->item($n)->attributes->getNamedItem('expected') !== null) {
-                            $result['duedate'] = $unavailableElements->item($n)
-                                ->attributes->getNamedItem('expected')->nodeValue;
+                            $result['duedate']
+                                = $unavailableElements->item($n)->attributes
+                                    ->getNamedItem('expected')->nodeValue;
                         }
                         if ($unavailableElements->item($n)->attributes->getNamedItem('queue') !== null) {
-                            $result['queue'] = $unavailableElements->item($n)
-                                ->attributes->getNamedItem('queue')->nodeValue;
+                            $result['queue']
+                                = $unavailableElements->item($n)->attributes
+                                    ->getNamedItem('queue')->nodeValue;
                         }
                     }
                 }
@@ -304,8 +331,7 @@ class DAIA implements DriverInterface
                     = $itemlist->item($c)->getElementsByTagName('available');
                 if ($availableElements->item(0) !== null) {
                     for ($n = 0; $availableElements->item($n) !== null; $n++) {
-                        $service = $availableElements->item($n)->attributes
-                            ->getNamedItem('service')->nodeValue;
+                        $service = $availableElements->item($n)->attributes->getNamedItem('service')->nodeValue;
                         if ($service === 'presentation') {
                             $result['presentation.availability'] = '1';
                             if ($availableElements->item($n)->attributes->getNamedItem('delay') !== null) {
@@ -341,8 +367,9 @@ class DAIA implements DriverInterface
                         }
                         // TODO: message/limitation
                         if ($availableElements->item($n)->attributes->getNamedItem('delay') !== null) {
-                            $result['delay'] = $availableElements->item($n)
-                                ->attributes->getNamedItem('delay')->nodeValue;
+                            $result['delay']
+                                = $availableElements->item($n)->attributes
+                                    ->getNamedItem('delay')->nodeValue;
                         }
                     }
                 }
@@ -358,10 +385,13 @@ class DAIA implements DriverInterface
                 return 5;
                 */
             }
+            if (count($status) === 0) {
+                $status[] = $emptyResult;
+            }
         }
         return $status;
     }
-
+        
     /**
      * Return an abbreviated set of status information.
      *
@@ -381,35 +411,132 @@ class DAIA implements DriverInterface
         $storage = "Unknown";
         $holding = array();
         for ($c = 0; $itemlist->item($c) !== null; $c++) {
-            $storageElements = $itemlist->item($c)->getElementsByTagName('storage');
+            $storageElements
+                = $itemlist->item($c)->getElementsByTagName('storage');
             if ($storageElements->item(0)->nodeValue) {
-                $storage = $storageElements->item(0)->nodeValue;
+                if ($storageElements->item(0)->nodeValue === 'Internet') {
+                    $storage = '<a href="'.
+                        $storageElements->item(0)->attributes
+                            ->getNamedItem('href')->nodeValue.'">'.
+                        $storageElements->item(0)->attributes
+                            ->getNamedItem('href')->nodeValue.'</a>';
+                } else {
+                    $storage = $storageElements->item(0)->nodeValue;
+                }
             }
             $labelElements = $itemlist->item($c)->getElementsByTagName('label');
             if ($labelElements->item(0)->nodeValue) {
                 $label = $labelElements->item(0)->nodeValue;
             }
-            $availableElements = $itemlist->item($c)
-                ->getElementsByTagName('available');
+            $availableElements
+                = $itemlist->item($c)->getElementsByTagName('available');
             if ($availableElements->item(0) !== null) {
                 $availability = 1;
                 $status = 'Available';
+                if ($availableElements->item(0)->attributes->getNamedItem('href') !== null) {
+                    $earliest_href
+                        = $availableElements->item(0)->attributes
+                            ->getNamedItem('href')->nodeValue;
+                }
                 //for ($n = 0; $availableElements->item($n) !== null; $n++) {
-                //    $status .= ' ' . $availableElements->item($n)
-                //        ->getAttribute('service');
+                //    $status .= ' ' . $availableElements->item($n)->getAttribute('service');
                 //}
             } else {
-                $status = 'Unavailable';
+                $leanable = 1;
+                $unavailableElements = $itemlist->item($c)->getElementsByTagName('unavailable');
+                if ($unavailableElements->item(0) !== null) {
+                    $earliest = array();
+                    $queue = array();
+                    $hrefs = array();
+                    for ($n = 0; $unavailableElements->item($n) !== null; $n++) {
+                        if ($unavailableElements->item($n)->attributes->getNamedItem('href') !== null) {
+                            $hrefs['item'.$n]
+                                = $unavailableElements->item($n)->attributes
+                                    ->getNamedItem('href')->nodeValue;
+                        }
+                        if ($unavailableElements->item($n)->attributes->getNamedItem('expected') !== null) {
+                            //$duedate
+                            //     = $unavailableElements->item($n)
+                            //        ->attributes->getNamedItem('expected')
+                            //        ->nodeValue;
+                            //$duedate_arr = explode('-', $duedate);
+                            //$duedate_timestamp = mktime(
+                            //    '0', '0', '0', $duedate_arr[1],
+                            //    $duedate_arr[2], $duedate_arr[0]
+                            //);
+                            //array_push(
+                            //    $earliest,
+                            //    array(
+                            //        'expected' => $unavailableElements
+                            //            ->item($n)->attributes
+                            //            ->getNamedItem('expected')
+                            //            ->nodeValue,
+                            //        'recall' => $unavailableElements
+                            //            ->item($n)->attributes
+                            //            ->getNamedItem('href')->nodeValue
+                            //    )
+                            //);
+                            //array_push(
+                            //    $earliest,
+                            //    $unavailableElements->item($n)->attributes
+                            //        ->getNamedItem('expected')->nodeValue
+                            //);
+                            $earliest['item'.$n]
+                                = $unavailableElements->item($n)->attributes
+                                    ->getNamedItem('expected')->nodeValue;
+                        } else {
+                            array_push($earliest, "0");
+                        }
+                        if ($unavailableElements->item($n)->attributes->getNamedItem('queue') !== null) {
+                            $queue['item'.$n]
+                                = $unavailableElements->item($n)->attributes
+                                    ->getNamedItem('queue')->nodeValue;
+                        } else {
+                            array_push($queue, "0");
+                        }
+                    }
+                }
+                if (count($earliest) > 0) {
+                    arsort($earliest);
+                    $earliest_counter = 0;
+                    foreach ($earliest as $earliest_key => $earliest_value) {
+                        if ($earliest_counter === 0) {
+                            $earliest_duedate = $earliest_value;
+                            $earliest_href = $hrefs[$earliest_key];
+                            $earliest_queue = $queue[$earliest_key];
+                        }
+                        $earliest_counter = 1;
+                    }
+                } else {
+                    $leanable = 0;
+                }
+                $messageElements
+                    = $itemlist->item($c)->getElementsByTagName('message');
+                if ($messageElements->length > 0) {
+                    if ($messageElements->item(0)->attributes->getNamedItem('errno')->nodeValue === '404') {
+                        $status = 'missing';
+                    }
+                }
+                if (!$status) {
+                    $status = 'Unavailable';
+                }
                 $availability = 0;
+            }
+            $reserve = 'N';
+            if ($earliest_queue > 0) {
+                $reserve = 'Y';
             }
             $holding[] = array(
                 'availability' => $availability,
                 'id' => $id,
                 'status' => "$status",
                 'location' => "$storage",
-                'reserve' => 'N',
+                'reserve' => $reserve,
+                'queue' => $earliest_queue,
                 'callnumber' => "$label",
-                'duedate' => '',
+                'duedate' => $earliest_duedate,
+                'leanable' => $leanable,
+                'recallhref' => $earliest_href,
                 'number' => ($c+1)
             );
         }

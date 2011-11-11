@@ -5,6 +5,14 @@
 <div id="bd">
   <div id="yui-main" class="content">
     <div class="yui-b first contentbox">
+
+      {if $errorMsg || $infoMsg}
+      <div class="messages">
+      {if $errorMsg}<div class="error">{$errorMsg|translate}</div>{/if}
+      {if $infoMsg}<div class="userMsg">{$infoMsg|translate}</div>{/if}
+      </div>
+      {/if}
+
       {if !$recordCount}
         <div class="page">{translate text="course_reserves_empty_list"}</div>
       {else}
@@ -22,8 +30,12 @@
             <b>{$recordStart}</b> - <b>{$recordEnd}</b>
             {translate text='of'} <b>{$recordCount}</b>
             {translate text='Reserves'}
+            {if $instructor || $course}
+            ({if $instructor}{translate text='Instructor'}: <strong>{$instructor|escape}</strong>{if $course}, {/if}{/if}
+            {if $course}{translate text='Course'}: <strong>{$course|escape}</strong>{/if})
+            {/if}
           </div>
-  
+
           <div class="yui-u toggle">
             {if $limitList|@count gt 1}
              <form action="{$path}/Search/LimitResults" method="post">
@@ -43,16 +55,16 @@
             {/foreach}
             </select>
           </div>
-  
+
         </div>
         {* End Listing Options *}
-  
+
         {if $subpage}
           {include file=$subpage}
         {else}
           {$pageContent}
         {/if}
-  
+
         {if $pageLinks.all}<div class="pagination">{$pageLinks.all}</div>{/if}
         <div class="searchtools">
           <strong>{translate text='Search Tools'}:</strong>

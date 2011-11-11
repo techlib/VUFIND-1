@@ -58,7 +58,7 @@ class CheckedOut extends MyResearch
 
             // Renew Items
             if (isset($_POST['renewAll']) || isset($_POST['renewSelected'])) {
-                $this->_renewItems($patron);
+                $renewResult = $this->_renewItems($patron);
             }
 
             $result = $this->catalog->getMyTransactions($patron);
@@ -105,6 +105,7 @@ class CheckedOut extends MyResearch
     private function _addRenewDetails($transList)
     {
         global $interface;
+        $session_details = array();
 
         foreach ($transList as $key => $item) {
 
@@ -119,10 +120,15 @@ class CheckedOut extends MyResearch
                 if ($transList[$key]['ils_details']['renewable']) {
                     $interface->assign('renewForm', true);
                 }
-                $transList[$key]['ils_details']['renew_details']
+                $renew_details
                     = $this->catalog->getRenewDetails($item['ils_details']);
+                $transList[$key]['ils_details']['renew_details']
+                    = $session_details[] = $renew_details;
             }
         }
+
+        // Save all valid options in the session so user input can be validated later
+        $_SESSION['renewValidData'] = $session_details;
         return $transList;
     }
 
@@ -131,7 +137,7 @@ class CheckedOut extends MyResearch
      *
      * @param array $patron An array of patron information
      *
-     * @return null
+     * @return boolean true on success, false on failure
      * @access private
      */
     private function _renewItems($patron)
@@ -142,6 +148,17 @@ class CheckedOut extends MyResearch
             ? $_POST['renewAllIDS'] : $_POST['renewSelectedIDS'];
 
         if (is_array($gatheredDetails['details'])) {
+            $session_details = $_SESSION['renewValidData'];
+
+            foreach ($gatheredDetails['details'] as $info) {
+                // If the user input contains a value not found in the session
+                // whitelist, something has been tampered with -- abort the process.
+                if (!in_array($info, $session_details)) {
+                    $interface->assign('errorMsg', 'error_inconsistent_parameters');
+                    return false;
+                }
+            }
+
             // Add Patron Data to Submitted Data
             $gatheredDetails['patron'] = $patron;
             $renewResult = $this->catalog->renewMyItems($gatheredDetails);
@@ -152,12 +169,16 @@ class CheckedOut extends MyResearch
 
                 // Assign Results to the Template
                 $interface->assign('renewResult', $renewResult['details']);
+
+                return true;
+
             } else {
                  $interface->assign('errorMsg', 'renew_system_error');
             }
         } else {
             $interface->assign('errorMsg', 'renew_empty_selection');
         }
+        return false;
     }
 }
 

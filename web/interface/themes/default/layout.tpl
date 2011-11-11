@@ -92,7 +92,7 @@
     </div>
     {/if}
     
-    <div id="doc2" class="yui-t4"> {* Change id for page width, class for menu layout. *}
+    <div id="doc2" class="yui-t{if $sidebarOnLeft}2{else}4{/if}"> {* Change id for page width, class for menu layout. *}
 
       {if $useSolr || $useWorldcat || $useSummon}
       <div id="toptab">

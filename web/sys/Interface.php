@@ -193,6 +193,12 @@ class UInterface extends Smarty
 
             $this->assign('sessionInitiator', $sessionInitiator);
         }
+        
+        $this->assign(
+            'sidebarOnLeft', 
+            !isset($configArray['Site']['sidebarOnLeft'])
+            ? false : $configArray['Site']['sidebarOnLeft'] 
+        );
     }
 
     /**

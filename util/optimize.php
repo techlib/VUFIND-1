@@ -1,5 +1,8 @@
 <?php
 /**
+ * Command-line tool to optimize the Solr index.
+ *
+ * PHP version 5
  *
  * Copyright (C) Villanova University 2009.
  *
@@ -16,22 +19,26 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
+ * @category VuFind
+ * @package  Utilities
+ * @author   Demian Katz <demian.katz@villanova.edu>
+ * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
+ * @link     http://vufind.org/wiki/performance#index_optimization Wiki
  */
 ini_set('memory_limit', '50M');
 ini_set('max_execution_time', '3600');
 
-require_once 'util.inc.php';        // set up util environment
-require_once 'sys/Solr.php';
+/**
+ * Set up util environment
+ */
+require_once 'util.inc.php';
+require_once 'sys/ConnectionManager.php';
 
 // Read Config file
-$configArray = parse_ini_file('../web/conf/config.ini', true);
+$configArray = readConfig();
 
 // Setup Solr Connection -- Allow core to be specified as first command line param.
-$url = $configArray['Index']['url'];
-$solr = new Solr($url, isset($argv[1]) ? $argv[1] : '');
-if ($configArray['System']['debug']) {
-    $solr->debug = true;
-}
+$solr = ConnectionManager::connectToIndex('Solr', isset($argv[1]) ? $argv[1] : '');
 
 // Commit and Optimize the Solr Index
 $solr->commit();

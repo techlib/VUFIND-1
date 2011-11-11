@@ -70,7 +70,7 @@ class Holds extends MyResearch
 
                 // Process Submitted Form
                 if (isset($_POST['cancelSelected']) || isset($_POST['cancelAll'])) {
-                    $this->_cancelHolds($patron);
+                    $cancelRequest = $this->_cancelHolds($patron);
                 }
                 $interface->assign('holdResults', $this->holdResults);
                 $interface->assign('cancelResults', $this->cancelResults);
@@ -122,16 +122,32 @@ class Holds extends MyResearch
 
         $gatheredDetails['details'] = isset($_POST['cancelAll'])
                 ? $_POST['cancelAllIDS'] : $_POST['cancelSelectedIDS'];
+
         if (is_array($gatheredDetails['details'])) {
+
+            $session_details = $_SESSION['cancelValidData'];
+
+            foreach ($gatheredDetails['details'] as $info) {
+                // If the user input contains a value not found in the session
+                // whitelist, something has been tampered with -- abort the process.
+                if (!in_array($info, $session_details)) {
+                    $interface->assign('errorMsg', 'error_inconsistent_parameters');
+                    return false;
+                }
+            }
+
             // Add Patron Data to Submitted Data
             $gatheredDetails['patron'] = $patron;
             $this->cancelResults = $this->catalog->cancelHolds($gatheredDetails);
             if ($this->cancelResults == false) {
                 $interface->assign('errorMsg', 'hold_cancel_fail');
+            } else {
+                return true;
             }
         } else {
              $interface->assign('errorMsg', 'hold_empty_selection');
         }
+        return false;
     }
 
     /**
@@ -145,6 +161,7 @@ class Holds extends MyResearch
     private function _addCancelDetails($recordList)
     {
         global $interface;
+        $session_details = array();
 
         foreach ($recordList as $record) {
             // Generate Form Details for cancelling Holds if Cancelling Holds
@@ -156,11 +173,15 @@ class Holds extends MyResearch
             } else {
                 // Form Details
                 $interface->assign('cancelForm', true);
-                $record['ils_details']['cancel_details']
+                $cancel_details
                     = $this->catalog->getCancelHoldDetails($record['ils_details']);
+                $record['ils_details']['cancel_details']
+                    = $session_details[] = $cancel_details;
             }
             $holdList[] = $record;
         }
+        // Save all valid options in the session so user input can be validated later
+        $_SESSION['cancelValidData'] = $session_details;
         return $holdList;
     }
 }

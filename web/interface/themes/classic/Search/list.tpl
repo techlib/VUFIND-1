@@ -1,5 +1,5 @@
-<script language="JavaScript" type="text/javascript" src="{$path}/js/ajax_common.js"></script>
-<script language="JavaScript" type="text/javascript" src="{$path}/services/Search/ajax.js"></script>
+{js filename="ajax_common.js"}
+{js filename="search.js"}
 
 {* Main Listing *}
 <div id="bd">
@@ -31,7 +31,7 @@
           </div>
           {/if}
         </div>
-        
+
         <div class="yui-u toggle">
           {if $viewList|@count gt 1}
             {foreach from=$viewList item=viewData key=viewLabel}
@@ -53,8 +53,8 @@
           </form>
           {/if}
           <form action="{$path}/Search/SortResults" method="post">
-            {translate text='Sort'}
-            <select name="sort" onChange="document.location.href = this.options[this.selectedIndex].value;">
+            <label for="sort">{translate text='Sort'}</label>
+            <select id="sort" name="sort" onChange="document.location.href = this.options[this.selectedIndex].value;">
               {foreach from=$sortList item=sortData key=sortLabel}
                 <option value="{$sortData.sortUrl|escape}"{if $sortData.selected} selected{/if}>{translate text=$sortData.desc}</option>
               {/foreach}
@@ -94,3 +94,16 @@
   {* End Narrow Search Options *}
 
 </div>
+{if $showPreviews}
+<script type="text/javascript">
+{if $showGBSPreviews}
+document.write(unescape("%3Cscript src=https://encrypted.google.com/books?jscmd=viewapi&bibkeys=" + doGetExtIds() + "&callback=ProcessGBSBookInfo" + " type='text/javascript'%3E%3C/script%3E"));
+{/if}
+{if $showOLPreviews}
+document.write(unescape("%3Cscript src=http://openlibrary.org/api/books?bibkeys=" + doGetExtIds() + "&callback=ProcessOLBookInfo" + " type='text/javascript'%3E%3C/script%3E"));
+{/if}
+{if $showHTPreviews}
+document.write(unescape("%3Cscript src=http://catalog.hathitrust.org/api/volumes/brief/json/" + doGetHTIds() + "&callback=ProcessHTBookInfo" + " type='text/javascript'%3E%3C/script%3E"));
+{/if}
+</script>
+{/if}

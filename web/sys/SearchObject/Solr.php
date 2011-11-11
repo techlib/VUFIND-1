@@ -310,6 +310,17 @@ class SearchObject_Solr extends SearchObject_Base
         } else if ($module == 'MyResearch') {
             $this->spellcheck = false;
             $this->searchType = ($action == 'Favorites') ? 'favorites' : 'list';
+        } else if ($module == 'AJAX') {
+            //special AJAX Search check if it's for MapInfo
+            if ($action == 'ResultGoogleMapInfo') {
+                $this->limitOptions = array(5);
+                $this->initLimit();
+                // We don't spellcheck this screen
+                //it's not for free user intput anyway
+                $this->spellcheck  = false;
+                // Only get what's needed:
+                $this->fields = array('id, title, author, format, issn' );
+            }
         }
 
         // If a query override has been specified, log it here
@@ -526,12 +537,28 @@ class SearchObject_Solr extends SearchObject_Base
      *
      * @param array $ids Record IDs to load
      *
-     * @return void
+     * @return bool      True if all IDs can be loaded, false if boolean clause
+     * limit is exceeded (in which case a partial list will still be loaded).
      * @access public
      */
     public function setQueryIDs($ids)
     {
+        // Assume we will succeed:
+        $retVal = true;
+
+        // Limit the ID list if it exceeds the clause limit, and adjust the return
+        // value to reflect the problem:
+        $limit = $this->indexEngine->getBooleanClauseLimit();
+        if (count($ids) > $limit) {
+            $ids = array_slice($ids, 0, $limit);
+            $retVal = false;
+        }
+
+        // Build the query:
         $this->query = 'id:(' . implode(' OR ', $ids) . ')';
+
+        // Report success or failure:
+        return $retVal;
     }
 
     /**
@@ -839,24 +866,19 @@ class SearchObject_Solr extends SearchObject_Base
         // Find our tag in the database
         $tag = new Tags();
         $tag->tag = $lookfor;
-        $newSearch = array();
+        $tagList = array();
         if ($tag->find(true)) {
             // Grab the list of records tagged with this tag
             $resourceList = array();
             $resourceList = $tag->getResources();
             if (count($resourceList)) {
-                $newSearch[0] = array('join' => 'OR', 'group' => array());
                 foreach ($resourceList as $resource) {
-                    $newSearch[0]['group'][] = array(
-                        'field' => 'id',
-                        'lookfor' => $resource->record_id,
-                        'bool' => 'OR'
-                    );
+                    $tagList[] = $resource->record_id;
                 }
             }
         }
 
-        return $newSearch;
+        return $tagList;
     }
 
     /**
@@ -940,14 +962,14 @@ class SearchObject_Solr extends SearchObject_Base
             // If we managed to find some tag matches, let's override the search
             // array.  If we didn't find any tag matches, we should return an
             // empty record set.
-            $newSearch = $this->_processTagSearch($search[0]['lookfor']);
+            $tagList = $this->_processTagSearch($search[0]['lookfor']);
             // Save search so it displays correctly on the "no hits" page:
-            if (empty($newSearch)) {
+            if (empty($tagList)) {
                 return array(
                     'response' => array('numFound' => 0, 'docs' => array())
                 );
             } else {
-                $search = $newSearch;
+                $this->setQueryIDs($tagList);
             }
         }
 
@@ -1372,10 +1394,12 @@ class SearchObject_Solr extends SearchObject_Base
             $this->limit = 50;
 
             // If an RSS-specific search option is configured, override the current
-            // setting by prepending the specified value:
+            // setting by prepending the specified value (unless the request
+            // specifically says not to):
             $searchSettings = getExtraConfigArray('searches');
             if (isset($searchSettings['RSS']['sort'])
                 && !empty($searchSettings['RSS']['sort'])
+                && !isset($_REQUEST['skip_rss_sort'])
             ) {
                 $this->sort = (empty($this->sort) || $this->sort == 'relevance') ?
                     $searchSettings['RSS']['sort'] :
@@ -1449,6 +1473,54 @@ class SearchObject_Solr extends SearchObject_Base
 
         // Process and return the xml through the style sheet
         return $xsl->transformToXML($xml);
+    }
+
+    /**
+     * Get complete facet counts for several index fields
+     *
+     * @param array $facetfields  name of the Solr fields to return facets for
+     * @param bool  $removeFilter Clear existing filters from selected fields (true)
+     * or retain them (false)?
+     *
+     * @return array an array with the facet values for each index field
+     * @access public
+     */
+    public function getFullFieldFacets($facetfields, $removeFilter = true)
+    {
+        // Save prior facet configuration:
+        $oldConfig = $this->facetConfig;
+        $oldList = $this->filterList;
+        $oldLimit = $this->facetLimit;
+
+        // Manipulate facet settings temporarily:
+        $this->facetConfig = array();
+        $this->facetLimit = -1;
+        foreach ($facetfields as $facetName) {
+            $this->addFacet($facetName);
+
+            // Clear existing filters for the selected field if necessary:
+            if ($removeFilter) {
+                $this->filterList[$facetName] = array();
+            }
+        }
+
+        // Do search
+        $result = $this->processSearch();
+
+        // Reformat into a hash:
+        $returnFacets = $result['facet_counts']['facet_fields'];
+        foreach ($returnFacets as $key => $value) {
+            unset($returnFacets[$key]);
+            $returnFacets[$key]['data'] = $value;
+        }
+
+        // Restore saved information:
+        $this->facetConfig = $oldConfig;
+        $this->filterList = $oldList;
+        $this->facetLimit = $oldLimit;
+
+        // Send back data:
+        return $returnFacets;
     }
 }
 

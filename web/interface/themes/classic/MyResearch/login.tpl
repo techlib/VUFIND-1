@@ -37,12 +37,14 @@
                 {if $followupAction}<input type="hidden" name="followupAction" value="{$followupAction}"/>{/if}
                 {if $recordId}<input type="hidden" name="recordId" value="{$recordId|escape:"html"}"/>{/if}
               {/if}
-              {if $comment}
-                <input type="hidden" name="comment" name="comment" value="{$comment|escape:"html"}"/>
-              {/if}
               </td>
             </tr>
           </table>
+          {if $extraParams}
+            {foreach from=$extraParams item=item}
+              <input type="hidden" name="extraParams[]" value="{$item.name|escape}|{$item.value|escape}" />
+            {/foreach}
+          {/if}
         </form>
         <script type="text/javascript">var o = document.getElementById('mainFocus'); if (o) o.focus();</script>
 

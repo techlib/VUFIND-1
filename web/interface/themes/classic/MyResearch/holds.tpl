@@ -86,15 +86,29 @@
                       <strong>{translate text='Year of Publication'}:</strong> {$resource.ils_details.publication_year|escape}<br />
                     {/if}
 
-                    {if $pickup}
+                    {* Depending on the ILS driver, the "location" value may be a string or an ID; figure out the best
+                       value to display... *}
+                    {assign var="pickupDisplay" value=""}
+                    {assign var="pickupTranslate" value="0"}
+                    {if isset($resource.ils_details.location)}
+                      {if $pickup}
+                        {foreach from=$pickup item=library}
+                          {if $library.locationID == $resource.ils_details.location}
+                            {assign var="pickupDisplay" value=$library.locationDisplay}
+                            {assign var="pickupTranslate" value="1"}
+                          {/if}
+                        {/foreach}
+                      {/if}
+                      {if empty($pickupDisplay)}
+                        {assign var="pickupDisplay" value=$resource.ils_details.location}
+                      {/if}
+                    {/if}
+                    {if !empty($pickupDisplay)}
                       <strong>{translate text='pick_up_location'}:</strong>
-                      {foreach from=$pickup item=library}
-                        {if $library.locationID == $resource.ils_details.location}
-                          {translate text=$library.locationDisplay}
-                        {/if}
-                      {/foreach}
+                      {if $pickupTranslate}{translate text=$pickupDisplay}{else}{$pickupDisplay|escape}{/if}
                       <br />
                     {/if}
+
                     <strong>{translate text='Created'}:</strong> {$resource.ils_details.create|escape} |
                     <strong>{translate text='Expires'}:</strong> {$resource.ils_details.expire|escape}
                     <br />

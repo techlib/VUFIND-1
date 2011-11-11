@@ -1,3 +1,13 @@
+YAHOO.util.Event.onDOMReady(function () {
+    // create the slider for any date facets found
+    var Dom = YAHOO.util.Dom;
+    var check = Dom.getElementsByClassName('checkRequest');
+    for (var i = 0; i < check.length; i++) {
+        check[i].className += " ajax_hold_availability";
+    }
+    setUpCheckRequest();
+});
+
 function getSaveStatus(id, elemId)
 {
     var url = path + "/AJAX/JSON";
@@ -121,7 +131,7 @@ function SaveComment(id, strings)
 function LoadComments(id, strings)
 {
     var output = '';
-    
+
     var url = path + "/AJAX/JSON";
     var params = "method=getRecordCommentsAsHTML&id=" + encodeURIComponent(id);
     var callback =
@@ -139,4 +149,50 @@ function LoadComments(id, strings)
         }
     };
     var transaction = YAHOO.util.Connect.asyncRequest('GET', url+'?'+params, callback, null);
+}
+
+function setUpCheckRequest() {
+    var Dom = YAHOO.util.Dom;
+    var check = Dom.getElementsByClassName('checkRequest');
+    for (var i = 0; i < check.length; i++) {
+        var isValid = checkRequestIsValid(check[i], check[i].href);
+    }
+}
+
+function checkRequestIsValid(element, requestURL) {
+
+    var recordId = requestURL.match(/\/Record\/([^\/]+)\//)[1];
+    var postParams = "";
+    var hashes = requestURL.slice(requestURL.indexOf('?') + 1).split('&');
+
+    for(var i = 0; i < hashes.length; i++)
+    {
+        var hash = hashes[i].split('=');
+        var x = hash[0];
+        var y = hash[1];
+        postParams += 'data[' + x + ']=' + y + '&';
+    }
+    postParams += 'data[id]=' + recordId;
+
+    var url = path + '/AJAX/JSON';
+    var params = 'method=checkRequestIsValid&id=' + recordId;
+    var callback =
+    {
+        success: function(transaction) {
+            var result = eval('(' + transaction.responseText + ')');
+            if (result.status == 'OK') {
+                if (result && result.data && result.data.status) {
+                    element.className = "holdPlace";
+                    element.innerHTML = result.data.msg;
+                } else {
+                    var parent = element.parentNode;
+                    parent.removeChild(element);
+                }
+            } else if (result.status == 'NEED_AUTH') {
+                element.className = "";
+                element.innerHTML = '<span class="holdBlocked">' + response.data.msg + '</span>';
+            }
+        }
+    };
+    var transaction = YAHOO.util.Connect.asyncRequest('POST', url+'?'+params, callback, postParams);
 }

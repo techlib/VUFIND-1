@@ -12,19 +12,21 @@
       <div class="yui-ge">
         <div class="yui-u first">
           <form action="{$url}/MyResearch/Bulk" id="favForm" method="POST">
-          {if $listEditAllowed && $list && $list->id}
+          {if $list && $list->id}
             <input type="hidden" name="listID" value="{$list->id|escape}" />
             <input type="hidden" name="listName" value="{$list->title|escape}" />
 
             <div class="listDetails">
-              <div class="listControls">
-                <div class="toolbar">
-                  <ul>
-                    <li><input type="submit" class="button edit" name="editList" value="{translate text="edit_list"}" /></li>
-                    <li><input type="submit" class="button delete" name="deleteList" onClick="confirmOperation({literal}{{/literal}listID: '{$list->id|escape}', deleteList: 'deleteList'{literal}}{/literal}, 'MyResearch', 'Confirm', '', '', '{translate text="delete_list"}', 'MyResearch', 'Favorites', ''); return false;" value="{translate text="delete_list"}" /></li>
-                  </ul>
+              {if $listEditAllowed}
+                <div class="listControls">
+                  <div class="toolbar">
+                    <ul>
+                      <li><input type="submit" class="button edit" name="editList" value="{translate text="edit_list"}" /></li>
+                      <li><input type="submit" class="button delete" name="deleteList" onClick="confirmOperation({literal}{{/literal}listID: '{$list->id|escape}', deleteList: 'deleteList'{literal}}{/literal}, 'MyResearch', 'Confirm', '', '', '{translate text="delete_list"}', 'MyResearch', 'Favorites', ''); return false;" value="{translate text="delete_list"}" /></li>
+                    </ul>
+                  </div>
                 </div>
-              </div>
+              {/if}
               <h3 class="list">{$list->title|escape:"html"}</h3>
               <br class="clearer" />
               {if $list->description}<p>{$list->description|escape}</p>{/if}

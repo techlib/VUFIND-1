@@ -45,8 +45,15 @@ function doGetStatuses(strings)
                 var locationDiv = getElem('location' + items[i].id);
                 var callnumberDiv = getElem('callnumber' + items[i].id);
                 var locationListDiv = getElem('locationDetails' + items[i].id);
-                
-                if (items[i].locationList && locationListDiv) {
+                var fullStatusDiv = getElem('callnumAndLocation' + items[i].id);
+                if (typeof(items[i].full_status) != 'undefined'
+                    && items[i].full_status.length > 0
+                    && fullStatusDiv) {
+                    fullStatusDiv.innerHTML = items[i].full_status;
+                    if (statusDiv) {
+                        statusDiv.style.display = 'none';
+                    }
+                } else if (items[i].locationList && locationListDiv) {
                     // Hide Call Number and Location Holders
                     if (callnumberDiv) {
                         callnumberDiv.parentNode.style.display = "none";

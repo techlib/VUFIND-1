@@ -1,6 +1,6 @@
 {js filename="bulk_actions.js"}
 
-<div class="span-18">
+<div class="span-18{if $sidebarOnLeft} push-5 last{/if}">
   {if $list}
     <div class="floatright">
       <form method="post" name="addForm" action="{$url}/MyResearch/Bulk">
@@ -76,7 +76,7 @@
   {/if}
 </div>
   
-<div class="span-5 last">  
+<div class="span-5 {if $sidebarOnLeft}pull-18 sidebarOnLeft{else}last{/if}">  
   {include file="MyResearch/menu.tpl"}
   
   {if $listList}

@@ -43,6 +43,15 @@ require_once 'Voyager.php';
  */
 class VoyagerRestful extends Voyager
 {
+    protected $ws_host;
+    protected $ws_port;
+    protected $ws_app;
+    protected $ws_dbKey;
+    protected $ws_patronHomeUbId;
+    protected $ws_pickUpLocations;
+    protected $defaultPickUpLocation;
+    protected $holdCheckLimit;
+
     /**
      * Constructor
      *
@@ -67,6 +76,9 @@ class VoyagerRestful extends Voyager
             ? $this->config['pickUpLocations'] : false;
         $this->defaultPickUpLocation
             = $this->config['Holds']['defaultPickUpLocation'];
+        $this->holdCheckLimit
+            = isset($this->config['Holds']['holdCheckLimit']) 
+            ? $this->config['Holds']['holdCheckLimit'] : "15";
     }
 
     /**
@@ -89,16 +101,16 @@ class VoyagerRestful extends Voyager
     }
 
     /**
-     * Private support method for VuFind Hold Logic. Take an array of status strings
+     * Support method for VuFind Hold Logic. Take an array of status strings
      * and determines whether or not an item is holdable based on the
      * valid_hold_statuses settings in configuration file
      *
      * @param array $statusArray The status codes to analyze.
      *
      * @return bool Whether an item is holdable
-     * @access private
+     * @access protected
      */
-    private function _isHoldable($statusArray)
+    protected function isHoldable($statusArray)
     {
         // User defined hold behaviour
         $is_holdable = true;
@@ -119,16 +131,16 @@ class VoyagerRestful extends Voyager
     }
 
     /**
-     * Private support method for VuFind Hold Logic. Takes an item type id
+     * Support method for VuFind Hold Logic. Takes an item type id
      * and determines whether or not an item is borrowable based on the
      * non_borrowable settings in configuration file
      *
      * @param string $itemTypeID The item type id to analyze.
      *
      * @return bool Whether an item is borrowable
-     * @access private
+     * @access protected
      */
-    private function _isBorrowable($itemTypeID)
+    protected function isBorrowable($itemTypeID)
     {
         $is_borrowable = true;
         if (isset($this->config['Holds']['non_borrowable'])) {
@@ -185,10 +197,11 @@ class VoyagerRestful extends Voyager
     protected function processHoldingData($data, $patron = false)
     {
         $holding = parent::processHoldingData($data, $patron);
+        $mode = CatalogConnection::getHoldsMode();
 
         foreach ($holding as $i => $row) {
-            $is_borrowable = $this->_isBorrowable($row['_fullRow']['ITEM_TYPE_ID']);
-            $is_holdable = $this->_isHoldable($row['_fullRow']['STATUS_ARRAY']);
+            $is_borrowable = $this->isBorrowable($row['_fullRow']['ITEM_TYPE_ID']);
+            $is_holdable = $this->isHoldable($row['_fullRow']['STATUS_ARRAY']);
             // If the item cannot be borrowed or if the item is not holdable,
             // set is_holdable to false
             if (!$is_borrowable || !$is_holdable) {
@@ -200,11 +213,17 @@ class VoyagerRestful extends Voyager
 
             // Hold Type - If we have patron data, we can use it to dermine if a
             // hold link should be shown
-            if ($patron) {
-                $holdType = $this->_determineHoldType(
-                    $row['id'], $row['item_id'], $patron['id']
-                );
-                $addLink = $holdType ? $holdType : false;
+            if ($patron && $mode == "driver") {
+                // This limit is set as the api is slow to return results
+                if ($i < $this->holdCheckLimit && $this->holdCheckLimit != "0") {
+                    $holdType = $this->determineHoldType(
+                        $row['id'], $row['item_id'], $patron['id']
+                    );
+                    $addLink = $holdType ? $holdType : false;
+                } else {
+                    $holdType = "auto";
+                    $addLink = "check";
+                }
             } else {
                 $holdType = "auto";
             }
@@ -220,6 +239,30 @@ class VoyagerRestful extends Voyager
     }
 
     /**
+     * checkRequestIsValid
+     *
+     * This is responsible for determining if an item is requestable
+     *
+     * @param string $id     The Bib ID
+     * @param array  $data   An Array of item data
+     * @param patron $patron An array of patron data
+     *
+     * @return string True if request is valid, false if not
+     * @access public
+     */
+    public function checkRequestIsValid($id, $data, $patron)
+    {
+        $mode = CatalogConnection::getHoldsMode();
+        if ($data['holdtype'] == "auto" && $mode == "driver") {
+            $result = $this->determineHoldType($id, $data['item_id'], $patron['id']);
+            if (!$result || $result == 'block') {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
      * Determine Renewability
      *
      * This is responsible for determining if an item is renewable
@@ -229,12 +272,11 @@ class VoyagerRestful extends Voyager
      *
      * @return mixed Array of the renewability status and associated
      * message
-     * @access private
+     * @access protected
      */
 
-    private function _isRenewable($patronId, $itemId)
+    protected function isRenewable($patronId, $itemId)
     {
-
         // Build Hierarchy
         $hierarchy = array(
             "patron" => $patronId,
@@ -253,7 +295,7 @@ class VoyagerRestful extends Voyager
         // Add to Hierarchy
         $hierarchy[$restItemID] = false;
 
-        $renewability = $this->_makeRequest($hierarchy, $params, "GET");
+        $renewability = $this->makeRequest($hierarchy, $params, "GET");
         $renewability = $renewability->children();
         $node = "reply-text";
         $reply = (string)$renewability->$node;
@@ -287,7 +329,7 @@ class VoyagerRestful extends Voyager
     {
         $transactions = parent::processMyTransactionsData($sqlRow, $patron);
 
-        $renewData = $this->_isRenewable($patron['id'], $transactions['item_id']);
+        $renewData = $this->isRenewable($patron['id'], $transactions['item_id']);
         $transactions['renewable'] = $renewData['renewable'];
         $transactions['message'] = $renewData['message'];
 
@@ -300,12 +342,19 @@ class VoyagerRestful extends Voyager
      * This is responsible for gettting a list of valid library locations for
      * holds / recall retrieval
      *
-     * @param array $patron Patron information returned by the patronLogin method.
+     * @param array $patron      Patron information returned by the patronLogin
+     * method.
+     * @param array $holdDetails Optional array, only passed in when getting a list
+     * in the context of placing a hold; contains most of the same values passed to
+     * placeHold, minus the patron data.  May be used to limit the pickup options
+     * or may be ignored.  The driver must not add new options to the return array
+     * based on this data or other areas of VuFind may behave incorrectly.
      *
-     * @return array        An keyed array where libray id => Library Display Name
+     * @return array        An array of associative arrays with locationID and
+     * locationDisplay keys
      * @access public
      */
-    public function getPickUpLocations($patron = false)
+    public function getPickUpLocations($patron = false, $holdDetails = null)
     {
         if ($this->ws_pickUpLocations) {
             foreach ($this->ws_pickUpLocations as $code => $library) {
@@ -344,12 +393,16 @@ class VoyagerRestful extends Voyager
      *
      * Returns the default pick up location set in VoyagerRestful.ini
      *
-     * @param array $patron Patron information returned by the patronLogin method.
+     * @param array $patron      Patron information returned by the patronLogin
+     * method.
+     * @param array $holdDetails Optional array, only passed in when getting a list
+     * in the context of placing a hold; contains most of the same values passed to
+     * placeHold, minus the patron data.  May be used to limit the pickup options
+     * or may be ignored.
      *
-     * @return array        An keyed array where libray id => Library Display Name
-     * @access public
+     * @return string       The default pickup location for the patron.
      */
-    public function getDefaultPickUpLocation($patron = false)
+    public function getDefaultPickUpLocation($patron = false, $holdDetails = null)
     {
         return $this->defaultPickUpLocation;
     }
@@ -366,9 +419,9 @@ class VoyagerRestful extends Voyager
      * @param string $xml       An optional XML string to send to the API
      *
      * @return obj  A Simple XML Object loaded with the xml data returned by the API
-     * @access private
+     * @access protected
      */
-    private function _makeRequest($hierarchy, $params = false, $mode = "GET",
+    protected function makeRequest($hierarchy, $params = false, $mode = "GET",
         $xml = false
     ) {
         // Build Url Base
@@ -427,10 +480,10 @@ class VoyagerRestful extends Voyager
      * @param array $xml A keyed array of xml node names and data
      *
      * @return string    An XML string
-     * @access private
+     * @access protected
      */
 
-    private function _buildBasicXML($xml)
+    protected function buildBasicXML($xml)
     {
         $xmlString = "";
 
@@ -461,10 +514,10 @@ class VoyagerRestful extends Voyager
      *
      * @return mixed           A boolean false if no blocks are in place and an array
      * of block reasons if blocks are in place
-     * @access private
+     * @access protected
      */
 
-    private function _checkAccountBlocks($patronId)
+    protected function checkAccountBlocks($patronId)
     {
         $blockReason = false;
 
@@ -480,7 +533,7 @@ class VoyagerRestful extends Voyager
             "view" => "full"
         );
 
-        $blocks = $this->_makeRequest($hierarchy, $params);
+        $blocks = $this->makeRequest($hierarchy, $params);
 
         if ($blocks) {
             $node = "reply-text";
@@ -520,7 +573,7 @@ class VoyagerRestful extends Voyager
         $patronId = $renewDetails['patron']['id'];
 
         // Get Account Blocks
-        $finalResult['blocks'] = $this->_checkAccountBlocks($patronId);
+        $finalResult['blocks'] = $this->checkAccountBlocks($patronId);
 
         if ($finalResult['blocks'] === false) {
             // Add Items and Attempt Renewal
@@ -548,9 +601,9 @@ class VoyagerRestful extends Voyager
                 $hierarchy[$restRenewID] = false;
 
                 // Attempt Renewal
-                $renewalObj = $this->_makeRequest($hierarchy, $params, "POST");
+                $renewalObj = $this->makeRequest($hierarchy, $params, "POST");
 
-                $process = $this->_processRenewals($renewalObj);
+                $process = $this->processRenewals($renewalObj);
                 if (PEAR::isError($process)) {
                     return $process;
                 }
@@ -588,9 +641,9 @@ class VoyagerRestful extends Voyager
      *
      * @return array             An array with the item id, success, new date (if
      * available) and system message (if available)
-     * @access private
+     * @access protected
      */
-    private function _processRenewals($renewalObj)
+    protected function processRenewals($renewalObj)
     {
         // Not Sure Why, but necessary!
         $renewal = $renewalObj->children();
@@ -648,10 +701,11 @@ class VoyagerRestful extends Voyager
      * @param string $itemId   An item's Item ID (optional)
      *
      * @return boolean         true if the request can be made, false if it cannot
-     * @access private
+     * @access protected
      */
-    private function _checkItemRequests($bibId, $patronId, $request, $itemId = false)
-    {
+    protected function checkItemRequests($bibId, $patronId, $request, 
+        $itemId = false
+    ) {
         if (!empty($bibId) && !empty($patronId) && !empty($request) ) {
 
             $hierarchy = array();
@@ -672,7 +726,7 @@ class VoyagerRestful extends Voyager
                 "view" => "full"
             );
 
-            $check = $this->_makeRequest($hierarchy, $params, "GET", false);
+            $check = $this->makeRequest($hierarchy, $params, "GET", false);
 
             if ($check) {
                 // Process
@@ -708,9 +762,9 @@ class VoyagerRestful extends Voyager
      *
      * @return array             An array of data from the attempted request
      * including success, status and a System Message (if available)
-     * @access private
+     * @access protected
      */
-    private function _makeItemRequests($bibId, $patronId, $request,
+    protected function makeItemRequests($bibId, $patronId, $request,
         $requestData, $itemId = false
     ) {
         $response = array('success' => false, 'status' =>"hold_error_fail");
@@ -748,10 +802,10 @@ class VoyagerRestful extends Voyager
             );
 
             // Generate XML
-            $requestXML = $this->_buildBasicXML($xml);
+            $requestXML = $this->buildBasicXML($xml);
 
             // Get Data
-            $result = $this->_makeRequest($hierarchy, $params, "PUT", $requestXML);
+            $result = $this->makeRequest($hierarchy, $params, "PUT", $requestXML);
 
             if ($result) {
                 // Process
@@ -787,23 +841,23 @@ class VoyagerRestful extends Voyager
      *
      * @return string          The name of the request method to use or false on
      * failure
-     * @access private
+     * @access protected
      */
-    private function _determineHoldType($bibId, $itemId, $patronId)
+    protected function determineHoldType($bibId, $itemId, $patronId)
     {
         // Check for account Blocks
-        if ($this->_checkAccountBlocks($patronId)) {
+        if ($this->checkAccountBlocks($patronId)) {
             return "block";
         }
         
         // Check Recalls First
-        $recall = $this->_checkItemRequests($bibId, $patronId, "recall", $itemId);
+        $recall = $this->checkItemRequests($bibId, $patronId, "recall", $itemId);
 
         if ($recall) {
             return "recall";
         } else {
             // Check Holds
-            $hold = $this->_checkItemRequests($bibId, $patronId, "hold", $itemId);
+            $hold = $this->checkItemRequests($bibId, $patronId, "hold", $itemId);
             if ($hold) {
                 return "hold";
             }
@@ -819,9 +873,9 @@ class VoyagerRestful extends Voyager
      * @param string $msg An error message string
      *
      * @return array An array with a success (boolean) and sysMessage key
-     * @access private
+     * @access protected
      */
-    private function _holdError($msg)
+    protected function holdError($msg)
     {
         return array(
                     "success" => false,
@@ -853,11 +907,11 @@ class VoyagerRestful extends Voyager
         $bibId = $holdDetails['id'];
 
         // Request was initiated before patron was logged in -
-        //Let's determine Hold Type now
+        // Let's determine Hold Type now
         if ($type == "auto") {
-            $type = $this->_determineHoldType($bibId, $itemId, $patron['id']);
+            $type = $this->determineHoldType($bibId, $itemId, $patron['id']);
             if (!$type || $type == "block") {
-                return $this->_holdError("hold_error_blocked");
+                return $this->holdError("hold_error_blocked");
             }
         }
 
@@ -867,7 +921,7 @@ class VoyagerRestful extends Voyager
         );
         if (PEAR::isError($lastInterestDate)) {
             // Hold Date is invalid
-            return $this->_holdError("hold_date_invalid");
+            return $this->holdError("hold_date_invalid");
         }
 
         $checkTime =  $this->dateFormat->convertFromDisplayDate(
@@ -879,12 +933,12 @@ class VoyagerRestful extends Voyager
 
         if (time() > $checkTime) {
             // Hold Date is in the past
-            return $this->_holdError("hold_date_passed");
+            return $this->holdError("hold_date_passed");
         }
 
         // Make Sure Pick Up Library is Valid
         $pickUpValid = false;
-        $pickUpLibs = $this->getPickUpLocations();
+        $pickUpLibs = $this->getPickUpLocations($patron, $holdDetails);
         foreach ($pickUpLibs as $location) {
             if ($location['locationID'] == $pickUpLocation) {
                 $pickUpValid = true;
@@ -892,7 +946,7 @@ class VoyagerRestful extends Voyager
         }
         if (!$pickUpValid) {
             // Invalid Pick Up Point
-            return $this->_holdError("hold_invalid_pickup");
+            return $this->holdError("hold_invalid_pickup");
         }
 
         // Build Request Data
@@ -902,16 +956,16 @@ class VoyagerRestful extends Voyager
             'comment' => $comment
         );
 
-        if ($this->_checkItemRequests($bibId, $patron['id'], $type, $itemId)) {
+        if ($this->checkItemRequests($bibId, $patron['id'], $type, $itemId)) {
             // Attempt Request
-            $result = $this->_makeItemRequests(
+            $result = $this->makeItemRequests(
                 $bibId, $patron['id'], $type, $requestData, $itemId
             );
             if ($result) {
                 return $result;
             }
         }
-        return $this->_holdError("hold_error_blocked");
+        return $this->holdError("hold_error_blocked");
     }
 
     /**
@@ -953,7 +1007,7 @@ class VoyagerRestful extends Voyager
             );
 
             // Get Data
-            $cancel = $this->_makeRequest($hierarchy, $params, "DELETE");
+            $cancel = $this->makeRequest($hierarchy, $params, "DELETE");
 
             if ($cancel) {
 

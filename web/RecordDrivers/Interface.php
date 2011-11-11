@@ -29,7 +29,7 @@
 /**
  * Record Driver Interface
  *
- * This interface class is the definition of the required methods for 
+ * This interface class is the definition of the required methods for
  * interacting with a particular metadata record format.
  *
  * @category VuFind
@@ -41,11 +41,11 @@
 interface RecordInterface
 {
     /**
-     * Constructor.  We build the object using all the data retrieved 
-     * from the (Solr) index (which also happens to include the 
-     * 'fullrecord' field containing raw metadata).  Since we have to 
-     * make a search call to find out which record driver to construct, 
-     * we will already have this data available, so we might as well 
+     * Constructor.  We build the object using all the data retrieved
+     * from the (Solr) index (which also happens to include the
+     * 'fullrecord' field containing raw metadata).  Since we have to
+     * make a search call to find out which record driver to construct,
+     * we will already have this data available, so we might as well
      * just pass it into the constructor.
      *
      * @param array $indexFields All fields retrieved from the index.
@@ -55,7 +55,7 @@ interface RecordInterface
     public function __construct($indexFields);
 
     /**
-     * Get text that can be displayed to represent this record in 
+     * Get text that can be displayed to represent this record in
      * breadcrumbs.
      *
      * @return string Breadcrumb text to represent this record.
@@ -64,9 +64,9 @@ interface RecordInterface
     public function getBreadcrumb();
 
     /**
-     * Assign necessary Smarty variables and return a template name 
-     * to load in order to display the requested citation format.  
-     * For legal values, see getCitationFormats().  Returns null if 
+     * Assign necessary Smarty variables and return a template name
+     * to load in order to display the requested citation format.
+     * For legal values, see getCitationFormats().  Returns null if
      * format is not supported.
      *
      * @param string $format Citation format to display.
@@ -77,7 +77,7 @@ interface RecordInterface
     public function getCitation($format);
 
     /**
-     * Get an array of strings representing citation formats supported 
+     * Get an array of strings representing citation formats supported
      * by this record's data (empty if none).  Legal values: "APA", "MLA".
      *
      * @return array Strings representing citation formats.
@@ -86,8 +86,8 @@ interface RecordInterface
     public function getCitationFormats();
 
     /**
-     * Assign necessary Smarty variables and return a template name to 
-     * load in order to display core metadata (the details shown in the 
+     * Assign necessary Smarty variables and return a template name to
+     * load in order to display core metadata (the details shown in the
      * top portion of the record view pages, above the tabs).
      *
      * @return string Name of Smarty template file to display.
@@ -96,8 +96,8 @@ interface RecordInterface
     public function getCoreMetadata();
 
     /**
-     * Get an array of search results for other editions of the title 
-     * represented by this record (empty if unavailable).  In most cases, 
+     * Get an array of search results for other editions of the title
+     * represented by this record (empty if unavailable).  In most cases,
      * this will use the XISSN/XISBN logic to find matches.
      *
      * @return mixed Editions in index engine result format (or null if no hits,
@@ -124,9 +124,9 @@ interface RecordInterface
     public function getExcerpts();
 
     /**
-     * Assign necessary Smarty variables and return a template name to 
-     * load in order to export the record in the requested format.  For 
-     * legal values, see getExportFormats().  Returns null if format is 
+     * Assign necessary Smarty variables and return a template name to
+     * load in order to export the record in the requested format.  For
+     * legal values, see getExportFormats().  Returns null if format is
      * not supported.
      *
      * @param string $format Export format to display.
@@ -137,8 +137,8 @@ interface RecordInterface
     public function getExport($format);
 
     /**
-     * Get an array of strings representing formats in which this record's 
-     * data may be exported (empty if none).  Legal values: "RefWorks", 
+     * Get an array of strings representing formats in which this record's
+     * data may be exported (empty if none).  Legal values: "RefWorks",
      * "EndNote", "MARC", "RDF".
      *
      * @return array Strings representing export formats.
@@ -147,9 +147,9 @@ interface RecordInterface
     public function getExportFormats();
 
     /**
-     * Assign necessary Smarty variables and return a template name to 
-     * load in order to display extended metadata (more details beyond 
-     * what is found in getCoreMetadata() -- used as the contents of the 
+     * Assign necessary Smarty variables and return a template name to
+     * load in order to display extended metadata (more details beyond
+     * what is found in getCoreMetadata() -- used as the contents of the
      * Description tab of the record view).
      *
      * @return string Name of Smarty template file to display.
@@ -158,8 +158,8 @@ interface RecordInterface
     public function getExtendedMetadata();
 
     /**
-     * Assign necessary Smarty variables and return a template name to 
-     * load in order to display holdings extracted from the base record 
+     * Assign necessary Smarty variables and return a template name to
+     * load in order to display holdings extracted from the base record
      * (i.e. URLs in MARC 856 fields) and, if necessary, the ILS driver.
      * Returns null if no data is available.
      *
@@ -184,7 +184,15 @@ interface RecordInterface
     public function getListEntry($user, $listId = null, $allowEdit = true);
 
     /**
-     * Get the OpenURL parameters to represent this record (useful for the 
+     * getMapView - gets the map view template.
+     *
+     * @return string template name
+     * @access public
+     */
+    public function getMapView();
+
+    /**
+     * Get the OpenURL parameters to represent this record (useful for the
      * title attribute of a COinS span tag).
      *
      * @return string OpenURL parameters.
@@ -215,15 +223,15 @@ interface RecordInterface
      * search results.
      *
      * @param string $view The current view.
-     * 
+     *
      * @return string      Name of Smarty template file to display.
      * @access public
      */
     public function getSearchResult($view = 'list');
 
     /**
-     * Assign necessary Smarty variables and return a template name to 
-     * load in order to display the full record information on the Staff 
+     * Assign necessary Smarty variables and return a template name to
+     * load in order to display the full record information on the Staff
      * View tab of the record view page.
      *
      * @return string Name of Smarty template file to display.
@@ -232,8 +240,8 @@ interface RecordInterface
     public function getStaffView();
 
     /**
-     * Assign necessary Smarty variables and return a template name to 
-     * load in order to display the Table of Contents extracted from the 
+     * Assign necessary Smarty variables and return a template name to
+     * load in order to display the Table of Contents extracted from the
      * record.  Returns null if no Table of Contents is available.
      *
      * @return string Name of Smarty template file to display.
@@ -297,6 +305,15 @@ interface RecordInterface
      * @access public
      */
     public function hasImages();
+
+    /**
+     * Can this record be rendered on a map?  (If so, getMapView must return a
+     * template for the map tab).
+     *
+     * @return bool
+     * @access public
+     */
+    public function hasMap();
 
     /**
      * Does this record support an RDF representation?

@@ -61,20 +61,18 @@ class Demo implements DriverInterface
     /**
      * Generate a fake location name.
      *
+     * @param bool $returnText If true, return location text; if false, return ID
+     *
      * @return string
      * @access private
      */
-    private function _getFakeLoc()
+    private function _getFakeLoc($returnText = true)
     {
-        $loc = rand()%3;
-        switch ($loc) {
-        case 0:
-            return "Campus A";
-        case 1:
-            return "Campus B";
-        case 2:
-            return "Campus C";
-        }
+        $locations = $this->getPickUpLocations();
+        $loc = rand()%count($locations);
+        return $returnText
+            ? $locations[$loc]['locationDisplay']
+            :$locations[$loc]['locationID'];
     }
 
     /**
@@ -175,12 +173,13 @@ class Demo implements DriverInterface
 
         // Create a fake entry for each one
         for ($i = 0; $i < $records; $i++) {
+            $status = $this->_getFakeStatus();
             $holding[] = array(
                 'id'           => $id,
                 'number'       => $i+1,
                 'barcode'      => sprintf("%08d", rand()%50000),
-                'availability' => (rand()%100 > 50) ? true : false,
-                'status'       => $this->_getFakeStatus(),
+                'availability' => $status == 'Available',
+                'status'       => $status,
                 'location'     => $this->_getFakeLoc(),
                 'reserve'      => (rand()%100 > 49) ? 'Y' : 'N',
                 'callnumber'   => $this->_getFakeCallNum(),
@@ -379,7 +378,7 @@ class Demo implements DriverInterface
             for ($i = 0; $i < $holds; $i++) {
                 $holdList[] = array(
                     "id"       => $this->_getRandomBibId(),
-                    "location" => $this->_getFakeLoc(),
+                    "location" => $this->_getFakeLoc(false),
                     "expire"   => date("j-M-y", strtotime("now + 30 days")),
                     "create"   =>
                         date("j-M-y", strtotime("now - ".(rand()%10)." days")),
@@ -451,6 +450,63 @@ class Demo implements DriverInterface
             $_SESSION['demoData']['transactions'] = $transList;
         }
         return $_SESSION['demoData']['transactions'];
+    }
+
+    /**
+     * Get Pick Up Locations
+     *
+     * This is responsible get a list of valid library locations for holds / recall
+     * retrieval
+     *
+     * @param array $patron      Patron information returned by the patronLogin
+     * method.
+     * @param array $holdDetails Optional array, only passed in when getting a list
+     * in the context of placing a hold; contains most of the same values passed to
+     * placeHold, minus the patron data.  May be used to limit the pickup options
+     * or may be ignored.  The driver must not add new options to the return array
+     * based on this data or other areas of VuFind may behave incorrectly.
+     *
+     * @return array        An array of associative arrays with locationID and
+     * locationDisplay keys
+     * @access public
+     */
+    public function getPickUpLocations($patron = false, $holdDetails = null)
+    {
+        return array(
+            array(
+                'locationID' => 'A',
+                'locationDisplay' => 'Campus A'
+            ),
+            array(
+                'locationID' => 'B',
+                'locationDisplay' => 'Campus B'
+            ),
+            array(
+                'locationID' => 'C',
+                'locationDisplay' => 'Campus C'
+            )
+        );
+    }
+
+    /**
+     * Get Default Pick Up Location
+     *
+     * Returns the default pick up location set in HorizonXMLAPI.ini
+     *
+     * @param array $patron      Patron information returned by the patronLogin
+     * method.
+     * @param array $holdDetails Optional array, only passed in when getting a list
+     * in the context of placing a hold; contains most of the same values passed to
+     * placeHold, minus the patron data.  May be used to limit the pickup options
+     * or may be ignored.
+     *
+     * @return string A location ID
+     * @access public
+     */
+    public function getDefaultPickUpLocation($patron = false, $holdDetails = null)
+    {
+        $locations = $this->getPickUpLocations($patron);
+        return $locations[0]['locationID'];
     }
 
     /**
@@ -749,7 +805,7 @@ class Demo implements DriverInterface
 
         $_SESSION['demoData']['holds'][] = array(
             "id"       => $holdDetails['id'],
-            "location" => $this->_getFakeLoc(),
+            "location" => $holdDetails['pickUpLocation'],
             "expire"   => date("j-M-y", strtotime("now + 30 days")),
             "create"   =>
                 date("j-M-y"),
@@ -773,7 +829,7 @@ class Demo implements DriverInterface
         if ($function == 'Holds') {
             return array(
                 'HMACKeys' => array('id'),
-                'extraHoldFields' => 'comments'
+                'extraHoldFields' => 'comments:pickUpLocation'
             );
         }
         return array();

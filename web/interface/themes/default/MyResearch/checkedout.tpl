@@ -7,7 +7,7 @@
           <div class="page">
           {if $blocks}
             {foreach from=$blocks item=block}
-              <p class="info">{translate text=$block}</p>
+              <p class="userMsg">{translate text=$block}</p>
             {/foreach}
           {/if}
 

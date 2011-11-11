@@ -8,6 +8,15 @@ body {
     background-color: #619144;
 }
 
+.ui-widget {
+    font-family: inherit;
+    font-size: inherit;
+}
+
+.sidebarOnLeft .sidegroup {
+    margin-left: 10px;
+}
+
 /* adjust some default blueprint styles */
 p,ul,dl,form,input,textarea,select,label { margin-bottom: 0.2em; }
 h1 { font-size: 1.5em; margin-top: 0.5em; margin-bottom: 0.5em; }
@@ -80,7 +89,7 @@ div.dialogLoading {
     height:100%;
 }
 
-.ajax_availability {
+.ajax_availability, .ajax_hold_availability {
     background: url(../images/ajax_loading.gif) no-repeat left top;
     padding:0 .5em .5em 20px;
 }
@@ -745,6 +754,16 @@ dl.narrowList a {
     padding:.5em .5em .5em 20px;
     margin-right:1em;
 }
+.checkRequest {
+    background-image:url(../images/fugue/checkRequest.png);
+    background-repeat:no-repeat;
+    padding-left:18px;   
+}
+.holdBlocked {
+    background-image:url(../images/fugue/holdBlocked.png);
+    background-repeat:no-repeat;
+    padding-left:18px;   
+}
 
 /***** Pagination *****/
 
@@ -1281,4 +1300,146 @@ tr:nth-child(even) td.gridMouseOver {
 
 .limitSelect {
     text-align: right;
+}
+
+/* Rss Recommendations */
+div.suggestionHeader {
+    min-height:30px;
+    padding-top: 5px;
+    border: 2px solid #EEE;
+}
+
+div.submenuSuggestion {
+    margin-top: 10px;
+}
+
+.submenuSuggestion h4 {
+    font-family: Georgia,"Times New Roman",Serif;
+    color: #7c1416;
+    padding-top:12px;
+}
+
+.suggestionLogo {
+    float:right;
+    margin-bottom:2px;
+}
+.suggestionWhatsThis {
+    color: #7C1416;
+    font-family: Georgia,"Times New Roman",Serif;
+    font-size: 10px;
+    float:right;
+    clear:right;
+}
+.suggestedResult {
+    background-color:#EEEEEE;
+    padding:10px 0px 10px 0px;
+}
+.suggestedResult.alt {
+    background-color:#FFF;
+}
+
+ul.suggestion {
+    border: 0px solid #EEE;
+    list-style: none;
+    margin: 0px;
+    padding-left: 0px;
+    padding-right: 0px;
+}
+ul.suggestion li{
+    padding-left: 4px;
+    padding-right: 4px;
+}
+
+/* Europeana recommendation images */
+.europeanaImage {
+    width:65px; 
+    border: 1px solid white;
+}
+
+.europeanaImg {
+    float:left; 
+    margin-right: 10px;
+}
+
+/* Google map */
+.mapClusterToggle{
+    position: relative;
+    float: right;
+    top: -474px;
+    left: -88px;
+    width: 63px;
+    height: 19px;
+    background-color:#F8F8F8;
+    padding: 0px 4px 0px 4px;
+    border: 1px outset;
+    border-color:#000;
+}
+.mapInfoWrapper{
+    min-width: 450px;
+    max-width: 450px;
+    overflow: hidden;
+    display: block;
+    max-height: 275px;
+}
+.mapInfoResult {
+    min-width: 440px;
+    max-width: 440px;
+    background-color:#EEEEEE;
+    padding:2px 2px 2px 2px;
+}
+.mapInfoResult.alt {
+    background-color:#FFF;
+}
+.mapSeeAllDiv{
+    font-size:1.2em;
+    font-weight: bold;
+    text-align:center;
+}
+.mapInfoResults{
+    float: left;
+    border:1px solid #EEEEEE;
+}
+.mapInfoResultThumb {
+    float: right;
+}
+.mapInfoResultThumbImg {
+    height: 32px;
+    width: 32px;
+}
+/************pubdate_vis timeline**********/
+.dateVisClear {
+    background-color: #FFF;
+    border: 2px solid #545454;
+    position: absolute;
+    left: 6px; top: 6px;
+    height: 20px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+/* table for displaying full status in result list */
+table.summHoldings {
+    font-size: smaller;
+    margin-bottom: .5em;
+}
+table.summHoldings th {
+    padding: 0;
+    color: #666666;
+    border-bottom: 1px solid #999999;
+}
+table.summHoldings td {
+    background: inherit !important;
+    padding: 0;
+}
+table.summHoldings .locationColumn {
+    width: 50%;
+}
+table.summHoldings .callnumColumn {
+    width: 30%;
+}
+table.summHoldings .statusColumn {
+    width: 20%;
+}
+a.summHoldings {
+    font-size: smaller;
 }

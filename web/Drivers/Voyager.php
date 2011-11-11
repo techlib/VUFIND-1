@@ -221,7 +221,8 @@ class Voyager implements DriverInterface
             "BIB_ITEM.BIB_ID", "ITEM.ITEM_ID",
             "ITEM.ON_RESERVE", "ITEM_STATUS_DESC as status",
             "LOCATION.LOCATION_DISPLAY_NAME as location",
-            "MFHD_MASTER.DISPLAY_CALL_NO as callnumber"
+            "MFHD_MASTER.DISPLAY_CALL_NO as callnumber",
+            "ITEM.TEMP_LOCATION"
         );
 
         // From
@@ -275,6 +276,7 @@ class Voyager implements DriverInterface
                                 "'No information available' as status",
                                 "LOCATION.LOCATION_DISPLAY_NAME as location",
                                 "MFHD_MASTER.DISPLAY_CALL_NO as callnumber",
+                                "0 AS TEMP_LOCATION"
                                );
 
         // From
@@ -320,7 +322,11 @@ class Voyager implements DriverInterface
                     'id' => $row['BIB_ID'],
                     'status' => $row['STATUS'],
                     'status_array' => array($row['STATUS']),
-                    'location' => htmlentities($row['LOCATION']),
+                    'location' => htmlentities(
+                        $row['TEMP_LOCATION'] > 0
+                        ? $this->getLocationName($row['TEMP_LOCATION'])
+                        : $row['LOCATION']
+                    ),
                     'reserve' => $row['ON_RESERVE'],
                     'callnumber' => $row['CALLNUMBER']
                 );
@@ -458,6 +464,7 @@ class Voyager implements DriverInterface
             "ITEM_STATUS_TYPE.ITEM_STATUS_DESC as status",
             "MFHD_DATA.RECORD_SEGMENT", "MFHD_ITEM.ITEM_ENUM",
             "LOCATION.LOCATION_DISPLAY_NAME as location",
+            "ITEM.TEMP_LOCATION",
             "MFHD_MASTER.DISPLAY_CALL_NO as callnumber",
             "to_char(CIRC_TRANSACTIONS.CURRENT_DUE_DATE, 'MM-DD-YY') as duedate",
             "(SELECT TO_CHAR(MAX(CIRC_TRANS_ARCHIVE.DISCHARGE_DATE), " .
@@ -572,34 +579,37 @@ class Voyager implements DriverInterface
         $data = array();
 
         foreach ($sqlRows as $row) {
-            // Determine Copy Number
-            $number = ($row['ITEM_ENUM'])
-                ? $row['ITEM_ENUM'] : $row['ITEM_SEQUENCE_NUMBER'];
+            // Determine Copy Number (always use sequence number; append volume
+            // when available)
+            $number = $row['ITEM_SEQUENCE_NUMBER'];
+            if (isset($row['ITEM_ENUM'])) {
+                $number .= ' (' . $row['ITEM_ENUM'] . ')';
+            }
 
             // Concat wrapped rows (MARC data more than 300 bytes gets split
             // into multiple rows)
-            if (isset($data[$row['ITEM_ID']]["$number"])) {
+            if (isset($data[$row['ITEM_ID']][$number])) {
                 // We don't want to concatenate the same MARC information to
                 // itself over and over due to a record with multiple status
                 // codes -- we should only concat wrapped rows for the FIRST
                 // status code we encounter!
-                if ($data[$row['ITEM_ID']]["$number"]['STATUS_ARRAY'][0] == $row['STATUS']) {
-                    $data[$row['ITEM_ID']]["$number"]['RECORD_SEGMENT']
+                if ($data[$row['ITEM_ID']][$number]['STATUS_ARRAY'][0] == $row['STATUS']) {
+                    $data[$row['ITEM_ID']][$number]['RECORD_SEGMENT']
                         .= $row['RECORD_SEGMENT'];
                 }
 
                 // If we've encountered a new status code, we should track it:
                 if (!in_array(
-                    $row['STATUS'], $data[$row['ITEM_ID']]["$number"]['STATUS_ARRAY']
+                    $row['STATUS'], $data[$row['ITEM_ID']][$number]['STATUS_ARRAY']
                 )) {
-                    $data[$row['ITEM_ID']]["$number"]['STATUS_ARRAY'][]
+                    $data[$row['ITEM_ID']][$number]['STATUS_ARRAY'][]
                         = $row['STATUS'];
                 }
             } else {
                 // This is the first time we've encountered this row number --
                 // initialize the row and start an array of statuses.
-                $data[$row['ITEM_ID']]["$number"] = $row;
-                $data[$row['ITEM_ID']]["$number"]['STATUS_ARRAY']
+                $data[$row['ITEM_ID']][$number] = $row;
+                $data[$row['ITEM_ID']][$number]['STATUS_ARRAY']
                     = array($row['STATUS']);
             }
         }
@@ -682,6 +692,31 @@ class Voyager implements DriverInterface
     }
 
     /**
+     * Look up a location name by ID.
+     *
+     * @param int $id Location ID to look up
+     *
+     * @return string
+     */
+    protected function getLocationName($id)
+    {
+        static $cache = array();
+
+        // Fill cache if empty:
+        if (!isset($cache[$id])) {
+            $sql = "SELECT LOCATION_NAME FROM {$this->dbName}.LOCATION " .
+                "WHERE LOCATION_ID=:id";
+            $bind = array('id' => $id);
+            $sqlStmt = $this->db->prepare($sql);
+            $sqlStmt->execute($bind);
+            $sqlRow = $sqlStmt->fetch(PDO::FETCH_ASSOC);
+            $cache[$id] = $sqlRow['LOCATION_NAME'];
+        }
+
+        return $cache[$id];
+    }
+
+    /**
      * Protected support method for getHolding.
      *
      * @param array $sqlRow SQL Row Data
@@ -694,7 +729,11 @@ class Voyager implements DriverInterface
         return array(
             'id' => $sqlRow['BIB_ID'],
             'status' => $sqlRow['STATUS'],
-            'location' => htmlentities($sqlRow['LOCATION']),
+            'location' => htmlentities(
+                $sqlRow['TEMP_LOCATION'] > 0
+                ? $this->getLocationName($sqlRow['TEMP_LOCATION'])
+                : $sqlRow['LOCATION']
+            ),
             'reserve' => $sqlRow['ON_RESERVE'],
             'callnumber' => $sqlRow['CALLNUMBER'],
             'barcode' => $sqlRow['ITEM_BARCODE']
@@ -1114,7 +1153,7 @@ class Voyager implements DriverInterface
         $sqlBind = array(':id' => $patron['id']);
 
         $sqlArray = array(
-            'modifier' => $sqlSelectModifer,
+            'modifier' => $sqlSelectModifier,
             'expressions' => $sqlExpressions,
             'from' => $sqlFrom,
             'where' => $sqlWhere,
@@ -1834,7 +1873,8 @@ class Voyager implements DriverInterface
 
         $reserveWhere = empty($reserveWhere) ?
             "" : "where (" . implode(' AND ', $reserveWhere) . ")";
-
+        /* OLD SQL -- simpler but without support for the Solr-based reserves
+         * module:
         $sql = " select MFHD_MASTER.DISPLAY_CALL_NO, BIB_TEXT.BIB_ID, " .
                " BIB_TEXT.AUTHOR, BIB_TEXT.TITLE, " .
                " BIB_TEXT.PUBLISHER, BIB_TEXT.PUBLISHER_DATE " .
@@ -1860,6 +1900,44 @@ class Voyager implements DriverInterface
                "    (select distinct reserve_list_courses.reserve_list_id from " .
                "      $this->dbName.reserve_list_courses $reserveWhere )) )) " .
                "  ) ";
+         */
+        $sql = " select MFHD_MASTER.DISPLAY_CALL_NO, BIB_TEXT.BIB_ID, " .
+               " BIB_TEXT.AUTHOR, BIB_TEXT.TITLE, " .
+               " BIB_TEXT.PUBLISHER, BIB_TEXT.PUBLISHER_DATE, subquery.COURSE_ID, " .
+               " subquery.INSTRUCTOR_ID, subquery.DEPARTMENT_ID " .
+               " FROM $this->dbName.BIB_TEXT " .
+               " JOIN $this->dbName.BIB_MFHD ON BIB_TEXT.BIB_ID=BIB_MFHD.BIB_ID " .
+               " JOIN $this->dbName.MFHD_MASTER " .
+               " ON BIB_MFHD.MFHD_ID = MFHD_MASTER.MFHD_ID" .
+               " JOIN " .
+               "  ( ".
+               "  ((select distinct eitem.mfhd_id, subsubquery1.COURSE_ID, " .
+               "     subsubquery1.INSTRUCTOR_ID, subsubquery1.DEPARTMENT_ID " .
+               "     from $this->dbName.eitem join " .
+               "    (select distinct reserve_list_eitems.eitem_id, " .
+               "     RESERVE_LIST_COURSES.COURSE_ID, " .
+               "     RESERVE_LIST_COURSES.INSTRUCTOR_ID, " .
+               "     RESERVE_LIST_COURSES.DEPARTMENT_ID from " .
+               "     $this->dbName.reserve_list_eitems" .
+               "     JOIN $this->dbName.reserve_list_courses ON " .
+               "      reserve_list_courses.reserve_list_id = " .
+               "      reserve_list_eitems.reserve_list_id" .
+               "      $reserveWhere ) subsubquery1 ON " .
+               "      subsubquery1.eitem_id = eitem.eitem_id)) union " .
+               "  ((select distinct mfhd_item.mfhd_id, subsubquery2.COURSE_ID, " .
+               "    subsubquery2.INSTRUCTOR_ID, subsubquery2.DEPARTMENT_ID " .
+               "    from $this->dbName.mfhd_item join" .
+               "    (select distinct reserve_list_items.item_id, " .
+               "     RESERVE_LIST_COURSES.COURSE_ID, " .
+               "     RESERVE_LIST_COURSES.INSTRUCTOR_ID, " .
+               "     RESERVE_LIST_COURSES.DEPARTMENT_ID from " .
+               "    $this->dbName.reserve_list_items" .
+               "    JOIN $this->dbName.reserve_list_courses on " .
+               "    reserve_list_items.reserve_list_id = " .
+               "    reserve_list_courses.reserve_list_id" .
+               "    $reserveWhere) subsubquery2 ON " .
+               "    subsubquery2.item_id = mfhd_item.item_id )) " .
+               "  ) subquery ON mfhd_master.mfhd_id = subquery.mfhd_id ";
 
         try {
             $sqlStmt = $this->db->prepare($sql);

@@ -1,5 +1,8 @@
 <?php
 /**
+ * FavoriteHandler Class
+ *
+ * PHP version 5
  *
  * Copyright (C) Villanova University 2010.
  *
@@ -16,6 +19,11 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
+ * @category VuFind
+ * @package  Controller_MyResearch
+ * @author   Demian Katz <demian.katz@villanova.edu>
+ * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
+ * @link     http://vufind.org/wiki/building_a_module Wiki
  */
 require_once 'services/MyResearch/lib/Resource.php';
 require_once 'sys/Pager.php';
@@ -27,44 +35,49 @@ require_once 'sys/Pager.php';
  * earlier logic duplicated between the MyResearch/Home and MyResearch/MyList
  * actions).
  *
- * @author      Demian Katz <demian.katz@villanova.edu>
- * @access      public
+ * @category VuFind
+ * @package  Controller_MyResearch
+ * @author   Demian Katz <demian.katz@villanova.edu>
+ * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
+ * @link     http://vufind.org/wiki/building_a_module Wiki
  */
 class FavoriteHandler
 {
-    private $favorites;
-    private $user;
-    private $listId;
-    private $allowEdit;
-    private $ids = array();
+    private $_favorites;
+    private $_user;
+    private $_listId;
+    private $_allowEdit;
+    private $_ids = array();
+    protected $infoMsg = false;
 
     /**
      * Constructor.
      *
-     * @access  public
-     * @param   array   $favorites  Array of Resource objects.
-     * @param   object  $user       User object owning tag/note metadata.
-     * @param   int     $listId     ID of list containing desired tags/notes (or 
-     *                              null to show tags/notes from all user's lists).
-     * @param   bool    $allowEdit  Should we display edit controls?
+     * @param array  $favorites Array of Resource objects.
+     * @param object $user      User object owning tag/note metadata.
+     * @param int    $listId    ID of list containing desired tags/notes (or null
+     * to show tags/notes from all user's lists).
+     * @param bool   $allowEdit Should we display edit controls?
+     *
+     * @access public
      */
     public function __construct($favorites, $user, $listId = null, $allowEdit = true)
     {
-        $this->favorites = $favorites;
-        $this->user = $user;
-        $this->listId = $listId;
-        $this->allowEdit = $allowEdit;
-        
+        $this->_favorites = $favorites;
+        $this->_user = $user;
+        $this->_listId = $listId;
+        $this->_allowEdit = $allowEdit;
+
         // Process the IDs found in the favorites (sort by source):
         if (is_array($favorites)) {
-            foreach($favorites as $current) {
+            foreach ($favorites as $current) {
                 $id = $current->record_id;
                 if (!empty($id)) {
                     $source = $current->source;
-                    if (!isset($this->ids[$source])) {
-                        $this->ids[$source] = array();
+                    if (!isset($this->_ids[$source])) {
+                        $this->_ids[$source] = array();
                     }
-                    $this->ids[$source][] = $id;
+                    $this->_ids[$source][] = $id;
                 }
             }
         }
@@ -73,7 +86,8 @@ class FavoriteHandler
     /**
      * Assign all necessary values to the interface.
      *
-     * @access  public
+     * @return void
+     * @access public
      */
     public function assign()
     {
@@ -85,13 +99,21 @@ class FavoriteHandler
         $interface->assign('sortList', $searchObject->getSortList());
 
         // Retrieve records from index (currently, only Solr IDs supported):
-        if (array_key_exists('VuFind', $this->ids) && 
-            count($this->ids['VuFind']) > 0) {
-            $searchObject->setQueryIDs($this->ids['VuFind']);
+        if (array_key_exists('VuFind', $this->_ids)
+            && count($this->_ids['VuFind']) > 0
+        ) {
+            if (!$searchObject->setQueryIDs($this->_ids['VuFind'])) {
+                $this->infoMsg = 'too_many_favorites';
+            }
             $result = $searchObject->processSearch();
-            $resourceList = $searchObject->getResultListHTML($this->user,
-                $this->listId, $this->allowEdit);
+            $resourceList = $searchObject->getResultListHTML(
+                $this->_user, $this->_listId, $this->_allowEdit
+            );
             $interface->assign('resourceList', $resourceList);
+        } else {
+            // If no records are displayed, $allowListEdit will be missing;
+            // make sure it gets assigned so the list can be edited:
+            $interface->assign('listEditAllowed', $this->_allowEdit);
         }
 
         // Set up paging of list contents:
@@ -101,11 +123,24 @@ class FavoriteHandler
         $interface->assign('recordEnd',   $summary['endRecord']);
 
         $link = $searchObject->renderLinkPageTemplate();
-        $options = array('totalItems' => $summary['resultTotal'],
-                         'perPage' => $summary['perPage'],
-                         'fileName' => $link);
+        $options = array(
+            'totalItems' => $summary['resultTotal'],
+            'perPage' => $summary['perPage'],
+            'fileName' => $link
+        );
         $pager = new VuFindPager($options);
         $interface->assign('pageLinks', $pager->getLinks());
+    }
+
+    /**
+     * Get info message, if any (boolean false if no message).
+     *
+     * @return string|bool
+     * @access public
+     */
+    public function getInfoMsg()
+    {
+        return $this->infoMsg;
     }
 }
 

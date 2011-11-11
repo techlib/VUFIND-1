@@ -118,25 +118,29 @@ class User extends DB_DataObject
     /**
      * Add a resource to the user's account.
      *
-     * @param object $resource The resource to add.
-     * @param object $list     The list to store the resource in.
-     * @param array  $tagArray An array of tags to associate with the resource.
-     * @param string $notes    User notes about the resource.
+     * @param object $resource        The resource to add.
+     * @param object $list            The list to store the resource in.
+     * @param array  $tagArray        An array of tags to associate with the
+     * resource.
+     * @param string $notes           User notes about the resource.
+     * @param bool   $replaceExisting Whether to replace all existing tags (true)
+     * or append to the existing list (false).
      *
      * @return bool
      * @access public
      */
-    public function addResource($resource, $list, $tagArray, $notes)
-    {
+    public function addResource(
+        $resource, $list, $tagArray, $notes, $replaceExisting = true
+    ) {
         $join = new User_resource();
         $join->user_id = $this->id;
         $join->resource_id = $resource->id;
         $join->list_id = $list->id;
         if ($join->find(true)) {
-            if ($notes) {
-                $join->notes = $notes;
-                $join->update();
-            }
+            $join->notes = $notes;
+            $join->update();
+            // update() will return false if we save without making any changes,
+            // but we always want to report success after this point.
             $result = true;
         } else {
             if ($notes) {
@@ -145,12 +149,21 @@ class User extends DB_DataObject
             $result = $join->insert();
         }
         if ($result) {
+            $join = new Resource_tags();
+            $join->resource_id = $resource->id;
+            $join->user_id = $this->id;
+            $join->list_id = $list->id;
+
+            if ($replaceExisting) {
+                // Delete old tags -- note that we need to clone $join for this
+                // operation or else it will be broken when we use it for searching
+                // below.
+                $killer = clone($join);
+                $killer->delete();
+            }
+
+            // Add new tags, if any:
             if (is_array($tagArray) && count($tagArray)) {
-                $join = new Resource_tags();
-                $join->resource_id = $resource->id;
-                $join->user_id = $this->id;
-                $join->list_id = $list->id;
-                $join->delete();
                 foreach ($tagArray as $value) {
                     $value = str_replace('"', '', $value);
                     $tag = new Tags();
@@ -159,7 +172,10 @@ class User extends DB_DataObject
                         $tag->insert();
                     }
                     $join->tag_id = $tag->id;
-                    $join->insert();
+                    // Don't save duplicate tags!
+                    if (!$join->find(false)) {
+                        $join->insert();
+                    }
                 }
             }
             return true;

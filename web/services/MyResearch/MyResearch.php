@@ -115,7 +115,7 @@ class MyResearch extends Action
         $this->infoMsg = isset($_GET['infoMsg']) ? $_GET['infoMsg'] : false;
         $this->errorMsg = isset($_GET['errorMsg']) ? $_GET['errorMsg'] : false;
         $this->showExport = isset($_GET['showExport']) ? $_GET['showExport'] : false;
-        $this->followUpUrl = false;
+        $this->followupUrl = false;
     }
 }
 

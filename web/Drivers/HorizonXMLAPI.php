@@ -183,12 +183,18 @@ class HorizonXMLAPI extends Horizon
      * This is responsible get a list of valid library locations for holds / recall
      * retrieval
      *
-     * @param array $patron The Patron's ID
+     * @param array $patron      The Patron's ID
+     * @param array $holdDetails Optional array, only passed in when getting a list
+     * in the context of placing a hold; contains most of the same values passed to
+     * placeHold, minus the patron data.  May be used to limit the pickup options
+     * or may be ignored.  The driver must not add new options to the return array
+     * based on this data or other areas of VuFind may behave incorrectly.
      *
-     * @return array        An keyed array where libray id => Library Display Name
+     * @return array        An array of associative arrays with locationID and
+     * locationDisplay keys
      * @access public
      */
-    public function getPickUpLocations($patron)
+    public function getPickUpLocations($patron, $holdDetails = null)
     {
         // It is not possible to get a list of pick up locations without supplying
         // a valid bibliographic id - In order to provide pick up locations for
@@ -208,12 +214,17 @@ class HorizonXMLAPI extends Horizon
      *
      * Returns the default pick up location set in HorizonXMLAPI.ini
      *
-     * @param array $patron Patron information returned by the patronLogin method.
+     * @param array $patron      Patron information returned by the patronLogin
+     * method.
+     * @param array $holdDetails Optional array, only passed in when getting a list
+     * in the context of placing a hold; contains most of the same values passed to
+     * placeHold, minus the patron data.  May be used to limit the pickup options
+     * or may be ignored.
      *
      * @return string A location ID
      * @access public
      */
-    public function getDefaultPickUpLocation($patron = false)
+    public function getDefaultPickUpLocation($patron = false, $holdDetails = null)
     {
         return $this->wsDefaultPickUpLocation;
     }

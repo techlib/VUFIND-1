@@ -24,9 +24,10 @@
       {if $summDate}{translate text='Published'} {$summDate.0|escape}{/if}
     </div>
 
-    <div class="span-6 last">
+    <div class="last">
       {if !empty($summSnippetCaption)}<strong>{translate text=$summSnippetCaption}:</strong>{/if}
       {if !empty($summSnippet)}<span class="quotestart">&#8220;</span>...{$summSnippet|highlight}...<span class="quoteend">&#8221;</span><br/>{/if}
+      <div id="callnumAndLocation{$summId|escape}">
       {if $summAjaxStatus}
         <strong class="hideIfDetailed{$summId|escape}">{translate text='Call Number'}:</strong> <span class="ajax_availability hide" id="callnumber{$summId|escape}">{translate text='Loading'}...</span><br class="hideIfDetailed{$summId|escape}"/>
         <strong>{translate text='Located'}:</strong> <span class="ajax_availability hide" id="location{$summId|escape}">{translate text='Loading'}...</span>
@@ -34,6 +35,7 @@
       {elseif !empty($summCallNo)}
         <strong>{translate text='Call Number'}:</strong> {$summCallNo|escape}
       {/if}
+      </div>
 
       {if $summOpenUrl || !empty($summURLs)}
         {if $summOpenUrl}
@@ -51,13 +53,13 @@
       {/foreach}
 
       {if !$summOpenUrl && empty($summURLs)}
-      <span class="ajax_availability hide" id="status{$summId|escape}">{translate text='Loading'}...</span>
+      <div class="ajax_availability hide" id="status{$summId|escape}">{translate text='Loading'}...</div>
       {/if}
     </div>
 
     {if $showPreviews}
       {if (!empty($summLCCN)|!empty($summISBN)|!empty($summOCLC))}
-      <div class="span-3 last">
+      <div>
         {if $showGBSPreviews}
           <div class="previewDiv">
             <a title="{translate text='Preview from'} Google Books" class="hide previewGBS{if $summISBN} ISBN{$summISBN}{/if}{if $summLCCN} LCCN{$summLCCN}{/if}{if $summOCLC} OCLC{$summOCLC|@implode:' OCLC'}{/if}" target="_blank">

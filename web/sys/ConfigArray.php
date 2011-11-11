@@ -107,9 +107,50 @@ function readConfig()
         $file = trim('conf/' . $mainArray['Extra_Config']['local_overrides']);
         $localOverride = @parse_ini_file($file, true);
         if ($localOverride) {
-            return iniMerge($mainArray, $localOverride);
+            $mainArray = iniMerge($mainArray, $localOverride);
         }
     }
+
+    // Auto-detect the base URL if it is not provided in the configuration:
+    if (!isset($mainArray['Site']['url']) || empty($mainArray['Site']['url'])) {
+        $mainArray['Site']['url'] = determineSiteUrl($mainArray);
+    }
+
     return $mainArray;
 }
+
+/**
+ * Support function -- Dynamically determine the site URL for the
+ * current request.
+ *
+ * @param array $configArray Config array.
+ *
+ * @return string The site URL.
+ */
+function determineSiteUrl($configArray)
+{
+    if (!empty($_SERVER['HTTP_X_FORWARDED_HOST'])) {
+        // This should work with Apache/Nginx reverse proxying, but not
+        // with WSGI proxies like Deliverance and Diazo.
+        // TODO: Survey why, and how can we get this working
+        $host = $_SERVER['HTTP_X_FORWARDED_HOST'];
+        $path = $_SERVER['HTTP_X_FORWARDED_PATH'];
+    } else if (!empty($_SERVER['HTTP_X_FORWARDED_SERVER'])) {
+        $host = $_SERVER['HTTP_X_FORWARDED_SERVER'];
+        $path = $_SERVER['HTTP_X_FORWARDED_PATH'];
+    } else {
+        $host = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : 'localhost';
+        if (isset($_SERVER['SERVER_PORT'])
+            && !in_array($_SERVER['SERVER_PORT'], array(80, 443))
+        ) {
+            $host .= ':'. $_SERVER['SERVER_PORT'];
+        }
+        $path = $configArray['Site']['path'];
+    }
+    $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on')
+        ? 'https' : 'http';
+    $url = $protocol . '://'. $host . $path;
+    return $url;
+}
+
 ?>

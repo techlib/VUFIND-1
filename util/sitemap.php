@@ -37,7 +37,7 @@ require_once 'sys/ConnectionManager.php';
 
 // Read Config file
 $base = dirname(__FILE__);
-$configArray = parse_ini_file($base . '/../web/conf/config.ini', true);
+$configArray = readConfig();
 if (!$configArray) {
     PEAR::raiseError(new PEAR_Error("Can't open file - ../web/conf/config.ini"));
 }

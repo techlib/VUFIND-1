@@ -25,7 +25,7 @@ function build_browse
         java ${extra_jvm_opts} -Dfile.encoding="UTF-8" -Dfield.preferred=heading -Dfield.insteadof=use_for -cp browse-indexing.jar PrintBrowseHeadings "$bib_index" "$field" "$auth_index" "${browse}.tmp"
     fi
 
-    sort -T /var/tmp -u --field-separator=$'\1' -k1 "${browse}.tmp" -o "sorted-${browse}.tmp"
+    sort -T /var/tmp -u -t$'\1' -k1 "${browse}.tmp" -o "sorted-${browse}.tmp"
     java -Dfile.encoding="UTF-8" -cp browse-indexing.jar CreateBrowseSQLite "sorted-${browse}.tmp" "${browse}_browse.db"
 
     rm -f *.tmp

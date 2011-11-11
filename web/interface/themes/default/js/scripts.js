@@ -36,7 +36,7 @@ function hideLightbox()
 function hideSelects(visibility)
 {
     selects = document.getElementsByTagName('select');
-    for(i = 0; i < selects.length; i++) {
+    for (i = 0; i < selects.length; i++) {
         selects[i].style.visibility = visibility;
     }
 }
@@ -126,7 +126,7 @@ function ProcessBookInfo(booksInfo, provider) {
                 var elements = getElementsByClassName(document, classNameConcat), n = elements.length;
                 for (var i = 0; i < n; i++) {
                     var e = elements[i];
-                    if(e.style.display == 'none') {
+                    if (e.style.display == 'none') {
                         // set the link
                         e.href = bookInfo.preview_url;
 
@@ -171,7 +171,7 @@ function checkAll(form, field)
 {
     var getForm = getElem(form).getElementsByTagName('input');
     for (i = 0; i < getForm.length; i++) {
-        if(getForm[i].attributes['class'] && getForm[i].attributes['class'].nodeValue == field) {
+        if (getForm[i].attributes['class'] && getForm[i].attributes['class'].nodeValue == field) {
             getForm[i].checked = true ;
         }
     }
@@ -183,7 +183,7 @@ function uncheckAll(form, field)
 {
     var getForm = getElem(form).getElementsByTagName('input');
     for (i = 0; i < getForm.length; i++) {
-        if(getForm[i].attributes['class'] && getForm[i].attributes['class'].nodeValue == field) {
+        if (getForm[i].attributes['class'] && getForm[i].attributes['class'].nodeValue == field) {
             getForm[i].checked = false;
         }
     }
@@ -196,7 +196,7 @@ function toggleCheck(selector, form, field)
     var toggle = (selector.checked == true)?true:false;
     var getForm = getElem(form).getElementsByTagName('input');
     for (i = 0; i < getForm.length; i++) {
-        if(getForm[i].attributes['class'] && getForm[i].attributes['class'].nodeValue == field) {
+        if (getForm[i].attributes['class'] && getForm[i].attributes['class'].nodeValue == field) {
             getForm[i].checked = toggle;
         }
     }
@@ -204,33 +204,40 @@ function toggleCheck(selector, form, field)
 
 // Gets all the checked checkboxes from a form, creates a search url and passes to lightbox
 // Supply form ID, input class and mode (makeString = ids are concatenated with '+', ,makeArray = ids are passed as an array)
-function processIds(form, field, mode, module, action, id, lookfor, message, followupModule, followupAction, followupId) {
+function processIds(form, field, mode, module, action, id, lookfor, message, followupModule, followupAction, followupId, params) {
     var setMode = (mode != '' && mode != 'undefined')?mode:'makeString';
     var getForm = getElem(form).getElementsByTagName('input');
     var postParams = [];
-    if(getForm) {
+    if (getForm) {
         var ids = [];
         var x = 0;
         for (i = 0; i < getForm.length; i++) {
-            if(getForm[i].attributes['class'] && getForm[i].attributes['class'].nodeValue == field && getForm[i].checked == true) {
+            if (getForm[i].attributes['class'] && getForm[i].attributes['class'].nodeValue == field && getForm[i].checked == true) {
             ids[x] = getForm[i].attributes['value'].nodeValue;
             x++;
             }
         }
-        if(ids.length > 0) {
+        if (ids.length > 0) {
             var idValue = '';
-            if(setMode == 'makeString') {
+            if (setMode == 'makeString') {
                 postParams = ids.join('+');
             }
             else {
-               for(i=0; i<ids.length; i++) {
-                    postParams += "ids[]=" + ids[i] + "&";
+                for (i=0; i<ids.length; i++) {
+                    postParams += encodeURIComponent("ids[]") + "=" + encodeURIComponent(ids[i]) + "&";
                 }
             }
         }
         else {
             postParams = "";
-            message = 'no_items_selected';
+        }
+
+        // If an array of extra parameters was sent in, add it to the POST string:
+        var extraParams = (params != '' && params != 'undefined')?params:false;
+        if (extraParams && setMode != 'makeString') {
+            for (i in extraParams) {
+                postParams += encodeURIComponent(i) + "=" + encodeURIComponent(extraParams[i]) + "&";
+            }
         }
     }
     getLightbox(module, action, id, lookfor, message, followupModule, followupAction, followupId, postParams);

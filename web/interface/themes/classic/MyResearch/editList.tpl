@@ -15,7 +15,7 @@
           <form method="post" name="editListForm">
           {if empty($list)}
             <p>
-              {translate text='edit_list_deny'}
+              {translate text='edit_list_fail'}
             </p>
           {else}
             <table>

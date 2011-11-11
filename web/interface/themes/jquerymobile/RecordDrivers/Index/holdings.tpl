@@ -30,19 +30,31 @@
   {foreach from=$holding item=row}
     {if $row.barcode != ""}
   <tr>
-    <th>{translate text="Copy"} {$row.number}</th>
+    <th>{translate text="Copy"} {$row.number|escape}</th>
     <td>
       {if $row.reserve == "Y"}
       {translate text="On Reserve - Ask at Circulation Desk"}
       {else}
         {if $row.availability}
-      <span class="available">{translate text="Available"}</span> | 
-      <a href="{$path}/Record/{$id|escape:"url"}/Hold">{translate text="Place a Hold"}</a>
+        {* Begin Available Items (Holds) *}
+           <span class="available">{translate text="Available"}</span>
+          {if $row.link}
+            <br />
+            <a class="holdPlace" rel="external" href="{$row.link|replace:"#tabnav":""|escape}"><span>{translate text="Place a Hold"}</span></a>
+          {/if}
         {else}
-      <span class="checkedout">{$row.status|escape}</span>
+        {* Begin Unavailable Items (Recalls) *}
+          <span class="checkedout">{translate text=$row.status}</span>
+          {if $row.returnDate} <span class="statusExtra">{$row.returnDate|escape}</span>{/if}
           {if $row.duedate}
-      {translate text="Due"}: {$row.duedate|escape} | 
-      <a href="{$path}/Record/{$id|escape:"url"}/Hold">{translate text="Recall This"}</a>
+          <span class="statusExtra">{translate text="Due"}: {$row.duedate|escape}</span>
+          {/if}
+          {if $row.requests_placed > 0}
+            <span>{translate text="Requests"}: {$row.requests_placed|escape}</span>
+          {/if}
+          {if $row.link}
+            <br />
+            <a class="holdPlace" rel="external" href="{$row.link|replace:"#tabnav":""|escape}"><span>{translate text="Recall This"}</span></a>
           {/if}
         {/if}
       {/if}

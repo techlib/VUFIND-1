@@ -30,7 +30,7 @@ require_once 'sys/SRU.php';
 require_once 'sys/ConnectionManager.php';
 
 // Read Config file
-$configArray = parse_ini_file('../web/conf/config.ini', true);
+$configArray = readConfig();
 
 // Perform the harvest -- note that first command line parameter may be used to
 // start at a particular date.

@@ -125,6 +125,11 @@ class Solr implements IndexEngine
     private $_highlight = false;
 
     /**
+     * How should we cache the search specs?
+     */
+    private $_specCache = false;
+
+    /**
      * Constructor
      *
      * @param string $host  The URL for the local Solr Server
@@ -192,6 +197,11 @@ class Solr implements IndexEngine
             $this->_solrShardsFieldsToStrip = $searchSettings['StripFields'];
         }
 
+        // Deal with search spec cache setting:
+        if (isset($searchSettings['Cache']['type'])) {
+            $this->_specCache = $searchSettings['Cache']['type'];
+        }
+
         // Deal with session-based shard settings:
         if (isset($_SESSION['shards'])) {
             $shards = array();
@@ -200,7 +210,15 @@ class Solr implements IndexEngine
                     $shards[$current] = $configArray['IndexShards'][$current];
                 }
             }
-            $this->setShards($shards);
+            // only set shards if it is necessary
+            // if only one shard is used, take its URL as SOLR-Host-URL
+            if (count($shards) === 1) {
+                $shardsKeys = array_keys($shards);
+                $this->host = 'http://'.$shards[$shardsKeys[0]];
+            } else {
+                // else (if more than one shard is used), set shards to query
+                $this->setShards($shards);
+            }
         }
     }
 
@@ -227,6 +245,31 @@ class Solr implements IndexEngine
     }
 
     /**
+     * Support method for _getSearchSpecs() -- load the specs from cache or disk.
+     *
+     * @return void
+     * @access private
+     */
+    private function _loadSearchSpecs()
+    {
+        // Turn relative path into absolute path:
+        $fullPath = dirname(__FILE__) . '/../' . $this->searchSpecsFile;
+
+        // Generate cache key:
+        $key = md5(basename($this->searchSpecsFile) . '-' . filemtime($fullPath));
+
+        // Load cache manager:
+        $cache = new VuFindCache($this->_specCache, 'searchspecs');
+
+        // Generate data if not found in cache:
+        if (!($results = $cache->load($key))) {
+            $results = Horde_Yaml::load(file_get_contents($fullPath));
+            $cache->save($results, $key);
+        }
+        $this->_searchSpecs = $results;
+    }
+
+    /**
      * Get the search specifications loaded from the specified YAML file.
      *
      * @param string $handler The named search to provide information about (set
@@ -240,8 +283,7 @@ class Solr implements IndexEngine
     {
         // Only load specs once:
         if ($this->_searchSpecs === false) {
-            $this->_searchSpecs
-                = Horde_Yaml::load(file_get_contents($this->searchSpecsFile));
+            $this->_loadSearchSpecs();
         }
 
         // Special case -- null $handler means we want all search specs.
@@ -586,7 +628,8 @@ class Solr implements IndexEngine
             $dmParams = '';
             if (isset($ss['DismaxParams']) && is_array($ss['DismaxParams'])) {
                 foreach ($ss['DismaxParams'] as $current) {
-                    $dmParams .= ' ' . $current[0] . '="' . $current[1] . '"';
+                    $dmParams .= ' ' . $current[0] . "='" .
+                        addcslashes($current[1], "'") . "'";
                 }
             }
             $dismaxQuery = '{!dismax qf="' . $qf . '"' . $dmParams . '}' . $lookfor;
@@ -764,7 +807,7 @@ class Solr implements IndexEngine
         switch ($sortField) {
         case 'year':
         case 'publishDate':
-            $sortField = 'publishDate';
+            $sortField = 'publishDateSort';
             $defaultSortDirection = 'desc';
             break;
         case 'author':
@@ -841,7 +884,21 @@ class Solr implements IndexEngine
                 // Load any custom Dismax parameters from the YAML search spec file:
                 if (isset($ss['DismaxParams']) && is_array($ss['DismaxParams'])) {
                     foreach ($ss['DismaxParams'] as $current) {
-                        $options[$current[0]] = $current[1];
+                        // The way we process the current parameter depends on
+                        // whether or not we have previously encountered it.  If
+                        // we have multiple values for the same parameter, we need
+                        // to turn its entry in the $options array into a subarray;
+                        // otherwise, one-off parameters can be safely represented
+                        // as single values.
+                        if (isset($options[$current[0]])) {
+                            if (!is_array($options[$current[0]])) {
+                                $options[$current[0]]
+                                    = array($options[$current[0]]);
+                            }
+                            $options[$current[0]][] = $current[1];
+                        } else {
+                            $options[$current[0]] = $current[1];
+                        }
                     }
                 }
 
@@ -1128,6 +1185,20 @@ class Solr implements IndexEngine
     public function setShards($shards)
     {
         $this->_solrShards = $shards;
+    }
+    
+    /**
+     * Submit REST Request to write data (protected wrapper to allow child classes
+     * to use this mechanism -- we should eventually phase out private _update).
+     *
+     * @param string $xml The command to execute
+     *
+     * @return mixed      Boolean true on success or PEAR_Error
+     * @access protected
+     */
+    protected function update($xml)
+    {
+        return $this->_update($xml);
     }
 
     /**
@@ -1623,6 +1694,21 @@ class Solr implements IndexEngine
     }
 
     /**
+     * Get the boolean clause limit.
+     *
+     * @return int
+     * @access public
+     */
+    public function getBooleanClauseLimit()
+    {
+        global $configArray;
+
+        // Use setting from config.ini if present, otherwise assume 1024:
+        return isset($configArray['Index']['maxBooleanClauses'])
+            ? $configArray['Index']['maxBooleanClauses'] : 1024;
+    }
+
+    /**
      * Extract terms from the Solr index.
      *
      * @param string $field           Field to extract terms from
@@ -1663,9 +1749,9 @@ class Solr implements IndexEngine
             // Tidy the data into a more usable format:
             $fixedArray = array();
             if (isset($data['terms'])) {
-                $data['terms'] = array(
-                    $data['terms'][0] => $this->_processTerms($data['terms'][1])
-                );
+                foreach ($data['terms'] as $field => $contents) {
+                    $data['terms'][$field] = $this->_processTerms($contents);
+                }
             }
             return $data;
         } else {

@@ -1,5 +1,8 @@
 <?php
 /**
+ * A derivative of the Search Object for use with Summon.
+ *
+ * PHP version 5
  *
  * Copyright (C) Villanova University 2010.
  *
@@ -16,83 +19,98 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
+ * @category VuFind
+ * @package  SearchObject
+ * @author   Demian Katz <demian.katz@villanova.edu>
+ * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
+ * @link     http://vufind.org/wiki/building_a_search_object Wiki
  */
 require_once 'sys/Summon.php';
 require_once 'sys/SearchObject/Base.php';
 
-/* A derivative of the Search Object for use with Summon.
+/**
+ * A derivative of the Search Object for use with Summon.
+ *
+ * @category VuFind
+ * @package  SearchObject
+ * @author   Demian Katz <demian.katz@villanova.edu>
+ * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
+ * @link     http://vufind.org/wiki/building_a_search_object Wiki
  */
 class SearchObject_Summon extends SearchObject_Base
 {
     // OTHER VARIABLES
-    private $summon;        // Summon API Interface
-    private $indexResult;   // Summon API Response
-    
+    private $_summon;       // Summon API Interface
+    private $_indexResult;  // Summon API Response
+
     // In the Summon configuration, facets may have extra parameters appended;
     // in most cases, we want to strip these off, but this array lets us store
     // all the extra parameters so they can be passed to the Summon class.
-    private $fullFacetSettings = array();
+    private $_fullFacetSettings = array();
 
     /**
      * Constructor. Initialise some details about the server
      *
-     * @access  public
+     * @access public
      */
     public function __construct()
     {
         global $configArray;
-        
+
         // Standard logic from parent class:
         parent::__construct();
-        
+
         // Set up appropriate results action:
         $this->resultsModule = 'Summon';
         $this->resultsAction = 'Search';
-        
+
         // Set up basic and advanced Summon search types; default to basic.
         $this->searchType = $this->basicSearchType = 'Summon';
         $this->advancedSearchType = 'SummonAdvanced';
-        
-        // Set up facet configuration -- note that we may need to strip extra 
+
+        // Set up facet configuration -- note that we may need to strip extra
         // parameters from the facet names (hence the extra processing):
         $config = getExtraConfigArray('Summon');
-        foreach($config['Facets'] as $key => $value) {
+        foreach ($config['Facets'] as $key => $value) {
             $parts = explode(',', $key);
             $facetName = trim($parts[0]);
             $this->facetConfig[$facetName] = $value;
         }
-        
+
         // Set up spelling preference
         if (isset($config['Spelling']['enabled'])) {
             $this->spellcheck    = $config['Spelling']['enabled'];
         }
-        
+
         // Set up sort options
         $this->sortOptions = $config['Sorting'];
         if (isset($config['General']['default_sort'])) {
             $this->defaultSort = $config['General']['default_sort'];
         }
-        
+
         // Set up search options
         $this->basicTypes = $config['Basic_Searches'];
         if (isset($config['Advanced_Searches'])) {
             $this->advancedTypes = $config['Advanced_Searches'];
         }
-        
+
         // Set up recommendations options -- settings are found in Summon.ini:
         $this->recommendIni = 'Summon';
-        
+
         // Connect to Summon
-        $this->summon = new Summon($configArray['Summon']['apiId'], 
-            $configArray['Summon']['apiKey']);
+        $id = isset($configArray['Summon']['apiId']) ?
+            $configArray['Summon']['apiId'] : null;
+        $key = isset($configArray['Summon']['apiKey']) ?
+            $configArray['Summon']['apiKey'] : null;
+        $this->_summon = new Summon($id, $key);
     }
 
     /**
      * Initialise the object from the global
      *  search parameters in $_REQUEST.
      *
-     * @access  public
-     * @return  boolean
+     * @return boolean
+     * @access public
      */
     public function init()
     {
@@ -114,27 +132,29 @@ class SearchObject_Summon extends SearchObject_Base
         $this->initPage();
         $this->initSort();
         $this->initFilters();
-        
+
         // Try to find a basic search first; check for advanced if no basic found.
         if (!$this->initBasicSearch()) {
             $this->initAdvancedSearch();
         }
         return true;
     }
-    
+
     /**
      * Add a field to facet on.
      *
-     * @access  public
-     * @param   string  $newField   Field name
-     * @param   string  $newAlias   Optional on-screen display label
+     * @param string $newField Field name
+     * @param string $newAlias Optional on-screen display label
+     *
+     * @return void
+     * @access public
      */
     public function addFacet($newField, $newAlias = null)
     {
         // Save the full field name (which may include extra parameters);
         // we'll need these to do the proper search using the Summon class:
-        $this->fullFacetSettings[] = $newField;
-        
+        $this->_fullFacetSettings[] = $newField;
+
         // Strip parameters from field name if necessary (since they get
         // in the way of most Search Object functionality):
         $newField = explode(',', $newField);
@@ -145,27 +165,26 @@ class SearchObject_Summon extends SearchObject_Base
     /**
      * Returns the stored list of facets for the last search
      *
-     * @access  public
-     * @param   array   $filter         Array of field => on-screen description
-     *                                  listing all of the desired facet fields;
-     *                                  set to null to get all configured values.
-     * @param   bool    $expandingLinks If true, we will include expanding URLs
-     *                                  (i.e. get all matches for a facet, not
-     *                                  just a limit to the current search) in
-     *                                  the return array.
-     * @return  array     Facets data arrays
+     * @param array $filter         Array of field => on-screen description listing
+     * all of the desired facet fields; set to null to get all configured values.
+     * @param bool  $expandingLinks If true, we will include expanding URLs (i.e.
+     * get all matches for a facet, not just a limit to the current search) in the
+     * return array.
+     *
+     * @return array                Facets data arrays
+     * @access public
      */
     public function getFacetList($filter = null, $expandingLinks = false)
     {
         // If there is no filter, we'll use all facets as the filter:
         if (is_null($filter)) {
             $filter = $this->facetConfig;
-        // If there is a filter, make sure the field names are properly
-        // stripped of extra parameters:
         } else {
+            // If there is a filter, make sure the field names are properly
+            // stripped of extra parameters:
             $oldFilter = $filter;
             $filter = array();
-            foreach($oldFilter as $key => $value) {
+            foreach ($oldFilter as $key => $value) {
                 $key = explode(',', $key);
                 $key = trim($key[0]);
                 $filter[$key] = $value;
@@ -176,80 +195,104 @@ class SearchObject_Summon extends SearchObject_Base
         // create a lookup array to determine order:
         $i = 0;
         $order = array();
-        foreach($filter as $key => $value) {
+        foreach ($filter as $key => $value) {
             $order[$key] = $i++;
         }
-        
+
         // Loop through the facets returned by Summon.
         $facetResult = array();
-        if (is_array($this->indexResult['facetFields'])) {
-            foreach($this->indexResult['facetFields'] as $current) {
+        if (isset($this->_indexResult['facetFields'])
+            && is_array($this->_indexResult['facetFields'])
+        ) {
+            foreach ($this->_indexResult['facetFields'] as $current) {
                 // The "displayName" value is actually the name of the field on
                 // Summon's side -- we'll probably need to translate this to a
                 // different value for actual display!
                 $field = $current['displayName'];
-                
+
                 // Is this one of the fields we want to display?  If so, do work...
                 if (isset($filter[$field])) {
                     // Loop through all the facet values to see if any are applied.
-                    foreach($current['counts'] as $facetIndex => $facetDetails) {
-                        $isApplied = false;
-                        // Is this field a current filter?
-                        if (in_array($field, array_keys($this->filterList))) {
-                            // and is this value a selected filter?
-                            if (in_array($facetDetails['value'], $this->filterList[$field])) {
-                                $isApplied = true;
-                            }
+                    foreach ($current['counts'] as $facetIndex => $facetDetails) {
+                        // Is the current field negated?  If so, we don't want to
+                        // show it -- this is currently used only for the special
+                        // "exclude newspapers" facet:
+                        if ($facetDetails['isNegated']) {
+                            unset($current['counts'][$facetIndex]);
+                            continue;
                         }
-                        
-                        // Inject "applied" value and "add filter" link into Summon results:
+
+                        // We need to check two things to determine if the current
+                        // value is an applied filter.  First, is the current field
+                        // present in the filter list?  Second, is the current value
+                        // an active filter for the current field?
+                        $isApplied = in_array($field, array_keys($this->filterList))
+                            && in_array(
+                                $facetDetails['value'], $this->filterList[$field]
+                            );
+
+                        // Inject "applied" value and "add filter" link into Summon
+                        // results:
                         $current['counts'][$facetIndex]['isApplied'] = $isApplied;
-                        $current['counts'][$facetIndex]['url'] = 
-                            $this->renderLinkWithFilter("$field:".$facetDetails['value']);
-                        // If we want to have expanding links (all values matching the facet)
-                        // in addition to limiting links (filter current search with facet),
-                        // do some extra work:
+                        $current['counts'][$facetIndex]['url']
+                            = $this->renderLinkWithFilter(
+                                "$field:".$facetDetails['value']
+                            );
+                        // If we want to have expanding links (all values matching
+                        // the facet) in addition to limiting links (filter current
+                        // search with facet), do some extra work:
                         if ($expandingLinks) {
-                            $current['counts'][$facetIndex]['expandUrl'] = 
-                                $this->getExpandingFacetLink($field, $facetDetails['value']);
+                            $current['counts'][$facetIndex]['expandUrl']
+                                = $this->getExpandingFacetLink(
+                                    $field, $facetDetails['value']
+                                );
                         }
                     }
-                    
-                    // Put the current facet cluster in order based on the .ini settings,
-                    // then override the display name again using .ini settings.
+
+                    // Put the current facet cluster in order based on the .ini
+                    // settings, then override the display name again using .ini
+                    // settings.
                     $i = $order[$field];
                     $current['label'] = $filter[$field];
-                    
-                    // Create a reference to counts called list for consistency with Solr
-                    // output format -- this allows the facet recommendations modules to
-                    // be shared between the Search and Summon modules.
+
+                    // Create a reference to counts called list for consistency with
+                    // Solr output format -- this allows the facet recommendations
+                    // modules to be shared between the Search and Summon modules.
                     $current['list'] = & $current['counts'];
                     $facetResult[$i] = $current;
                 }
             }
         }
         ksort($facetResult);
-        return $facetResult;
+
+        // Rewrite the sorted array with appropriate keys:
+        $finalResult = array();
+        foreach ($facetResult as $current) {
+            $finalResult[$current['displayName']] = $current;
+        }
+
+        return $finalResult;
     }
-    
+
     /**
      * Process spelling suggestions from the results object
      *
-     * @access  private
+     * @return void
+     * @access private
      */
-    private function processSpelling()
+    private function _processSpelling()
     {
-        if (isset($this->indexResult['didYouMeanSuggestions']) &&
-            is_array($this->indexResult['didYouMeanSuggestions'])) {
-            foreach($this->indexResult['didYouMeanSuggestions'] as $current) {
+        if (isset($this->_indexResult['didYouMeanSuggestions'])
+            && is_array($this->_indexResult['didYouMeanSuggestions'])
+        ) {
+            foreach ($this->_indexResult['didYouMeanSuggestions'] as $current) {
                 if (!isset($this->suggestions[$current['originalQuery']])) {
-                    $this->suggestions[$current['originalQuery']] = array();
+                    $this->suggestions[$current['originalQuery']] = array(
+                        'suggestions' => array()
+                    );
                 }
-                if (!isset($this->suggestions[$current['originalQuery']]['suggestions'])) {
-                    $this->suggestions[$current['originalQuery']]['suggestions'] = array();
-                }
-                $this->suggestions[$current['originalQuery']]['suggestions'][] =
-                    $current['suggestedQuery'];
+                $this->suggestions[$current['originalQuery']]['suggestions'][]
+                    = $current['suggestedQuery'];
             }
         }
     }
@@ -257,17 +300,18 @@ class SearchObject_Summon extends SearchObject_Base
     /**
      * Actually process and submit the search
      *
-     * @access  public
-     * @param   bool   $returnIndexErrors  Should we die inside the index code if
-     *                                     we encounter an error (false) or return
-     *                                     it for access via the getIndexError() 
-     *                                     method (true)?
-     * @param   bool   $recommendations    Should we process recommendations along
-     *                                     with the search itself?
-     * @return  object Summon result structure (for now)
+     * @param bool $returnIndexErrors Should we die inside the index code if we
+     * encounter an error (false) or return it for access via the getIndexError()
+     * method (true)?
+     * @param bool $recommendations   Should we process recommendations along with
+     * the search itself?
+     *
+     * @return object                 Summon result structure (for now)
+     * @access public
      */
-    public function processSearch($returnIndexErrors = false, $recommendations = false)
-    {
+    public function processSearch(
+        $returnIndexErrors = false, $recommendations = false
+    ) {
         // Build a recommendations module appropriate to the current search:
         if ($recommendations) {
             $this->initRecommendations();
@@ -281,70 +325,72 @@ class SearchObject_Summon extends SearchObject_Base
         $finalSort = ($this->sort == 'relevance') ? null : $this->sort;
 
         // Perform the actual search
-        $this->indexResult = $this->summon->query($this->searchTerms, 
-            $this->getFilterList(), $this->page, $this->limit, $finalSort, 
-            $this->fullFacetSettings, $returnIndexErrors);
-        if (PEAR::isError($this->indexResult)) {
-            PEAR::raiseError($this->indexResult);
+        $this->_indexResult = $this->_summon->query(
+            $this->searchTerms, $this->getFilterList(), $this->page, $this->limit,
+            $finalSort, $this->_fullFacetSettings, $returnIndexErrors
+        );
+        if (PEAR::isError($this->_indexResult)) {
+            PEAR::raiseError($this->_indexResult);
         }
 
         // Save spelling details if they exist.
         if ($this->spellcheck) {
-            $this->processSpelling();
+            $this->_processSpelling();
         }
 
         // Get time after the query
         $this->stopQueryTimer();
 
         // Store relevant details from the search results:
-        $this->resultsTotal = $this->indexResult['recordCount'];
+        $this->resultsTotal = $this->_indexResult['recordCount'];
 
         // If extra processing is needed for recommendations, do it now:
         if ($recommendations && is_array($this->recommend)) {
-            foreach($this->recommend as $currentSet) {
-                foreach($currentSet as $current) {
+            foreach ($this->recommend as $currentSet) {
+                foreach ($currentSet as $current) {
                     $current->process();
                 }
             }
         }
 
         // Send back all the details:
-        return $this->indexResult;
+        return $this->_indexResult;
     }
 
     /**
-     * Get error message from index response, if any.  This will only work if 
+     * Get error message from index response, if any.  This will only work if
      * processSearch was called with $returnIndexErrors set to true!
      *
-     * @access  public
-     * @return  mixed       false if no error, error string otherwise.
+     * @return mixed false if no error, error string otherwise.
+     * @access public
      */
     public function getIndexError()
     {
-        return isset($this->indexResult['errors']) ?
-            $this->indexResult['errors'] : false;
+        return isset($this->_indexResult['errors']) ?
+            $this->_indexResult['errors'] : false;
     }
 
     /**
      * Get database recommendations from Summon, if any.
      *
-     * @access  public
-     * @return  mixed       false if no recommendations, detailed array otherwise.
+     * @return mixed false if no recommendations, detailed array otherwise.
+     * @access public
      */
     public function getDatabaseRecommendations()
     {
-        return isset($this->indexResult['recommendationLists']['database']) ?
-            $this->indexResult['recommendationLists']['database'] : false;
+        return isset($this->_indexResult['recommendationLists']['database']) ?
+            $this->_indexResult['recommendationLists']['database'] : false;
     }
 
     /**
      * Generate a URL for a basic Summon "all fields" search for a specific query.
      *
-     * @access  private
-     * @param   string  $lookfor        The search query.
-     * @return  string                  The search URL.
+     * @param string $lookfor The search query.
+     *
+     * @return string         The search URL.
+     * @access private
      */
-    private function renderBasicSummonSearch($lookfor)
+    private function _renderBasicSummonSearch($lookfor)
     {
         // Save original settings:
         $oldType = $this->searchType;
@@ -370,13 +416,12 @@ class SearchObject_Summon extends SearchObject_Base
      * Turn the list of spelling suggestions into an array of urls
      *   for on-screen use to implement the suggestions.
      *
-     * @access  public
-     * @return  array     Spelling suggestion data arrays
+     * @return array Spelling suggestion data arrays
+     * @access public
      */
     public function getSpellingSuggestions()
     {
         $returnArray = array();
-        if (count($this->suggestions) == 0) return $returnArray;
 
         foreach ($this->suggestions as $term => $details) {
             foreach ($details['suggestions'] as $word) {
@@ -390,7 +435,7 @@ class SearchObject_Summon extends SearchObject_Base
                 // future if the Summon API begins to offer suggestions in more
                 // contexts.
                 $returnArray[$term]['suggestions'][$word] = array(
-                    'replace_url' => $this->renderBasicSummonSearch($word)
+                    'replace_url' => $this->_renderBasicSummonSearch($word)
                 );
             }
         }
@@ -402,12 +447,12 @@ class SearchObject_Summon extends SearchObject_Base
      * appropriate labels when an existing search has multiple filters associated
      * with it.
      *
-     * @access  public
-     * @param   string      $preferredSection       Section to favor when loading
-     *                                              settings; if multiple sections
-     *                                              contain the same facet, this
-     *                                              section's description will be
-     *                                              favored.
+     * @param string $preferredSection Section to favor when loading settings; if
+     * multiple sections contain the same facet, this section's description will be
+     * favored.
+     *
+     * @return void
+     * @access public
      */
     public function activateAllFacets($preferredSection = false)
     {
@@ -421,24 +466,25 @@ class SearchObject_Summon extends SearchObject_Base
     /**
      * Get a user-friendly string to describe the provided facet field.
      *
-     * @access  protected
-     * @param   string  $field                  Facet field name.
-     * @return  string                          Human-readable description of field.
+     * @param string $field Facet field name.
+     *
+     * @return string       Human-readable description of field.
+     * @access public
      */
-    protected function getFacetLabel($field)
+    public function getFacetLabel($field)
     {
         // The default use of "Other" for undefined facets doesn't work well with
         // checkbox facets -- we'll use field names as the default within the Summon
         // search object.
-        return isset($this->facetConfig[$field]) ? 
+        return isset($this->facetConfig[$field]) ?
             $this->facetConfig[$field] : $field;
     }
 
     /**
      * Get information on the current state of the boolean checkbox facets.
      *
-     * @access  public
-     * @return  array
+     * @return array
+     * @access public
      */
     public function getCheckboxFacets()
     {
@@ -455,36 +501,6 @@ class SearchObject_Summon extends SearchObject_Base
         // Return modified list:
         return $facets;
     }
-
-//<MJ.> - Summon testing
-   public function initAdvancedFacets() {
-
-    return false;
-   }
-
-   public function getRSSUrl() {
-
-   return false;
-
-   }
-
-    public function getResultRecordHTML()
-    {
-        global $interface;
-
-        $currentView = $this->getView();
-        $html = array();
-        for ($x = 0; $x < count($this->indexResult['response']['docs']); $x++) {
-            $current = & $this->indexResult['response']['docs'][$x];
-            $record = RecordDriverFactory::initRecordDriver($current);
-            $html[] = $interface->fetch($record->getSearchResult($currentView));
-        }
-        return $html;
-    }
-
-
-
-
 }
 
 ?>

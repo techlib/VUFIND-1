@@ -1,5 +1,4 @@
 <div class="searchbox yui-skin-sam">
-  <div class="yui-b">
   {if $searchType == 'advanced'}
     <a href="{$path}/Search/Advanced?edit={$searchId}" class="small">{translate text="Edit this Advanced Search"}</a> |
     <a href="{$path}/Search/Advanced" class="small">{translate text="Start a new Advanced Search"}</a> |
@@ -44,7 +43,7 @@
           <input type="checkbox" {if $isSelected}checked="checked" {/if}name="shard[]" value='{$shard|escape}' /> {$shard|translate}
         {/foreach}
       {/if}
-      {if $filterList || $hasCheckboxFilters}
+      {if ($filterList || $hasCheckboxFilters) && !$disableKeepFilterControl}
         <div class="keepFilters">
           <input id="retainAll" type="checkbox" {if $retainFiltersByDefault}checked="checked" {/if} onclick="filterAll(this);" />
           <label for="retainAll">{translate text="basic_search_keep_filters"}</label>
@@ -67,5 +66,4 @@
       {if $lastSort}<input type="hidden" name="sort" value="{$lastSort|escape}" />{/if}
     </form>
   {/if}
-  </div>
 </div>

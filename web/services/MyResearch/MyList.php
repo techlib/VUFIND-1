@@ -125,6 +125,9 @@ class MyList extends Action
             $favorites, $listUser, $list->id, $allowEdit
         );
         $favList->assign();
+        if (!$this->infoMsg) {
+            $this->infoMsg = $favList->getInfoMsg();
+        }
 
         // Narrow by Tag
         if (isset($_GET['tag'])) {

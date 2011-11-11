@@ -194,6 +194,31 @@ class CatalogConnection
         }
         return $response;
     }
+    
+    /**
+     * Check Request is Valid
+     *
+     * This is responsible for checking if a request is valid from hold.php
+     *
+     * @param string $id     A Bibliographic ID
+     * @param array  $data   Collected Holds Data
+     * @param array  $patron Patron related data
+     *
+     * @return mixed The result of the checkRequestIsValid function if it 
+     *               exists, true if it does not
+     * @access public
+     */    
+    public function checkRequestIsValid($id, $data, $patron)
+    {
+        $method = array($this->driver, 'checkRequestIsValid');
+        if (is_callable($method)) {
+            return $this->driver->checkRequestIsValid($id, $data, $patron);
+        }
+        // If the driver has no checkRequestIsValid method, we will assume that
+        // all requests are valid – failure can be handled later after the user
+        // attempts to place an illegal hold
+        return true;
+    }
 
     /**
      * Get Holds Mode
