@@ -25,7 +25,6 @@
       OPTIONS.lang = "{$userLang}";
     </script>
     
-    {js filename="translator.js"} 
     {js filename="yui/yahoo-dom-event.js"}
     {js filename="yui/yahoo-min.js"}
     {js filename="yui/event-min.js"}
@@ -36,18 +35,8 @@
     {js filename="scripts.js"}
     {js filename="rc4.js"}
     {js filename="ajax.yui.js"}
-
-    <script type="text/javascript">
-      {literal}
-      YAHOO.util.Event.onDOMReady(function() {
-	      var searchBox = document.getElementById("lookfor");
-	      if (searchBox) {
-		searchBox.focus();
-	      }
-      });
-      {/literal}
-    </script>
-
+    {js filename="NTK.js"} 
+    
   </head>
 
   <body>
