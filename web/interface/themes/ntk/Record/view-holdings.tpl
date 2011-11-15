@@ -17,7 +17,10 @@
 </script>
 *}
 
-<h3>{translate text=$location}</h3>
+{*
+// Element od cizích lidí není zapotřebí. (JM)
+  <h3>{translate text=$location}</h3>
+*}
 <table cellpadding="2" cellspacing="0" border="0" class="citation" summary="{translate text='Holdings details from'} {translate text=$location}">
   <tr>
     <td>{translate text='item status'}</td>
