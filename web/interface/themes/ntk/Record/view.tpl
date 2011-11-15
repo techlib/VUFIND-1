@@ -84,6 +84,12 @@
               <li{if $tab == 'Details'} class="active"{/if}>
                 <a href="{$url}/Record/{$id|escape:"url"}/Details#tabnav" class="first"><span></span>{translate text='Staff View'}</a>
               </li>
+{*MJ.*}
+ 	      <li>
+ 		<a href="{$url}/Record/{$id|escape:"url"}/SFX#tabnav" class="first"><span></span><span style="vertical-align:top"><img src="/images/sfxntk.png"/>
+{translate text='SFX'}</span></a>
+              </li>
+
             </ul><div style="clear:both;"></div>
         </div>
            

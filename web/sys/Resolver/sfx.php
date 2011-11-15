@@ -69,7 +69,8 @@ class Resolver_Sfx implements ResolverInterface
     {
         // Make the call to SFX and load results
         $url = $this->_baseUrl . 
-            '?sfx.response_type=multi_obj_detailed_xml&svc.fulltext=yes&' . $openURL;
+        '?sfx.response_type=multi_obj_detailed_xml&svc.fulltext=yes&svc.holdings=yes&' . $openURL;
+//MJ.            '?sfx.response_type=multi_obj_detailed_xml&svc.fulltext=yes&' . $openURL;
         $feed = file_get_contents($url);
         return $feed;
     }
