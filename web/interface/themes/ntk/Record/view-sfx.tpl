@@ -15,7 +15,6 @@ YAHOO.example.Timing = function() {
 
                         if(arguments.length > 2) { 
   	                  openurl = arguments[2];
-                        alert("this works");
                         }
                           getResolverLinks(message, "0", "");
 			//onDOMReady uses the Custom Event signature, with the object
