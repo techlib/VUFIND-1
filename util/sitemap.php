@@ -34,6 +34,7 @@
  */
 require_once 'util.inc.php';
 require_once 'sys/ConnectionManager.php';
+require_once 'sys/ConfigArray.php';
 
 // Read Config file
 $base = dirname(__FILE__);
