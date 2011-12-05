@@ -149,7 +149,7 @@ class Aleph implements DriverInterface
     {
         list($bib, $sys_no) = $this->parseId($id);
         $xml = $this->doXRequest("publish_avail", array('library' => $bib, 'doc_num' => $sys_no), false);
-        $records = $xml->xpath('/publish-avail/OAI-PMH/ListRecords/record/metadata/record') or print "xpath eval failed";
+        $records = $xml->xpath('/publish-avail/OAI-PMH/ListRecords/record/metadata/record') or error_log($id.": xpath eval failed");
         $holding = array();
         foreach ($records as $record) {
            foreach ($record->xpath("//datafield[@tag='AVA']") as $datafield) {
@@ -161,7 +161,12 @@ class Aleph implements DriverInterface
 	           $location = translate("shelf")." ".$location;
 	       }
 	       else {
-		   $location = translate("code_".$location);
+                   if ($location) {
+			   $location = translate("code_".$location);
+		   }
+		   else {
+                           $location = translate("Unavailable");
+                   } 
 	       }
                /*
                TODO: Implementovat parsovani umisteni.

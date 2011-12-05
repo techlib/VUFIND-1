@@ -13674,9 +13674,9 @@ function tab15_translate($slc, $isc, $ipsc) {
 );
   
   $tab15 = $table_sub_library[$slc];
-  if ($tab15 == NULL) {
-     throw new Exception("Undefined translate table for item statuses!");
-  }
+//  if ($tab15 == NULL) {
+//     throw new Exception("Undefined translate table for item statuses for code: ".$slc);
+//  }
   $findme = $tab15['tab15'] . "|" . $isc . "|" . $ipsc;
   if (!array_key_exists($findme, $table15)) {
      $findme = $tab15['tab15'] . "||" . $ipsc;
