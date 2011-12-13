@@ -16,7 +16,7 @@ function checkItemStatuses() {
                 if(response.status == 'OK') {
                     $.each(response.data, function(i, result) {
                         $('.callnumber' + result.id).empty().append(result.callnumber);
-                        $('.location' + result.id).empty().append(result.reserve == 'true' ? result.reserve_message : result.location);
+                        $('.location' + result.id).empty().append(result.location);
                         $('.status' + result.id).empty().append(result.availability_message);
                     });
                 } else {
