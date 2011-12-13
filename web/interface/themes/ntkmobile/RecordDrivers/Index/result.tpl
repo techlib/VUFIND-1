@@ -1,7 +1,7 @@
 <a rel="external" href="{$path}/Record/{$summId|escape:'url'}">
   <div class="result recordId" id="record{$summId|escape}">
   <h3>
-    {if !empty($summHighlightedTitle)}{$summHighlightedTitle|trim:':/'|highlight}{else}{$summTitle|trim:':/'|escape}{/if}
+    {if !empty($summHighlightedTitle)}{$summHighlightedTitle|trim:':/'|highlight:"$lookfor"}{else}{$summTitle|trim:':/'|escape}{/if}
   </h3>
   {if !empty($summAuthor)}
     <p><strong>{translate text='by'}</strong> {$summAuthor}</p>
