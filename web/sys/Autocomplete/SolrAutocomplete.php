@@ -144,7 +144,7 @@ class SolrAutocomplete implements AutocompleteInterface
         $resultDocs = isset($result['response']['docs']) ?
             $result['response']['docs'] : array();
         $this->searchObject->close();
-
+        
         // Build the recommendation list:
         $results = array();
         foreach ($resultDocs as $current) {
@@ -156,7 +156,7 @@ class SolrAutocomplete implements AutocompleteInterface
                 }
             }
         }
-
+        
         return array_unique($results);
     }
 
