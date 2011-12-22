@@ -156,7 +156,22 @@
       </ul>
     </div>
     {/if}
-    
+
+    {* Widgety přidané pro NTK *}   
+    <div class="sidegroup" id="ntkThingHolder">
+      <script type="text/javascript">
+      </script>
+      {if !empty($isbn)}	
+        <script type="text/javascript">
+          // Nastavení proměnných
+          NTK.options.isbn = "{$isbn}";
+          NTK.toc.init();
+        </script>
+	      <div id="ntk_toc">
+        </div>
+      {/if}
+    </div>
+ 
     {if !empty($isbn)}
     <script src="http://ltfl.librarything.com/forlibraries/widget.js?id=1501-3320533354" type="text/javascript"></script>
     <div class="sidegroup" id="libraryThingHolder">

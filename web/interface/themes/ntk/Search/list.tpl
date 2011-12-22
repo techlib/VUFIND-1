@@ -1,4 +1,4 @@
-<script language="JavaScript" type="text/javascript" src="{$path}/js/ajax_common.js"></script>
+<script type="text/javascript" src="{$path}/js/ajax_common.js"></script>
 {js filename="ajax.js"}
 
 {* Main Listing *}

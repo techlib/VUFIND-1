@@ -19,10 +19,6 @@
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
     <script type="text/javascript">
       path = '{$url}';
-      {literal}
-      var OPTIONS = OPTIONS || {};
-      {/literal}
-      OPTIONS.lang = "{$userLang}";
     </script>
     
     {js filename="yui/yahoo-dom-event.js"}
@@ -35,8 +31,19 @@
     {js filename="scripts.js"}
     {js filename="rc4.js"}
     {js filename="ajax.yui.js"}
+    {js filename="json-min.js"}
     {js filename="NTK.js"} 
-    
+
+    <script type="text/javascript">
+      {literal}
+      YAHOO.util.Event.onDOMReady(function() {
+      {/literal}
+        NTK.options.lang = "{$userLang}";
+      {literal}
+      });
+      {/literal}
+    </script>
+
   </head>
 
   <body>

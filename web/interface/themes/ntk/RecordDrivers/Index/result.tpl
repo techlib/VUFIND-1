@@ -12,11 +12,11 @@
 
       <div class="resultItemLine2">
       {if !empty($summAuthor)}
-      {translate text='by'}
+      <strong>{translate text='by'}</strong>
       <a href="{$url}/Author/Home?author={$summAuthor|escape:"url"}">{$summAuthor|highlight:$lookfor}</a>
       {/if}
 
-      {if $summDate}{translate text='Published'} {$summDate.0|escape}{/if}
+      {if $summDate}<strong>{translate text='Published'}:</strong> {$summDate.0|escape}{/if}
       </div>
       
       <div class="resultItemLine3">
