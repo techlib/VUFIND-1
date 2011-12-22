@@ -1411,8 +1411,24 @@ alignleft {
   max-width: 169px;
 }
 
-#libraryThingHolder h5 {
+#libraryThingHolder h5, #ntkThingHolder h5 {
   border-bottom: solid 1px #D5D5D5;
   padding-bottom: .2em;
   margin: .5em 0;
+}
+
+.psh .broader, .psh .narrower, .psh .related {
+  display: block;
+  margin: .5em 0;
+  padding: 2px 2px 2px 20px;
+  background: url("../images/big_sprite.png") no-repeat;
+}
+.psh .broader {
+  background-position: -7px -4px;
+}
+.psh .narrower {
+  background-position: -7px -62px;
+}
+.psh .related {
+  background-position: -7px -118px;
 }
