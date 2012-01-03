@@ -10,14 +10,14 @@
       <div class="hiddenLabel"><label for="lookfor">{translate text="Search For"}:</label></div>
       {if $autocomplete}
         <div id="autoCompleteContainer">
-          <input id="lookfor" type="text" name="lookfor" size="30" value="{$lookfor|escape:"html"}">
+          <input id="lookfor" type="text" name="lookfor" size="30" value="{$lookfor|escape:"html"}" x-webkit-speech speech>
           <div id="suggestions"></div>
         </div>
         <script type="text/javascript">
           initAutocomplete("lookfor", "suggestions", "type");
         </script>
       {else}
-        <input id="lookfor" type="text" name="lookfor" size="30" value="{$lookfor|escape:"html"}">
+        <input id="lookfor" type="text" name="lookfor" size="30" value="{$lookfor|escape:"html"}" x-webkit-speech speech>
       {/if}
       <div class="hiddenLabel"><label for="type">{translate text="in"}:</label></div>
       <select id="type" name="type">
