@@ -46,7 +46,7 @@
       Použijte symbol vlnovky (<strong>~</strong>) na konci <strong>víceslovného</strong> výrazu.
       Například, pro vyhledání výrazů <q>ekonomika</q> a <q>Keynes</q>, které se nacházejí nejvýše 10 slov od sebe, použijte:
     </p>
-    <pre class="code">"economika Keynes"~10</pre>
+    <pre class="code">"ekonomika Keynes"~10</pre>
   </dd>
   
   {literal}
@@ -70,7 +70,7 @@
       Ke zdůraznění významu výrazu můžete použít symbol <strong>^</strong>.
       Například, můžete zkusit následující vyhledávací dotaz:
     </p>
-    <pre class="code">economika Keynes^5</pre>
+    <pre class="code">ekonomika Keynes^5</pre>
     <p>V tomto případě je větší váha přiřazena slovu "Keynes".</p>
   </dd>
   
@@ -85,37 +85,37 @@
       <dt><a name="OR"></a>OR</dt>
       <dd>
         <p>Operátor <strong>OR</strong> je výchozím způsobem spojení výrazů. V případě, že mezi vyhledávanými výrazy není žádný Booleovský operátor, je pro jejich spojení použito OR. Operátor OR spojuje dva výrazy a způsobuje, že jsou nalezeny ty záznamy, které obsahují alespoň jeden z hledaných výrazů.</p>
-        <p>Pro vyhledání záznamů, které obsahují buď <q>economika Keynes</q> nebo pouze <q>Keynes</q>, použijte vyhledávací dotaz:</p>
-        <pre class="code">"economika Keynes" Keynes</pre>
+        <p>Pro vyhledání záznamů, které obsahují buď <q>ekonomika Keynes</q> nebo pouze <q>Keynes</q>, použijte vyhledávací dotaz:</p>
+        <pre class="code">"ekonomika Keynes" Keynes</pre>
         <p>nebo</p>
-        <pre class="code">"economika Keynes" OR Keynes</pre>
+        <pre class="code">"ekonomika Keynes" OR Keynes</pre>
       </dd>
       
       <dt><a name="AND"></a>AND</dt>
       <dd>
         <p>Operátor AND vyhledá záznamy, které obsahují na jakémkoli místě oba výrazy, kterou jsou jím spojeny.</p>
-        <p>Pro vyhledání záznamů, které obsahují výrazy <q>economika</q> a zároveň <q>Keynes</q>, použijte dotaz: </p>
-        <pre class="code">"economika" AND "Keynes"</pre>
+        <p>Pro vyhledání záznamů, které obsahují výrazy <q>ekonomika</q> a zároveň <q>Keynes</q>, použijte dotaz: </p>
+        <pre class="code">"ekonomika" AND "Keynes"</pre>
       </dd>
       <dt><a name="+"></a>+</dt>
       <dd>
         <p>Operátor <q>+</q> způsobuje, že jsou nalezeny pouze záznamy, které obsahují výraz následující tento operátor.</p>
         <p>Pro vyhledání záznamů, které musí obsahovat <q>ekonomika</q> a mohou obsahovat <q>Keynes</q>, použijte vyhledávací dotaz: </p>
-        <pre class="code">+economika Keynes</pre>
+        <pre class="code">+ekonomika Keynes</pre>
       </dd>
       <dt><a name="NOT"></a>NOT</dt>
       <dd>
         <p>Operátor NOT vyřazuje z množiny vyhledaných záznamů ty, které obsahují výraz následující po tomto operátoru.</p>
         <p>Pro vyhledání záznamů, které obsahují <q>ekonomika</q>, ale neobsahují <q>Keynes</q>, použijte vyhledávací dotaz: </p>
-        <pre class="code">"economika" NOT "Keynes"</pre>
+        <pre class="code">"ekonomika" NOT "Keynes"</pre>
         <p>Poznámka: Operátor NOT nemůže být použit pouze s jedním výrazem. Pro ilustraci, následující vyhledávací dotaz nebude mít žádné výsledky:</p>
-        <pre class="code">NOT "economika"</pre>
+        <pre class="code">NOT "ekonomika"</pre>
       </dd>
       <dt><a name="-"></a>-</dt>
       <dd>
         <p>Operátor <strong>-</strong> neboli prohibiční operátor vypustí z množiny výsledků ty záznamy, které obsahují výraz, který po tomto operátoru následuje.</p>
         <p>Pro vyhledání dokumentů, které obsahují <q>ekonomika</q>, ale ne <q>Keynes</q>, použijte vyhledávací dotaz: </p>
-        <pre class="code">"economika" -"Keynes"</pre>
+        <pre class="code">"ekonomika" -"Keynes"</pre>
       </dd>
     </dl>
   </dd>
