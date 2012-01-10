@@ -619,10 +619,6 @@ function obalkyknih() {
       if (preg_match("/.+\((?P<inside>\[.*\])\);/", $json, $match)) {
         $data = json_decode($match["inside"]);
         $url = $data[0]->$sizeMap[$_GET["size"]];
-        $logger->log(
-          "ObalkyKnih.cz: " . $url,
-          PEAR_LOG_ERR
-        );
         return processImageURL($url);
       }
       else {
