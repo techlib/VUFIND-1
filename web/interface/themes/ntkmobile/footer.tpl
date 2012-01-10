@@ -1,5 +1,3 @@
-<div class="footer-text"><a href="#" class="standard-view" rel="external">{translate text="Go to Standard View"}</a></div>
-
 <div data-role="footer" data-theme="b">
   {* if a module has footer-navbar.tpl, then use it, otherwise use default *}
   {assign var=footer_navbar value="$module/footer-navbar.tpl"|template_full_path}
@@ -19,6 +17,8 @@
     </div>
   {/if}
 </div>
+
+<div class="footer-text"><a href="#" class="standard-view" rel="external">{translate text="Go to Standard View"}</a></div>
 
 {literal}
 <script type="text/javascript">
