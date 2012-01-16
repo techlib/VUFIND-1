@@ -64,7 +64,7 @@ class Home extends Action
         $interface->assign('alphaBrowseTypes', $types);
 
         // Display the page:
-        $interface->setPageTitle('Browse the Collection Alphabetically');
+        $interface->setPageTitle(translate('Browse the Collection Alphabetically'));
         $interface->setTemplate('home.tpl');
         $interface->display('layout.tpl');
     }
