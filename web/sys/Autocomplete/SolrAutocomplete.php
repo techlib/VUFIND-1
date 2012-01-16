@@ -138,7 +138,7 @@ class SolrAutocomplete implements AutocompleteInterface
         foreach ($this->filters as $current) {
             $this->searchObject->addFilter($current);
         }
-
+        
         // Perform the search:
         $result = $this->searchObject->processSearch(true);
         $resultDocs = isset($result['response']['docs']) ?

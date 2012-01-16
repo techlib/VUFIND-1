@@ -45,12 +45,41 @@ class PSH implements RecommendationInterface
     $result = $this->searchObject->processSearch(true);
     $this->searchObject->close();
     
-    // Zpracovat si $result do $pshSet 
     if (isset($result["response"]["docs"])) {
       $result = $result["response"]["docs"][0];
+     
+      $pshConcepts = array();
+      if (isset($result["see_also"])) {
+        $pshConcepts = array_merge($pshConcepts, $result["see_also"]);
+      }
+      if (isset($result["broader"])) {
+        $pshConcepts = array_merge($pshConcepts, $result["broader"]);
+      }
+      if (isset($result["narrower"])) {
+        $pshConcepts = array_merge($pshConcepts, $result["narrower"]);
+      }
+   
+      // http://wiki.apache.org/solr/SimpleFacetParameters 
+      // ?q=*:*&facet=true&facet.field=psh_facet&facet.query=psh_facet:"antropologie"&facet.query=psh_facet:"strojírenství" 
+      /*
+      $this->searchObject = SearchObjectFactory::initSearchObject();
+      $indexEngine = $this->searchObject->getIndexEngine();
+      $queryParams = array(
+        "facet" => true,
+        "facet.field" => "psh_facet"
+      );
+      $query = $indexEngine->buildQuery($queryParams); 
+      $this->logger->log($query, PEAR_LOG_ERR);
+      $this->searchObject->setQueryString("*:*");
+      foreach ($facets as $facet) {
+        $this->searchObject->addFacet($facet);
+      }
+      $facetCounts = $this->searchObject->processSearch(true);
+      $this->searchObject->close();
       
-      $this->logger->log(json_encode($result), PEAR_LOG_ERR);
-  
+      // $this->logger->log(json_encode($facetCounts), PEAR_LOG_ERR);
+      */
+
       $interface->assign("see_also", isset($result["see_also"]) ? $result["see_also"] : array());
       $interface->assign("broader", isset($result["broader"]) ? $result["broader"] : array());
       $interface->assign("narrower", isset($result["narrower"]) ? $result["narrower"] : array());
