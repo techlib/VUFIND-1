@@ -1,0 +1,165 @@
+/**
+ * Custom PSH indexing script
+ *
+
+ */
+
+import org.marc4j.marc.Record;
+import org.marc4j.marc.ControlField;
+import org.marc4j.marc.DataField;
+import org.marc4j.marc.VariableField;
+
+org.solrmarc.index.SolrIndexer indexer = null;
+
+/**
+ *
+
+ for authority index
+ return (Set) of all 650a where indicator2 == 7 and $2 == psh
+
+*/
+
+public Set getPSH(Record record){
+  LinkedHashSet result = new LinkedHashSet();
+  String keyword;
+
+  List list650  = record.getVariableFields("650");
+ 
+  for (VariableField vf : list650) {
+            DataField df = (DataField) vf;
+/*            print("i2:"+df.getIndicator2());*/
+            if (df.getIndicator2() ==  '7') {
+              print("2:"+df.getSubfield('2')); 
+             if (df.getSubfield('2') != null) {
+              if (df.getSubfield('2').getData().toLowerCase().equals("psh")) {
+                keyword = df.getSubfield('a').getData();
+                print ("kw:"+keyword);
+                result.add(keyword);
+              }
+             }
+            }
+         }
+// print (result.toString());
+ if (result.isEmpty()) {
+//   print("empty result");
+   return null;
+ }
+ return result;
+}
+
+/**
+ *
+
+ for biblio index
+ return (Set) of all 450a where $9 == "cze"
+
+*/
+
+public Set getUseForPSH (Record record) {
+  LinkedHashSet result = new LinkedHashSet();
+  String keyword;
+
+  List list450  = record.getVariableFields("450");
+
+  for (VariableField vf : list450) {
+            DataField df = (DataField) vf;
+       
+            if (df.getSubfield('9') != null ) {
+print ("_+_:"+ df.getSubfield('9').getData());
+              if (df.getSubfield('9').getData().toLowerCase().equals("cze")) {
+                keyword = df.getSubfield('a').getData();
+                print ("kw:"+keyword);
+                result.add(keyword);
+              }
+
+            }
+  }
+
+  if (result.isEmpty()) {
+//   print("empty result");
+   return null;
+  }
+  return result;
+   
+}
+
+public Set getBroaderPSH (Record record) {
+  LinkedHashSet result = new LinkedHashSet();
+  String keyword;
+
+  List list550  = record.getVariableFields("550");
+
+  for (VariableField vf : list550) {
+            DataField df = (DataField) vf;
+
+           if (df.getSubfield('w') != null ) {
+// print ("*_*:"+ df.getSubfield('w').toString());
+              if (df.getSubfield('w').getData().equals("g")) {
+                keyword = df.getSubfield('a').getData();
+                print ("kw:"+keyword);
+                result.add(keyword);
+              }
+
+           }
+  }
+
+  if (result.isEmpty()) {
+//   print("empty result");
+  return null;
+  }
+  return result;
+
+}
+
+public Set getNarrowerPSH (Record record) {
+  LinkedHashSet result = new LinkedHashSet();
+  String keyword;
+
+  List list550  = record.getVariableFields("550");
+
+  for (VariableField vf : list550) {
+            DataField df = (DataField) vf;
+
+         if (df.getSubfield('w') != null ) {
+              if (df.getSubfield('w').getData().equals("h")) {
+                keyword = df.getSubfield('a').getData();
+                print ("kw:"+keyword);
+                result.add(keyword);
+              }
+         }
+  }
+
+  if (result.isEmpty()) {
+//   print("empty result");
+  return null;
+  }
+  return result;
+}
+
+public Set getSeeAlsoPSH (Record record) {
+  LinkedHashSet result = new LinkedHashSet();
+  String keyword;
+
+  List list550  = record.getVariableFields("550");
+
+  for (VariableField vf : list550) {
+            DataField df = (DataField) vf;
+
+              if (df.getSubfield('w') == null ) {
+                keyword = df.getSubfield('a').getData();
+                print ("kw:"+keyword);
+                result.add(keyword);
+              }
+
+  }
+
+  if (result.isEmpty()) {
+//   print("empty result");
+  
+  return null;
+  } 
+  return result;
+
+}
+
+
