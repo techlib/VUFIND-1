@@ -34,7 +34,7 @@ fi
 
 # Process all the files in the target directory:
 cd $VUFIND_HOME/util
-for file in $BASEPATH/*.delete
+for file in $(find $BASEPATH -maxdepth 1 -type f -name "*.delete")
 do
   echo "Processing $file ..."
   php deletes.php $file flat
