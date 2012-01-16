@@ -45,10 +45,17 @@
     <!-- Tracking fields to keep track of oldest and most recent index times -->
     <field name="first_indexed" type="date" indexed="true" stored="true"/>
     <field name="last_indexed" type="date" indexed="true" stored="true"/>
-  </fields>
+
+    <!-- NTK PSH -->   
+    <field name="broader" type="string" indexed="true" stored="true" multiValued="true"/>
+    <field name="narrower" type="string" indexed="true" stored="true" multiValued="true"/>
+    <field name="heading_english" type="string" indexed="false" stored="true" multiValued="true"/> 
+
+
+ </fields>
 
   <uniqueKey>id</uniqueKey>
-  <defaultSearchField>allfields</defaultSearchField>
+  <defaultSearchField>heading</defaultSearchField>
 
   <!-- CopyFields for Keyword Searching -->
   <copyField source="heading" dest="heading_keywords" />
