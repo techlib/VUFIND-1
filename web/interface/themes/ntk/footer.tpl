@@ -29,9 +29,10 @@
     <li><a href="http://www.obalkyknih.cz/">Obálky knih</a></li>
   </ul>
 </div>
-<div><p><strong>{translate text='Mobile version'}</strong></p>
+<div><p><strong>{translate text='Access to catalogue'}</strong></p>
   <ul>
-    <li><a href="{$path}?ui=mobile">{translate text="Mobile version"}</a></li>
+    <li><a href="{$path}?ui=mobile">{translate text="Mobile catalogue"}</a></li>
+    <li><a href="http://aleph.techlib.cz/">{translate text="Aleph catalogue"}</a></li>
   </ul>
 </div>
 <br clear="all">
