@@ -20,6 +20,7 @@
   <ul>
     <li><a href="{$url}/Help/Home?topic=search" onClick="window.open('{$url}/Help/Home?topic=search', 'Help', 'width=625, height=510'); return false;">{translate text='Search Tips'}</a></li>
     <li><a href="{$url}/Help/Home?topic=about" onClick="window.open('{$url}/Help/Home?topic=about', 'About', 'width=625, height=510'); return false;">{translate text="About VuFind"}</a></li>
+    <li><a href="{$url}/Help/Home?topic=contact" onClick="window.open('{$url}/Help/Home?topic=contact', 'Contact', 'width=625, height=510'); return false;">{translate text="Contact us"}</a></li>
     <li><a href="http://www.ptejteseknihovny.cz/">{translate text='Ask a Librarian'}</a></li>
     {* <li><a href="#">{translate text='FAQs'}</a></li> *}
   </ul>
