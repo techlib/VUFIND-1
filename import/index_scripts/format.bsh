@@ -276,6 +276,12 @@ public Set getFormat(Record record){
             }
     }
 
+    //MJ. article rule: if exists 773 then article
+       DataField df773 = (DataField) record.getVariableField("773");
+       if (df773 != null) {
+         result.add("ArticleSerial");
+       } 
+
     // Nothing worked!
     if (result.isEmpty()) {
         result.add("Unknown");
