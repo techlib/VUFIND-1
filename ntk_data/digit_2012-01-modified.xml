@@ -1,0 +1,3478 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+  <collection xmlns="http://www.loc.gov/MARC21/slim"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.loc.gov/MARC21/slim
+http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
+    <record xmlns="http://www.loc.gov/MARC21/slim"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.loc.gov/MARC21/slim
+http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
+      <leader>00000nam a22      a 4500</leader>
+      <controlfield tag="001">000674452</controlfield>
+      <controlfield tag="003">CZ PrSTK</controlfield>
+      <controlfield tag="005">20110912144303.0</controlfield>
+      <controlfield tag="008">110812s1539    xr a   f     |||1 0 cze d</controlfield>
+      <datafield tag="040" ind1=" " ind2=" ">
+        <subfield code="a">ABA013</subfield>
+        <subfield code="b">cze</subfield>
+      </datafield>
+      <datafield tag="072" ind1=" " ind2="7">
+        <subfield code="a">271/279</subfield>
+        <subfield code="x">Křesťanské církve, sekty, denominace</subfield>
+        <subfield code="2">Konspekt</subfield>
+        <subfield code="9">5</subfield>
+      </datafield>
+      <datafield tag="080" ind1=" " ind2=" ">
+        <subfield code="a">27-878.3</subfield>
+      </datafield>
+      <datafield tag="080" ind1=" " ind2=" ">
+        <subfield code="a">27-42</subfield>
+      </datafield>
+      <datafield tag="100" ind1="1" ind2=" ">
+        <subfield code="a">Tovačovský z Cimburka, Ctibor,</subfield>
+        <subfield code="d">1438-1494</subfield>
+        <subfield code="7">jk01132835</subfield>
+        <subfield code="4">aut</subfield>
+      </datafield>
+      <datafield tag="245" ind1="1" ind2="0">
+        <subfield code="a">Knijha vrozeneho pana pana Stibora z Cymburka a z Towačowa ec: Kteraž gest oddana slawne pamieti nayiasniegssimu krali Girzimu ec: Cžeskemu Gehomilosti</subfield>
+        <subfield code="h">[elektronický zdroj]</subfield>
+      </datafield>
+      <datafield tag="246" ind1="3" ind2="3">
+        <subfield code="a">Kniha urozeného pana pana ctibora z Cymburka a z Tovačova ec., kteráž jest oddána slavné paměti nejjasnějšímu králi Jiřímu ec. Českému Jeho milosti</subfield>
+      </datafield>
+      <datafield tag="256" ind1=" " ind2=" ">
+        <subfield code="a">Textová data</subfield>
+      </datafield>
+      <datafield tag="260" ind1=" " ind2=" ">
+        <subfield code="a">W Slawném Miestie Pražském :</subfield>
+        <subfield code="b">A tyto knijhy sau wykonány Nákladem a pracý Jana Cukrmana z Kuprsstorfu,</subfield>
+        <subfield code="c">1539</subfield>
+        <subfield code="f">(Wytisstiena gest tato Knijha skrze mne Seweryna Mladssyho, Miesstienijna Téhož Slawného Miesta Pražského Starého)</subfield>
+      </datafield>
+      <datafield tag="300" ind1=" " ind2=" ">
+        <subfield code="a">[1], CXXXI, [4] l. :</subfield>
+        <subfield code="b">il.</subfield>
+      </datafield>
+      <datafield tag="500" ind1=" " ind2=" ">
+        <subfield code="a">Obsahuje rejstřík</subfield>
+      </datafield>
+      <datafield tag="500" ind1=" " ind2=" ">
+        <subfield code="a">Naklatelské údaje uvedeny z kolofonu</subfield>
+      </datafield>
+      <datafield tag="505" ind1="2" ind2=" ">
+        <subfield code="a">Na I a.: Počinagij se Knijhy Hadanij Prawdy a Lži o Kniežske zbožij a panowanij gich: A tuto klečij skladatel Knih tiechto, chwalu wzdawage Trogicy Swate: A gest prwnij Przedmluwa. -- Na Y1 a: Registrum na List početnij. -- Na Y3 b: Leta Božijho Tisycyho Cžtyrzysteho Ssedesatého Sedmého. Tyto Knijhy složeny gsau od Vrozeného Pána Pana Ctibora z Cymburka a z Towačowa ec: Slawné pamieti Nayjasniegssymu Králi Giřijmu ... A tyto Knijhy sau wykonány Nákladem a pracý Jana Cukrmana z Ruprsstorfu ec.</subfield>
+      </datafield>
+      <datafield tag="506" ind1=" " ind2=" ">
+        <subfield code="a">Přístup pouze pro oprávněné uživatele</subfield>
+      </datafield>
+      <datafield tag="510" ind1="4" ind2=" ">
+        <subfield code="a">Knihopis,</subfield>
+        <subfield code="c">K01711</subfield>
+      </datafield>
+      <datafield tag="538" ind1=" " ind2=" ">
+        <subfield code="a">On-line přístup</subfield>
+      </datafield>
+      <datafield tag="650" ind1="0" ind2="7">
+        <subfield code="a">církev a společnost</subfield>
+        <subfield code="x">na</subfield>
+        <subfield code="2">psh</subfield>
+      </datafield>
+      <datafield tag="650" ind1="0" ind2="7">
+        <subfield code="a">náboženská morálka</subfield>
+        <subfield code="x">na</subfield>
+        <subfield code="2">psh</subfield>
+      </datafield>
+      <datafield tag="650" ind1="0" ind2="7">
+        <subfield code="a">reformační teologie</subfield>
+        <subfield code="x">na</subfield>
+        <subfield code="2">psh</subfield>
+      </datafield>
+      <datafield tag="655" ind1=" " ind2="4">
+        <subfield code="a">elektronické knihy</subfield>
+      </datafield>
+      <datafield tag="700" ind1="1" ind2=" ">
+        <subfield code="a">Severýn, Jan,</subfield>
+        <subfield code="d">činný 1539-ca 1545</subfield>
+        <subfield code="7">jo2010557908</subfield>
+      </datafield>
+      <datafield tag="856" ind1="4" ind2="1">
+        <subfield code="u">http://df.ntkcz.cz/kramerius/handle/ABA013/23596</subfield>
+        <subfield code="y">Digitalizovaný dokument</subfield>
+      </datafield>
+      <datafield tag="OWN" ind1=" " ind2=" ">
+        <subfield code="a">PUBLIC</subfield>
+      </datafield>
+      <datafield tag="910" ind1=" " ind2=" ">
+        <subfield code="a">ABA013</subfield>
+        <subfield code="b">EB 00930</subfield>
+      </datafield>
+    </record>
+
+<record xmlns="http://www.loc.gov/MARC21/slim"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.loc.gov/MARC21/slim
+http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
+  <leader>00000nam a22      a 4500</leader>
+  <controlfield tag="001">000613938</controlfield>
+  <controlfield tag="003">CZ PrSTK</controlfield>
+  <controlfield tag="005">20111101092259.0</controlfield>
+  <controlfield tag="008">970902s1657    gw     f      000 0 lat d</controlfield>
+  <datafield tag="040" ind1=" " ind2=" ">
+    <subfield code="a">ABA013</subfield>
+    <subfield code="b">cze</subfield>
+  </datafield>
+  <datafield tag="080" ind1=" " ind2=" ">
+    <subfield code="a">51</subfield>
+  </datafield>
+  <datafield tag="080" ind1=" " ind2=" ">
+    <subfield code="a">5</subfield>
+  </datafield>
+  <datafield tag="084" ind1=" " ind2=" ">
+    <subfield code="a">VI.A.</subfield>
+  </datafield>
+  <datafield tag="084" ind1=" " ind2=" ">
+    <subfield code="a">IV.A.</subfield>
+  </datafield>
+  <datafield tag="100" ind1="1" ind2=" ">
+    <subfield code="a">Trew, Abdias,</subfield>
+    <subfield code="d">1597-1669</subfield>
+    <subfield code="7">ola2006357344</subfield>
+  </datafield>
+  <datafield tag="245" ind1="1" ind2="0">
+    <subfield code="a">Directorium mathematicum ad cujus ductum et informationem tota Mathesis et omnes ejusdem partes, nominatim Arithmetica, Geometria, Astronomia, Geographia, Optica, Harmonica, Mechanica methodice doceri et facile disci possunt /</subfield>
+    <subfield code="c">authore M. Abdia Trew</subfield>
+  </datafield>
+  <datafield tag="260" ind1=" " ind2=" ">
+    <subfield code="a">Altdorphi :</subfield>
+    <subfield code="b">Typ. Georgi Hagen,</subfield>
+    <subfield code="c">1657</subfield>
+  </datafield>
+  <datafield tag="300" ind1=" " ind2=" ">
+    <subfield code="a">1 sv. ;</subfield>
+    <subfield code="c">8° (20x17 cm)</subfield>
+  </datafield>
+  <datafield tag="500" ind1=" " ind2=" ">
+    <subfield code="a">Datum vydání podle data předmluvy</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="501" ind1=" " ind2=" ">
+    <subfield code="a">Obsahuje přívazek: Directorium Mathematicum Hoc est De artificiosa per Circulos Positonum, dirigendi Themata Natalitia metodo</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="501" ind1=" " ind2=" ">
+    <subfield code="a">Obsahuje přívazek: Computus Directionum Astronomicus, das ist New Inventirte vnd Calculirte Astronomische Taffeln der Künstlichen, Jahr Rechnungen der Nativiteten die Satz-Circul vnd Lauffe dess Aequatoris, ...</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="501" ind1=" " ind2=" ">
+    <subfield code="a">Obsahuje přívazek: Dissertatio de triplici algebrae Cartesianae algorithmo</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="501" ind1=" " ind2=" ">
+    <subfield code="a">Obsahuje přívazek: Francisci a Schooten Principia Matheseos Universalis, seu Introductio ad Geometriae methodum Renati Des Cartes ...</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="501" ind1=" " ind2=" ">
+    <subfield code="a">Obsahuje přívazek: Francisci a Schooten Exercitationum mathematicarum libri quinque</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="501" ind1=" " ind2=" ">
+    <subfield code="a">Obsahuje přívazek: Positionum mathematicarum Sylloge ...</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="501" ind1=" " ind2=" ">
+    <subfield code="a">Obsahuje přívazek: Samuelis Reyheri Bacilli Sexagenales, i.e. Descriptio Logisticae Sexagenariae per Bacillos exercendae, cui praemittuntur Utilia quaedam problemata ...</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="501" ind1=" " ind2=" ">
+    <subfield code="a">Obsahuje přívazek: Dissertatio de Cometis, eorumque generatione, figure, moto, lumine et prognosticis</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="501" ind1=" " ind2=" ">
+    <subfield code="a">Obsahuje přívazek: Optica oculorum vitia</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="501" ind1=" " ind2=" ">
+    <subfield code="a">Obsahuje přívazek: Disquisitio Physico-Mathematica de presbytis et myopibus ...</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="501" ind1=" " ind2=" ">
+    <subfield code="a">Obsahuje přívazek: Visionis sensum nobilissimum ex obscurae camerae tenebris iuculenter-illustrans dissertatio optico-physica</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="501" ind1=" " ind2=" ">
+    <subfield code="a">Obsahuje přívazek: Primaria gravium leviumque Phaenomena ad Principia causasque suas reducens exercitatio</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="501" ind1=" " ind2=" ">
+    <subfield code="a">Obsahuje přívazek: Dissertatio academica de barometris, quam ...</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="501" ind1=" " ind2=" ">
+    <subfield code="a">Obsahuje přívazek: Hydraulicam</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="501" ind1=" " ind2=" ">
+    <subfield code="a">Obsahuje přívazek: De computo gregoriano, seu stylo novo, dissertatio</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="501" ind1=" " ind2=" ">
+    <subfield code="a">Obsahuje přívazek: Erhardi Weigelii ... Unmassgebiger Vorschlag, die Zeit-Vereinigung auf das füglichste zu treffen</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="501" ind1=" " ind2=" ">
+    <subfield code="a">Obsahuje přívazek: Summarischer Bericht, von der Bißhero differenten, künfftig zu conciliirenden Zeit- und Fest-Rechnung</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="505" ind1="2" ind2=" ">
+    <subfield code="a">Obsahuje přívazek: Libellus 1, in quo continentur Arithmetica toti praxi ... 46 s., 1 příl. -- Libellus 2, in quo continentur Geometria practica ... 38 s., [III] příl. -- Libellus 3, in quo continentur ... Astronomia, Geographia, Optica, Harmonica, Mechanica. 23, [4], 16, 12, 56, 55 s., [7] obr. příl.</subfield>
+  </datafield>
+  <datafield tag="510" ind1="4" ind2=" ">
+    <subfield code="a">Poggendorff,</subfield>
+    <subfield code="c">Bd. II, s. 1133</subfield>
+  </datafield>
+  <datafield tag="561" ind1=" " ind2=" ">
+    <subfield code="a">Na tit. s. oválné razítko Boehm Staend techn. Institut, na přídeští exlibris Königl Böhm Ständische technische Lehranstalt, na příl. oválné razítko Bibliothek des K. Boehm. Polyt. Landesinstut. Na přídeští rukopisný zápis obsahu konvolutu</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="563" ind1=" " ind2=" ">
+    <subfield code="a">Vazba pergamenová</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="650" ind1="0" ind2="7">
+    <subfield code="a">přírodní vědy</subfield>
+    <subfield code="x">fi</subfield>
+    <subfield code="2">psh</subfield>
+  </datafield>
+  <datafield tag="650" ind1="0" ind2="7">
+    <subfield code="a">historie</subfield>
+    <subfield code="x">hi</subfield>
+    <subfield code="2">psh</subfield>
+  </datafield>
+  <datafield tag="856" ind1="4" ind2="1">
+    <subfield code="u">http://df.ntkcz.cz/kramerius/handle/ABA013/23601</subfield>
+    <subfield code="y">Digitalizovaný dokument</subfield>
+  </datafield>
+  <datafield tag="991" ind1=" " ind2=" ">
+    <subfield code="a">17</subfield>
+  </datafield>
+  <datafield tag="SKC" ind1=" " ind2=" ">
+    <subfield code="a">r</subfield>
+    <subfield code="b">z</subfield>
+  </datafield>
+  <datafield tag="OWN" ind1=" " ind2=" ">
+    <subfield code="a">PUBLIC</subfield>
+  </datafield>
+  <datafield tag="910" ind1=" " ind2=" ">
+    <subfield code="a">ABA013</subfield>
+    <subfield code="b">A 231</subfield>
+  </datafield>
+  <datafield tag="984" ind1=" " ind2=" ">
+    <subfield code="a">Altdorf</subfield>
+    <subfield code="b">Německo</subfield>
+  </datafield>
+  <datafield tag="903" ind1=" " ind2=" ">
+    <subfield code="a">RP</subfield>
+  </datafield>
+</record>
+
+<record xmlns="http://www.loc.gov/MARC21/slim"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.loc.gov/MARC21/slim
+http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
+  <leader>00000nam a22      a 4500</leader>
+  <controlfield tag="001">000606452</controlfield>
+  <controlfield tag="003">CZ PrSTK</controlfield>
+  <controlfield tag="005">20110922104336.0</controlfield>
+  <controlfield tag="008">970902s1728    xr a   f      000 0 lat d</controlfield>
+  <datafield tag="040" ind1=" " ind2=" ">
+    <subfield code="a">ABA013</subfield>
+    <subfield code="b">cze</subfield>
+  </datafield>
+  <datafield tag="080" ind1=" " ind2=" ">
+    <subfield code="a">6</subfield>
+  </datafield>
+  <datafield tag="080" ind1=" " ind2=" ">
+    <subfield code="a">677.027</subfield>
+  </datafield>
+  <datafield tag="084" ind1=" " ind2=" ">
+    <subfield code="a">VII.C.m)</subfield>
+  </datafield>
+  <datafield tag="100" ind1="1" ind2=" ">
+    <subfield code="a">Valdštejn, Jan Josef</subfield>
+  </datafield>
+  <datafield tag="245" ind1="1" ind2="0">
+    <subfield code="a">DesIgnatIo IConographICa OberLeVtensDorfenses PannarIas OffICInas VVLgo FabrICas PenICILLI arbItrIo Representans :</subfield>
+    <subfield code="b">quas sub fortunatissimis auspiciis gloriosissime imperantis Magni Caesaris Caroli VI., Hispaniae, Hungariae, Bohemiae, &amp;c: regis, Patriae patris, eo enim auspice reviviscunt artes, pallas renas citur, manufactura, negotiationed &amp; commercia reflorescunt, aurea revertuntur secula &amp; senilifracta, aetate Bohemiae juvenescens postliminiô lacertos rurfus movere incipit: sumptuoso opere, sumptu operoso ad utilitatem publicam erectas augustalibus spectabiles oculis /</subfield>
+    <subfield code="c">In Pagina hac exhibet Ioannes Iosephus Comes de Waldstein</subfield>
+  </datafield>
+  <datafield tag="260" ind1=" " ind2=" ">
+    <subfield code="a">Prag :</subfield>
+    <subfield code="b">[s.n.],</subfield>
+    <subfield code="c">1728</subfield>
+  </datafield>
+  <datafield tag="300" ind1=" " ind2=" ">
+    <subfield code="a">[20] l. mědirytin ;</subfield>
+    <subfield code="c">4° (29x41 cm)</subfield>
+  </datafield>
+  <datafield tag="500" ind1=" " ind2=" ">
+    <subfield code="a">Vročení dle chronogramu</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="500" ind1=" " ind2=" ">
+    <subfield code="a">Rytý tit. list</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="500" ind1=" " ind2=" ">
+    <subfield code="a">Na tit. s. v alegorickém rámci vyobrazení Horního Litvínova a ve vavřínovém věnci obraz Karla IV., signováno Wenzes: Laurent Reiner Inv. et delineavit, A. Birckhart sculp. Prag. 19 rytin, z nichž první tři jsou plány a vyobrazení továrny na sukno v Horním Litvínově (signováno Ioann Ios Ditzler fec. a Birckhart sculp.), dalších 16 představuje vyobrazení a popis práce ve jmenované továrně signováno střídavě I.C. Turner del., Fischer sculp., Turner del., Birckhart sculp.</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="561" ind1=" " ind2=" ">
+    <subfield code="a">Na tit. s. oválné razítko Boehm Staend. techn. Institut, na rytinách (s výjimkou listu 19) oválné razítko Bibliothek der K. Boehm. Polyt. Landesinstitut</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="563" ind1=" " ind2=" ">
+    <subfield code="a">Vazba nová polopergamenová, desky tmavé zdobené mřížkou, ořízka na hlavě červeně barvená (převazba v r. 1965)</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="583" ind1=" " ind2=" ">
+    <subfield code="a">Restaurováno</subfield>
+    <subfield code="c">1965</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="650" ind1="1" ind2="4">
+    <subfield code="a">textil</subfield>
+    <subfield code="x">sp</subfield>
+    <subfield code="2">psh</subfield>
+  </datafield>
+  <datafield tag="700" ind1="0" ind2=" ">
+    <subfield code="a">Karel</subfield>
+    <subfield code="b">VI.,</subfield>
+    <subfield code="c">římskoněmecký císař,</subfield>
+    <subfield code="d">1685-1740</subfield>
+    <subfield code="7">js20011212085</subfield>
+    <subfield code="4">dte</subfield>
+  </datafield>
+  <datafield tag="700" ind1="1" ind2=" ">
+    <subfield code="a">Dietzler, Johann Joseph</subfield>
+    <subfield code="4">art</subfield>
+  </datafield>
+  <datafield tag="700" ind1="1" ind2=" ">
+    <subfield code="a">Reiner, Václav Vavřinec,</subfield>
+    <subfield code="d">1689-1743</subfield>
+    <subfield code="7">jn20000728552</subfield>
+    <subfield code="c">art</subfield>
+  </datafield>
+  <datafield tag="700" ind1="1" ind2=" ">
+    <subfield code="a">Birkhard, Antonín,</subfield>
+    <subfield code="d">1677-1748</subfield>
+    <subfield code="7">jn20011024062</subfield>
+    <subfield code="c">art</subfield>
+  </datafield>
+  <datafield tag="700" ind1="1" ind2=" ">
+    <subfield code="a">Turner, I. C.</subfield>
+    <subfield code="4">art</subfield>
+  </datafield>
+  <datafield tag="700" ind1="1" ind2=" ">
+    <subfield code="a">Fischer, Jan František,</subfield>
+    <subfield code="d">zemř. 1740</subfield>
+    <subfield code="7">jo2009507493</subfield>
+    <subfield code="4">art</subfield>
+  </datafield>
+  <datafield tag="856" ind1="4" ind2="1">
+    <subfield code="u">http://df.ntkcz.cz/kramerius/handle/ABA013/22832</subfield>
+    <subfield code="y">Digitalizovaný dokument</subfield>
+  </datafield>
+  <datafield tag="991" ind1=" " ind2=" ">
+    <subfield code="a">18</subfield>
+  </datafield>
+  <datafield tag="SKC" ind1=" " ind2=" ">
+    <subfield code="a">r</subfield>
+  </datafield>
+  <datafield tag="OWN" ind1=" " ind2=" ">
+    <subfield code="a">PUBLIC</subfield>
+  </datafield>
+  <datafield tag="910" ind1=" " ind2=" ">
+    <subfield code="a">ABA013</subfield>
+    <subfield code="b">B 96</subfield>
+  </datafield>
+  <datafield tag="984" ind1=" " ind2=" ">
+    <subfield code="a">Praha</subfield>
+    <subfield code="b">Česko</subfield>
+  </datafield>
+</record>
+
+<record xmlns="http://www.loc.gov/MARC21/slim"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.loc.gov/MARC21/slim
+http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
+  <leader>00000nam a22      a 4500</leader>
+  <controlfield tag="001">000605544</controlfield>
+  <controlfield tag="003">CZ PrSTK</controlfield>
+  <controlfield tag="005">20110923093559.0</controlfield>
+  <controlfield tag="008">970902s1799    au     |      000 0 ger</controlfield>
+  <datafield tag="040" ind1=" " ind2=" ">
+    <subfield code="a">ABA013</subfield>
+    <subfield code="b">cze</subfield>
+  </datafield>
+  <datafield tag="080" ind1=" " ind2=" ">
+    <subfield code="a">664.1664.2</subfield>
+  </datafield>
+  <datafield tag="084" ind1=" " ind2=" ">
+    <subfield code="a">VII.C.h)</subfield>
+  </datafield>
+  <datafield tag="100" ind1="1" ind2=" ">
+    <subfield code="a">Achard, Franz Carl,</subfield>
+    <subfield code="d">1753-1821</subfield>
+    <subfield code="7">ola2002142324</subfield>
+  </datafield>
+  <datafield tag="245" ind1="1" ind2="4">
+    <subfield code="a">Der neueste deutsche Stellvertreter des indischen Zuckers oder der Zucker aus Runkelrüben erzeugt :</subfield>
+    <subfield code="b">die wichtigste und wohlthätigste Entdeckung des achtzehnten Jahrhunderts /</subfield>
+    <subfield code="c">vom Herrn Direktor Achard</subfield>
+  </datafield>
+  <datafield tag="260" ind1=" " ind2=" ">
+    <subfield code="a">Wien :</subfield>
+    <subfield code="b">bey Aloys Doll,</subfield>
+    <subfield code="c">1799</subfield>
+  </datafield>
+  <datafield tag="300" ind1=" " ind2=" ">
+    <subfield code="a">30 s. ;</subfield>
+    <subfield code="c">16x11 cm</subfield>
+  </datafield>
+  <datafield tag="500" ind1=" " ind2=" ">
+    <subfield code="a">Tištěno gotikou</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="561" ind1=" " ind2=" ">
+    <subfield code="a">Na tit. s. 2x razítko Bibliothek des k.B.P. Landesinstitutes, mezi razítky podpis &quot;Balling&quot;</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="563" ind1=" " ind2=" ">
+    <subfield code="a">Vazba poloplátěná knihovnická</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="650" ind1="1" ind2="4">
+    <subfield code="a">škrob</subfield>
+    <subfield code="x">pp</subfield>
+    <subfield code="2">psh</subfield>
+  </datafield>
+  <datafield tag="700" ind1="1" ind2=" ">
+    <subfield code="a">Doll, Aloys</subfield>
+    <subfield code="7">xx0090591</subfield>
+    <subfield code="4">prt</subfield>
+  </datafield>
+  <datafield tag="856" ind1="4" ind2="1">
+    <subfield code="u">http://df.ntkcz.cz/kramerius/handle/ABA013/23532</subfield>
+    <subfield code="y">Digitalizovaný dokument</subfield>
+  </datafield>
+  <datafield tag="991" ind1=" " ind2=" ">
+    <subfield code="a">18</subfield>
+  </datafield>
+  <datafield tag="SKC" ind1=" " ind2=" ">
+    <subfield code="a">r</subfield>
+  </datafield>
+  <datafield tag="OWN" ind1=" " ind2=" ">
+    <subfield code="a">PUBLIC</subfield>
+  </datafield>
+  <datafield tag="910" ind1=" " ind2=" ">
+    <subfield code="a">ABA013</subfield>
+    <subfield code="b">C 1147</subfield>
+  </datafield>
+  <datafield tag="984" ind1=" " ind2=" ">
+    <subfield code="a">Wien</subfield>
+    <subfield code="b">Rakousko</subfield>
+  </datafield>
+</record>
+
+<record xmlns="http://www.loc.gov/MARC21/slim"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.loc.gov/MARC21/slim
+http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
+  <leader>00000nam a22      a 4500</leader>
+  <controlfield tag="001">000603044</controlfield>
+  <controlfield tag="003">CZ PrSTK</controlfield>
+  <controlfield tag="005">20110922140612.0</controlfield>
+  <controlfield tag="008">970902s1802    gw f   f      000 0 ger d</controlfield>
+  <datafield tag="040" ind1=" " ind2=" ">
+    <subfield code="a">ABA013</subfield>
+    <subfield code="b">cze</subfield>
+  </datafield>
+  <datafield tag="080" ind1=" " ind2=" ">
+    <subfield code="a">631.3</subfield>
+  </datafield>
+  <datafield tag="084" ind1=" " ind2=" ">
+    <subfield code="a">XIV.B.</subfield>
+  </datafield>
+  <datafield tag="084" ind1=" " ind2=" ">
+    <subfield code="a">XII.C.b)</subfield>
+  </datafield>
+  <datafield tag="100" ind1="1" ind2=" ">
+    <subfield code="a">Riem, Johann,</subfield>
+    <subfield code="d">1730-1807</subfield>
+    <subfield code="7">mzk2007408505</subfield>
+    <subfield code="4">aut</subfield>
+  </datafield>
+  <datafield tag="245" ind1="1" ind2="0">
+    <subfield code="a">Modell-Magazin für Oekonomen, oder, Abbildung und Beschreibung der nützlichsten und bequemsten Geräthschaften, Werkzeuge und Geschirre für Haushaltungen, Landwirthschaften, Viehzucht, Feld- Garten- und Wiesenbau, Brauerei und Branntweinbrennerei.</subfield>
+    <subfield code="n">Erstes Heft /</subfield>
+    <subfield code="c">Nach den neuesten in- und ausländischen Erfindungen und Verbesserungen von Johann Riem und J.A. Heine</subfield>
+  </datafield>
+  <datafield tag="260" ind1=" " ind2=" ">
+    <subfield code="a">Leipzig :</subfield>
+    <subfield code="b">Voss und Compagnie,</subfield>
+    <subfield code="c">1802</subfield>
+  </datafield>
+  <datafield tag="300" ind1=" " ind2=" ">
+    <subfield code="a">28 s., [6] l. obr. příl. ;</subfield>
+    <subfield code="c">30x22 cm</subfield>
+  </datafield>
+  <datafield tag="500" ind1=" " ind2=" ">
+    <subfield code="a">Na obr. příl. zobrazení různých mechanických zařízení a strojů signováno Heine del., Hüllmann sc., Böttger sc.</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="500" ind1=" " ind2=" ">
+    <subfield code="a">Tištěno gotikou</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="561" ind1=" " ind2=" ">
+    <subfield code="a">Na tit. s. oválné razítko Boehm. Staend. techn. Institut, na všech přílohách oválné razítko Bibliothek der K. Boehm Polyt. Landesinst.</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="563" ind1=" " ind2=" ">
+    <subfield code="a">Brožura v papírové obálce</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="700" ind1="1" ind2=" ">
+    <subfield code="a">Haine, Johann August</subfield>
+    <subfield code="4">aut</subfield>
+  </datafield>
+  <datafield tag="700" ind1="1" ind2=" ">
+    <subfield code="a">Voss, Georg</subfield>
+    <subfield code="e">knihkupec, nakladatel</subfield>
+  </datafield>
+  <datafield tag="856" ind1="4" ind2="1">
+    <subfield code="u">http://df.ntkcz.cz/kramerius/handle/ABA013/23586</subfield>
+    <subfield code="y">Digitalizovaný dokument</subfield>
+  </datafield>
+  <datafield tag="991" ind1=" " ind2=" ">
+    <subfield code="a">19</subfield>
+  </datafield>
+  <datafield tag="SKC" ind1=" " ind2=" ">
+    <subfield code="a">r</subfield>
+  </datafield>
+  <datafield tag="OWN" ind1=" " ind2=" ">
+    <subfield code="a">PUBLIC</subfield>
+  </datafield>
+  <datafield tag="910" ind1=" " ind2=" ">
+    <subfield code="a">ABA013</subfield>
+    <subfield code="b">M 42</subfield>
+  </datafield>
+  <datafield tag="984" ind1=" " ind2=" ">
+    <subfield code="a">Leipzig</subfield>
+    <subfield code="b">Německo</subfield>
+  </datafield>
+</record>
+
+<record xmlns="http://www.loc.gov/MARC21/slim"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.loc.gov/MARC21/slim
+http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
+  <leader>00000nam a22      a 4500</leader>
+  <controlfield tag="001">000603045</controlfield>
+  <controlfield tag="003">CZ PrSTK</controlfield>
+  <controlfield tag="005">20110922141058.0</controlfield>
+  <controlfield tag="008">031021s1803    gw     f      000 0 ger d</controlfield>
+  <datafield tag="040" ind1=" " ind2=" ">
+    <subfield code="a">ABA013</subfield>
+    <subfield code="b">cze</subfield>
+  </datafield>
+  <datafield tag="080" ind1=" " ind2=" ">
+    <subfield code="a">631.3</subfield>
+  </datafield>
+  <datafield tag="084" ind1=" " ind2=" ">
+    <subfield code="a">XIV.B.</subfield>
+  </datafield>
+  <datafield tag="084" ind1=" " ind2=" ">
+    <subfield code="a">XII.C.b)</subfield>
+  </datafield>
+  <datafield tag="100" ind1="1" ind2=" ">
+    <subfield code="a">Riem, Johann,</subfield>
+    <subfield code="d">1730-1807</subfield>
+    <subfield code="7">mzk2007408505</subfield>
+  </datafield>
+  <datafield tag="245" ind1="1" ind2="0">
+    <subfield code="a">Modell-Magazin für Oekonomen, oder, Abbildung und Beschreibung der nützlichsten und bequemsten Geräthschaften, Werkzeuge und Geschirre für Haushaltungen, Landwirthschaften, Viehzucht, Feld- Garten- und Wiesenbau, Brauerei und Branntweinbrennerei.</subfield>
+    <subfield code="n">Zweites Heft /</subfield>
+    <subfield code="c">Nach den neuesten in- und ausländischen Erfindungen und Verbesserungen von Johann Riem und J.A. Heine</subfield>
+  </datafield>
+  <datafield tag="260" ind1=" " ind2=" ">
+    <subfield code="a">Leipzig :</subfield>
+    <subfield code="b">Voss und Compagnie,</subfield>
+    <subfield code="c">1803</subfield>
+  </datafield>
+  <datafield tag="300" ind1=" " ind2=" ">
+    <subfield code="a">s. 29-50, vii-xii l. obr. příl. ;</subfield>
+    <subfield code="c">30x22 cm</subfield>
+  </datafield>
+  <datafield tag="500" ind1=" " ind2=" ">
+    <subfield code="a">Brožura v papírové obálce</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="500" ind1=" " ind2=" ">
+    <subfield code="a">Tištěno gotikou</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="500" ind1=" " ind2=" ">
+    <subfield code="a">Na obr. příl. zobrazení různých mechanických zařízení a strojů signováno Heine del., Hüllmann sc., Böttger sc.</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="561" ind1=" " ind2=" ">
+    <subfield code="a">Na tit. s. oválné razítko Boehm. Staend. techn. Institut, na všech příl. oválné razítko Bibliothek des K. Boehm. Polyt. Landesinstut, na rubu předního listu obálky exlibris Königl Böhm Ständische technische Lehranstalt</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="700" ind1="1" ind2=" ">
+    <subfield code="a">Voss, Georg</subfield>
+    <subfield code="e">knihkupec, nakladatel</subfield>
+  </datafield>
+  <datafield tag="856" ind1="4" ind2="1">
+    <subfield code="u">http://df.ntkcz.cz/kramerius/handle/ABA013/23586</subfield>
+    <subfield code="y">Digitalizovaný dokument</subfield>
+  </datafield>
+  <datafield tag="991" ind1=" " ind2=" ">
+    <subfield code="a">19</subfield>
+  </datafield>
+  <datafield tag="SKC" ind1=" " ind2=" ">
+    <subfield code="a">r</subfield>
+  </datafield>
+  <datafield tag="OWN" ind1=" " ind2=" ">
+    <subfield code="a">PUBLIC</subfield>
+  </datafield>
+  <datafield tag="910" ind1=" " ind2=" ">
+    <subfield code="a">ABA013</subfield>
+    <subfield code="b">M 42</subfield>
+  </datafield>
+  <datafield tag="984" ind1=" " ind2=" ">
+    <subfield code="a">Leipzig</subfield>
+    <subfield code="b">Německo</subfield>
+  </datafield>
+</record>
+
+<record xmlns="http://www.loc.gov/MARC21/slim"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.loc.gov/MARC21/slim
+http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
+  <leader>00000nam a22      a 4500</leader>
+  <controlfield tag="001">000601982</controlfield>
+  <controlfield tag="003">CZ PrSTK</controlfield>
+  <controlfield tag="005">20120109160929.0</controlfield>
+  <controlfield tag="008">970902s1804    gw     |            ger</controlfield>
+  <datafield tag="040" ind1=" " ind2=" ">
+    <subfield code="a">ABA013</subfield>
+    <subfield code="b">cze</subfield>
+  </datafield>
+  <datafield tag="080" ind1=" " ind2=" ">
+    <subfield code="a">68</subfield>
+    <subfield code="2">undef</subfield>
+  </datafield>
+  <datafield tag="084" ind1=" " ind2=" ">
+    <subfield code="a">VII.B.h)</subfield>
+  </datafield>
+  <datafield tag="245" ind1="0" ind2="0">
+    <subfield code="a">Beiträge zur Verbesserung des Mühlenbaues :</subfield>
+    <subfield code="b">Zwei von der Hamburgischen Gesellschaft zur Beförderung der Künste und nützlichen Gewerbe gekrönte Preisschriften</subfield>
+  </datafield>
+  <datafield tag="260" ind1=" " ind2=" ">
+    <subfield code="a">Hamburg :</subfield>
+    <subfield code="b">bey Friedrich Perthes,</subfield>
+    <subfield code="c">1804</subfield>
+  </datafield>
+  <datafield tag="300" ind1=" " ind2=" ">
+    <subfield code="a">IV, 20 s., IV slož. listy obr. příl. :</subfield>
+    <subfield code="b">techn. vyobraz. na příl. ;</subfield>
+    <subfield code="c">28x22 cm</subfield>
+  </datafield>
+  <datafield tag="500" ind1=" " ind2=" ">
+    <subfield code="a">Vazba polopergamenová hladká, desky červené zdobené linkami, ořízka na hlavě červeně barvená (převazba v l. 1965-1970)</subfield>
+  </datafield>
+  <datafield tag="505" ind1="2" ind2=" ">
+    <subfield code="a">Obsahuje části: I. Preisschrift des ... W. Meissner zu Bückeburg Ueber die beste Art die Getriebe bey Mühlenwerken einzutheilen ... Str. 1-12. - II. Preisschrift des Herrn Mechanikus Uhlhorn Von Eintheilung der Kamm- und Stirnräder, Trillinge und Drehlinge bey Mühlen. Str. 13-20, IV slož. listy obr. příl.</subfield>
+  </datafield>
+  <datafield tag="561" ind1=" " ind2=" ">
+    <subfield code="a">Na tit. str. oválné razítko B. S. techn. Inst., na str. 13 a na všech příl. oválné razítko Bibl. d. K. B. P. Landesinst., na předním přídeští exlibris K. B. S. techn. Lehranst.</subfield>
+  </datafield>
+  <datafield tag="500" ind1=" " ind2=" ">
+    <subfield code="a">Tištěno gotikou, marginální odkazy k příl.</subfield>
+  </datafield>
+  <datafield tag="500" ind1=" " ind2=" ">
+    <subfield code="a">Na příl. zobraz. mechanismu mlýnských kol</subfield>
+  </datafield>
+  <datafield tag="650" ind1="1" ind2="4">
+    <subfield code="a">řemesla</subfield>
+    <subfield code="x">mh</subfield>
+    <subfield code="2">psh</subfield>
+  </datafield>
+  <datafield tag="700" ind1="1" ind2=" ">
+    <subfield code="a">Meissner, W.</subfield>
+  </datafield>
+  <datafield tag="700" ind1="1" ind2=" ">
+    <subfield code="a">Uhlhorn</subfield>
+  </datafield>
+  <datafield tag="710" ind1="2" ind2=" ">
+    <subfield code="a">Friedrich Perthes (Hamburg) ((nakladatel))</subfield>
+  </datafield>
+  <datafield tag="856" ind1="4" ind2="1">
+    <subfield code="u">http://k4.techlib.cz/search/handle/uuid:7ba952a0-387c-11e1-b86c-0800200c9a66</subfield>
+    <subfield code="y">Digitalizovaný dokument</subfield>
+  </datafield>
+  <datafield tag="990" ind1=" " ind2=" ">
+    <subfield code="b">HF601982</subfield>
+    <subfield code="g">M 36</subfield>
+    <subfield code="1">HF</subfield>
+  </datafield>
+  <datafield tag="991" ind1=" " ind2=" ">
+    <subfield code="a">19</subfield>
+  </datafield>
+  <datafield tag="OWN" ind1=" " ind2=" ">
+    <subfield code="a">PUBLIC</subfield>
+  </datafield>
+  <datafield tag="910" ind1=" " ind2=" ">
+    <subfield code="b">M 36</subfield>
+    <subfield code="a">ABA013</subfield>
+  </datafield>
+  <datafield tag="984" ind1=" " ind2=" ">
+    <subfield code="a">Hamburg</subfield>
+  </datafield>
+</record>
+
+<record xmlns="http://www.loc.gov/MARC21/slim"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.loc.gov/MARC21/slim
+http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
+  <leader>00000nam a22      a 4500</leader>
+  <controlfield tag="001">000609256</controlfield>
+  <controlfield tag="003">CZ PrSTK</controlfield>
+  <controlfield tag="005">20110922110234.0</controlfield>
+  <controlfield tag="008">970902s1831    gw ae  f      000 0 ger d</controlfield>
+  <datafield tag="040" ind1=" " ind2=" ">
+    <subfield code="a">ABA013</subfield>
+    <subfield code="b">cze</subfield>
+  </datafield>
+  <datafield tag="080" ind1=" " ind2=" ">
+    <subfield code="a">904</subfield>
+  </datafield>
+  <datafield tag="084" ind1=" " ind2=" ">
+    <subfield code="a">XIII.C.</subfield>
+  </datafield>
+  <datafield tag="084" ind1=" " ind2=" ">
+    <subfield code="a">XII.C.g)</subfield>
+  </datafield>
+  <datafield tag="100" ind1="1" ind2=" ">
+    <subfield code="a">Senff, Carl Julius</subfield>
+  </datafield>
+  <datafield tag="245" ind1="1" ind2="4">
+    <subfield code="a">Die Domkirche zu St. Veit in Prag /</subfield>
+    <subfield code="c">gezeichnet und geätzt von Carl Julius Senff</subfield>
+  </datafield>
+  <datafield tag="260" ind1=" " ind2=" ">
+    <subfield code="a">Berlin :</subfield>
+    <subfield code="b">G. Reimer,</subfield>
+    <subfield code="c">1831</subfield>
+  </datafield>
+  <datafield tag="300" ind1=" " ind2=" ">
+    <subfield code="a">[4], 10 l. obr. příl. :</subfield>
+    <subfield code="b">il., plány, litografie ;</subfield>
+    <subfield code="c">41x29 cm</subfield>
+  </datafield>
+  <datafield tag="500" ind1=" " ind2=" ">
+    <subfield code="a">Tit. s. v rámečku s ornamentem</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="561" ind1=" " ind2=" ">
+    <subfield code="a">Na tit. s. oválné razítko Boehm Staend techn. Institut, na listech oválné razítko Bibliothek des K. Boehm. Polyt. Landesinstitut</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="563" ind1=" " ind2=" ">
+    <subfield code="a">Vazba poloplátěná knihovnická, na hřbetě zlaté identif. údaje</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="650" ind1="1" ind2="4">
+    <subfield code="a">památkové objekty</subfield>
+    <subfield code="x">au</subfield>
+    <subfield code="2">psh</subfield>
+  </datafield>
+  <datafield tag="650" ind1="1" ind2="4">
+    <subfield code="a">starožitnosti</subfield>
+    <subfield code="x">um</subfield>
+    <subfield code="2">psh</subfield>
+  </datafield>
+  <datafield tag="700" ind1="1" ind2=" ">
+    <subfield code="a">Reimer, Georg Andreas</subfield>
+    <subfield code="e">tiskař</subfield>
+  </datafield>
+  <datafield tag="856" ind1="4" ind2="1">
+    <subfield code="u">http://df.ntkcz.cz/kramerius/handle/ABA013/23584</subfield>
+    <subfield code="y">Digitalizovaný dokument</subfield>
+  </datafield>
+  <datafield tag="991" ind1=" " ind2=" ">
+    <subfield code="a">19</subfield>
+  </datafield>
+  <datafield tag="SKC" ind1=" " ind2=" ">
+    <subfield code="a">r</subfield>
+  </datafield>
+  <datafield tag="OWN" ind1=" " ind2=" ">
+    <subfield code="a">PUBLIC</subfield>
+  </datafield>
+  <datafield tag="910" ind1=" " ind2=" ">
+    <subfield code="a">ABA013</subfield>
+    <subfield code="b">III B 456</subfield>
+  </datafield>
+  <datafield tag="984" ind1=" " ind2=" ">
+    <subfield code="a">Berlin</subfield>
+    <subfield code="b">Německo</subfield>
+  </datafield>
+</record>
+
+<record xmlns="http://www.loc.gov/MARC21/slim"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.loc.gov/MARC21/slim
+http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
+  <leader>00000nam a22      a 4500</leader>
+  <controlfield tag="001">000607677</controlfield>
+  <controlfield tag="003">CZ PrSTK</controlfield>
+  <controlfield tag="005">20110923093335.0</controlfield>
+  <controlfield tag="008">970902s1840    gw a   |      000 0 ger</controlfield>
+  <datafield tag="040" ind1=" " ind2=" ">
+    <subfield code="a">ABA013</subfield>
+    <subfield code="b">cze</subfield>
+  </datafield>
+  <datafield tag="080" ind1=" " ind2=" ">
+    <subfield code="a">663</subfield>
+  </datafield>
+  <datafield tag="084" ind1=" " ind2=" ">
+    <subfield code="a">VII.C.i)</subfield>
+  </datafield>
+  <datafield tag="100" ind1="1" ind2=" ">
+    <subfield code="a">Siemens, Carl</subfield>
+  </datafield>
+  <datafield tag="245" ind1="1" ind2="0">
+    <subfield code="a">Beschreibung einer neuen Vorrichtung zum Zerkleinern und Einmaischen der Kartoffeln /</subfield>
+    <subfield code="c">von Carl Siemens</subfield>
+  </datafield>
+  <datafield tag="260" ind1=" " ind2=" ">
+    <subfield code="a">Stuttgart :</subfield>
+    <subfield code="b">Franz Heinrich Köhler,</subfield>
+    <subfield code="c">1840</subfield>
+  </datafield>
+  <datafield tag="300" ind1=" " ind2=" ">
+    <subfield code="a">39 s., 3 složené l. příl. :</subfield>
+    <subfield code="b">il., technická vyobrazení na příl. ;</subfield>
+    <subfield code="c">19x12 cm</subfield>
+  </datafield>
+  <datafield tag="500" ind1=" " ind2=" ">
+    <subfield code="a">Tištěno gotikou</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="500" ind1=" " ind2=" ">
+    <subfield code="a">Brožura ve žluté měkké obálce s identifikačními údaji v černém rámečku</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="561" ind1=" " ind2=" ">
+    <subfield code="a">Na tit. s. oválné razítko B.S. techn. Institut</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="650" ind1="1" ind2="4">
+    <subfield code="a">nápoje</subfield>
+    <subfield code="x">pp</subfield>
+    <subfield code="2">psh</subfield>
+  </datafield>
+  <datafield tag="856" ind1="4" ind2="1">
+    <subfield code="u">http://df.ntkcz.cz/kramerius/handle/ABA013/23531</subfield>
+    <subfield code="y">Digitalizovaný dokument</subfield>
+  </datafield>
+  <datafield tag="991" ind1=" " ind2=" ">
+    <subfield code="a">19</subfield>
+  </datafield>
+  <datafield tag="SKC" ind1=" " ind2=" ">
+    <subfield code="a">r</subfield>
+  </datafield>
+  <datafield tag="OWN" ind1=" " ind2=" ">
+    <subfield code="a">PUBLIC</subfield>
+  </datafield>
+  <datafield tag="910" ind1=" " ind2=" ">
+    <subfield code="a">ABA013</subfield>
+    <subfield code="b">C 604</subfield>
+  </datafield>
+  <datafield tag="984" ind1=" " ind2=" ">
+    <subfield code="a">Stuttgart</subfield>
+    <subfield code="b">Německo</subfield>
+  </datafield>
+</record>
+
+<record xmlns="http://www.loc.gov/MARC21/slim"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.loc.gov/MARC21/slim
+http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
+  <leader>00000nam a22      a 4500</leader>
+  <controlfield tag="001">000607773</controlfield>
+  <controlfield tag="003">CZ PrSTK</controlfield>
+  <controlfield tag="005">20110916104019.0</controlfield>
+  <controlfield tag="008">970902s1846    xr a   |      000 0 ger</controlfield>
+  <datafield tag="040" ind1=" " ind2=" ">
+    <subfield code="a">ABA013</subfield>
+    <subfield code="b">cze</subfield>
+  </datafield>
+  <datafield tag="080" ind1=" " ind2=" ">
+    <subfield code="a">663</subfield>
+  </datafield>
+  <datafield tag="084" ind1=" " ind2=" ">
+    <subfield code="a">VII.C.i)</subfield>
+  </datafield>
+  <datafield tag="100" ind1="1" ind2=" ">
+    <subfield code="a">Balling, Karel Napoleon,</subfield>
+    <subfield code="d">1805-1868</subfield>
+    <subfield code="7">jk01010700</subfield>
+  </datafield>
+  <datafield tag="245" ind1="1" ind2="0">
+    <subfield code="a">Die sacharometrische Bier- und Branntweinmeischprobe /</subfield>
+    <subfield code="c">von Carl J. N. Balling</subfield>
+  </datafield>
+  <datafield tag="260" ind1=" " ind2=" ">
+    <subfield code="a">Prag :</subfield>
+    <subfield code="b">Verlag der J.G. Calve&apos;schen Buchhandlung,</subfield>
+    <subfield code="c">1846</subfield>
+  </datafield>
+  <datafield tag="300" ind1=" " ind2=" ">
+    <subfield code="a">[8], 104 s., 11 složených l. obr. příl. :</subfield>
+    <subfield code="b">il. ;</subfield>
+    <subfield code="c">22x15 cm</subfield>
+  </datafield>
+  <datafield tag="500" ind1=" " ind2=" ">
+    <subfield code="a">Vazba poloplátěná knihovnická, desky barevně mramorované</subfield>
+  </datafield>
+  <datafield tag="561" ind1=" " ind2=" ">
+    <subfield code="a">Na tit. s. oválné razítko B.S. techn. Institut, na předtit. s., na s. 104 a některých příl. oválné razítko Bibliothek der k.k. technischen Hochschulen in Prag - Knihovna c.k. vysokých škol technických v Praze</subfield>
+  </datafield>
+  <datafield tag="500" ind1=" " ind2=" ">
+    <subfield code="a">Tištěno gotikou</subfield>
+  </datafield>
+  <datafield tag="650" ind1="1" ind2="4">
+    <subfield code="a">nápoje</subfield>
+    <subfield code="x">pp</subfield>
+    <subfield code="2">psh</subfield>
+  </datafield>
+  <datafield tag="710" ind1="2" ind2=" ">
+    <subfield code="a">J.G. Calve (Praha).</subfield>
+    <subfield code="b">(nakladatel, knihkupec)</subfield>
+  </datafield>
+  <datafield tag="856" ind1="4" ind2="1">
+    <subfield code="u">http://df.ntkcz.cz/kramerius/handle/ABA013/23528</subfield>
+    <subfield code="y">Digitalizovaný dokument</subfield>
+  </datafield>
+  <datafield tag="990" ind1=" " ind2=" ">
+    <subfield code="b">HF607773</subfield>
+    <subfield code="g">C 676</subfield>
+    <subfield code="1">HF</subfield>
+  </datafield>
+  <datafield tag="991" ind1=" " ind2=" ">
+    <subfield code="a">19</subfield>
+  </datafield>
+  <datafield tag="SKC" ind1=" " ind2=" ">
+    <subfield code="a">r</subfield>
+  </datafield>
+  <datafield tag="OWN" ind1=" " ind2=" ">
+    <subfield code="a">PUBLIC</subfield>
+  </datafield>
+  <datafield tag="910" ind1=" " ind2=" ">
+    <subfield code="a">ABA013</subfield>
+    <subfield code="b">C 676</subfield>
+  </datafield>
+  <datafield tag="984" ind1=" " ind2=" ">
+    <subfield code="a">Praha</subfield>
+    <subfield code="b">Česko</subfield>
+  </datafield>
+</record>
+
+<record xmlns="http://www.loc.gov/MARC21/slim"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.loc.gov/MARC21/slim
+http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
+  <leader>00000nam a22      a 4500</leader>
+  <controlfield tag="001">000604949</controlfield>
+  <controlfield tag="003">CZ PrSTK</controlfield>
+  <controlfield tag="005">20110923093427.0</controlfield>
+  <controlfield tag="008">970902s1848    xr a   |            ger</controlfield>
+  <datafield tag="040" ind1=" " ind2=" ">
+    <subfield code="a">ABA013</subfield>
+    <subfield code="b">cze</subfield>
+  </datafield>
+  <datafield tag="080" ind1=" " ind2=" ">
+    <subfield code="a">663</subfield>
+    <subfield code="2">undef</subfield>
+  </datafield>
+  <datafield tag="084" ind1=" " ind2=" ">
+    <subfield code="a">VII.C.i)</subfield>
+  </datafield>
+  <datafield tag="100" ind1="1" ind2=" ">
+    <subfield code="a">Balling, Karel Napoleon,</subfield>
+    <subfield code="d">1805-1868</subfield>
+    <subfield code="7">jk01010700</subfield>
+  </datafield>
+  <datafield tag="245" ind1="1" ind2="4">
+    <subfield code="a">Die graphische und tabellarische Auflösung der sacharometrischen Bierprobe zur Ersparung der umständlichern Berechnung der Resultate /</subfield>
+    <subfield code="c">entworfen und zusammengestellt von Carl J.N. Balling</subfield>
+  </datafield>
+  <datafield tag="260" ind1=" " ind2=" ">
+    <subfield code="a">Prag :</subfield>
+    <subfield code="b">Verlag der J.G. Calve&apos;schen Buchhandlung,</subfield>
+    <subfield code="c">1848</subfield>
+  </datafield>
+  <datafield tag="300" ind1=" " ind2=" ">
+    <subfield code="a">26 s., [7] složených l. příl. :</subfield>
+    <subfield code="b">il., tabulky, grafy ;</subfield>
+    <subfield code="c">22x15 cm</subfield>
+  </datafield>
+  <datafield tag="500" ind1=" " ind2=" ">
+    <subfield code="a">Tištěno gotikou</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="561" ind1=" " ind2=" ">
+    <subfield code="a">Na tit. s. oválné razítko B.S. techn. Institut</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="563" ind1=" " ind2=" ">
+    <subfield code="a">Vazba poloplátěná černá knihovnická</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="580" ind1=" " ind2=" ">
+    <subfield code="a">Aus der &quot;Encyclopädischen Zeitschrift des Gewerbewesens&quot; Jänner-Heft 1848 besonders abgedruckt</subfield>
+  </datafield>
+  <datafield tag="650" ind1="1" ind2="4">
+    <subfield code="a">nápoje</subfield>
+    <subfield code="x">pp</subfield>
+    <subfield code="2">psh</subfield>
+  </datafield>
+  <datafield tag="856" ind1="4" ind2="1">
+    <subfield code="u">http://df.ntkcz.cz/kramerius/handle/ABA013/23529</subfield>
+    <subfield code="y">Digitalizovaný dokument</subfield>
+  </datafield>
+  <datafield tag="991" ind1=" " ind2=" ">
+    <subfield code="a">19</subfield>
+  </datafield>
+  <datafield tag="SKC" ind1=" " ind2=" ">
+    <subfield code="a">r</subfield>
+  </datafield>
+  <datafield tag="OWN" ind1=" " ind2=" ">
+    <subfield code="a">PUBLIC</subfield>
+  </datafield>
+  <datafield tag="910" ind1=" " ind2=" ">
+    <subfield code="a">ABA013</subfield>
+    <subfield code="b">C 743</subfield>
+  </datafield>
+  <datafield tag="984" ind1=" " ind2=" ">
+    <subfield code="a">Praha</subfield>
+    <subfield code="b">Česko</subfield>
+  </datafield>
+</record>
+
+<record xmlns="http://www.loc.gov/MARC21/slim"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.loc.gov/MARC21/slim
+http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
+  <leader>00000nam a22      a 4500</leader>
+  <controlfield tag="001">000616596</controlfield>
+  <controlfield tag="003">CZ PrSTK</controlfield>
+  <controlfield tag="005">20110920084514.0</controlfield>
+  <controlfield tag="008">001116s1857    gw a   f      0 0 0 ger d</controlfield>
+  <datafield tag="040" ind1=" " ind2=" ">
+    <subfield code="a">ABA013</subfield>
+    <subfield code="b">cze</subfield>
+  </datafield>
+  <datafield tag="080" ind1=" " ind2=" ">
+    <subfield code="a">624.2/.8</subfield>
+  </datafield>
+  <datafield tag="084" ind1=" " ind2=" ">
+    <subfield code="a">XI.F.</subfield>
+  </datafield>
+  <datafield tag="100" ind1="1" ind2=" ">
+    <subfield code="a">Laissle, Friedrich</subfield>
+    <subfield code="4">aut</subfield>
+  </datafield>
+  <datafield tag="245" ind1="1" ind2="4">
+    <subfield code="a">Der Bau der Brückenträger mit wissenschaftlicher Begründung der gegebenen Regeln und mit besonderer Rücksicht auf die neuesten Ausführungen /</subfield>
+    <subfield code="c">von Fr. Laissle und Ad. Schübler</subfield>
+  </datafield>
+  <datafield tag="260" ind1=" " ind2=" ">
+    <subfield code="a">Stuttgart :</subfield>
+    <subfield code="b">Verlag von Paul Neff,</subfield>
+    <subfield code="c">1857</subfield>
+  </datafield>
+  <datafield tag="300" ind1=" " ind2=" ">
+    <subfield code="a">viii, 156 s., [7] l. obr. příl. :</subfield>
+    <subfield code="b">il., technická vyobrazení ;</subfield>
+    <subfield code="c">21x14 cm</subfield>
+  </datafield>
+  <datafield tag="500" ind1=" " ind2=" ">
+    <subfield code="a">Živé záhlaví</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="561" ind1=" " ind2=" ">
+    <subfield code="a">Na tit. s. oválné razítko Boehm Staend techn. Institut, na všech příl. oválné razítko Bibliothek des K. Boehm polyt. Landesinstitutes</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="563" ind1=" " ind2=" ">
+    <subfield code="a">Vazba polokožená hnědá, na hřbetě červená etiketka se zlacenými identifikačními údaji, desky mramorované</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="650" ind1="1" ind2="4">
+    <subfield code="a">mosty</subfield>
+    <subfield code="x">st</subfield>
+    <subfield code="2">psh</subfield>
+  </datafield>
+  <datafield tag="700" ind1="1" ind2=" ">
+    <subfield code="a">Schübler, Adolf</subfield>
+    <subfield code="4">aut</subfield>
+  </datafield>
+  <datafield tag="856" ind1="4" ind2="1">
+    <subfield code="u">http://df.ntkcz.cz/kramerius/handle/ABA013/23602</subfield>
+    <subfield code="y">Digitalizovaný dokument</subfield>
+  </datafield>
+  <datafield tag="991" ind1=" " ind2=" ">
+    <subfield code="a">19</subfield>
+  </datafield>
+  <datafield tag="SKC" ind1=" " ind2=" ">
+    <subfield code="a">r</subfield>
+  </datafield>
+  <datafield tag="OWN" ind1=" " ind2=" ">
+    <subfield code="a">PUBLIC</subfield>
+  </datafield>
+  <datafield tag="910" ind1=" " ind2=" ">
+    <subfield code="a">ABA013</subfield>
+    <subfield code="b">M 655</subfield>
+  </datafield>
+  <datafield tag="984" ind1=" " ind2=" ">
+    <subfield code="a">Stuttgart</subfield>
+    <subfield code="b">Německo</subfield>
+  </datafield>
+</record>
+
+<record xmlns="http://www.loc.gov/MARC21/slim"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.loc.gov/MARC21/slim
+http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
+  <leader>00000nam a22      a 4500</leader>
+  <controlfield tag="001">000617873</controlfield>
+  <controlfield tag="003">CZ PrSTK</controlfield>
+  <controlfield tag="005">20110921144744.0</controlfield>
+  <controlfield tag="008">001130s1870    xr a   |            ger</controlfield>
+  <datafield tag="040" ind1=" " ind2=" ">
+    <subfield code="a">ABA013</subfield>
+    <subfield code="b">cze</subfield>
+  </datafield>
+  <datafield tag="080" ind1=" " ind2=" ">
+    <subfield code="a">629.4</subfield>
+    <subfield code="2">undef</subfield>
+  </datafield>
+  <datafield tag="084" ind1=" " ind2=" ">
+    <subfield code="a">VIII.D.b)</subfield>
+  </datafield>
+  <datafield tag="100" ind1="1" ind2=" ">
+    <subfield code="a">Winkler, E.</subfield>
+  </datafield>
+  <datafield tag="245" ind1="1" ind2="0">
+    <subfield code="a">Vorträge über Eisenbahnbau :</subfield>
+    <subfield code="b">gehalten am königl. böhmischen polytechnischen Landesinstitute in Prag und am k.k. polytechnischen Institute in Wien.</subfield>
+    <subfield code="n">Fünftes Heft. (I. Theil),</subfield>
+    <subfield code="p">Unterbau /</subfield>
+    <subfield code="c">von E. Winkler</subfield>
+  </datafield>
+  <datafield tag="246" ind1="3" ind2="0">
+    <subfield code="a">Unterbau</subfield>
+  </datafield>
+  <datafield tag="260" ind1=" " ind2=" ">
+    <subfield code="a">Prag :</subfield>
+    <subfield code="b">Verlag von H. Dominicus,</subfield>
+    <subfield code="c">1870</subfield>
+  </datafield>
+  <datafield tag="300" ind1=" " ind2=" ">
+    <subfield code="a">68 s., xiv l. příl. :</subfield>
+    <subfield code="b">il., 68 obr., technických vyobrazení na příl. ;</subfield>
+    <subfield code="c">29x23 cm</subfield>
+  </datafield>
+  <datafield tag="500" ind1=" " ind2=" ">
+    <subfield code="a">Tištěno dvousloupcově, příl. zčásti barevné</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="561" ind1=" " ind2=" ">
+    <subfield code="a">Na tit. s., na přední desce vazby, na přední předsádce a na všech příl. oválné razítko Bibl. d. K. B. P. Landesinst.</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="563" ind1=" " ind2=" ">
+    <subfield code="a">Vazba poloplátěná černá knihovnická, na přední desce nalepený přední list obálky s identif. údaji</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="650" ind1="1" ind2="4">
+    <subfield code="a">silniční vozidla</subfield>
+    <subfield code="x">sr</subfield>
+    <subfield code="2">psh</subfield>
+  </datafield>
+  <datafield tag="650" ind1="1" ind2="4">
+    <subfield code="a">transportéry</subfield>
+    <subfield code="x">sr</subfield>
+    <subfield code="2">psh</subfield>
+  </datafield>
+  <datafield tag="710" ind1="2" ind2=" ">
+    <subfield code="a">Dominicus, H.</subfield>
+    <subfield code="e">nakladatel</subfield>
+  </datafield>
+  <datafield tag="856" ind1="4" ind2="1">
+    <subfield code="u">http://df.ntkcz.cz/kramerius/handle/ABA013/23603</subfield>
+    <subfield code="y">Digitalizovaný dokument</subfield>
+  </datafield>
+  <datafield tag="991" ind1=" " ind2=" ">
+    <subfield code="a">19</subfield>
+  </datafield>
+  <datafield tag="SKC" ind1=" " ind2=" ">
+    <subfield code="a">r</subfield>
+  </datafield>
+  <datafield tag="OWN" ind1=" " ind2=" ">
+    <subfield code="a">PUBLIC</subfield>
+  </datafield>
+  <datafield tag="910" ind1=" " ind2=" ">
+    <subfield code="a">ABA013</subfield>
+    <subfield code="b">M 809</subfield>
+  </datafield>
+  <datafield tag="984" ind1=" " ind2=" ">
+    <subfield code="a">Praha</subfield>
+    <subfield code="b">Česko</subfield>
+  </datafield>
+</record>
+
+<record xmlns="http://www.loc.gov/MARC21/slim"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.loc.gov/MARC21/slim
+http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
+  <leader>00000nam a22      a 4500</leader>
+  <controlfield tag="001">000605820</controlfield>
+  <controlfield tag="003">CZ PrSTK</controlfield>
+  <controlfield tag="005">20110920091337.0</controlfield>
+  <controlfield tag="008">001130s1875    xr     |            cze</controlfield>
+  <datafield tag="040" ind1=" " ind2=" ">
+    <subfield code="a">ABA013</subfield>
+    <subfield code="b">cze</subfield>
+  </datafield>
+  <datafield tag="080" ind1=" " ind2=" ">
+    <subfield code="a">728.9</subfield>
+    <subfield code="2">undef</subfield>
+  </datafield>
+  <datafield tag="080" ind1=" " ind2=" ">
+    <subfield code="a">725.2</subfield>
+    <subfield code="2">undef</subfield>
+  </datafield>
+  <datafield tag="080" ind1=" " ind2=" ">
+    <subfield code="a">725.4</subfield>
+    <subfield code="2">undef</subfield>
+  </datafield>
+  <datafield tag="084" ind1=" " ind2=" ">
+    <subfield code="a">XII.C.b)</subfield>
+  </datafield>
+  <datafield tag="100" ind1="1" ind2=" ">
+    <subfield code="a">Bělohoubek, Antonín,</subfield>
+    <subfield code="d">1845-1910</subfield>
+    <subfield code="7">jk01011464</subfield>
+  </datafield>
+  <datafield tag="245" ind1="1" ind2="0">
+    <subfield code="a">Několik slov o stavbě a zařizování pivovarův /</subfield>
+    <subfield code="c">napsal Antonín Bělohoubek</subfield>
+  </datafield>
+  <datafield tag="260" ind1=" " ind2=" ">
+    <subfield code="a">V Praze :</subfield>
+    <subfield code="b">A. Bělohoubek, v komisi kněhkupectví Frant. Řivnáče,</subfield>
+    <subfield code="c">1875</subfield>
+  </datafield>
+  <datafield tag="300" ind1=" " ind2=" ">
+    <subfield code="a">30 s., 2 složené l. příl. s architekt. výkresy ;</subfield>
+    <subfield code="c">33x24 cm</subfield>
+  </datafield>
+  <datafield tag="500" ind1=" " ind2=" ">
+    <subfield code="a">Tištěno dvousloupcově</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="500" ind1=" " ind2=" ">
+    <subfield code="a">Vazba poloplátěná knihovnická, na hřbetě zlaté identif. údaje</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="561" ind1=" " ind2=" ">
+    <subfield code="a">Na tit. s. a na rubu příl. kulaté razítko Bibliothek der k.k. polytechn. Institute - Knihovna c.k. polytechn. ústavů</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="563" ind1=" " ind2=" ">
+    <subfield code="a">Vazba poloplátěná knihovnická, na hřbetě zlaté identifikační údaje</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="580" ind1=" " ind2=" ">
+    <subfield code="a">Zvláštní otisk z: 2. sešitu VII. ročníku &quot;Zpráv spolku architektů a inženýrů v Čechách&quot;</subfield>
+  </datafield>
+  <datafield tag="710" ind1="2" ind2=" ">
+    <subfield code="a">František Řivnáč (Praha),</subfield>
+    <subfield code="e">nakladatel, knihkupec</subfield>
+  </datafield>
+  <datafield tag="856" ind1="4" ind2="1">
+    <subfield code="u">http://df.ntkcz.cz/kramerius/handle/ABA013/23523</subfield>
+    <subfield code="y">Digitalizovaný dokument</subfield>
+  </datafield>
+  <datafield tag="991" ind1=" " ind2=" ">
+    <subfield code="a">19</subfield>
+  </datafield>
+  <datafield tag="SKC" ind1=" " ind2=" ">
+    <subfield code="a">r</subfield>
+  </datafield>
+  <datafield tag="OWN" ind1=" " ind2=" ">
+    <subfield code="a">PUBLIC</subfield>
+  </datafield>
+  <datafield tag="910" ind1=" " ind2=" ">
+    <subfield code="a">ABA013</subfield>
+    <subfield code="b">C 1418</subfield>
+  </datafield>
+  <datafield tag="984" ind1=" " ind2=" ">
+    <subfield code="a">Praha</subfield>
+    <subfield code="b">Česko</subfield>
+  </datafield>
+</record>
+
+<record xmlns="http://www.loc.gov/MARC21/slim"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.loc.gov/MARC21/slim
+http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
+  <leader>00000nam a22      a 4500</leader>
+  <controlfield tag="001">000605821</controlfield>
+  <controlfield tag="003">CZ PrSTK</controlfield>
+  <controlfield tag="005">20110920090010.0</controlfield>
+  <controlfield tag="008">001130s1875    xr     |            ger</controlfield>
+  <datafield tag="040" ind1=" " ind2=" ">
+    <subfield code="a">ABA013</subfield>
+    <subfield code="b">cze</subfield>
+  </datafield>
+  <datafield tag="080" ind1=" " ind2=" ">
+    <subfield code="a">728.9</subfield>
+  </datafield>
+  <datafield tag="080" ind1=" " ind2=" ">
+    <subfield code="a">725.2</subfield>
+  </datafield>
+  <datafield tag="080" ind1=" " ind2=" ">
+    <subfield code="a">725.4</subfield>
+  </datafield>
+  <datafield tag="084" ind1=" " ind2=" ">
+    <subfield code="a">XII.C.b)</subfield>
+  </datafield>
+  <datafield tag="100" ind1="1" ind2=" ">
+    <subfield code="a">Bělohoubek, Antonín,</subfield>
+    <subfield code="d">1845-1910</subfield>
+    <subfield code="7">jk01011464</subfield>
+  </datafield>
+  <datafield tag="245" ind1="1" ind2="0">
+    <subfield code="a">Einige Worte über den Bau und die Einrichtung von Brauereien /</subfield>
+    <subfield code="c">von Anton Bělohoubek ; aus dem Böhmischen in&apos;s Deutsche übertragen vom Verfasser</subfield>
+  </datafield>
+  <datafield tag="260" ind1=" " ind2=" ">
+    <subfield code="a">Prag :</subfield>
+    <subfield code="b">Selbstverlag. In Kommission bei Fr. Řivnáč,</subfield>
+    <subfield code="c">1875</subfield>
+  </datafield>
+  <datafield tag="300" ind1=" " ind2=" ">
+    <subfield code="a">[4], 38 s., 2 složené l. příl. s architekt. výkresy ;</subfield>
+    <subfield code="c">33x24 cm</subfield>
+  </datafield>
+  <datafield tag="500" ind1=" " ind2=" ">
+    <subfield code="a">Tištěno dvousloupcově</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="561" ind1=" " ind2=" ">
+    <subfield code="a">Na tit. s. a na příl. kulaté razítko Bibliothek der k.k. polytechn. Institute in Prag - Knihovna c.k. polytechn. ústavů v Praze</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="563" ind1=" " ind2=" ">
+    <subfield code="a">Vazba poloplátěná knihovnická, na hřbetě zlaté identifikační údaje</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="580" ind1=" " ind2=" ">
+    <subfield code="a">Separát z: 2. Hefte des VII. Jahrg. der &quot;Mittheilungen des Architekten- und Ingenieur-Vereines für Böhmen&quot;</subfield>
+  </datafield>
+  <datafield tag="710" ind1="2" ind2=" ">
+    <subfield code="a">František Řivnáč (Praha)</subfield>
+    <subfield code="e">(nakladatel, knihkupec)</subfield>
+  </datafield>
+  <datafield tag="856" ind1="4" ind2="1">
+    <subfield code="u">http://df.ntkcz.cz/kramerius/handle/ABA013/23524</subfield>
+    <subfield code="y">Digitalizovaný dokument</subfield>
+  </datafield>
+  <datafield tag="990" ind1=" " ind2=" ">
+    <subfield code="b">HF605821</subfield>
+    <subfield code="g">C 1419</subfield>
+    <subfield code="1">HF</subfield>
+  </datafield>
+  <datafield tag="991" ind1=" " ind2=" ">
+    <subfield code="a">19</subfield>
+  </datafield>
+  <datafield tag="SKC" ind1=" " ind2=" ">
+    <subfield code="a">r</subfield>
+  </datafield>
+  <datafield tag="OWN" ind1=" " ind2=" ">
+    <subfield code="a">PUBLIC</subfield>
+  </datafield>
+  <datafield tag="910" ind1=" " ind2=" ">
+    <subfield code="a">ABA013</subfield>
+    <subfield code="b">C 1419</subfield>
+  </datafield>
+  <datafield tag="984" ind1=" " ind2=" ">
+    <subfield code="a">Praha</subfield>
+    <subfield code="b">Česko</subfield>
+  </datafield>
+</record>
+
+<record xmlns="http://www.loc.gov/MARC21/slim"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.loc.gov/MARC21/slim
+http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
+  <leader>00000nam a22      a 4500</leader>
+  <controlfield tag="001">000622316</controlfield>
+  <controlfield tag="003">CZ PrSTK</controlfield>
+  <controlfield tag="005">20120109160448.0</controlfield>
+  <controlfield tag="008">040609s1876    gw     |            ger</controlfield>
+  <datafield tag="040" ind1=" " ind2=" ">
+    <subfield code="a">ABA013</subfield>
+    <subfield code="b">cze</subfield>
+  </datafield>
+  <datafield tag="080" ind1=" " ind2=" ">
+    <subfield code="a">622.23.05</subfield>
+    <subfield code="2">undef</subfield>
+  </datafield>
+  <datafield tag="084" ind1=" " ind2=" ">
+    <subfield code="a">X.D.</subfield>
+  </datafield>
+  <datafield tag="100" ind1="1" ind2=" ">
+    <subfield code="a">Hauer, Julius von</subfield>
+  </datafield>
+  <datafield tag="245" ind1="1" ind2="0">
+    <subfield code="a">Die Hüttenwesens-Maschinen.</subfield>
+    <subfield code="n">Atlas /</subfield>
+    <subfield code="c">Von Julius Ritter von Hauer</subfield>
+  </datafield>
+  <datafield tag="250" ind1=" " ind2=" ">
+    <subfield code="a">Zweite vermehrte und grösstentheils umgearbeitete Auflage</subfield>
+  </datafield>
+  <datafield tag="260" ind1=" " ind2=" ">
+    <subfield code="a">Leipzig :</subfield>
+    <subfield code="b">Verlag von Arthur Felix,</subfield>
+    <subfield code="c">1876</subfield>
+  </datafield>
+  <datafield tag="300" ind1=" " ind2=" ">
+    <subfield code="a">XLVII dvoulistů :</subfield>
+    <subfield code="b">techn. vyobraz. ;</subfield>
+    <subfield code="c">23x16 cm</subfield>
+  </datafield>
+  <datafield tag="500" ind1=" " ind2=" ">
+    <subfield code="a">Vazba polokožená černá knihovnická</subfield>
+  </datafield>
+  <datafield tag="561" ind1=" " ind2=" ">
+    <subfield code="a">Na všech dvoulistech kulaté razítko Bibl. d. k. k. techn. Hochschulen - Knih. c. k. vys. škol techn.</subfield>
+  </datafield>
+  <datafield tag="650" ind1="1" ind2="4">
+    <subfield code="a">báňské strojírenství</subfield>
+    <subfield code="x">sr</subfield>
+    <subfield code="2">psh</subfield>
+  </datafield>
+  <datafield tag="710" ind1="2" ind2=" ">
+    <subfield code="a">Arthur Felix (Leipzig).</subfield>
+    <subfield code="b">(nakladatel)</subfield>
+  </datafield>
+  <datafield tag="856" ind1="4" ind2="1">
+    <subfield code="u">http://k4.techlib.cz/search/handle/uuid:1e179070-3877-11e1-b86c-0800200c9a66</subfield>
+    <subfield code="y">Digitalizovaný dokument</subfield>
+  </datafield>
+  <datafield tag="990" ind1=" " ind2=" ">
+    <subfield code="b">HF622316</subfield>
+    <subfield code="g">M 1188</subfield>
+    <subfield code="1">HF</subfield>
+  </datafield>
+  <datafield tag="991" ind1=" " ind2=" ">
+    <subfield code="a">19</subfield>
+  </datafield>
+  <datafield tag="OWN" ind1=" " ind2=" ">
+    <subfield code="a">PUBLIC</subfield>
+  </datafield>
+  <datafield tag="910" ind1=" " ind2=" ">
+    <subfield code="a">ABA013</subfield>
+    <subfield code="b">M 1188</subfield>
+  </datafield>
+  <datafield tag="984" ind1=" " ind2=" ">
+    <subfield code="a">Leipzig</subfield>
+  </datafield>
+</record>
+
+<record xmlns="http://www.loc.gov/MARC21/slim"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.loc.gov/MARC21/slim
+http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
+  <leader>00000nam a22      a 4500</leader>
+  <controlfield tag="001">000605874</controlfield>
+  <controlfield tag="003">CZ PrSTK</controlfield>
+  <controlfield tag="005">20110922150052.0</controlfield>
+  <controlfield tag="008">001130s1877    xr     f      000 0 cze d</controlfield>
+  <datafield tag="040" ind1=" " ind2=" ">
+    <subfield code="a">ABA013</subfield>
+    <subfield code="b">cze</subfield>
+  </datafield>
+  <datafield tag="080" ind1=" " ind2=" ">
+    <subfield code="a">663</subfield>
+  </datafield>
+  <datafield tag="084" ind1=" " ind2=" ">
+    <subfield code="a">VII.C.i)</subfield>
+  </datafield>
+  <datafield tag="100" ind1="1" ind2=" ">
+    <subfield code="a">Bělohoubek, Antonín,</subfield>
+    <subfield code="d">1845-1910</subfield>
+    <subfield code="7">jk01011464</subfield>
+    <subfield code="4">aut</subfield>
+    <subfield code="4">pbl</subfield>
+  </datafield>
+  <datafield tag="245" ind1="1" ind2="0">
+    <subfield code="a">O vrchním kvašení mladinek pivních /</subfield>
+    <subfield code="c">napsal Antonín Bělohoubek</subfield>
+  </datafield>
+  <datafield tag="260" ind1=" " ind2=" ">
+    <subfield code="a">V Praze :</subfield>
+    <subfield code="b">Antonín Bělohoubek v komisi kněhkupectví Frant. Řivnáče,</subfield>
+    <subfield code="c">1877</subfield>
+  </datafield>
+  <datafield tag="300" ind1=" " ind2=" ">
+    <subfield code="a">18 s.</subfield>
+    <subfield code="c">26x17 cm</subfield>
+  </datafield>
+  <datafield tag="500" ind1=" " ind2=" ">
+    <subfield code="a">Otisknuto z prvního ročníku &quot;Listů chemických&quot;</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="561" ind1=" " ind2=" ">
+    <subfield code="a">Na tit. s., na přední s. obálky a na poslední nečíslované s. kulaté razítko Bibliothek der k.k. polytechn. Institute - Knihovna c.k. polytechnických ústavů v Praze</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="563" ind1=" " ind2=" ">
+    <subfield code="a">Brožura ve světlých polotuhých deskách, na přední s. identif. údaje v rámečku s ornamenty v rozích</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="650" ind1="1" ind2="4">
+    <subfield code="a">nápoje</subfield>
+    <subfield code="x">pp</subfield>
+    <subfield code="2">psh</subfield>
+  </datafield>
+  <datafield tag="700" ind1="1" ind2=" ">
+    <subfield code="a">Řivnáč, Antonín,</subfield>
+    <subfield code="d">1843-1917</subfield>
+    <subfield code="7">jk01110234</subfield>
+    <subfield code="4">prt</subfield>
+  </datafield>
+  <datafield tag="856" ind1="4" ind2="1">
+    <subfield code="u">http://df.ntkcz.cz/kramerius/handle/ABA013/23525</subfield>
+    <subfield code="y">Digitalizovaný dokument</subfield>
+  </datafield>
+  <datafield tag="991" ind1=" " ind2=" ">
+    <subfield code="a">19</subfield>
+  </datafield>
+  <datafield tag="SKC" ind1=" " ind2=" ">
+    <subfield code="a">r</subfield>
+  </datafield>
+  <datafield tag="OWN" ind1=" " ind2=" ">
+    <subfield code="a">PUBLIC</subfield>
+  </datafield>
+  <datafield tag="910" ind1=" " ind2=" ">
+    <subfield code="a">ABA013</subfield>
+    <subfield code="b">C 1447</subfield>
+  </datafield>
+  <datafield tag="984" ind1=" " ind2=" ">
+    <subfield code="a">Praha</subfield>
+    <subfield code="b">Česko</subfield>
+  </datafield>
+</record>
+
+<record xmlns="http://www.loc.gov/MARC21/slim"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.loc.gov/MARC21/slim
+http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
+  <leader>00000nam a22      a 4500</leader>
+  <controlfield tag="001">000605922</controlfield>
+  <controlfield tag="003">CZ PrSTK</controlfield>
+  <controlfield tag="005">20110919130209.0</controlfield>
+  <controlfield tag="008">001130s1878    gw     |      000 0 ger</controlfield>
+  <datafield tag="040" ind1=" " ind2=" ">
+    <subfield code="a">ABA013</subfield>
+    <subfield code="b">cze</subfield>
+  </datafield>
+  <datafield tag="080" ind1=" " ind2=" ">
+    <subfield code="a">544</subfield>
+  </datafield>
+  <datafield tag="084" ind1=" " ind2=" ">
+    <subfield code="a">VI.D.b)</subfield>
+  </datafield>
+  <datafield tag="100" ind1="1" ind2=" ">
+    <subfield code="a">Kekulé, August,</subfield>
+    <subfield code="d">1829-1896</subfield>
+  </datafield>
+  <datafield tag="245" ind1="1" ind2="4">
+    <subfield code="a">Die wissenschaftlichen Ziele und Leistungen der Chemie :</subfield>
+    <subfield code="b">Rede gehalten beim Antritt des Rectorats der Rheinischen Friedrich-Wilhelms-Universität am 18. October 1877 /</subfield>
+    <subfield code="c">von August Kekulé</subfield>
+  </datafield>
+  <datafield tag="260" ind1=" " ind2=" ">
+    <subfield code="a">Bonn :</subfield>
+    <subfield code="b">Verlag von Max Cohen und Sohn (Fr. Cohen),</subfield>
+    <subfield code="c">1878</subfield>
+  </datafield>
+  <datafield tag="300" ind1=" " ind2=" ">
+    <subfield code="a">29 s. ;</subfield>
+    <subfield code="c">21x14 cm</subfield>
+  </datafield>
+  <datafield tag="561" ind1=" " ind2=" ">
+    <subfield code="a">Na tit. a předtit. s. kulaté razítko Bibliothek der k.k. technischen Hochschulen - Knihovna c.k. vysokých škol technických</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="563" ind1=" " ind2=" ">
+    <subfield code="a">Vazba poloplátěná knihovnická, na hřbetě zlaté identifikační údaje</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="650" ind1="1" ind2="4">
+    <subfield code="a">obecná chemie</subfield>
+    <subfield code="x">ch</subfield>
+    <subfield code="2">psh</subfield>
+  </datafield>
+  <datafield tag="650" ind1="1" ind2="4">
+    <subfield code="a">fyzikální chemie</subfield>
+    <subfield code="x">ch</subfield>
+    <subfield code="2">psh</subfield>
+  </datafield>
+  <datafield tag="856" ind1="4" ind2="1">
+    <subfield code="u">http://df.ntkcz.cz/kramerius/handle/ABA013/23533</subfield>
+    <subfield code="y">Digitalizovaný dokument</subfield>
+  </datafield>
+  <datafield tag="991" ind1=" " ind2=" ">
+    <subfield code="a">19</subfield>
+  </datafield>
+  <datafield tag="SKC" ind1=" " ind2=" ">
+    <subfield code="a">r</subfield>
+  </datafield>
+  <datafield tag="OWN" ind1=" " ind2=" ">
+    <subfield code="a">PUBLIC</subfield>
+  </datafield>
+  <datafield tag="910" ind1=" " ind2=" ">
+    <subfield code="a">ABA013</subfield>
+    <subfield code="b">C 1491</subfield>
+  </datafield>
+  <datafield tag="984" ind1=" " ind2=" ">
+    <subfield code="a">Bonn</subfield>
+    <subfield code="b">Německo</subfield>
+  </datafield>
+</record>
+
+<record xmlns="http://www.loc.gov/MARC21/slim"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.loc.gov/MARC21/slim
+http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
+  <leader>00000nam a22      a 4500</leader>
+  <controlfield tag="001">000605899</controlfield>
+  <controlfield tag="003">CZ PrSTK</controlfield>
+  <controlfield tag="005">20110922145807.0</controlfield>
+  <controlfield tag="008">001130s1880    xr a   f      000 0 cze d</controlfield>
+  <datafield tag="040" ind1=" " ind2=" ">
+    <subfield code="a">ABA013</subfield>
+    <subfield code="b">cze</subfield>
+  </datafield>
+  <datafield tag="080" ind1=" " ind2=" ">
+    <subfield code="a">663</subfield>
+  </datafield>
+  <datafield tag="080" ind1=" " ind2=" ">
+    <subfield code="a">664</subfield>
+  </datafield>
+  <datafield tag="084" ind1=" " ind2=" ">
+    <subfield code="a">VII.C.o)</subfield>
+  </datafield>
+  <datafield tag="084" ind1=" " ind2=" ">
+    <subfield code="a">VII.C.i)</subfield>
+  </datafield>
+  <datafield tag="100" ind1="1" ind2=" ">
+    <subfield code="a">Bělohoubek, Antonín,</subfield>
+    <subfield code="d">1845-1910</subfield>
+    <subfield code="7">jk01011464</subfield>
+    <subfield code="4">aut</subfield>
+    <subfield code="4">pbl</subfield>
+  </datafield>
+  <datafield tag="245" ind1="1" ind2="0">
+    <subfield code="a">O stanovení hodnoty ječmene /</subfield>
+    <subfield code="c">pojednává Ant. Bělohoubek</subfield>
+  </datafield>
+  <datafield tag="260" ind1=" " ind2=" ">
+    <subfield code="a">V Praze :</subfield>
+    <subfield code="b">Antonín Bělohoubek v komisí kněhkupectví J. Otto,</subfield>
+    <subfield code="c">1880</subfield>
+    <subfield code="f">(Edv. Grégr)</subfield>
+  </datafield>
+  <datafield tag="300" ind1=" " ind2=" ">
+    <subfield code="a">32 s. :</subfield>
+    <subfield code="b">il. ;</subfield>
+    <subfield code="c">26x17 cm</subfield>
+  </datafield>
+  <datafield tag="500" ind1=" " ind2=" ">
+    <subfield code="a">Zvláštní otisk z &quot;Časopisu spolku pro průmysl pivovarský v král. Českém&quot; z r. 1879 a 1880</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="561" ind1=" " ind2=" ">
+    <subfield code="a">Na tit. s. a na obálce kulaté razítko Bibliothek der k.k. technischen Hochschulen in Prag - Knihovna c.k. vysokých škol technických v Praze. Na obálce nad názvem rukopisný přípisek &quot;Knihovně české polytechniky&quot;</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="563" ind1=" " ind2=" ">
+    <subfield code="a">Sešit v měkké světlé obálce s identifikačními údaji</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="650" ind1="1" ind2="4">
+    <subfield code="a">potraviny</subfield>
+    <subfield code="x">pp</subfield>
+    <subfield code="2">psh</subfield>
+  </datafield>
+  <datafield tag="700" ind1="1" ind2=" ">
+    <subfield code="a">Grégr, Eduard,</subfield>
+    <subfield code="d">1827-1907</subfield>
+    <subfield code="7">jk01032649</subfield>
+    <subfield code="4">prt</subfield>
+  </datafield>
+  <datafield tag="856" ind1="4" ind2="1">
+    <subfield code="u">http://df.ntkcz.cz/kramerius/handle/ABA013/23526</subfield>
+    <subfield code="y">Digitalizovaný dokument</subfield>
+  </datafield>
+  <datafield tag="991" ind1=" " ind2=" ">
+    <subfield code="a">19</subfield>
+  </datafield>
+  <datafield tag="SKC" ind1=" " ind2=" ">
+    <subfield code="a">r</subfield>
+  </datafield>
+  <datafield tag="OWN" ind1=" " ind2=" ">
+    <subfield code="a">PUBLIC</subfield>
+  </datafield>
+  <datafield tag="910" ind1=" " ind2=" ">
+    <subfield code="a">ABA013</subfield>
+    <subfield code="b">C 1474</subfield>
+  </datafield>
+  <datafield tag="984" ind1=" " ind2=" ">
+    <subfield code="a">Praha</subfield>
+    <subfield code="b">Česko</subfield>
+  </datafield>
+</record>
+
+<record xmlns="http://www.loc.gov/MARC21/slim"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.loc.gov/MARC21/slim
+http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
+  <leader>00000nam a22      a 4500</leader>
+  <controlfield tag="001">000670866</controlfield>
+  <controlfield tag="003">CZ PrSTK</controlfield>
+  <controlfield tag="005">20110913141604.0</controlfield>
+  <controlfield tag="007">ta</controlfield>
+  <controlfield tag="008">110303m18801882xr     f     |||| 0 cze d</controlfield>
+  <datafield tag="040" ind1=" " ind2=" ">
+    <subfield code="a">ABA013</subfield>
+    <subfield code="b">cze</subfield>
+    <subfield code="e">AACR2</subfield>
+    <subfield code="9">1</subfield>
+  </datafield>
+  <datafield tag="072" ind1=" " ind2="7">
+    <subfield code="a">663</subfield>
+    <subfield code="x">Průmysl nápojů. Kvasný průmysl. Průmysl pochutin</subfield>
+    <subfield code="2">Konspekt</subfield>
+    <subfield code="9">19</subfield>
+  </datafield>
+  <datafield tag="072" ind1=" " ind2="7">
+    <subfield code="a">37.016</subfield>
+    <subfield code="x">Učební osnovy. Vyučovací předměty. Učebnice</subfield>
+    <subfield code="2">Konspekt</subfield>
+    <subfield code="9">22</subfield>
+  </datafield>
+  <datafield tag="080" ind1=" " ind2=" ">
+    <subfield code="a">663.4(075)</subfield>
+  </datafield>
+  <datafield tag="100" ind1="1" ind2=" ">
+    <subfield code="a">Suk, Josef Tomáš,</subfield>
+    <subfield code="d">1842-1878</subfield>
+    <subfield code="7">jk01121754</subfield>
+  </datafield>
+  <datafield tag="245" ind1="1" ind2="0">
+    <subfield code="a">Nový Poupě :</subfield>
+    <subfield code="b">katechismus pro sladovnické učenníky a tovaryše, jakož i pro každého, kdož snadným spůsobem o základech vaření piva poučení hledá /</subfield>
+    <subfield code="c">na památku neocenitelného reformátora českého sladovnictví Františka Ondřeje Poupěte a k užitku veškerého stavu sladovnického sepsal Josef Tom. Suk</subfield>
+  </datafield>
+  <datafield tag="246" ind1="3" ind2="0">
+    <subfield code="a">Katechismus pro sladovnické učenníky a tovaryše, jakož i pro každého, kdož snadným spůsobem o základech vaření piva poučení hledá</subfield>
+  </datafield>
+  <datafield tag="260" ind1=" " ind2=" ">
+    <subfield code="a">V Praze :</subfield>
+    <subfield code="b">Slavík &amp; Borový,</subfield>
+    <subfield code="c">1880-[1882]</subfield>
+    <subfield code="f">(Tiskem dra. Edv. Grégra)</subfield>
+  </datafield>
+  <datafield tag="300" ind1=" " ind2=" ">
+    <subfield code="a">1 sv.</subfield>
+  </datafield>
+  <datafield tag="500" ind1=" " ind2=" ">
+    <subfield code="a">Na frontispisu portrét F.O. Poupěte</subfield>
+  </datafield>
+  <datafield tag="500" ind1=" " ind2=" ">
+    <subfield code="a">U 2. dílu poznámka: Tiskem Edv. Grégra 1881</subfield>
+  </datafield>
+  <datafield tag="505" ind1="0" ind2=" ">
+    <subfield code="a">Díl 1. 1880. 268 s. -- Díl 2. [1882]. 254 s.</subfield>
+  </datafield>
+  <datafield tag="650" ind1="0" ind2="7">
+    <subfield code="a">pivovarský průmysl</subfield>
+    <subfield code="x">pp</subfield>
+    <subfield code="2">psh</subfield>
+  </datafield>
+  <datafield tag="650" ind1="0" ind2="7">
+    <subfield code="a">pivo</subfield>
+    <subfield code="x">pp</subfield>
+    <subfield code="2">psh</subfield>
+  </datafield>
+  <datafield tag="655" ind1=" " ind2="4">
+    <subfield code="a">učebnice</subfield>
+  </datafield>
+  <datafield tag="856" ind1="4" ind2="1">
+    <subfield code="u">http://df.ntkcz.cz/kramerius/handle/ABA013/23583</subfield>
+    <subfield code="y">Digitalizovaný dokument</subfield>
+  </datafield>
+  <datafield tag="SKC" ind1=" " ind2=" ">
+    <subfield code="a">r</subfield>
+  </datafield>
+  <datafield tag="OWN" ind1=" " ind2=" ">
+    <subfield code="a">PUBLIC</subfield>
+  </datafield>
+  <datafield tag="910" ind1=" " ind2=" ">
+    <subfield code="a">ABA013</subfield>
+    <subfield code="b">HF 265</subfield>
+  </datafield>
+</record>
+
+<record xmlns="http://www.loc.gov/MARC21/slim"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.loc.gov/MARC21/slim
+http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
+  <leader>00000nam a22      a 4500</leader>
+  <controlfield tag="001">000605975</controlfield>
+  <controlfield tag="003">CZ PrSTK</controlfield>
+  <controlfield tag="005">20110923083609.0</controlfield>
+  <controlfield tag="008">001130s1881    xr     f      000 0 ger d</controlfield>
+  <datafield tag="040" ind1=" " ind2=" ">
+    <subfield code="a">ABA013</subfield>
+    <subfield code="b">cze</subfield>
+  </datafield>
+  <datafield tag="080" ind1=" " ind2=" ">
+    <subfield code="a">663</subfield>
+  </datafield>
+  <datafield tag="084" ind1=" " ind2=" ">
+    <subfield code="a">VII.C.i)</subfield>
+  </datafield>
+  <datafield tag="100" ind1="1" ind2=" ">
+    <subfield code="a">Bělohoubek, Antonín,</subfield>
+    <subfield code="d">1845-1910</subfield>
+    <subfield code="7">jk01011464</subfield>
+    <subfield code="4">aut</subfield>
+  </datafield>
+  <datafield tag="245" ind1="1" ind2="0">
+    <subfield code="a">Ueber die Obergährung von Bierwürzen /</subfield>
+    <subfield code="c">von Ant. Bělohoubek</subfield>
+  </datafield>
+  <datafield tag="260" ind1=" " ind2=" ">
+    <subfield code="a">Prag :</subfield>
+    <subfield code="b">In Kommission von Fr. Řivnáč - Verlag des Brauindustrie-Vereines im Königr. Böhmen,</subfield>
+    <subfield code="c">1881</subfield>
+  </datafield>
+  <datafield tag="300" ind1=" " ind2=" ">
+    <subfield code="a">20 s. ;</subfield>
+    <subfield code="c">26x17 cm</subfield>
+  </datafield>
+  <datafield tag="561" ind1=" " ind2=" ">
+    <subfield code="a">Na tit. s. a na přední s. obálky kulaté razítko Bibliothek der k.k. technischen Hochschulen in Prag - Knihovna c.k. vysokých škol technických v Praze</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="563" ind1=" " ind2=" ">
+    <subfield code="a">Brožura v měkké světlé obálce s identifikačními údaji (uloženo v kancel. obálce)</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="580" ind1=" " ind2=" ">
+    <subfield code="a">Separát z: Zeitschrift des Brauindustrie-Vereines im Königreiche Böhmen</subfield>
+  </datafield>
+  <datafield tag="650" ind1="1" ind2="4">
+    <subfield code="a">nápoje</subfield>
+    <subfield code="x">pp</subfield>
+    <subfield code="2">psh</subfield>
+  </datafield>
+  <datafield tag="700" ind1="1" ind2=" ">
+    <subfield code="a">Řivnáč, František,</subfield>
+    <subfield code="d">1807-1888</subfield>
+    <subfield code="7">jk01110236</subfield>
+    <subfield code="e">prt</subfield>
+  </datafield>
+  <datafield tag="856" ind1="4" ind2="1">
+    <subfield code="u">http://df.ntkcz.cz/kramerius/handle/ABA013/23527</subfield>
+    <subfield code="y">Digitalizovaný dokument</subfield>
+  </datafield>
+  <datafield tag="991" ind1=" " ind2=" ">
+    <subfield code="a">19</subfield>
+  </datafield>
+  <datafield tag="SKC" ind1=" " ind2=" ">
+    <subfield code="a">r</subfield>
+  </datafield>
+  <datafield tag="OWN" ind1=" " ind2=" ">
+    <subfield code="a">PUBLIC</subfield>
+  </datafield>
+  <datafield tag="910" ind1=" " ind2=" ">
+    <subfield code="a">ABA013</subfield>
+    <subfield code="b">C 1529</subfield>
+  </datafield>
+  <datafield tag="984" ind1=" " ind2=" ">
+    <subfield code="a">Praha</subfield>
+    <subfield code="b">Česko</subfield>
+  </datafield>
+</record>
+
+<record xmlns="http://www.loc.gov/MARC21/slim"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.loc.gov/MARC21/slim
+http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
+  <leader>00000nam a22      a 4500</leader>
+  <controlfield tag="001">000610733</controlfield>
+  <controlfield tag="003">CZ PrSTK</controlfield>
+  <controlfield tag="005">20110919122548.0</controlfield>
+  <controlfield tag="008">970902s1883    it a   f      000 0 ita</controlfield>
+  <datafield tag="040" ind1=" " ind2=" ">
+    <subfield code="a">ABA013</subfield>
+    <subfield code="b">cze</subfield>
+  </datafield>
+  <datafield tag="080" ind1=" " ind2=" ">
+    <subfield code="a">627.1</subfield>
+  </datafield>
+  <datafield tag="080" ind1=" " ind2=" ">
+    <subfield code="a">627.4/.5</subfield>
+  </datafield>
+  <datafield tag="084" ind1=" " ind2=" ">
+    <subfield code="a">XI.C.c)</subfield>
+  </datafield>
+  <datafield tag="100" ind1="1" ind2=" ">
+    <subfield code="a">Crugnola, Gaetano</subfield>
+  </datafield>
+  <datafield tag="245" ind1="1" ind2="0">
+    <subfield code="a">Sui muri di sostegno delle terre e sulle traverse dei serbatoi d&apos;acqua /</subfield>
+    <subfield code="c">per cura di Gaetano Crugnola</subfield>
+  </datafield>
+  <datafield tag="260" ind1=" " ind2=" ">
+    <subfield code="a">Torino :</subfield>
+    <subfield code="b">Augusto Federico Negro,</subfield>
+    <subfield code="c">[1883]</subfield>
+  </datafield>
+  <datafield tag="300" ind1=" " ind2=" ">
+    <subfield code="a">375 s., 34 dvoulistů příl. :</subfield>
+    <subfield code="b">il., technická vyobrazení na příl. ;</subfield>
+    <subfield code="c">24x17 cm</subfield>
+  </datafield>
+  <datafield tag="500" ind1=" " ind2=" ">
+    <subfield code="a">Na tit. s. nakladatelský signet</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="500" ind1=" " ind2=" ">
+    <subfield code="a">Přílohy s techn. vyobrazením mají samostatnou tit. s.</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="505" ind1="0" ind2="0">
+    <subfield code="a">Testo. 375 s. -- Tavole. 34 dvoulistů</subfield>
+  </datafield>
+  <datafield tag="561" ind1=" " ind2=" ">
+    <subfield code="a">Na tit. s. a na příl. kulaté razítko Bibliothek der k.k. technischen Hochschulen in Prag - Knihovna c.k. vysokých škol technických</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="563" ind1=" " ind2=" ">
+    <subfield code="a">Vazba polokožená nakladatelská černá</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="650" ind1="1" ind2="4">
+    <subfield code="a">úprava toků</subfield>
+    <subfield code="x">vo</subfield>
+    <subfield code="2">psh</subfield>
+  </datafield>
+  <datafield tag="856" ind1="4" ind2="1">
+    <subfield code="u">http://df.ntkcz.cz/kramerius/handle/ABA013/23604</subfield>
+    <subfield code="y">Digitalizovaný dokument</subfield>
+  </datafield>
+  <datafield tag="990" ind1=" " ind2=" ">
+    <subfield code="b">HF610733</subfield>
+    <subfield code="g">B 1471</subfield>
+    <subfield code="1">HF</subfield>
+  </datafield>
+  <datafield tag="991" ind1=" " ind2=" ">
+    <subfield code="a">19</subfield>
+  </datafield>
+  <datafield tag="SKC" ind1=" " ind2=" ">
+    <subfield code="a">r</subfield>
+  </datafield>
+  <datafield tag="OWN" ind1=" " ind2=" ">
+    <subfield code="a">PUBLIC</subfield>
+  </datafield>
+  <datafield tag="910" ind1=" " ind2=" ">
+    <subfield code="a">ABA013</subfield>
+    <subfield code="b">B 1471</subfield>
+  </datafield>
+  <datafield tag="984" ind1=" " ind2=" ">
+    <subfield code="a">Torino</subfield>
+    <subfield code="b">Itálie</subfield>
+  </datafield>
+</record>
+
+<record xmlns="http://www.loc.gov/MARC21/slim"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.loc.gov/MARC21/slim
+http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
+  <leader>00000nam a22      a 4500</leader>
+  <controlfield tag="001">000612507</controlfield>
+  <controlfield tag="003">CZ PrSTK</controlfield>
+  <controlfield tag="005">20110922142031.0</controlfield>
+  <controlfield tag="008">001130s1885    xr     f      000 0 cze d</controlfield>
+  <datafield tag="040" ind1=" " ind2=" ">
+    <subfield code="a">ABA013</subfield>
+    <subfield code="b">cze</subfield>
+  </datafield>
+  <datafield tag="080" ind1=" " ind2=" ">
+    <subfield code="a">663</subfield>
+  </datafield>
+  <datafield tag="084" ind1=" " ind2=" ">
+    <subfield code="a">VII.C.i)</subfield>
+  </datafield>
+  <datafield tag="100" ind1="1" ind2=" ">
+    <subfield code="a">Bělohoubek, Antonín,</subfield>
+    <subfield code="d">1845-1910</subfield>
+    <subfield code="7">jk01011464</subfield>
+  </datafield>
+  <datafield tag="245" ind1="1" ind2="0">
+    <subfield code="a">Příspěvek k otázce o degeneraci ječmene /</subfield>
+    <subfield code="c">podává Antonín Bělohoubek</subfield>
+  </datafield>
+  <datafield tag="260" ind1=" " ind2=" ">
+    <subfield code="a">V Praze :</subfield>
+    <subfield code="b">Antonín Bělohoubek,</subfield>
+    <subfield code="c">1885</subfield>
+    <subfield code="f">(J.B. Pichl a spol.)</subfield>
+  </datafield>
+  <datafield tag="300" ind1=" " ind2=" ">
+    <subfield code="a">12 s. ;</subfield>
+    <subfield code="c">25x16 cm</subfield>
+  </datafield>
+  <datafield tag="500" ind1=" " ind2=" ">
+    <subfield code="a">Údaje uvedeny na obálce</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="500" ind1=" " ind2=" ">
+    <subfield code="a">Otisknuto z třetího ročníku &quot;Pivovarských listů&quot;</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="561" ind1=" " ind2=" ">
+    <subfield code="a">Na s. 1 kulaté špatně čitelné razítko Bibl. der k.k. techn. Hochschulen - Knihovna c.k. vys. škol techn. Na obálce nad názvem rukopisné věnování &quot;Knihovně c.k. české vysoké školy technické, spisovatel 13.XII.1885&quot;</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="563" ind1=" " ind2=" ">
+    <subfield code="a">Sešit v šedé obálce s identifikačními údaji na obálce</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="650" ind1="1" ind2="4">
+    <subfield code="a">nápoje</subfield>
+    <subfield code="x">pp</subfield>
+    <subfield code="2">psh</subfield>
+  </datafield>
+  <datafield tag="710" ind1="2" ind2=" ">
+    <subfield code="a">Pichl, J. B. a spol.</subfield>
+    <subfield code="e">tiskař</subfield>
+  </datafield>
+  <datafield tag="856" ind1="4" ind2="1">
+    <subfield code="u">http://df.ntkcz.cz/kramerius/handle/ABA013/23520</subfield>
+    <subfield code="y">Digitalizovaný dokument</subfield>
+  </datafield>
+  <datafield tag="991" ind1=" " ind2=" ">
+    <subfield code="a">19</subfield>
+  </datafield>
+  <datafield tag="SKC" ind1=" " ind2=" ">
+    <subfield code="a">r</subfield>
+  </datafield>
+  <datafield tag="OWN" ind1=" " ind2=" ">
+    <subfield code="a">PUBLIC</subfield>
+  </datafield>
+  <datafield tag="910" ind1=" " ind2=" ">
+    <subfield code="a">ABA013</subfield>
+    <subfield code="b">C 1585</subfield>
+  </datafield>
+  <datafield tag="984" ind1=" " ind2=" ">
+    <subfield code="a">Praha</subfield>
+    <subfield code="b">Česko</subfield>
+  </datafield>
+</record>
+
+<record xmlns="http://www.loc.gov/MARC21/slim"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.loc.gov/MARC21/slim
+http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
+  <leader>00000nam a22      a 4500</leader>
+  <controlfield tag="001">000617692</controlfield>
+  <controlfield tag="003">CZ PrSTK</controlfield>
+  <controlfield tag="005">20110922143538.0</controlfield>
+  <controlfield tag="008">001130s1885    xr     f      000 0 cze d</controlfield>
+  <datafield tag="040" ind1=" " ind2=" ">
+    <subfield code="a">ABA013</subfield>
+    <subfield code="b">cze</subfield>
+  </datafield>
+  <datafield tag="080" ind1=" " ind2=" ">
+    <subfield code="a">663</subfield>
+  </datafield>
+  <datafield tag="084" ind1=" " ind2=" ">
+    <subfield code="a">VII.C.i)</subfield>
+  </datafield>
+  <datafield tag="100" ind1="1" ind2=" ">
+    <subfield code="a">Bělohoubek, Antonín,</subfield>
+    <subfield code="d">1845-1910</subfield>
+    <subfield code="7">jk01011464</subfield>
+  </datafield>
+  <datafield tag="245" ind1="1" ind2="0">
+    <subfield code="a">O vlivu droždí v jakosť piva a o významu čistých kvasnic pro pivovary českomoravské /</subfield>
+    <subfield code="c">pojednává Antonín Bělohoubek</subfield>
+  </datafield>
+  <datafield tag="260" ind1=" " ind2=" ">
+    <subfield code="a">V Praze :</subfield>
+    <subfield code="b">Antonín Bělohoubek,</subfield>
+    <subfield code="c">1885</subfield>
+    <subfield code="f">(J.B. Pichl a spol.)</subfield>
+  </datafield>
+  <datafield tag="300" ind1=" " ind2=" ">
+    <subfield code="a">20 s. ;</subfield>
+    <subfield code="c">25x16 cm</subfield>
+  </datafield>
+  <datafield tag="500" ind1=" " ind2=" ">
+    <subfield code="a">Údaje uvedeny na obálce</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="500" ind1=" " ind2=" ">
+    <subfield code="a">Otisk z třetího ročníku &quot;Pivovarských listů&quot;</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="561" ind1=" " ind2=" ">
+    <subfield code="a">Na s. 1 kulaté špatně čitelné razítko Bibl. d.k.k. techn. Hochschulen - Knih. c.k. vys. škol techn. Na obálce nahoře rukopisné věnování &quot;Knihovně c. k. české vysoké školy technické spisovatel 13. XII. 1885&quot;</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="563" ind1=" " ind2=" ">
+    <subfield code="a">Sešit v šedé obálce s identif. údaji na obálce</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="650" ind1="1" ind2="4">
+    <subfield code="a">nápoje</subfield>
+    <subfield code="x">pp</subfield>
+    <subfield code="2">psh</subfield>
+  </datafield>
+  <datafield tag="710" ind1="2" ind2=" ">
+    <subfield code="a">Pichl, J. B. a spol.</subfield>
+    <subfield code="e">tiskař</subfield>
+  </datafield>
+  <datafield tag="856" ind1="4" ind2="1">
+    <subfield code="u">http://df.ntkcz.cz/kramerius/handle/ABA013/23521</subfield>
+    <subfield code="y">Digitalizovaný dokument</subfield>
+  </datafield>
+  <datafield tag="991" ind1=" " ind2=" ">
+    <subfield code="a">19</subfield>
+  </datafield>
+  <datafield tag="SKC" ind1=" " ind2=" ">
+    <subfield code="a">r</subfield>
+  </datafield>
+  <datafield tag="OWN" ind1=" " ind2=" ">
+    <subfield code="a">PUBLIC</subfield>
+  </datafield>
+  <datafield tag="910" ind1=" " ind2=" ">
+    <subfield code="a">ABA013</subfield>
+    <subfield code="b">C 1585</subfield>
+  </datafield>
+  <datafield tag="984" ind1=" " ind2=" ">
+    <subfield code="a">Praha</subfield>
+    <subfield code="b">Česko</subfield>
+  </datafield>
+</record>
+
+<record xmlns="http://www.loc.gov/MARC21/slim"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.loc.gov/MARC21/slim
+http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
+  <leader>00000nam a22      a 4500</leader>
+  <controlfield tag="001">000670865</controlfield>
+  <controlfield tag="003">CZ PrSTK</controlfield>
+  <controlfield tag="005">20110912142426.0</controlfield>
+  <controlfield tag="007">ta</controlfield>
+  <controlfield tag="008">110303s1886    xr     f     |||| 0 cze d</controlfield>
+  <datafield tag="040" ind1=" " ind2=" ">
+    <subfield code="a">ABA013</subfield>
+    <subfield code="b">cze</subfield>
+  </datafield>
+  <datafield tag="072" ind1=" " ind2="7">
+    <subfield code="a">663</subfield>
+    <subfield code="x">Průmysl nápojů. Kvasný průmysl. Průmysl pochutin</subfield>
+    <subfield code="2">Konspekt</subfield>
+    <subfield code="9">19</subfield>
+  </datafield>
+  <datafield tag="080" ind1=" " ind2=" ">
+    <subfield code="a">663.4</subfield>
+  </datafield>
+  <datafield tag="100" ind1="1" ind2=" ">
+    <subfield code="a">Chodounský, František,</subfield>
+    <subfield code="d">1845-1924</subfield>
+    <subfield code="7">jk01050285</subfield>
+  </datafield>
+  <datafield tag="245" ind1="1" ind2="0">
+    <subfield code="a">Několik listů o pivě a pivovarnictví /</subfield>
+    <subfield code="c">napsal František Chodounský</subfield>
+  </datafield>
+  <datafield tag="260" ind1=" " ind2=" ">
+    <subfield code="a">V Praze :</subfield>
+    <subfield code="b">František Chodounský,</subfield>
+    <subfield code="c">1886</subfield>
+  </datafield>
+  <datafield tag="300" ind1=" " ind2=" ">
+    <subfield code="a">64 s.</subfield>
+  </datafield>
+  <datafield tag="561" ind1=" " ind2=" ">
+    <subfield code="a">Na tit. s. a na s. 21, 31, 45, 55 kulaté vlastnické razítko Knihovna Nár. Techn. Musea v Praze. Na tit. s. obdélníkové vlastnické razítko Nár. technické museum knihovna</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="650" ind1="0" ind2="7">
+    <subfield code="a">pivovarský průmysl</subfield>
+    <subfield code="x">pp</subfield>
+    <subfield code="2">psh</subfield>
+  </datafield>
+  <datafield tag="650" ind1="0" ind2="7">
+    <subfield code="a">pivo</subfield>
+    <subfield code="x">pp</subfield>
+    <subfield code="2">psh</subfield>
+  </datafield>
+  <datafield tag="655" ind1=" " ind2="4">
+    <subfield code="a">monografie</subfield>
+  </datafield>
+  <datafield tag="856" ind1="4" ind2="1">
+    <subfield code="u">http://df.ntkcz.cz/kramerius/handle/ABA013/23587</subfield>
+    <subfield code="y">Digitalizovaný dokument</subfield>
+  </datafield>
+  <datafield tag="SKC" ind1=" " ind2=" ">
+    <subfield code="a">r</subfield>
+  </datafield>
+  <datafield tag="OWN" ind1=" " ind2=" ">
+    <subfield code="a">PUBLIC</subfield>
+  </datafield>
+  <datafield tag="910" ind1=" " ind2=" ">
+    <subfield code="a">ABA013</subfield>
+    <subfield code="b">HF 264</subfield>
+  </datafield>
+</record>
+
+<record xmlns="http://www.loc.gov/MARC21/slim"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.loc.gov/MARC21/slim
+http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
+  <leader>00000nam a22      a 4500</leader>
+  <controlfield tag="001">000612324</controlfield>
+  <controlfield tag="003">CZ PrSTK</controlfield>
+  <controlfield tag="005">20110916145120.0</controlfield>
+  <controlfield tag="008">970902s1886    gw     |      000 0 ger</controlfield>
+  <datafield tag="040" ind1=" " ind2=" ">
+    <subfield code="a">ABA013</subfield>
+    <subfield code="b">cze</subfield>
+  </datafield>
+  <datafield tag="080" ind1=" " ind2=" ">
+    <subfield code="a">517</subfield>
+  </datafield>
+  <datafield tag="084" ind1=" " ind2=" ">
+    <subfield code="a">IV.B.d)</subfield>
+  </datafield>
+  <datafield tag="100" ind1="1" ind2=" ">
+    <subfield code="a">Pfeiffer, Ernst</subfield>
+    <subfield code="4">aut</subfield>
+  </datafield>
+  <datafield tag="245" ind1="1" ind2="0">
+    <subfield code="a">Jahres-Bericht der Pfeiffer&apos;schen Lehr- und Erziehungs-Anstalt zu Jena über das Schuljahr von Ostern 1885 bis Ostern 1886</subfield>
+  </datafield>
+  <datafield tag="260" ind1=" " ind2=" ">
+    <subfield code="a">Jena :</subfield>
+    <subfield code="b">Druck von A. Neuenhahn,</subfield>
+    <subfield code="c">1886</subfield>
+  </datafield>
+  <datafield tag="300" ind1=" " ind2=" ">
+    <subfield code="a">31 s.</subfield>
+  </datafield>
+  <datafield tag="501" ind1=" " ind2=" ">
+    <subfield code="a">Přívazek k: Programme d&apos;invitation a l&apos;examen public du Collége royal francais, fixé au 30 Septembre 1863</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="505" ind1="0" ind2="0">
+    <subfield code="t">Über die Periodicität in der Teilbarkeit der Zahlen und über die Verteilung der Klassen positiver quadratischer Formen auf ihre Determinanten /</subfield>
+    <subfield code="r">vom Direktor [Ernst Pfeiffer]</subfield>
+  </datafield>
+  <datafield tag="505" ind1="0" ind2="0">
+    <subfield code="t">Schulnachrichten /</subfield>
+    <subfield code="r">von demselben [Ernst Pfeiffer]</subfield>
+  </datafield>
+  <datafield tag="610" ind1="0" ind2="4">
+    <subfield code="a">Pfeiffersche Lehr- und Erziehungs-Anstalt zu Jena</subfield>
+  </datafield>
+  <datafield tag="650" ind1="1" ind2="4">
+    <subfield code="a">matematická analýza</subfield>
+    <subfield code="x">ma</subfield>
+    <subfield code="2">psh</subfield>
+  </datafield>
+  <datafield tag="650" ind1="1" ind2="4">
+    <subfield code="a">variační počet</subfield>
+    <subfield code="x">ma</subfield>
+    <subfield code="2">psh</subfield>
+  </datafield>
+  <datafield tag="856" ind1="4" ind2="1">
+    <subfield code="u">http://df.ntkcz.cz/kramerius/handle/ABA013/23600</subfield>
+    <subfield code="y">Digitalizovaný dokument</subfield>
+  </datafield>
+  <datafield tag="991" ind1=" " ind2=" ">
+    <subfield code="a">19</subfield>
+  </datafield>
+  <datafield tag="SKC" ind1=" " ind2=" ">
+    <subfield code="a">r</subfield>
+  </datafield>
+  <datafield tag="LKR" ind1=" " ind2=" ">
+    <subfield code="a">ITM</subfield>
+    <subfield code="b">000820210</subfield>
+    <subfield code="l">STK50</subfield>
+  </datafield>
+  <datafield tag="OWN" ind1=" " ind2=" ">
+    <subfield code="a">PUBLIC</subfield>
+  </datafield>
+  <datafield tag="910" ind1=" " ind2=" ">
+    <subfield code="a">ABA013</subfield>
+    <subfield code="b">A 1177</subfield>
+  </datafield>
+  <datafield tag="984" ind1=" " ind2=" ">
+    <subfield code="a">Jena</subfield>
+    <subfield code="b">Německo</subfield>
+  </datafield>
+</record>
+
+<record xmlns="http://www.loc.gov/MARC21/slim"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.loc.gov/MARC21/slim
+http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
+  <leader>00000nam a22      a 4500</leader>
+  <controlfield tag="001">000616361</controlfield>
+  <controlfield tag="003">CZ PrSTK</controlfield>
+  <controlfield tag="005">20110922143652.0</controlfield>
+  <controlfield tag="008">001020s1891    xr     f      000 0 cze d</controlfield>
+  <datafield tag="040" ind1=" " ind2=" ">
+    <subfield code="a">ABA013</subfield>
+    <subfield code="b">cze</subfield>
+  </datafield>
+  <datafield tag="080" ind1=" " ind2=" ">
+    <subfield code="a">63</subfield>
+  </datafield>
+  <datafield tag="080" ind1=" " ind2=" ">
+    <subfield code="a">663</subfield>
+  </datafield>
+  <datafield tag="084" ind1=" " ind2=" ">
+    <subfield code="a">VII.C.i)</subfield>
+  </datafield>
+  <datafield tag="084" ind1=" " ind2=" ">
+    <subfield code="a">XIV.A.</subfield>
+  </datafield>
+  <datafield tag="100" ind1="1" ind2=" ">
+    <subfield code="a">Bělohoubek, Antonín,</subfield>
+    <subfield code="d">1845-1910</subfield>
+    <subfield code="7">jk01011464</subfield>
+  </datafield>
+  <datafield tag="245" ind1="1" ind2="0">
+    <subfield code="a">O chmeli Staro-Ouholickém ;</subfield>
+    <subfield code="b">o prodejném kieseritu a jeho užívání /</subfield>
+    <subfield code="c">pojednává Antonín Bělohoubek</subfield>
+  </datafield>
+  <datafield tag="246" ind1="3" ind2=" ">
+    <subfield code="a">O prodejném kieseritu a jeho užívání</subfield>
+  </datafield>
+  <datafield tag="260" ind1=" " ind2=" ">
+    <subfield code="a">V Praze :</subfield>
+    <subfield code="b">Nakladatel A. Reinwart knihkupec,</subfield>
+    <subfield code="c">1891</subfield>
+  </datafield>
+  <datafield tag="300" ind1=" " ind2=" ">
+    <subfield code="a">16 s. ;</subfield>
+    <subfield code="c">26x17 cm</subfield>
+  </datafield>
+  <datafield tag="500" ind1=" " ind2=" ">
+    <subfield code="a">Údaje převzaty z obálky</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="500" ind1=" " ind2=" ">
+    <subfield code="a">Zvláštní otisk z &quot;Archivu zemědělského&quot; 1890</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="561" ind1=" " ind2=" ">
+    <subfield code="a">Na přední s. obálky kulaté razítko Bibliothek der k.k. technischen Hochschulen in Prag - Knihovna c.k. vysokých škol technických v Praze. Na obálce nad názvem rukopisný přípisek &quot;Knihovně c.k. České vysoké školy technické věnuje A.B.&quot;</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="563" ind1=" " ind2=" ">
+    <subfield code="a">Sešit v šedé obálce s identifikačními údaji na obálce</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="650" ind1="1" ind2="4">
+    <subfield code="a">nápoje</subfield>
+    <subfield code="x">pp</subfield>
+    <subfield code="2">psh</subfield>
+  </datafield>
+  <datafield tag="700" ind1="1" ind2=" ">
+    <subfield code="a">Reinwart, Antonín,</subfield>
+    <subfield code="d">1856-1929</subfield>
+    <subfield code="7">jk01102234</subfield>
+    <subfield code="e">nakladatel, knihkupec</subfield>
+  </datafield>
+  <datafield tag="856" ind1="4" ind2="1">
+    <subfield code="u">http://df.ntkcz.cz/kramerius/handle/ABA013/23522</subfield>
+    <subfield code="y">Digitalizovaný dokument</subfield>
+  </datafield>
+  <datafield tag="991" ind1=" " ind2=" ">
+    <subfield code="a">19</subfield>
+  </datafield>
+  <datafield tag="SKC" ind1=" " ind2=" ">
+    <subfield code="a">r</subfield>
+  </datafield>
+  <datafield tag="OWN" ind1=" " ind2=" ">
+    <subfield code="a">PUBLIC</subfield>
+  </datafield>
+  <datafield tag="910" ind1=" " ind2=" ">
+    <subfield code="a">ABA013</subfield>
+    <subfield code="b">C 1695</subfield>
+  </datafield>
+  <datafield tag="984" ind1=" " ind2=" ">
+    <subfield code="a">Praha</subfield>
+    <subfield code="b">Česko</subfield>
+  </datafield>
+</record>
+
+<record xmlns="http://www.loc.gov/MARC21/slim"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.loc.gov/MARC21/slim
+http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
+  <leader>00000nam a22      a 4500</leader>
+  <controlfield tag="001">000606182</controlfield>
+  <controlfield tag="003">CZ PrSTK</controlfield>
+  <controlfield tag="005">20110916103902.0</controlfield>
+  <controlfield tag="008">970902s1892    gw     |      000 0 ger</controlfield>
+  <datafield tag="040" ind1=" " ind2=" ">
+    <subfield code="a">ABA013</subfield>
+    <subfield code="b">cze</subfield>
+  </datafield>
+  <datafield tag="080" ind1=" " ind2=" ">
+    <subfield code="a">544</subfield>
+  </datafield>
+  <datafield tag="084" ind1=" " ind2=" ">
+    <subfield code="a">VI.D.b)</subfield>
+  </datafield>
+  <datafield tag="100" ind1="1" ind2=" ">
+    <subfield code="a">Hoff, J. H. van &apos;t,</subfield>
+    <subfield code="d">1852-1911</subfield>
+    <subfield code="7">nlk20000089186</subfield>
+  </datafield>
+  <datafield tag="245" ind1="1" ind2="0">
+    <subfield code="a">Stereochemie /</subfield>
+    <subfield code="c">Nach J.H. van&apos;t Hoff&apos;s &quot;Dix années dans l&apos;historie d&apos;une théorie&quot; ; unter Mitwirkung des Verfassers neu bearbeitet von Dr. W. Meyerhoffer</subfield>
+  </datafield>
+  <datafield tag="260" ind1=" " ind2=" ">
+    <subfield code="a">Leipzig und Wien :</subfield>
+    <subfield code="b">Franz Deuticke,</subfield>
+    <subfield code="c">1892</subfield>
+  </datafield>
+  <datafield tag="300" ind1=" " ind2=" ">
+    <subfield code="a">viii, 128 s. :</subfield>
+    <subfield code="b">tab. ;</subfield>
+    <subfield code="c">22x15 cm</subfield>
+  </datafield>
+  <datafield tag="500" ind1=" " ind2=" ">
+    <subfield code="a">Vazba polokožená knihovnická</subfield>
+  </datafield>
+  <datafield tag="500" ind1=" " ind2=" ">
+    <subfield code="a">Jmenný a věcný rejstřík na str. 121-128</subfield>
+  </datafield>
+  <datafield tag="561" ind1=" " ind2=" ">
+    <subfield code="a">Na tit. s. kulaté razítko Bibliothek der k.k. technischen Hochschulen in Prag - Knihovna c.k. vysokých škol technických v Praze</subfield>
+  </datafield>
+  <datafield tag="650" ind1="1" ind2="4">
+    <subfield code="a">obecná chemie</subfield>
+    <subfield code="x">ch</subfield>
+    <subfield code="2">psh</subfield>
+  </datafield>
+  <datafield tag="650" ind1="1" ind2="4">
+    <subfield code="a">fyzikální chemie</subfield>
+    <subfield code="x">ch</subfield>
+    <subfield code="2">psh</subfield>
+  </datafield>
+  <datafield tag="700" ind1="1" ind2=" ">
+    <subfield code="a">Meyerhoffer, W.</subfield>
+    <subfield code="4">trl</subfield>
+  </datafield>
+  <datafield tag="710" ind1="2" ind2=" ">
+    <subfield code="a">Franz Deuticke (Leipzig und Wien).</subfield>
+    <subfield code="b">(nakladatel)</subfield>
+  </datafield>
+  <datafield tag="856" ind1="4" ind2="1">
+    <subfield code="u">http://df.ntkcz.cz/kramerius/handle/ABA013/23534</subfield>
+    <subfield code="y">Digitalizovaný dokument</subfield>
+  </datafield>
+  <datafield tag="990" ind1=" " ind2=" ">
+    <subfield code="b">HF606182</subfield>
+    <subfield code="g">C 1722</subfield>
+    <subfield code="1">HF</subfield>
+  </datafield>
+  <datafield tag="991" ind1=" " ind2=" ">
+    <subfield code="a">19</subfield>
+  </datafield>
+  <datafield tag="SKC" ind1=" " ind2=" ">
+    <subfield code="a">r</subfield>
+  </datafield>
+  <datafield tag="OWN" ind1=" " ind2=" ">
+    <subfield code="a">PUBLIC</subfield>
+  </datafield>
+  <datafield tag="910" ind1=" " ind2=" ">
+    <subfield code="a">ABA013</subfield>
+    <subfield code="b">C 1722</subfield>
+  </datafield>
+  <datafield tag="984" ind1=" " ind2=" ">
+    <subfield code="a">Leipzig</subfield>
+    <subfield code="b">Německo</subfield>
+  </datafield>
+</record>
+
+<record xmlns="http://www.loc.gov/MARC21/slim"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.loc.gov/MARC21/slim
+http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
+  <leader>00000nam a22      a 4500</leader>
+  <controlfield tag="001">000603906</controlfield>
+  <controlfield tag="003">CZ PrSTK</controlfield>
+  <controlfield tag="005">20110919130152.0</controlfield>
+  <controlfield tag="008">031016s1893    xr     |            ger</controlfield>
+  <datafield tag="040" ind1=" " ind2=" ">
+    <subfield code="a">ABA013</subfield>
+    <subfield code="b">cze</subfield>
+  </datafield>
+  <datafield tag="080" ind1=" " ind2=" ">
+    <subfield code="a">929</subfield>
+  </datafield>
+  <datafield tag="080" ind1=" " ind2=" ">
+    <subfield code="a">930</subfield>
+  </datafield>
+  <datafield tag="084" ind1=" " ind2=" ">
+    <subfield code="a">XVI.B.</subfield>
+  </datafield>
+  <datafield tag="100" ind1="1" ind2=" ">
+    <subfield code="a">Max, Emanuel,</subfield>
+    <subfield code="c">rytíř z Wachsteinu,</subfield>
+    <subfield code="d">1810-1901</subfield>
+    <subfield code="7">jo20000080625</subfield>
+  </datafield>
+  <datafield tag="245" ind1="1" ind2="0">
+    <subfield code="a">Zweiundachtzig Lebensjahre /</subfield>
+    <subfield code="c">von Emanuel Max R. v. Wachstein</subfield>
+  </datafield>
+  <datafield tag="260" ind1=" " ind2=" ">
+    <subfield code="a">Prag :</subfield>
+    <subfield code="b">K.u.k. Hofbuchdruckerei A. Haase,</subfield>
+    <subfield code="c">1893</subfield>
+  </datafield>
+  <datafield tag="300" ind1=" " ind2=" ">
+    <subfield code="a">iv, 537 s. ;</subfield>
+    <subfield code="c">23x15 cm</subfield>
+  </datafield>
+  <datafield tag="500" ind1=" " ind2=" ">
+    <subfield code="a">Na frontispisu je portrét autora s faksimile podpisu. Na tit. s. grafická výzdoba</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="500" ind1=" " ind2=" ">
+    <subfield code="a">Tištěno gotikou</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="561" ind1=" " ind2=" ">
+    <subfield code="a">Na rubu frontispisu a na tit. s. kulaté razítko Bibliothek der k.k. technischen Hochschulen in Prag - Knihnihovna c.k. vysokých škol technnických. Na rubu tit. s. rukopisný přípisek tužkou &quot;Gesch. prof. Kořistka&quot;</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="563" ind1=" " ind2=" ">
+    <subfield code="a">Vazba poloplátěná knihovnická</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="600" ind1="1" ind2="4">
+    <subfield code="a">Wachstein, Emanuel Max,</subfield>
+    <subfield code="c">(portr.)</subfield>
+  </datafield>
+  <datafield tag="856" ind1="4" ind2="1">
+    <subfield code="u">http://df.ntkcz.cz/kramerius/handle/ABA013/22828</subfield>
+    <subfield code="y">Digitalizovaný dokument</subfield>
+  </datafield>
+  <datafield tag="991" ind1=" " ind2=" ">
+    <subfield code="a">19</subfield>
+  </datafield>
+  <datafield tag="SKC" ind1=" " ind2=" ">
+    <subfield code="a">r</subfield>
+  </datafield>
+  <datafield tag="OWN" ind1=" " ind2=" ">
+    <subfield code="a">PUBLIC</subfield>
+  </datafield>
+  <datafield tag="910" ind1=" " ind2=" ">
+    <subfield code="a">ABA013</subfield>
+    <subfield code="b">GG 443</subfield>
+  </datafield>
+  <datafield tag="984" ind1=" " ind2=" ">
+    <subfield code="a">Praha</subfield>
+    <subfield code="b">Česko</subfield>
+  </datafield>
+</record>
+
+<record xmlns="http://www.loc.gov/MARC21/slim"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.loc.gov/MARC21/slim
+http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
+  <leader>00000nam a22      a 4500</leader>
+  <controlfield tag="001">000674394</controlfield>
+  <controlfield tag="003">CZ PrSTK</controlfield>
+  <controlfield tag="005">20110912144137.0</controlfield>
+  <controlfield tag="008">980910s1895    xr            ||| | ger d</controlfield>
+  <datafield tag="040" ind1=" " ind2=" ">
+    <subfield code="a">CBA001</subfield>
+    <subfield code="b">cze</subfield>
+    <subfield code="d">CBD007</subfield>
+    <subfield code="d">ABA013</subfield>
+  </datafield>
+  <datafield tag="072" ind1=" " ind2="7">
+    <subfield code="a">663</subfield>
+    <subfield code="x">Průmysl nápojů. Kvasný průmysl. Průmysl pochutin</subfield>
+    <subfield code="2">Konspekt</subfield>
+    <subfield code="9">19</subfield>
+  </datafield>
+  <datafield tag="080" ind1=" " ind2=" ">
+    <subfield code="a">663.4(439.319)(091)</subfield>
+  </datafield>
+  <datafield tag="100" ind1="1" ind2=" ">
+    <subfield code="a">Huyer, Reinhold,</subfield>
+    <subfield code="d">1850-1928</subfield>
+    <subfield code="7">xx0006754</subfield>
+    <subfield code="4">aut</subfield>
+  </datafield>
+  <datafield tag="245" ind1="1" ind2="0">
+    <subfield code="a">Geschichte des Bräuwesens in Budweis :</subfield>
+    <subfield code="h">[elektronický zdroj]</subfield>
+    <subfield code="b">eine Festschrift zum hundertjährigen Bestande des Bürgerlichen Bräuhauses /</subfield>
+    <subfield code="c">verfasst von Reinhold Huyer</subfield>
+  </datafield>
+  <datafield tag="246" ind1="1" ind2="4">
+    <subfield code="a">Bürgerl Brauhaus Budweis</subfield>
+  </datafield>
+  <datafield tag="256" ind1=" " ind2=" ">
+    <subfield code="a">Textová data</subfield>
+  </datafield>
+  <datafield tag="260" ind1=" " ind2=" ">
+    <subfield code="a">Budweis :</subfield>
+    <subfield code="b">Selbstverlag des Bräuauschusses,</subfield>
+    <subfield code="c">1895</subfield>
+  </datafield>
+  <datafield tag="300" ind1=" " ind2=" ">
+    <subfield code="a">viii, 369 s., [8] obr. příl.</subfield>
+    <subfield code="b">il.</subfield>
+  </datafield>
+  <datafield tag="506" ind1=" " ind2=" ">
+    <subfield code="a">Přístup pouze pro oprávněné uživatele</subfield>
+  </datafield>
+  <datafield tag="538" ind1=" " ind2=" ">
+    <subfield code="a">On-line přístup</subfield>
+  </datafield>
+  <datafield tag="650" ind1="0" ind2="7">
+    <subfield code="a">pivovary</subfield>
+    <subfield code="x">pp</subfield>
+    <subfield code="2">psh</subfield>
+  </datafield>
+  <datafield tag="650" ind1="0" ind2="7">
+    <subfield code="a">pivovarský průmysl</subfield>
+    <subfield code="x">pp</subfield>
+    <subfield code="2">psh</subfield>
+  </datafield>
+  <datafield tag="650" ind1="0" ind2="7">
+    <subfield code="a">historie</subfield>
+    <subfield code="x">hi</subfield>
+    <subfield code="2">psh</subfield>
+  </datafield>
+  <datafield tag="651" ind1=" " ind2="4">
+    <subfield code="a">České Budějovice (Česko)</subfield>
+  </datafield>
+  <datafield tag="655" ind1=" " ind2="4">
+    <subfield code="a">elektronické knihy</subfield>
+  </datafield>
+  <datafield tag="856" ind1="4" ind2="1">
+    <subfield code="u">http://df.ntkcz.cz/kramerius/handle/ABA013/23599</subfield>
+    <subfield code="y">Digitalizovaný dokument</subfield>
+  </datafield>
+  <datafield tag="OWN" ind1=" " ind2=" ">
+    <subfield code="a">PUBLIC</subfield>
+  </datafield>
+  <datafield tag="910" ind1=" " ind2=" ">
+    <subfield code="a">ABA013</subfield>
+    <subfield code="b">EB 00927</subfield>
+  </datafield>
+</record>
+
+<record xmlns="http://www.loc.gov/MARC21/slim"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.loc.gov/MARC21/slim
+http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
+  <leader>00000nam a22      a 4500</leader>
+  <controlfield tag="001">000674402</controlfield>
+  <controlfield tag="003">CZ PrSTK</controlfield>
+  <controlfield tag="005">20110909164630.0</controlfield>
+  <controlfield tag="008">110811s1895    xr     f     |||| 0 ger d</controlfield>
+  <datafield tag="040" ind1=" " ind2=" ">
+    <subfield code="a">ABA013</subfield>
+    <subfield code="b">cze</subfield>
+  </datafield>
+  <datafield tag="072" ind1=" " ind2="7">
+    <subfield code="a">663</subfield>
+    <subfield code="x">Průmysl nápojů. Kvasný průmysl. Průmysl pochutin</subfield>
+    <subfield code="2">Konspekt</subfield>
+    <subfield code="9">19</subfield>
+  </datafield>
+  <datafield tag="080" ind1=" " ind2=" ">
+    <subfield code="a">663.4(437.319)(091)</subfield>
+  </datafield>
+  <datafield tag="245" ind1="0" ind2="0">
+    <subfield code="a">Gedenkblatt zum hundertjährigen Bestande des bürgerlichen Bräuhauses in Budweis</subfield>
+    <subfield code="h">[elektronický zdroj] :</subfield>
+    <subfield code="b">1795-1895</subfield>
+  </datafield>
+  <datafield tag="246" ind1="1" ind2="4">
+    <subfield code="a">Bürgerliches Bräuhaus Budweis</subfield>
+  </datafield>
+  <datafield tag="256" ind1=" " ind2=" ">
+    <subfield code="a">Textová data</subfield>
+  </datafield>
+  <datafield tag="260" ind1=" " ind2=" ">
+    <subfield code="a">Budweis :</subfield>
+    <subfield code="b">Im Selbstverlage des Bräuausschusses,</subfield>
+    <subfield code="c">1895</subfield>
+    <subfield code="e">(Budweis :</subfield>
+    <subfield code="f">August Gothmann)</subfield>
+  </datafield>
+  <datafield tag="300" ind1=" " ind2=" ">
+    <subfield code="a">23 s.</subfield>
+  </datafield>
+  <datafield tag="506" ind1=" " ind2=" ">
+    <subfield code="a">Přístup pouze pro oprávněné uživatele</subfield>
+  </datafield>
+  <datafield tag="538" ind1=" " ind2=" ">
+    <subfield code="a">On-line přístup</subfield>
+  </datafield>
+  <datafield tag="650" ind1="0" ind2="7">
+    <subfield code="a">pivovary</subfield>
+    <subfield code="x">pp</subfield>
+    <subfield code="2">psh</subfield>
+  </datafield>
+  <datafield tag="650" ind1="0" ind2="7">
+    <subfield code="a">historie</subfield>
+    <subfield code="x">hi</subfield>
+    <subfield code="2">psh</subfield>
+  </datafield>
+  <datafield tag="651" ind1=" " ind2="4">
+    <subfield code="a">České Budějovice (Česko)</subfield>
+  </datafield>
+  <datafield tag="655" ind1=" " ind2="4">
+    <subfield code="a">elektronické knihy</subfield>
+  </datafield>
+  <datafield tag="856" ind1="4" ind2="1">
+    <subfield code="u">http://df.ntkcz.cz/kramerius/handle/ABA013/23598</subfield>
+    <subfield code="y">Digitalizovaný dokument</subfield>
+  </datafield>
+  <datafield tag="OWN" ind1=" " ind2=" ">
+    <subfield code="a">PUBLIC</subfield>
+  </datafield>
+  <datafield tag="910" ind1=" " ind2=" ">
+    <subfield code="a">ABA013</subfield>
+    <subfield code="b">EB 00929</subfield>
+  </datafield>
+</record>
+
+<record xmlns="http://www.loc.gov/MARC21/slim"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.loc.gov/MARC21/slim
+http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
+  <leader>00000nam a22      a 4500</leader>
+  <controlfield tag="001">000674398</controlfield>
+  <controlfield tag="003">CZ PrSTK</controlfield>
+  <controlfield tag="005">20110912143949.0</controlfield>
+  <controlfield tag="008">110811s1897    xr a   f     |||| 0 ger d</controlfield>
+  <datafield tag="040" ind1=" " ind2=" ">
+    <subfield code="a">ABA013</subfield>
+    <subfield code="b">cze</subfield>
+  </datafield>
+  <datafield tag="072" ind1=" " ind2="7">
+    <subfield code="a">663</subfield>
+    <subfield code="x">Průmysl nápojů. Kvasný průmysl. Průmysl pochutin</subfield>
+    <subfield code="2">Konspekt</subfield>
+    <subfield code="9">19</subfield>
+  </datafield>
+  <datafield tag="080" ind1=" " ind2=" ">
+    <subfield code="a">663.4(437.319)(091)</subfield>
+  </datafield>
+  <datafield tag="245" ind1="0" ind2="0">
+    <subfield code="a">Bürgerliches Brauhaus Budweis</subfield>
+    <subfield code="h">[elektronický zdroj] :</subfield>
+    <subfield code="b">gegründet 1795</subfield>
+  </datafield>
+  <datafield tag="256" ind1=" " ind2=" ">
+    <subfield code="a">Textová data</subfield>
+  </datafield>
+  <datafield tag="260" ind1=" " ind2=" ">
+    <subfield code="a">Budweis :</subfield>
+    <subfield code="b">[s. n.,</subfield>
+    <subfield code="c">cca 1897]</subfield>
+    <subfield code="e">(Budweis :</subfield>
+    <subfield code="f">F. Zdrassa)</subfield>
+  </datafield>
+  <datafield tag="300" ind1=" " ind2=" ">
+    <subfield code="a">61 s. :</subfield>
+    <subfield code="b">il.</subfield>
+  </datafield>
+  <datafield tag="500" ind1=" " ind2=" ">
+    <subfield code="a">Publikace pravděpodobně vyšla po r. 1897 podle vročení fotografie na s. 17</subfield>
+  </datafield>
+  <datafield tag="506" ind1=" " ind2=" ">
+    <subfield code="a">Přístup pouze pro oprávněné uživatele</subfield>
+  </datafield>
+  <datafield tag="538" ind1=" " ind2=" ">
+    <subfield code="a">On-line přístup</subfield>
+  </datafield>
+  <datafield tag="650" ind1="0" ind2="7">
+    <subfield code="a">pivovary</subfield>
+    <subfield code="x">pp</subfield>
+    <subfield code="2">psh</subfield>
+  </datafield>
+  <datafield tag="650" ind1="0" ind2="7">
+    <subfield code="a">historie</subfield>
+    <subfield code="x">hi</subfield>
+    <subfield code="2">psh</subfield>
+  </datafield>
+  <datafield tag="651" ind1=" " ind2="4">
+    <subfield code="a">České Budějovice (Česko)</subfield>
+  </datafield>
+  <datafield tag="655" ind1=" " ind2="4">
+    <subfield code="a">elektronické knihy</subfield>
+  </datafield>
+  <datafield tag="856" ind1="4" ind2="1">
+    <subfield code="u">http://df.ntkcz.cz/kramerius/handle/ABA013/23597</subfield>
+    <subfield code="y">Digitalizovaný dokument</subfield>
+  </datafield>
+  <datafield tag="OWN" ind1=" " ind2=" ">
+    <subfield code="a">PUBLIC</subfield>
+  </datafield>
+  <datafield tag="910" ind1=" " ind2=" ">
+    <subfield code="a">ABA013</subfield>
+    <subfield code="b">EB 00928</subfield>
+  </datafield>
+</record>
+
+<record xmlns="http://www.loc.gov/MARC21/slim"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.loc.gov/MARC21/slim
+http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
+  <leader>00000nam a22      a 4500</leader>
+  <controlfield tag="001">000621270</controlfield>
+  <controlfield tag="003">CZ PrSTK</controlfield>
+  <controlfield tag="005">20110923084144.0</controlfield>
+  <controlfield tag="008">040308s1902    gw a   f      000 0 ger d</controlfield>
+  <datafield tag="040" ind1=" " ind2=" ">
+    <subfield code="a">ABA013</subfield>
+    <subfield code="b">cze</subfield>
+  </datafield>
+  <datafield tag="080" ind1=" " ind2=" ">
+    <subfield code="a">621.565</subfield>
+  </datafield>
+  <datafield tag="080" ind1=" " ind2=" ">
+    <subfield code="a">621.433</subfield>
+  </datafield>
+  <datafield tag="084" ind1=" " ind2=" ">
+    <subfield code="a">VIII.C.d)</subfield>
+  </datafield>
+  <datafield tag="100" ind1="1" ind2=" ">
+    <subfield code="a">Schöttler, Rudolf</subfield>
+  </datafield>
+  <datafield tag="245" ind1="1" ind2="4">
+    <subfield code="a">Die Gasmaschine :</subfield>
+    <subfield code="b">ihre Entwickelung, ihre heutige Bauart und ihr Kreisprocess.</subfield>
+    <subfield code="n">Band II,</subfield>
+    <subfield code="p">Tafeln /</subfield>
+    <subfield code="c">von R. Schöttler</subfield>
+  </datafield>
+  <datafield tag="250" ind1=" " ind2=" ">
+    <subfield code="a">Vierte, umgearbeitete Aufl.</subfield>
+  </datafield>
+  <datafield tag="260" ind1=" " ind2=" ">
+    <subfield code="a">Braunschweig :</subfield>
+    <subfield code="b">Verlag von Benno Goeritz,</subfield>
+    <subfield code="c">1902</subfield>
+  </datafield>
+  <datafield tag="300" ind1=" " ind2=" ">
+    <subfield code="a">xxxxii l. :</subfield>
+    <subfield code="b">il. ;</subfield>
+    <subfield code="c">24x17 cm +</subfield>
+    <subfield code="e">3 příl.</subfield>
+  </datafield>
+  <datafield tag="500" ind1=" " ind2=" ">
+    <subfield code="a">Na tit. s. a na obálce nakladatelský signet</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="500" ind1=" " ind2=" ">
+    <subfield code="a">Na přílohách chybějící obr. 4, 11 a 37</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="561" ind1=" " ind2=" ">
+    <subfield code="a">Na přední s. vevázané obálky a na všech listech kulaté razítko Bibliothek der k.k. technischen Hochschulen in Prag - Knihovna c.k. vysokých škol technických v Praze</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="563" ind1=" " ind2=" ">
+    <subfield code="a">Vazba polokožená knihovnická se zlacenými identifikačními údaji na hřbetě a s vevázanou původní obálkou uvnitř</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="650" ind1="1" ind2="4">
+    <subfield code="a">spalovací motory</subfield>
+    <subfield code="x">sr</subfield>
+    <subfield code="2">psh</subfield>
+  </datafield>
+  <datafield tag="650" ind1="1" ind2="4">
+    <subfield code="a">chladicí zařízení</subfield>
+    <subfield code="x">sr</subfield>
+    <subfield code="2">psh</subfield>
+  </datafield>
+  <datafield tag="856" ind1="4" ind2="1">
+    <subfield code="u">http://df.ntkcz.cz/kramerius/handle/ABA013/23093</subfield>
+    <subfield code="y">Digitalizovaný dokument</subfield>
+  </datafield>
+  <datafield tag="991" ind1=" " ind2=" ">
+    <subfield code="a">20</subfield>
+  </datafield>
+  <datafield tag="SKC" ind1=" " ind2=" ">
+    <subfield code="a">r</subfield>
+  </datafield>
+  <datafield tag="OWN" ind1=" " ind2=" ">
+    <subfield code="a">PUBLIC</subfield>
+  </datafield>
+  <datafield tag="910" ind1=" " ind2=" ">
+    <subfield code="a">ABA013</subfield>
+    <subfield code="b">M 1633</subfield>
+  </datafield>
+  <datafield tag="984" ind1=" " ind2=" ">
+    <subfield code="a">Braunschweig</subfield>
+    <subfield code="b">Německo</subfield>
+  </datafield>
+</record>
+
+<record xmlns="http://www.loc.gov/MARC21/slim"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.loc.gov/MARC21/slim
+http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
+  <leader>00000nam a22      a 4500</leader>
+  <controlfield tag="001">000335759</controlfield>
+  <controlfield tag="003">CZ PrSTK</controlfield>
+  <controlfield tag="005">20110913134324.0</controlfield>
+  <controlfield tag="008">030515s1905    xr a   f      000 0 cze d</controlfield>
+  <datafield tag="040" ind1=" " ind2=" ">
+    <subfield code="a">ABA013</subfield>
+    <subfield code="b">cze</subfield>
+  </datafield>
+  <datafield tag="072" ind1=" " ind2="7">
+    <subfield code="a">663</subfield>
+    <subfield code="x">Průmysl nápojů. Kvasný průmysl. Průmysl pochutin</subfield>
+    <subfield code="2">Konspekt</subfield>
+    <subfield code="9">19</subfield>
+  </datafield>
+  <datafield tag="080" ind1=" " ind2=" ">
+    <subfield code="a">663.4(035)</subfield>
+  </datafield>
+  <datafield tag="100" ind1="1" ind2=" ">
+    <subfield code="a">Chodounský, František,</subfield>
+    <subfield code="d">1845-1924</subfield>
+    <subfield code="7">jk01050285</subfield>
+    <subfield code="4">aut</subfield>
+  </datafield>
+  <datafield tag="245" ind1="1" ind2="0">
+    <subfield code="a">Pivovarství /</subfield>
+    <subfield code="c">František Chodounský</subfield>
+  </datafield>
+  <datafield tag="260" ind1=" " ind2=" ">
+    <subfield code="a">V Praze :</subfield>
+    <subfield code="b">Nákladem kuratoria I. veřejné odborné sladovnické školy,</subfield>
+    <subfield code="c">1905</subfield>
+  </datafield>
+  <datafield tag="300" ind1=" " ind2=" ">
+    <subfield code="a">3 sv. :</subfield>
+    <subfield code="b">il.</subfield>
+  </datafield>
+  <datafield tag="490" ind1="0" ind2=" ">
+    <subfield code="a">Encyklopaedie pivovarství ;</subfield>
+    <subfield code="v">díl 1, sv. 1, seš. 1-3</subfield>
+  </datafield>
+  <datafield tag="505" ind1="0" ind2=" ">
+    <subfield code="a">díl. 1, sv. 1, seš. 1. 144 s. -- díl. 1, sv. 1, seš. 2. s. 145-206 -- díl. 1, sv. 1, seš. 3. s. 208-306, [4] s. obr. příl.</subfield>
+  </datafield>
+  <datafield tag="650" ind1="0" ind2="7">
+    <subfield code="a">pivovarský průmysl</subfield>
+    <subfield code="x">pp</subfield>
+    <subfield code="2">psh</subfield>
+  </datafield>
+  <datafield tag="650" ind1="0" ind2="7">
+    <subfield code="a">pivo</subfield>
+    <subfield code="x">pp</subfield>
+    <subfield code="2">psh</subfield>
+  </datafield>
+  <datafield tag="655" ind1=" " ind2="4">
+    <subfield code="a">příručky</subfield>
+  </datafield>
+  <datafield tag="830" ind1=" " ind2="0">
+    <subfield code="a">Encyklopaedie pivovarství ;</subfield>
+    <subfield code="v">díl 1, sv. 1, seš. 1-3</subfield>
+  </datafield>
+  <datafield tag="856" ind1="4" ind2="1">
+    <subfield code="u">http://df.ntkcz.cz/kramerius/handle/ABA013/23530</subfield>
+    <subfield code="y">Digitalizovaný dokument</subfield>
+  </datafield>
+  <datafield tag="SKC" ind1=" " ind2=" ">
+    <subfield code="a">r</subfield>
+  </datafield>
+  <datafield tag="OWN" ind1=" " ind2=" ">
+    <subfield code="a">PUBLIC</subfield>
+  </datafield>
+  <datafield tag="910" ind1=" " ind2=" ">
+    <subfield code="a">ABA013</subfield>
+    <subfield code="b">158162</subfield>
+    <subfield code="s">díl 1, seš. 1-3</subfield>
+  </datafield>
+</record>
+
+<record xmlns="http://www.loc.gov/MARC21/slim"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.loc.gov/MARC21/slim
+http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
+  <leader>00000nam a22      a 4500</leader>
+  <controlfield tag="001">000670864</controlfield>
+  <controlfield tag="003">CZ PrSTK</controlfield>
+  <controlfield tag="005">20110908103252.0</controlfield>
+  <controlfield tag="007">ta</controlfield>
+  <controlfield tag="008">110303s1906    xr a   f     |||| 0 cze d</controlfield>
+  <datafield tag="040" ind1=" " ind2=" ">
+    <subfield code="a">ABA013</subfield>
+    <subfield code="b">cze</subfield>
+  </datafield>
+  <datafield tag="072" ind1=" " ind2="7">
+    <subfield code="a">663</subfield>
+    <subfield code="x">Průmysl nápojů. Kvasný průmysl. Průmysl pochutin</subfield>
+    <subfield code="2">Konspekt</subfield>
+    <subfield code="9">19</subfield>
+  </datafield>
+  <datafield tag="080" ind1=" " ind2=" ">
+    <subfield code="a">663.4</subfield>
+  </datafield>
+  <datafield tag="100" ind1="1" ind2=" ">
+    <subfield code="a">Zachar, Otakar,</subfield>
+    <subfield code="d">1870-1921</subfield>
+    <subfield code="7">jk01151985</subfield>
+  </datafield>
+  <datafield tag="245" ind1="0" ind2="0">
+    <subfield code="a">Pivovarské kapitoly a feuilletony /</subfield>
+    <subfield code="c">Otakar Zachar</subfield>
+  </datafield>
+  <datafield tag="260" ind1=" " ind2=" ">
+    <subfield code="a">V král. hor. městě Kladně :</subfield>
+    <subfield code="b">Otakar Zachar,</subfield>
+    <subfield code="c">1906</subfield>
+    <subfield code="f">(Knihtiskárna Šnajdr a Janáček)</subfield>
+  </datafield>
+  <datafield tag="300" ind1=" " ind2=" ">
+    <subfield code="a">149 s. :</subfield>
+    <subfield code="b">il.</subfield>
+  </datafield>
+  <datafield tag="561" ind1=" " ind2=" ">
+    <subfield code="a">Na obálce razítko Fr. Řivnáč knihkupectví V Praze Příkopy 14</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="650" ind1="0" ind2="7">
+    <subfield code="a">pivovarský průmysl</subfield>
+    <subfield code="x">pp</subfield>
+    <subfield code="2">psh</subfield>
+  </datafield>
+  <datafield tag="655" ind1=" " ind2="4">
+    <subfield code="a">monografie</subfield>
+  </datafield>
+  <datafield tag="856" ind1="4" ind2="1">
+    <subfield code="u">http://df.ntkcz.cz/kramerius/handle/ABA013/23582</subfield>
+    <subfield code="y">Digitalizovaný dokument</subfield>
+  </datafield>
+  <datafield tag="SKC" ind1=" " ind2=" ">
+    <subfield code="a">r</subfield>
+  </datafield>
+  <datafield tag="OWN" ind1=" " ind2=" ">
+    <subfield code="a">PUBLIC</subfield>
+  </datafield>
+  <datafield tag="910" ind1=" " ind2=" ">
+    <subfield code="a">ABA013</subfield>
+    <subfield code="b">HF 263</subfield>
+  </datafield>
+</record>
+
+<record xmlns="http://www.loc.gov/MARC21/slim"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.loc.gov/MARC21/slim
+http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
+  <leader>00000nam a22      a 4500</leader>
+  <controlfield tag="001">000670879</controlfield>
+  <controlfield tag="003">CZ PrSTK</controlfield>
+  <controlfield tag="005">20110908102131.0</controlfield>
+  <controlfield tag="007">ta</controlfield>
+  <controlfield tag="008">110303s1908    xr     f     |||| 0 cze d</controlfield>
+  <datafield tag="040" ind1=" " ind2=" ">
+    <subfield code="a">ABA013</subfield>
+    <subfield code="b">cze</subfield>
+  </datafield>
+  <datafield tag="072" ind1=" " ind2="7">
+    <subfield code="a">663</subfield>
+    <subfield code="x">Průmysl nápojů. Kvasný průmysl. Průmysl pochutin</subfield>
+    <subfield code="2">Konspekt</subfield>
+    <subfield code="9">19</subfield>
+  </datafield>
+  <datafield tag="080" ind1=" " ind2=" ">
+    <subfield code="a">663.1</subfield>
+  </datafield>
+  <datafield tag="080" ind1=" " ind2=" ">
+    <subfield code="a">577.15</subfield>
+  </datafield>
+  <datafield tag="100" ind1="1" ind2=" ">
+    <subfield code="a">Fleischner, Jindřich,</subfield>
+    <subfield code="d">1879-1922</subfield>
+    <subfield code="7">jk01031415</subfield>
+  </datafield>
+  <datafield tag="245" ind1="0" ind2="0">
+    <subfield code="a">O kvašení a enzymech /</subfield>
+    <subfield code="c">J. Fleischner</subfield>
+  </datafield>
+  <datafield tag="260" ind1=" " ind2=" ">
+    <subfield code="a">V Plzni :</subfield>
+    <subfield code="b">A. Batěk,</subfield>
+    <subfield code="c">1908</subfield>
+  </datafield>
+  <datafield tag="300" ind1=" " ind2=" ">
+    <subfield code="a">67 s. :</subfield>
+    <subfield code="b">il.</subfield>
+  </datafield>
+  <datafield tag="490" ind1="1" ind2=" ">
+    <subfield code="a">Ilustrované přednášky ;</subfield>
+    <subfield code="v">96, 97. B. VIII, 7, 8</subfield>
+  </datafield>
+  <datafield tag="650" ind1="0" ind2="7">
+    <subfield code="a">fermentace</subfield>
+    <subfield code="x">ch</subfield>
+    <subfield code="2">psh</subfield>
+  </datafield>
+  <datafield tag="650" ind1="0" ind2="7">
+    <subfield code="a">enzymy</subfield>
+    <subfield code="x">ch</subfield>
+    <subfield code="2">psh</subfield>
+  </datafield>
+  <datafield tag="655" ind1=" " ind2="4">
+    <subfield code="a">monografie</subfield>
+  </datafield>
+  <datafield tag="856" ind1="4" ind2="1">
+    <subfield code="u">http://df.ntkcz.cz/kramerius/handle/ABA013/23581</subfield>
+    <subfield code="y">Digitalizovaný dokument</subfield>
+  </datafield>
+  <datafield tag="830" ind1=" " ind2="0">
+    <subfield code="a">Ilustrované přednášky</subfield>
+    <subfield code="v">96, 97. B. VIII, 7, 8</subfield>
+  </datafield>
+  <datafield tag="SKC" ind1=" " ind2=" ">
+    <subfield code="a">r</subfield>
+  </datafield>
+  <datafield tag="OWN" ind1=" " ind2=" ">
+    <subfield code="a">PUBLIC</subfield>
+  </datafield>
+  <datafield tag="910" ind1=" " ind2=" ">
+    <subfield code="a">ABA013</subfield>
+    <subfield code="b">HF 273</subfield>
+  </datafield>
+</record>
+
+<record xmlns="http://www.loc.gov/MARC21/slim"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.loc.gov/MARC21/slim
+http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
+  <leader>00000nam a22      a 4500</leader>
+  <controlfield tag="001">000670869</controlfield>
+  <controlfield tag="003">CZ PrSTK</controlfield>
+  <controlfield tag="005">20110913133222.0</controlfield>
+  <controlfield tag="007">ta</controlfield>
+  <controlfield tag="008">110303s1909    xr     f     |||1 0 cze d</controlfield>
+  <datafield tag="040" ind1=" " ind2=" ">
+    <subfield code="a">ABA013</subfield>
+    <subfield code="b">cze</subfield>
+  </datafield>
+  <datafield tag="072" ind1=" " ind2="7">
+    <subfield code="a">784</subfield>
+    <subfield code="x">Vokální hudba</subfield>
+    <subfield code="2">Konspekt</subfield>
+    <subfield code="9">9</subfield>
+  </datafield>
+  <datafield tag="080" ind1=" " ind2=" ">
+    <subfield code="a">784.4</subfield>
+  </datafield>
+  <datafield tag="080" ind1=" " ind2=" ">
+    <subfield code="a">784.4.049:663.4</subfield>
+  </datafield>
+  <datafield tag="100" ind1="1" ind2=" ">
+    <subfield code="a">Zíbrt, Čeněk,</subfield>
+    <subfield code="d">1864-1932</subfield>
+    <subfield code="7">jk01152578</subfield>
+  </datafield>
+  <datafield tag="245" ind1="1" ind2="0">
+    <subfield code="a">Pivo v písních lidových a znárodnělých /</subfield>
+    <subfield code="c">podává Čeněk Zíbrt</subfield>
+  </datafield>
+  <datafield tag="260" ind1=" " ind2=" ">
+    <subfield code="a">Praha :</subfield>
+    <subfield code="b">O. Zachar,</subfield>
+    <subfield code="c">1909</subfield>
+    <subfield code="f">(Alois Lapáček)</subfield>
+  </datafield>
+  <datafield tag="300" ind1=" " ind2=" ">
+    <subfield code="a">401 s.</subfield>
+  </datafield>
+  <datafield tag="500" ind1=" " ind2=" ">
+    <subfield code="a">Příl. časopisu &quot;Sládek&quot;, roč. 3</subfield>
+  </datafield>
+  <datafield tag="500" ind1=" " ind2=" ">
+    <subfield code="a">Obsahuje rejstřík</subfield>
+  </datafield>
+  <datafield tag="650" ind1="0" ind2="7">
+    <subfield code="a">písně</subfield>
+    <subfield code="x">li</subfield>
+    <subfield code="2">psh</subfield>
+  </datafield>
+  <datafield tag="650" ind1="0" ind2="7">
+    <subfield code="a">lidové umění</subfield>
+    <subfield code="x">um</subfield>
+    <subfield code="2">psh</subfield>
+  </datafield>
+  <datafield tag="650" ind1="0" ind2="7">
+    <subfield code="a">pivo</subfield>
+    <subfield code="x">pp</subfield>
+    <subfield code="2">psh</subfield>
+  </datafield>
+  <datafield tag="655" ind1=" " ind2="4">
+    <subfield code="a">monografie</subfield>
+  </datafield>
+  <datafield tag="856" ind1="4" ind2="1">
+    <subfield code="u">http://df.ntkcz.cz/kramerius/handle/ABA013/23567</subfield>
+    <subfield code="y">Digitalizovaný dokument</subfield>
+  </datafield>
+  <datafield tag="SKC" ind1=" " ind2=" ">
+    <subfield code="a">r</subfield>
+  </datafield>
+  <datafield tag="OWN" ind1=" " ind2=" ">
+    <subfield code="a">PUBLIC</subfield>
+  </datafield>
+  <datafield tag="910" ind1=" " ind2=" ">
+    <subfield code="a">ABA013</subfield>
+    <subfield code="b">HF 268</subfield>
+  </datafield>
+</record>
+
+<record xmlns="http://www.loc.gov/MARC21/slim"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.loc.gov/MARC21/slim
+http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
+  <leader>00000nam a22      a 4500</leader>
+  <controlfield tag="001">000670867</controlfield>
+  <controlfield tag="003">CZ PrSTK</controlfield>
+  <controlfield tag="005">20110920084227.0</controlfield>
+  <controlfield tag="007">ta</controlfield>
+  <controlfield tag="008">110303s1910    xr     f     |||1 0 cze d</controlfield>
+  <datafield tag="040" ind1=" " ind2=" ">
+    <subfield code="a">ABA013</subfield>
+    <subfield code="b">cze</subfield>
+    <subfield code="e">AACR2</subfield>
+    <subfield code="9">1</subfield>
+  </datafield>
+  <datafield tag="072" ind1=" " ind2="7">
+    <subfield code="a">663</subfield>
+    <subfield code="x">Průmysl nápojů. Kvasný průmysl. Průmysl pochutin</subfield>
+    <subfield code="2">Konspekt</subfield>
+    <subfield code="9">19</subfield>
+  </datafield>
+  <datafield tag="080" ind1=" " ind2=" ">
+    <subfield code="a">663.43</subfield>
+  </datafield>
+  <datafield tag="080" ind1=" " ind2=" ">
+    <subfield code="a">394</subfield>
+  </datafield>
+  <datafield tag="080" ind1=" " ind2=" ">
+    <subfield code="a">398</subfield>
+  </datafield>
+  <datafield tag="100" ind1="1" ind2=" ">
+    <subfield code="a">Zíbrt, Čeněk,</subfield>
+    <subfield code="d">1864-1932</subfield>
+    <subfield code="7">jk01152578</subfield>
+  </datafield>
+  <datafield tag="245" ind1="1" ind2="0">
+    <subfield code="a">Sladovnické obyčeje, zábavy, slavnosti a poměry v nákladnických domech a pivovárech českých /</subfield>
+    <subfield code="c">sebral Čeněk Zíbrt</subfield>
+  </datafield>
+  <datafield tag="260" ind1=" " ind2=" ">
+    <subfield code="a">V Praze :</subfield>
+    <subfield code="b">O. Zachar,</subfield>
+    <subfield code="c">1910</subfield>
+    <subfield code="f">(Al. Lapáček)</subfield>
+  </datafield>
+  <datafield tag="300" ind1=" " ind2=" ">
+    <subfield code="a">360, [38] s.</subfield>
+  </datafield>
+  <datafield tag="500" ind1=" " ind2=" ">
+    <subfield code="a">Příl. časopisu Sládek, roč. 4</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="500" ind1=" " ind2=" ">
+    <subfield code="a">Obsahuje rejstřík</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="650" ind1="0" ind2="7">
+    <subfield code="a">sladařský průmysl</subfield>
+    <subfield code="x">pp</subfield>
+    <subfield code="2">psh</subfield>
+  </datafield>
+  <datafield tag="650" ind1="0" ind2="7">
+    <subfield code="a">obyčeje</subfield>
+    <subfield code="x">an</subfield>
+    <subfield code="2">psh</subfield>
+  </datafield>
+  <datafield tag="650" ind1="0" ind2="7">
+    <subfield code="a">slavnosti</subfield>
+    <subfield code="x">na</subfield>
+    <subfield code="2">psh</subfield>
+  </datafield>
+  <datafield tag="655" ind1=" " ind2="4">
+    <subfield code="a">monografie</subfield>
+  </datafield>
+  <datafield tag="856" ind1="4" ind2="1">
+    <subfield code="u">http://df.ntkcz.cz/kramerius/handle/ABA013/23569</subfield>
+    <subfield code="y">Digitalizovaný dokument</subfield>
+  </datafield>
+  <datafield tag="SKC" ind1=" " ind2=" ">
+    <subfield code="a">r</subfield>
+  </datafield>
+  <datafield tag="OWN" ind1=" " ind2=" ">
+    <subfield code="a">PUBLIC</subfield>
+  </datafield>
+  <datafield tag="910" ind1=" " ind2=" ">
+    <subfield code="a">ABA013</subfield>
+    <subfield code="b">HF 266</subfield>
+  </datafield>
+</record>
+
+<record xmlns="http://www.loc.gov/MARC21/slim"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.loc.gov/MARC21/slim
+http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
+  <leader>00000nam a22      a 4500</leader>
+  <controlfield tag="001">000670868</controlfield>
+  <controlfield tag="003">CZ PrSTK</controlfield>
+  <controlfield tag="005">20110920084131.0</controlfield>
+  <controlfield tag="007">ta</controlfield>
+  <controlfield tag="008">110303s1910    xr a   f     |||1 0 cze d</controlfield>
+  <datafield tag="040" ind1=" " ind2=" ">
+    <subfield code="a">ABA013</subfield>
+    <subfield code="b">cze</subfield>
+  </datafield>
+  <datafield tag="072" ind1=" " ind2="7">
+    <subfield code="a">793</subfield>
+    <subfield code="x">Společenská zábava</subfield>
+    <subfield code="2">Konspekt</subfield>
+    <subfield code="9">20</subfield>
+  </datafield>
+  <datafield tag="080" ind1=" " ind2=" ">
+    <subfield code="a">793</subfield>
+  </datafield>
+  <datafield tag="080" ind1=" " ind2=" ">
+    <subfield code="a">061.23</subfield>
+  </datafield>
+  <datafield tag="100" ind1="1" ind2=" ">
+    <subfield code="a">Zíbrt, Čeněk,</subfield>
+    <subfield code="d">1864-1932</subfield>
+    <subfield code="7">jk01152578</subfield>
+  </datafield>
+  <datafield tag="245" ind1="1" ind2="0">
+    <subfield code="a">Řády a práva starodávných pijanských cechů a družstev kratochvilných v zemích českých /</subfield>
+    <subfield code="c">sebral Čeněk Zíbrt</subfield>
+  </datafield>
+  <datafield tag="260" ind1=" " ind2=" ">
+    <subfield code="a">V Praze :</subfield>
+    <subfield code="b">O. Pyšvejc,</subfield>
+    <subfield code="c">1910</subfield>
+    <subfield code="f">(V. Kotrba)</subfield>
+  </datafield>
+  <datafield tag="300" ind1=" " ind2=" ">
+    <subfield code="a">372 s. :</subfield>
+    <subfield code="b">il.</subfield>
+  </datafield>
+  <datafield tag="500" ind1=" " ind2=" ">
+    <subfield code="a">Příl. čas. Sládek, roč. 2</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="500" ind1=" " ind2=" ">
+    <subfield code="a">Obsahuje rejstřík</subfield>
+    <subfield code="5">CZ-PrSTK</subfield>
+  </datafield>
+  <datafield tag="650" ind1="0" ind2="7">
+    <subfield code="a">spolky</subfield>
+    <subfield code="x">so</subfield>
+    <subfield code="2">psh</subfield>
+  </datafield>
+  <datafield tag="650" ind1="0" ind2="7">
+    <subfield code="a">zábavy</subfield>
+    <subfield code="x">um</subfield>
+    <subfield code="2">psh</subfield>
+  </datafield>
+  <datafield tag="650" ind1="0" ind2="7">
+    <subfield code="a">opilství</subfield>
+    <subfield code="x">pr</subfield>
+    <subfield code="2">psh</subfield>
+  </datafield>
+  <datafield tag="655" ind1=" " ind2="4">
+    <subfield code="a">monografie</subfield>
+  </datafield>
+  <datafield tag="856" ind1="4" ind2="1">
+    <subfield code="u">http://df.ntkcz.cz/kramerius/handle/ABA013/23568</subfield>
+    <subfield code="y">Digitalizovaný dokument</subfield>
+  </datafield>
+  <datafield tag="SKC" ind1=" " ind2=" ">
+    <subfield code="a">r</subfield>
+  </datafield>
+  <datafield tag="OWN" ind1=" " ind2=" ">
+    <subfield code="a">PUBLIC</subfield>
+  </datafield>
+  <datafield tag="910" ind1=" " ind2=" ">
+    <subfield code="a">ABA013</subfield>
+    <subfield code="b">HF 267</subfield>
+  </datafield>
+</record>
+
+</collection>  
