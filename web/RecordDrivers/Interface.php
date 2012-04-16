@@ -346,6 +346,14 @@ interface RecordInterface
      * @access public
      */
     public function hasVideo();
+    
+    /**
+     * Does this record have preview available?
+     *
+     * @return bool
+     * @access public
+     */
+    public function hasPreview();
 }
 
 ?>

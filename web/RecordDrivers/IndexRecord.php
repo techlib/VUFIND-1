@@ -857,6 +857,26 @@ class IndexRecord implements RecordInterface
         $isbns = $this->getISBNs();
         return !empty($isbns);
     }
+    
+    /**
+     * Does this record have preview available?
+     *
+     * @return bool
+     * @access public
+     */
+    public function hasPreview()
+    {
+	// Check for any pictures of the record
+	$id = $this->getUniqueID();
+	$addr = 'http://aleph.techlib.cz/cgi-bin/obrazek.pl?sn='.$id;
+	$links = file_get_contents( $addr );
+
+	$pattern = '/http.{0,100}\.(JPG|jpg)/';
+	$count = preg_match_all( $pattern, $links, $url);
+	
+	// if the record has no pictures => count = 0
+	return $count;
+    }
 
     /**
      * Does this record have searchable full text in the index?

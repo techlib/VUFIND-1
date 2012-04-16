@@ -144,6 +144,8 @@ class Record extends Action
         }
         $interface->assign('hasTOC', $this->recordDriver->hasTOC());
         $interface->assign('hasMap', $this->recordDriver->hasMap());
+	$interface->assign('hasPreview', $this->recordDriver->hasPreview());
+	
 
         // Assign the next/previous record data:
         $scroller = new ResultScroller();
