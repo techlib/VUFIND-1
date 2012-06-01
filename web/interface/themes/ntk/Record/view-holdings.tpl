@@ -1,3 +1,6 @@
+{*include lytebox-gallery*}
+	<script type="text/javascript" language="javascript" src="/interface/themes/ntk/js/Lytebox/lytebox.js"></script>
+	<link rel="stylesheet" href="/interface/themes/ntk/js/Lytebox/lytebox.css" type="text/css" media="screen" />
 {include file=$holdingsMetadata}
 {foreach from=$holdings item=holding key=location}
 
@@ -65,9 +68,16 @@
         {$row.sub_lib_desc|escape}
     </td>
     <td>
+	<a href={$url}/map.php?lcc={$row.sig2} class="lytebox" data-lyte-options="width:800 height:580" data-title="Umístění dokumentu" >
+	{$row.collection_desc|escape}
+	</a>
+   </td>
+    {*
+http://aleph.techlib.cz/user-actions/get-location-image/lcc/QA297
+http://www.techlib.cz/user-actions/get-location-image/lcc/QA297
+    <td>
         {$row.collection_desc|escape}
     </td>
-    {*
     <td>
         {$row.sig1|escape}
     </td>

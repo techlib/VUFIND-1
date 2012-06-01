@@ -67,7 +67,7 @@ class Holdings extends Record
               }
             }
             $interface->assign('holdings', $holdings);
-    
+
             // Get Acquisitions Data
             $result = $catalog->getPurchaseHistory($id);
             if (PEAR::isError($result)) {
