@@ -25,8 +25,9 @@
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     http://vufind.org/wiki/importing_records#oai-pmh_harvesting Wiki
  */
-require_once '../util/util.inc.php';        // set up util environment
-require_once 'sys/Proxy_Request.php';
+
+require_once '/var/www/vufind/util/util.inc.php'; 
+require_once '/var/www/vufind/web/sys/Proxy_Request.php';
 
 // Read Config files
 $configArray = @parse_ini_file('../web/conf/config.ini', true);
