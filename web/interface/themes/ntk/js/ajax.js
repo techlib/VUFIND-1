@@ -43,6 +43,11 @@ function doGetStatuses(strings)
 
                     if (reserves == 'Y') {
                         statusDiv.innerHTML = '';
+//MJ. - not displaying 'checkeout' in vscht records
+                   } else if (elemId.match(/vscht/)) {
+                        statusDiv.innerHTML = '';
+                        
+
                     } else if (items[i].getElementsByTagName('availability')) {
                         if (items[i].getElementsByTagName('availability').item(0).firstChild) {
                             status = items[i].getElementsByTagName('availability').item(0).firstChild.data;

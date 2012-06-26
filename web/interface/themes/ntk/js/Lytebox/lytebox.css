@@ -1,3 +1,7 @@
+<?php
+Header ("Content-type: text/css");
+//$configArray = parse_ini_file('../../../../conf/config.ini', true);
+?>
 #lbOverlay { position: fixed; top: 0; left: 0; z-index: 99997; width: 100%; height: 100%; }
 	#lbOverlay.black { background-color: #000000; }
 	#lbOverlay.grey { background-color: #000000; }
