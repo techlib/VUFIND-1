@@ -32,7 +32,9 @@
     {js filename="rc4.js"}
     {js filename="ajax.yui.js"}
     {js filename="json-min.js"}
-    {js filename="NTK.js"} 
+    {js filename="NTK.js"}
+    {js filename="Lytebox/lytebox.js"}
+	<link rel="stylesheet" href="/interface/themes/ntk/js/Lytebox/lytebox.css" type="text/css" media="screen" /> 
 
     <script type="text/javascript">
       {literal}

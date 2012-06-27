@@ -1,6 +1,7 @@
-{*include lytebox-gallery*}
-	<script type="text/javascript" language="javascript" src="/interface/themes/ntk/js/Lytebox/lytebox.js"></script>
-	<link rel="stylesheet" href="/interface/themes/ntk/js/Lytebox/lytebox.css" type="text/css" media="screen" />
+{* DM. *}
+
+{* lytebox-gallery loaded *}
+
 {include file=$holdingsMetadata}
 {foreach from=$holdings item=holding key=location}
 
@@ -42,7 +43,7 @@
       {else}
          <span class="checkedout">{$row.status|escape}</span>
       {/if}
-      {if $row.reserve}
+{*DM*}{if $row.reserve eq 'Y'}
        <a href="{$url}/Record/{$id|escape:'url'}/ExtendedHold?barcode={$row.item_id|escape}"
 
 {* 
@@ -67,14 +68,12 @@
     <td>
         {$row.sub_lib_desc|escape}
     </td>
-    <td>
-	<a href={$url}/map.php?lcc={$row.sig2} class="lytebox" data-lyte-options="width:800 height:580" data-title="Umístění dokumentu" >
+    <td>{* DM. odkaz na mapu regalu s umistenim dokumentu *}
+	<a href={$url}/map.php?lcc={$row.sig2} class="lytebox" data-lyte-options="width:800 height:600" data-title="Umístění dokumentu" >
 	{$row.collection_desc|escape}
 	</a>
    </td>
     {*
-http://aleph.techlib.cz/user-actions/get-location-image/lcc/QA297
-http://www.techlib.cz/user-actions/get-location-image/lcc/QA297
     <td>
         {$row.collection_desc|escape}
     </td>

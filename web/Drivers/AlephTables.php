@@ -13342,15 +13342,15 @@ function tab40_translate($collection, $sublib) {
   array (
     'desc' => '6.NP, regál 6D/182',
   ),
-  '01|HF' => 
+  '01|' => 
   array (
     'desc' => 'Badatelna HF',
   ),
-  '02|HF' => 
+  '02|' => 
   array (
     'desc' => 'Trezor HF',
   ),
-  '03|HF' => 
+  '03|' => 
   array (
     'desc' => 'Sklad HF',
   ),
@@ -13358,6 +13358,7 @@ function tab40_translate($collection, $sublib) {
 
    $findme = $collection . "|" . $sublib;
    $desc = $table40[$findme];
+//error_log("tab40_translate --- Collection: $collection Sublibrary: $subLib Description: $desc");
    if ($desc == NULL) {
       $findme = $collection . "|";
       $desc = $table40[$findme];
@@ -13380,6 +13381,12 @@ function tab15_translate($slc, $isc, $ipsc) {
     'desc' => 'Fond NTK',
     'tab15' => '15A',
   ),
+  'HF' =>
+  array (
+    'desc' => 'Historický fond',
+    'tab15' => '15A', //??
+  ),
+
 
 //  'STK' =>
 //  array (
@@ -13672,12 +13679,20 @@ function tab15_translate($slc, $isc, $ipsc) {
     'opac' => 'N',
   ),
 );
-  
+ 
+//MJ.
+// error_log("tab15_translate --- SubLibrary: $slc Item status: $isc Item process status: $ipsc");
+ 
   $tab15 = $table_sub_library[$slc];
 //  if ($tab15 == NULL) {
 //     throw new Exception("Undefined translate table for item statuses for code: ".$slc);
 //  }
-  $findme = $tab15['tab15'] . "|" . $isc . "|" . $ipsc;
+
+//MJ.2012-06-27
+//  $findme = $tab15['tab15'] . "|" . $isc . "|" . $ipsc;
+$findme = $tab15['tab15'] . "|" . $isc . "|";
+
+//error_log(" tab15_FINDME: $findme");
   if (!array_key_exists($findme, $table15)) {
      $findme = $tab15['tab15'] . "||" . $ipsc;
      if (!array_key_exists($findme, $table15)) {
@@ -13688,7 +13703,7 @@ function tab15_translate($slc, $isc, $ipsc) {
     $result = $table15[$findme];
   }
   $result['sub_lib_desc'] = $tab15['desc'];
-  return $result;
+  return $result; 
 }
 
 ?>

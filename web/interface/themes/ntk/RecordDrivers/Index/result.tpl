@@ -24,7 +24,7 @@
       Zakomentována signatura (JM.)
       <b>{translate text='Call Number'}:</b> <span id="callnumber{$summId|escape}">{translate text='Loading'}</span><br>
       *}
-      <b>{translate text='Located'}:</b> <span id="location{$summId|escape}">{translate text='Loading'}</span>
+      <b>{translate text='Located'}:</b> <span id="location{$summId|escape}">{translate text='Loading'}</a></span>
       </div>
       
       <div class="resultItemLine4">

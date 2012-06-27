@@ -161,12 +161,30 @@ class Aleph implements DriverInterface
 	           $location = translate("shelf")." ".$location;
 	       }
 	       else {
-                   if ($location) {
-			   $location = translate("code_".$location);
-		   }
-		   else {
-                           $location = translate("Unavailable");
-                   } 
+			switch ($location) {
+			    case 002:
+				$location = translate("stack room"); // sklad podle DM.
+				break;
+			    case 011:
+				$location = translate("depository"); // depozitar podle DM.
+				break;
+			    case 004:
+				$location = translate("book news 4th floor"); // novinky 4. NP podle DM.
+				break;
+			    case 01:
+				$location = translate("reading room of historical fund"); // badatelna HF podle DM.
+				break;
+			    case 02:
+				$location = translate("safe of historical fund"); // trezor HF podle DM.
+				break;
+			    case 03:
+				$location = translate("stack room of historical fund"); // skald HF podle DM.
+				break;
+			    default:
+//				$location = translate("Unavailable");
+                              $location = translate("Unknown");
+
+			}
 	       }
                /*
                TODO: Implementovat parsovani umisteni.

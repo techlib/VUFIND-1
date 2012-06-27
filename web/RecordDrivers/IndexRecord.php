@@ -1764,7 +1764,7 @@ class IndexRecord implements RecordInterface
      * @return string
      * @access protected
      */
-    public function getLCCN()
+    protected function getLCCN()
     {
         // Get LCCN from Index
         $raw = isset($this->fields['lccn']) ? $this->fields['lccn'] : '';
@@ -1794,6 +1794,7 @@ class IndexRecord implements RecordInterface
             $raw = $tmpArray[0] . str_pad($tmpArray[1], 6, "0", STR_PAD_LEFT);
         }
         return $raw;
+
     }
 
     /**

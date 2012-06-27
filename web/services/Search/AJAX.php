@@ -95,8 +95,11 @@ class AJAX extends Action {
         // Try to find a copy that is available
         $catalog = new CatalogConnection($configArray['Catalog']['driver']);
 
-        $result = $catalog->getStatuses($_GET['id']);
-        
+        $result = $catalog->getStatuses($_GET['id']);echo "result je: "; print_r($result);
+/* DM. */
+	// URL for regal-image
+	$url=$configArray['Site']['url'].'/map.php?lcc=';
+/* - */
         // In order to detect IDs missing from the status response, create an 
         // array with a key for every requested ID.  We will clear keys as we
         // encounter IDs in the response -- anything left will be problems that
@@ -112,9 +115,21 @@ class AJAX extends Action {
             $callNumbers = array();
             $locations = array();
             $available = false;
+	    
 
             if (count($record)) {
                 foreach ($record as $info) {
+/* DM. */
+			// Get holding's data		
+			$result = $catalog->getHolding($info['id']);
+
+			// Find out LCCn
+			foreach ($result as $copy) {
+				$lcc=$copy['sig2'];
+
+				$link = $url . $lcc;
+			}
+/* - */
                     // Find an available copy
                     if ($info['availability']) {
                         $available = true;
@@ -140,8 +155,8 @@ class AJAX extends Action {
                     'Multiple Locations');
                 echo join(PHP_EOL, array(
                   ' <item id="' . htmlspecialchars($record[0]['id']) . '">',
-                  '  <availability>' . ($available ? 'true' : 'false') . '</availability>',
-                  '  <location>' . htmlspecialchars($location) . '</location>',
+		  '  <availability>' . ($available ? 'true' : 'false') . '</availability>',
+/* DM. */         '  <location>' . htmlspecialchars('<a href=' . $link . ' class="lytebox" data-lyte-options="width:800 height:600" data-title="Umístění dokumentu" >' . $location . '</a>' ) . '</location>',
                   '  <reserve>' . htmlspecialchars($record[0]['reserve']) . '</reserve>',
                   '  <callnumber>' . htmlspecialchars($callNumber) . '</callnumber>',
                   ' </item>'

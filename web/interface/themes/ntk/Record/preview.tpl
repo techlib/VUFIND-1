@@ -1,8 +1,8 @@
 {*DM*}
-{*include lytebox-gallery*}
+{*include lytebox-gallery
 	<script type="text/javascript" language="javascript" src="/interface/themes/ntk/js/Lytebox/lytebox.js"></script>
 	<link rel="stylesheet" href="/interface/themes/ntk/js/Lytebox/lytebox.css" type="text/css" media="screen" />
-
+*}
 	<br><br>
 
 {*display thumbnails with links to their big-pics using lytebox*}

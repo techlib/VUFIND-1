@@ -354,14 +354,6 @@ interface RecordInterface
      * @access public
      */
     public function hasPreview();
-
-    /**
-     * Does this record have preview available?
-     *
-     * @return bool
-     * @access public
-     */
-    public function getLCCN();
 }
 
 ?>
