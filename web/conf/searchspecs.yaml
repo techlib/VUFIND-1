@@ -279,8 +279,8 @@ AllFields:
   DismaxFields:
     - title_short^750
     - title_full_unstemmed^600
-    - title_full^400
-    - title^500
+    - title_full^500
+    - title^1400
     - title_alt^200
     - title_new^100
     - series^50
@@ -296,6 +296,15 @@ AllFields:
     - fulltext_unstemmed^10
     - allfields
     - fulltext
+    - issn
+    - isbn
+    - id
+    - callnumber
+    - callnumber-label
+    - title_auth^350
+    - title_fullStr^2300
+    - title_sub^360
+
   QueryFields:
     - 
       - [OR, 50]
@@ -346,6 +355,7 @@ AllFields:
       - [or, ~]
     fulltext:
       - [or, ~]
+
 
 # These are advanced searches that never use Dismax:
 id:
