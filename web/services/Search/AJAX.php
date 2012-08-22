@@ -95,7 +95,7 @@ class AJAX extends Action {
         // Try to find a copy that is available
         $catalog = new CatalogConnection($configArray['Catalog']['driver']);
 
-        $result = $catalog->getStatuses($_GET['id']);echo "result je: "; print_r($result);
+        $result = $catalog->getStatuses($_GET['id']);/*echo "result je: "; print_r($result);*/
 /* DM. */
 	// URL for regal-image
 	$url=$configArray['Site']['url'].'/map.php?lcc=';
@@ -126,8 +126,9 @@ class AJAX extends Action {
 			// Find out LCCn
 			foreach ($result as $copy) {
 				$lcc=$copy['sig2'];
-
-				$link = $url . $lcc;
+				$pos = strpos($lcc, " ");
+				$lccn = substr($lcc, 0, $pos);
+				$link = $url . $lccn;
 			}
 /* - */
                     // Find an available copy
@@ -155,13 +156,34 @@ class AJAX extends Action {
                     'Multiple Locations');
                 echo join(PHP_EOL, array(
                   ' <item id="' . htmlspecialchars($record[0]['id']) . '">',
-		  '  <availability>' . ($available ? 'true' : 'false') . '</availability>',
-/* DM. */         '  <location>' . htmlspecialchars('<a href=' . $link . ' class="lytebox" data-lyte-options="width:800 height:600" data-title="Umístění dokumentu" >' . $location . '</a>' ) . '</location>',
+		  '  <availability>' . ($available ? 'true' : 'false') . '</availability>'
+		  )
+		);
+
+		if (empty($lcc)){
+	
+				echo join(PHP_EOL, array(
+				  '  <location>' . $location . '</location>'
+				  )
+				);
+
+		}else{
+
+				echo join(PHP_EOL, array(
+				  '  <location>' . htmlspecialchars('<a href=' . $link . ' class="lytebox" data-lyte-options="width:800 height:600" data-title="Umístění dokumentu" >' . $location . '</a>' ) . '</location>'
+				  )
+				);	
+
+		}
+
+                echo join(PHP_EOL, array(
                   '  <reserve>' . htmlspecialchars($record[0]['reserve']) . '</reserve>',
                   '  <callnumber>' . htmlspecialchars($callNumber) . '</callnumber>',
                   ' </item>'
                   )
                 );
+
+
             }
         }
 
