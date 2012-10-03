@@ -69,9 +69,15 @@
         {$row.sub_lib_desc|escape}
     </td>
     <td>{* DM. odkaz na mapu regalu s umistenim dokumentu *}
-	<a href={$url}/map.php?lcc={$row.sig2} class="lytebox" data-lyte-options="width:800 height:600" data-title="Umístění dokumentu" >
-	{$row.collection_desc|escape}
-	</a>
+	{if !empty($row.sig2)}
+		<a href={$url}/map.php?lcc={$row.sig2} class="lytebox" data-lyte-options="width:800 height:600" data-title="Umístění dokumentu" >
+		
+		
+	{/if}
+		{$row.collection_desc|escape}
+	{if !empty($row.sig2)}
+		</a>
+	{/if}
    </td>
     {*
     <td>

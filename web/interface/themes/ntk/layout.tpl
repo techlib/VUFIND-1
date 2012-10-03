@@ -20,7 +20,6 @@
     <script type="text/javascript">
       path = '{$url}';
     </script>
-    
     {js filename="yui/yahoo-dom-event.js"}
     {js filename="yui/yahoo-min.js"}
     {js filename="yui/event-min.js"}
@@ -33,9 +32,9 @@
     {js filename="ajax.yui.js"}
     {js filename="json-min.js"}
     {js filename="NTK.js"}
-    {js filename="Lytebox/lytebox.js"}
-	<link rel="stylesheet" href="/interface/themes/ntk/js/Lytebox/lytebox.css" type="text/css" media="screen" /> 
 
+   <link rel="stylesheet" href="/interface/themes/ntk/js/Lytebox/lytebox.css" type="text/css" media="screen" /> 
+   {js filename="Lytebox/lytebox.js"}
     <script type="text/javascript">
       {literal}
       YAHOO.util.Event.onDOMReady(function() {

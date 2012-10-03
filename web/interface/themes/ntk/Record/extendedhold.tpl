@@ -44,7 +44,6 @@
   </table>
   <div id="cal1Container">
     <!-- <script src="/interface/themes/aleph/js/calendar.js"/> -->
-    <script>alert("hello, world!!!");</script>
     <img src="/interface/themes/aleph/images/transparent.gif" onload="(function() {ldelim} var e = document.createElement('script'); e.setAttribute('src', '/interface/themes/ntk/js/stub.js'); document.getElementsByTagName('head')[0].appendChild(e); {rdelim} )();"/>
   </div>
 </form>

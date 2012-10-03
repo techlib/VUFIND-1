@@ -26,10 +26,10 @@ function addList(form, failMsg)
             var value = eval('(' + transaction.responseText + ')');
             if (value) {
                 if (value.status == "OK") {
-                    getLightbox(
-                        form.followupModule.value, form.followupAction.value,
-                        form.followupId.value, null, form.followupText.value
-                    );
+                    //getLightbox(
+                    //    form.followupModule.value, form.followupAction.value,
+                    //    form.followupId.value, null, form.followupText.value
+                    //);
                 } else {
                     alert(value.data.length > 0 ? value.data : failMsg);
                 }

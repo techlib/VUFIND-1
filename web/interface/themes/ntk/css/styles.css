@@ -57,6 +57,13 @@ div.yui-b.first {background-color:#fff;}
 * html .searchHomeBrowseHeader {
 height: 2em;
 }
+
+.vscht {
+    
+vertical-align:top;
+margin-top: 40px;
+
+}
 /**/
 
 .searchHomeBrowseHeader h2 {font-size:110%; color:#982c29;}
@@ -125,11 +132,14 @@ b.bbot b, b.gbot b{background-position: 100% -30px}
     padding:15px 0 0 0; 
     background-color:#e7e7e7;
     border-bottom: solid 1px #c5c5c5;
-    text-align:left;
+    #text-align:left;
+    text-align: center; // DM - uprava pro IE
 }
 .searchcontent {
     width:73.076em;*width:71.25em;
     margin:0 auto;
+    text-align:left; // DM - uprava pro IE, vycentrovani searboxu
+
 }/* Matches Doc2 */
 .searchform {
     padding-top:7px;

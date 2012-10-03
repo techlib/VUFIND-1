@@ -20,7 +20,7 @@ function getLightbox(module, action, id, lookfor, message, followupModule, follo
     }
 
     // Popup Lightbox
-    lightbox();
+    //lightbox(); 		DM: odstraneni LightboxErroru
     
     // Load Popup Box Content from AJAX Server
     var url = path + "/AJAX/JSON";
