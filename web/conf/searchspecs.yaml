@@ -279,8 +279,8 @@ AllFields:
   DismaxFields:
     - title_short^750
     - title_full_unstemmed^600
-    - title_full^500
-    - title^1400
+    - title_full^400
+    - title^500
     - title_alt^200
     - title_new^100
     - series^50
@@ -296,14 +296,12 @@ AllFields:
     - fulltext_unstemmed^10
     - allfields
     - fulltext
-    - issn
     - isbn
+    - issn
     - id
     - callnumber
-    - callnumber-label
-    - title_auth^350
-    - title_fullStr^2300
-    - title_sub^360
+    - callnumber-a
+{*DM - pridano isbn, issn, id a signatura*}
 
   QueryFields:
     - 
@@ -356,7 +354,6 @@ AllFields:
     fulltext:
       - [or, ~]
 
-
 # These are advanced searches that never use Dismax:
 id:
   QueryFields:
@@ -403,12 +400,18 @@ CallNumber:
       - [uppercase]
       # Strip whitespace and quotes:
       - [preg_replace, '/[ "]/', ""]
+      # Escape colons (unescape first to avoid double-escapes):
+      - [preg_replace, '/(\\\:)/', ':']
+      - [preg_replace, '/:/', '\:']
       # Strip pre-existing trailing asterisks:
       - [preg_replace, "/\*+$/", ""]
     callnumber_fuzzy:
       - [uppercase]
       # Strip whitespace and quotes:
       - [preg_replace, '/[ "]/', ""]
+      # Escape colons (unescape first to avoid double-escapes):
+      - [preg_replace, '/(\\\:)/', ':']
+      - [preg_replace, '/:/', '\:']
       # Strip pre-existing trailing asterisks:
       - [preg_replace, "/\*+$/", ""]
       # Ensure we have just one trailing asterisk.  The trailing space inside
@@ -424,12 +427,16 @@ CallNumber:
       - [callnumber_fuzzy, ~]
 
 publisher:
+  DismaxFields:
+    - publisher^100
   QueryFields:
     - publisher:
       - [and, 100]
       - [or, ~]
 
 year:
+  DismaxFields:
+    - publishDate^100
   QueryFields:
     - publishDate:
       - [and, 100]
@@ -441,6 +448,8 @@ language:
       - [and, ~]
 
 toc:
+  DismaxFields:
+    - contents^100
   QueryFields:
     - contents:
       - [and, 100]
