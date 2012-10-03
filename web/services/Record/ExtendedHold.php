@@ -40,6 +40,10 @@ class ExtendedHold extends Record
         if (!$this->user) {
             // return new PEAR_Error('Prihlaste se.');
             // Needed for "back to record" link in view-alt.tpl:
+	    /*DM - po prihlaseni zpet na zaznam (login.tpl)*/
+	    $here = $url.'/Record/'.$_GET['id'];
+	    $interface->assign('here', $here);	
+	    /*DM*/
             $interface->assign('id', $_GET['id']);
             $interface->assign('barcode', $_GET['barcode']);
             // Needed for login followup:

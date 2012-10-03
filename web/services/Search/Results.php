@@ -220,6 +220,8 @@ class Results extends Action
 
         // Done, display the page
         $interface->display('layout.tpl');
+
+
     } // End launch()
 
     /**
