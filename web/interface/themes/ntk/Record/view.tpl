@@ -88,7 +88,8 @@
 {*DM.*}
               {if $hasPreview}
               <li{if $tab == 'Preview'} class="active"{/if}>
-                <a href="{$url}/Record/{$id|escape:"url"}/Preview#tabnav" class="first"><span></span>{translate text='Preview'}</a>
+                <a href="{$url}/Record/{$id|escape:"url"}/Preview#tabnav" class="first"><span></span><span style="vertical-align:top"><img width="14" height="14" src="/images/eye-icon.png"/>
+{translate text='Preview'}</span></a>
               </li>
               {/if}
 {*DM.*}                 
@@ -180,7 +181,7 @@
     </div>
  
     {if !empty($isbn)}
-    <script src="http://ltfl.librarything.com/forlibraries/widget.js?id=1501-3320533354" type="text/javascript"></script>
+    <script src="https://ltfl.librarything.com/forlibraries/widget.js?id=1501-3320533354" type="text/javascript"></script>
     <div class="sidegroup" id="libraryThingHolder">
       <h5><strong>{translate text="Tags"}</strong></h5>
       <div id="ltfl_tagbrowse" class="ltfl"></div>

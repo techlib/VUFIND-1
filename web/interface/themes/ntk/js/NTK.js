@@ -33,7 +33,7 @@ var NTK = {
       }
 		},
 		init : function() {
-			var baseUrl = "http://www.obalkyknih.cz/api/books?books=",
+			var baseUrl = "https://www.obalkyknih.cz/api/books?books=",
 				permalink = "http://vufind.techlib.cz/vufind/Search/Results?lookfor="
 					+ NTK.options.isbn				
 					+ "&type=ISN&jumpto=1",
