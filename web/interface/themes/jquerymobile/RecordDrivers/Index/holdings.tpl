@@ -30,6 +30,7 @@
   {foreach from=$holding item=row}
     {if $row.barcode != ""}
   <tr>
+<td>{$row.sig2}</td>
     <th>{translate text="Copy"} {$row.number|escape}</th>
     <td>
       {if $row.reserve == "Y"}

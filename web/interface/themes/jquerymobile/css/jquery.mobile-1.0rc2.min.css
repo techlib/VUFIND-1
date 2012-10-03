@@ -2026,3 +2026,36 @@ width:43%;
 overflow:visible;
 }
 }
+
+{*DM - div pro searchbox a sortbox v hlavicce*}
+
+
+td.btn {
+width : 1%;
+}
+td.sort {
+text-align : right;
+white-space : nowrap;
+font-size : 12px;
+}
+td.select {
+width : 1%;
+}
+
+#home {
+color:white;
+text-decoration: none;
+}
+
+.homeicon {
+
+text-align:center;
+font-size:8px;
+}
+
+img.bottom {
+vertical-align:text-bottom;
+}
+
+{*DM*}
+

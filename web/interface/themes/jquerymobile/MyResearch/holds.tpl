@@ -1,6 +1,23 @@
 <div data-role="page" id="MyResearch-holds">
   {include file="header.tpl"}
   <div data-role="content">
+{*DM - pridan panel s vyhledavacim polem, a tlacitkem na radit podle*}
+<div class="searchandsortnone">
+<form method="get" action="{$path}/Search/Results" data-ajax="false">
+<table class="searchontop">
+<tr>
+<td class="search">
+	<input type="search" placeholder="{translate text='Searching in all fields'}" name="lookfor" id="searchForm_lookfor" value="{$lookfor|escape}"/>
+</td>
+<td class="btn">
+	<input type="submit" name="submit" value="{translate text="Find"}"/>
+</td>
+</tr>
+</table>
+</form>
+</div>
+{*DM*}
+<br>
     {if $user->cat_username}
       <h3>{translate text='Your Holds and Recalls'}</h3>
 

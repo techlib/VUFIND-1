@@ -4,7 +4,7 @@
     <h3>{$pageTitle|escape}</h3>
     {if $message}<div class="error">{$message|translate}</div>{/if}
     {if $authMethod != 'Shibboleth'}
-    <form method="post" action="{$path}/MyResearch/Home" name="loginForm" data-ajax="false">
+    <form method="post" action="{$here}" name="loginForm" data-ajax="false"> {*DM - vyresen bug po prihlaseni*}
       <div data-role="fieldcontain">
         <label for="login_username">{translate text='Username'}:</label>
         <input id="login_username" type="text" name="username" value="{$username|escape}"/>

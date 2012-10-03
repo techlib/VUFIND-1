@@ -137,14 +137,22 @@ dl.biblio dd {
 div.recordcover {
     text-align:center;
 }
+table.holdings {
+	text-align:center;
+	padding:15px;
+border:1px solid green;
+}
 table.holdings th {
     font-size: 14px;
     font-weight: bold;
     vertical-align: top;
     text-align: right;
+border:1px solid green;
 }
 table.holdings td {
     font-size: 14px;
+	padding:15px;
+	border:1px solid green;
 }
 label,legend,.ui-controlgroup-label {
     font-size: 14px !important;

@@ -141,4 +141,5 @@
     {/foreach}
   </dd>
 {/if}
+{*DM - pridana odrazka pro jednotky*}  <dt>{translate text='Holdings'}:</dt>
 </dl>
