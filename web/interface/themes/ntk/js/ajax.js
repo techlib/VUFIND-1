@@ -34,8 +34,7 @@ function doGetStatuses(strings)
 
             for (i=0; i<items.length; i++) {
                 elemId = items[i].getAttribute('id');
-                statusDiv = getElem('status' + elemId);
-               
+                statusDiv = getElem('status' + elemId);  
                 if (statusDiv) {
                     if (items[i].getElementsByTagName('reserve')) {
                         reserves = items[i].getElementsByTagName('reserve').item(0).firstChild.data;
@@ -47,8 +46,12 @@ function doGetStatuses(strings)
                    } else if (elemId.match(/vscht/)) {
                         statusDiv.innerHTML = '';
                         
+//DM. - not displaying 'checkeout' in czu records
+                   } else if (elemId.match(/czu/)) {
+                        statusDiv.innerHTML = '';
+                        
 
-                    } else if (items[i].getElementsByTagName('availability')) {
+                   } else if (items[i].getElementsByTagName('availability')) {
                         if (items[i].getElementsByTagName('availability').item(0).firstChild) {
                             status = items[i].getElementsByTagName('availability').item(0).firstChild.data;
                             // write out response
