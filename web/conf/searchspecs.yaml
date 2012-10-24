@@ -298,10 +298,8 @@ AllFields:
     - fulltext
     - isbn
     - issn
-    - id
-    - callnumber
-    - callnumber-a
-{*DM - pridano isbn, issn, id a signatura*}
+
+{*DM - pridano isbn, issn. id a signatura delaly neplechu, tak byly odstraneny z AllFields*}
 
   QueryFields:
     - 
@@ -354,6 +352,7 @@ AllFields:
     fulltext:
       - [or, ~]
 
+
 # These are advanced searches that never use Dismax:
 id:
   QueryFields:
@@ -400,18 +399,12 @@ CallNumber:
       - [uppercase]
       # Strip whitespace and quotes:
       - [preg_replace, '/[ "]/', ""]
-      # Escape colons (unescape first to avoid double-escapes):
-      - [preg_replace, '/(\\\:)/', ':']
-      - [preg_replace, '/:/', '\:']
       # Strip pre-existing trailing asterisks:
       - [preg_replace, "/\*+$/", ""]
     callnumber_fuzzy:
       - [uppercase]
       # Strip whitespace and quotes:
       - [preg_replace, '/[ "]/', ""]
-      # Escape colons (unescape first to avoid double-escapes):
-      - [preg_replace, '/(\\\:)/', ':']
-      - [preg_replace, '/:/', '\:']
       # Strip pre-existing trailing asterisks:
       - [preg_replace, "/\*+$/", ""]
       # Ensure we have just one trailing asterisk.  The trailing space inside
@@ -427,16 +420,12 @@ CallNumber:
       - [callnumber_fuzzy, ~]
 
 publisher:
-  DismaxFields:
-    - publisher^100
   QueryFields:
     - publisher:
       - [and, 100]
       - [or, ~]
 
 year:
-  DismaxFields:
-    - publishDate^100
   QueryFields:
     - publishDate:
       - [and, 100]
@@ -448,8 +437,6 @@ language:
       - [and, ~]
 
 toc:
-  DismaxFields:
-    - contents^100
   QueryFields:
     - contents:
       - [and, 100]
