@@ -204,6 +204,22 @@ class AJAX extends Action {
 		      ' </item>'
 		      )
 		    );
+	// DM - pridan odkaz v umisteni pro dokumenty CZU do jejich alephu
+	    } else if (substr($missingId, 0, 3) === "czu") {
+		    $id = ltrim($missingId, "czu");
+		    $text = translate("in the catalogue of CZU");
+		    $location = htmlspecialchars(
+		    	"<a href=\"http://aleph.czu.cz/F?func=item-global&doc_library=CZU01&doc_number=".$id."\">".$text."</a>"
+		    );
+		    echo join(PHP_EOL, array(
+		      ' <item id="' . htmlspecialchars($missingId) . '">',
+		      '   <availability>false</availability>',
+		      '   <location>'.$location.'</location>',
+		      '   <reserve>N</reserve>',
+		      '   <callnumber></callnumber>',
+		      ' </item>'
+		      )
+		    );
 	    } else {
 		    echo join(PHP_EOL, array(
 		      ' <item id="' . htmlspecialchars($missingId) . '">',
