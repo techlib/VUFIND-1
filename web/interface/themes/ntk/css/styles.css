@@ -1442,3 +1442,27 @@ alignleft {
 .psh .related {
   background-position: -7px -118px;
 }
+
+/*DM - divy pro loga univerzit*/
+#container{
+width:100%;
+position:relative;
+}
+#left{
+width:135px;
+position:absolute;
+bottom:0;
+left:0; 
+}
+#right{
+width:135px;
+position:absolute; 
+bottom:10px; 
+right:10px; 
+}
+#center{
+margin:0 auto;
+width:200px;
+z-index:1000;
+}
+
