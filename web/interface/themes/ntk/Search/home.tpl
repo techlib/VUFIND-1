@@ -1,12 +1,17 @@
 <div class="searchHome">
   <b class="btop"><b></b></b>
+
   <div class="searchHomeContent">
-    <img src="{$path}/interface/themes/ntk/images/ntk_logo_200px_wide.png" alt="VuFind">
-    
+	{*DM - nova loga univerzit - CZU, VSCHT*}
+	<div id="container">
+	  <div id="left"><img src="{$path}/interface/themes/ntk/images/czu-logo.gif" alt="VuFind" width="135"></div>
+	  <div id="right"><img class="vscht" src="{$path}/interface/themes/ntk/images/vscht-logo.png" width="135" alt="VuFind" align="bottom"></div>
+	  <div id="center"><img src="{$path}/interface/themes/ntk/images/ntk_logo_200px_wide.png" alt="VuFind"></div>
+	</div>
+	{*DM*}
     <div class="searchHomeForm">
       {include file="Search/searchbox.tpl"}
     </div>
-
   </div>
 </div>
 
