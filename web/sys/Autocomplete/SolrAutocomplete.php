@@ -151,13 +151,12 @@ class SolrAutocomplete implements AutocompleteInterface
             foreach ($this->displayField as $field) {
                 if (isset($current[$field])) {
                     $results[] = is_array($current[$field]) ?
-                        $current[$field][0] : $current[$field];
+                        "\"".$current[$field][0]."\"" : "\"".$current[$field]."\""; /*DM - pridani uvozovek kolem naseptavanych slov, kvuli vyhledavani celych slovnich spojeni*/
                     break;
                 }
             }
         }
-        
-        return array_unique($results);
+       return array_unique($results);
     }
 
     /**
