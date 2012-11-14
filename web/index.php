@@ -111,6 +111,9 @@ if (isset($configArray['Proxy']['host'])) {
 if (isset($_POST['mylang'])) {
     $language = $_POST['mylang'];
     setcookie('language', $language, null, '/');
+} elseif (isset($_GET['lng'])) {
+    $language = $_GET['lng'];
+    setcookie('language', $language, null, '/');
 } else {
     $language = (isset($_COOKIE['language'])) ? $_COOKIE['language'] :
                     $configArray['Site']['language'];
