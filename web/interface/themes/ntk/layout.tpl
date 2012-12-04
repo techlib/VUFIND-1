@@ -11,7 +11,7 @@
 {/if}
 
   <head>
-    <title>{$pageTitle|truncate:64:"..."}</title>
+    <title>{$pageTitle|replace:'Jednotky: ':''|replace:'Holdings: ':''|truncate:64:"..."}</title>
     {if $addHeader}{$addHeader}{/if}
     <link rel="search" type="application/opensearchdescription+xml" title="Library Catalog Search" href="{$url}/Search/OpenSearch?method=describe">
     {css media="screen" filename="styles.css"}
@@ -35,6 +35,13 @@
 
    <link rel="stylesheet" href="/interface/themes/ntk/js/Lytebox/lytebox.css" type="text/css" media="screen" /> 
    {js filename="Lytebox/lytebox.js"}
+
+{js filename="colorbox/jquery-1.8.2.min.js"}
+<link rel="stylesheet" href="/interface/themes/ntk/js/colorbox/colorbox.css" type="text/css" media="screen" /> 
+{js filename="colorbox/jquery.colorbox-min.js"}
+
+
+
     <script type="text/javascript">
       {literal}
       YAHOO.util.Event.onDOMReady(function() {
