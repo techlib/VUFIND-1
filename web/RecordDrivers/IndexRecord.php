@@ -233,6 +233,33 @@ class IndexRecord implements RecordInterface
         $interface->assign('coreThumbMedium', $this->getThumbnail('medium'));
         $interface->assign('coreThumbLarge', $this->getThumbnail('large'));
 
+/*DM - datum vydani mezi 1500 - 1911 a zaroven format Book a sbirka NTK maji odkaz EOD*/
+
+	// Get a representative publication date:
+        $pubDate = $this->getPublicationDates();
+        $pubDate = empty($pubDate) ? '' : $pubDate[0];
+
+	// Get format
+	$format=$this->getFormats();
+	//echo $format[0];	
+
+	// Get collection
+	$collection = $this->fields['collection'][0];
+	//echo $collection;
+
+	$topyear = date('Y')-100;
+	//echo $topyear;
+	
+	if (($pubDate < $topyear) && ($pubDate > 1500) && ($format[0] == 'Book') && ($collection == 'NTK')) {
+		$eodYes=1;
+		$interface->assign('id', $this->getUniqueID());
+	}else{
+		$eodYes=0;
+	}
+
+	$interface->assign('eodYes', $eodYes);
+/*DM*/
+
         // Only display OpenURL link if the option is turned on and we have
         // an ISSN.  We may eventually want to make this rule more flexible,
         // but for now the ISSN restriction is designed to be consistent with
