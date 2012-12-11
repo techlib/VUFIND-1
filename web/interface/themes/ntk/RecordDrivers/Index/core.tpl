@@ -238,5 +238,18 @@
       </div>
     </td>
   </tr>
+
+{*DM - pridani EOD tlacitka s objednanim digitalni kopie*}
+  {if $eodYes}	
+  <tr valign="top">
+    <th>{translate text='EOD'}: </th>
+    <td>	
+	<a href='http://www.books2ebooks.eu/odm/orderformular.do?formular_id=221&sys_id={$id}' target='_blank'>
+ 	<img src='{$path}/interface/themes/ntk/images/eod_button.gif'>
+	</a> 
+    </td>
+  </tr>
+  {/if}
+{*DM*}
 </table>
 {* End Main Details *}
